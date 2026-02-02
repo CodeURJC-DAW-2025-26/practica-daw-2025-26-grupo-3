@@ -84,8 +84,8 @@ Indicar qué tecnología complementaria se empleará:
 ### **Algoritmo o Consulta Avanzada**
 Indicar cuál será el algoritmo o consulta avanzada que se implementará:
 
-- **Algoritmo/Consulta**: Detección de productos más visitados.
-- **Descripción**: Cuenta las visitas a cada producto y muestra los más populares.
+- **Algoritmo/Consulta**: Detección de productos más comprados.
+- **Descripción**: Cuenta las compras de cada tipo de producto y muestra más productos de ese tipo.
 - **Alternativa**: Consulta que ordena productos por relevancia y precio.
 
 ---
