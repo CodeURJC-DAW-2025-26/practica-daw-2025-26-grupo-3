@@ -3,9 +3,9 @@
 ## 👥 Miembros del Equipo
 | Nombre y Apellidos | Correo URJC | Usuario GitHub |
 |:--- |:--- |:--- |
-| [Nombre 1] | [email1]@alumnos.urjc.es | [User1] |
-| [Nombre 2] | [email2]@alumnos.urjc.es | [User2] |
-| [Nombre 3] | [email3]@alumnos.urjc.es | [User3] |
+| Daniel Hernanz Corral | d.hernanz.2023@alumnos.urjc.es | DanielHernanz9 |
+| Marcos Hernández Martín | m.hernandez.2023@alumnos.urjc.es | MarcosHM851 |
+| Jorge Naranjo Ballesteros | j.naranjo.2023@alumnos.urjc.es | 2005JNB |
 | [Nombre 4] | [email4]@alumnos.urjc.es | [User4] |
 
 ---
