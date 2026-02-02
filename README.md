@@ -13,66 +13,80 @@
 ## 🎭 **Preparación 1: Definición del Proyecto**
 
 ### **Descripción del Tema**
-[Escribe aquí una descripción breve y concisa de qué trata tu aplicación, el sector al que pertenece y qué valor aporta al usuario].
+ReMarket+ es una aplicación web de compra y venta online de productos nuevos, reacondicionados y de segunda mano. La plataforma permite a la empresa vender productos nuevos y reacondicionados, y a los usuarios publicar, comprar y vender productos de segunda mano.
 
 ### **Entidades**
 Indicar las entidades principales que gestionará la aplicación y las relaciones entre ellas:
 
-1. **[Entidad 1]**: [Ej: Usuario]
-2. **[Entidad 2]**: [Ej: Producto]
-3. **[Entidad 3]**: [Ej: Pedido]
-4. **[Entidad 4]**: [Ej: Categoría]
+1. **Usuario**: Persona registrada que puede comprar, vender y valorar productos.
+2. **Producto**: Artículo nuevo, reacondicionado o de segunda mano disponible en la plataforma.
+3. **Pedido**: Compra realizada por un usuario que incluye uno o más productos.
+4. **Valoracion**: Opinión de un usuario sobre un producto o vendedor tras una compra.
 
 **Relaciones entre entidades:**
-- [Ej: Usuario - Pedido: Un usuario puede tener múltiples pedidos (1:N)]
-- [Ej: Pedido - Producto: Un pedido puede contener múltiples productos y un producto puede estar en múltiples pedidos (N:M)]
-- [Ej: Producto - Categoría: Un producto pertenece a una categoría (N:1)]
-- [Descripción de otras relaciones relevantes]
+1. Usuario – Pedido: Un usuario puede realizar múltiples pedidos (0:N).
+2. Pedido – Producto: Un pedido puede contener varios productos y un producto puede estar en varios pedidos (N:M).
+3. Usuario – Producto: Un usuario puede publicar varios productos y cada producto pertenece a un único usuario (0:N).
+4. Usuario – Valoración: Un usuario puede realizar varias valoraciones (0:N).
+5. Producto – Valoración: Un producto puede tener varias valoraciones (0:N).
 
 ### **Permisos de los Usuarios**
 Describir los permisos de cada tipo de usuario e indicar de qué entidades es dueño:
 
 * **Usuario Anónimo**: 
-  - Permisos: [Ej: Visualización de catálogo, búsqueda de productos, registro]
+  - Permisos: 
+      1. Puede navegar por las categorias.
+      2. Puede ver productos y valoraciones. 
+      3. No puede comprar ni vender.
   - No es dueño de ninguna entidad
 
 * **Usuario Registrado**: 
-  - Permisos: [Ej: Gestión de perfil, realizar pedidos, crear valoraciones]
-  - Es dueño de: [Ej: Sus propios Pedidos, su Perfil de Usuario, sus Valoraciones]
+  - Permisos:
+      1. Puede comprar productos.
+      2. Puede publicar productos propios (solo productos de segunda mano)
+      3. Puede gestionar su perfil, favoritos, mensajes y pedidos.
+  - Es dueño de: 
+      - Perfil de usuario.
+      - Productos publicados.
+      - Pedidos.
+      - Valoraciones. 
 
 * **Administrador**: 
-  - Permisos: [Ej: Gestión completa de productos (CRUD), visualización de estadísticas, moderación de contenido]
-  - Es dueño de: [Ej: Productos, Categorías, puede gestionar todos los Pedidos y Usuarios]
+  - Permisos:
+      1. Puede gestionar usuarios, productos y pedidos.
+      2. Puede aprobar, editar o eliminar productos.
+      3. Puede gestionar valoraciones y categorias.
+  - Es dueño de: 
+      - Los productos nuevos y reacondicionados.
+      - Las categorias.
+      - La gestión global de pedidos y usuarios.
 
 ### **Imágenes**
 Indicar qué entidades tendrán asociadas una o varias imágenes:
 
-- **[Entidad con imágenes 1]**: [Ej: Usuario - Una imagen de avatar por usuario]
-- **[Entidad con imágenes 2]**: [Ej: Producto - Múltiples imágenes por producto (galería)]
-- **[Entidad con imágenes 3]**: [Ej: Categoría - Una imagen representativa por categoría]
+- **Usuario**: Imagen de avatar por usuario.
+- **Producto**: Múltiples imagenes por producto.
 
 ### **Gráficos**
 Indicar qué información se mostrará usando gráficos y de qué tipo serán:
 
-- **Gráfico 1**: [Ej: Ventas mensuales - Gráfico de barras]
-- **Gráfico 2**: [Ej: Productos más vendidos - Gráfico de tarta/circular]
-- **Gráfico 3**: [Ej: Evolución de usuarios registrados - Gráfico de líneas]
-- **Gráfico 4**: [Ej: Distribución de pedidos por categoría - Gráfico de barras horizontales]
+- **Ventas mensuales**: Gráfico de barras.
+- **Productos más vendidos**: Gráfico circular.
+- **Usuarios registrados**: Gráfico de lineas.
+- **Pedidos por tipo de producto**: Gráfico de barras.
 
 ### **Tecnología Complementaria**
 Indicar qué tecnología complementaria se empleará:
 
-- [Ej: Envío de correos electrónicos automáticos mediante JavaMailSender]
-- [Ej: Generación de PDFs de facturas usando iText o similar]
-- [Ej: Sistema de autenticación OAuth2 o JWT]
-- [Otras tecnologías externas que se integrarán]
+- Envío de correos electrónicos automáticos para confirmaciones de pedidos y registros.
+- Generación de facturas en PDF.
 
 ### **Algoritmo o Consulta Avanzada**
 Indicar cuál será el algoritmo o consulta avanzada que se implementará:
 
-- **Algoritmo/Consulta**: [Ej: Sistema de recomendaciones basado en el historial de compras del usuario]
-- **Descripción**: [Ej: Analiza los productos comprados previamente y sugiere productos similares o complementarios utilizando filtrado colaborativo]
-- **Alternativa**: [Ej: Consulta compleja que agrupe ventas por categoría, mes y región, con cálculo de tendencias]
+- **Algoritmo/Consulta**: Detección de productos más visitados.
+- **Descripción**: Cuenta las visitas a cada producto y muestra los más populares.
+- **Alternativa**: Consulta que ordena productos por relevancia y precio.
 
 ---
 
