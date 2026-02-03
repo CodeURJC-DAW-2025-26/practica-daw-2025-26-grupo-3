@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReMarket+ | Compra y Vende</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+
+            <a class="navbar-brand fw-bold" href="index_admin.html">
+                ReMarket<span class="text-primary">+</span> Admin
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="adminNav">
+                <ul class="navbar-nav ms-auto">
+
+                    <!-- Panel general -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="../admin/admin_panel.html">Dashboard</a>
+                    </li>
+
+                    <!-- Gestión de productos -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                            Productos
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="admin-productos.html">Todos los productos</a></li>
+                            <li><a class="dropdown-item" href="admin-productos.html#pendientes">Aprobar productos</a>
+                            </li>
+                            <li><a class="dropdown-item" href="admin-productos.html#nuevos">Nuevos /
+                                    Reacondicionados</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Pedidos -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin-pedidos.html">Pedidos</a>
+                    </li>
+
+                    <!-- Usuarios -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin-usuarios.html">Usuarios</a>
+                    </li>
+
+                    <!-- Categorías -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin-categorias.html">Categorías</a>
+                    </li>
+
+                    <!-- Valoraciones -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin-valoraciones.html">Valoraciones</a>
+                    </li>
+
+                    <!-- Perfil / Logout -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                            Admin
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="../registrado/perfil.html">Mi Perfil</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item text-danger" href="../anonimo/login.html">Cerrar sesión</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <header class="hero-section py-5 bg-light">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold">Dale una segunda vida a lo que amas.</h1>
+                    <p class="lead text-muted">Productos nuevos, reacondicionados y usados con la mejor garantía del
+                        mercado.</p>
+                    <div class="mt-4">
+                        <a href="pages/products.html" class="btn btn-primary btn-lg px-4 me-2">Explorar</a>
+                        <a href="pages/product-publish.html" class="btn btn-outline-dark btn-lg px-4">Vender ahora</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block">
+                    <img src="images/Logo_Remarket+.png" class="img-fluid rounded shadow-sm" alt="Hero">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="py-5">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-end mb-4">
+                <div>
+                    <h2 class="fw-bold">Destacados</h2>
+                    <p class="text-muted">Lo más buscado esta semana</p>
+                </div>
+                <a href="pages/products.html" class="text-primary text-decoration-none">Ver todos →</a>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="card h-100 border-0 shadow-sm product-card">
+                        <img src="images/iphone13.jpg" class="card-img-top" alt="Producto">
+                        <div class="card-body">
+                            <span class="badge bg-soft-primary text-primary mb-2">Reacondicionado</span>
+                            <h5 class="card-title h6 fw-bold">iPhone 13 - 128GB</h5>
+                            <p class="text-primary fw-bold mb-0">250.00€</p>
+                            <div class="small text-warning">★★★★☆ <span class="text-muted">(24)</span></div>
+                        </div>
+                        <div class="card-footer bg-transparent border-0 pb-3">
+                            <a href="pages/product-detail.html" class="btn btn-sm btn-outline-primary w-100">Ver
+                                detalle</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card h-100 border-0 shadow-sm product-card">
+                        <img src="https://placehold.co/300x300/f8f9fa/333?text=iPhone+13" class="card-img-top"
+                            alt="Producto">
+                        <div class="card-body">
+                            <span class="badge bg-soft-primary text-primary mb-2">Reacondicionado</span>
+                            <h5 class="card-title h6 fw-bold">iPhone 13 - 128GB</h5>
+                            <p class="text-primary fw-bold mb-0">599.00€</p>
+                            <div class="small text-warning">★★★★☆ <span class="text-muted">(24)</span></div>
+                        </div>
+                        <div class="card-footer bg-transparent border-0 pb-3">
+                            <a href="pages/product-detail.html" class="btn btn-sm btn-outline-primary w-100">Ver
+                                detalle</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card h-100 border-0 shadow-sm product-card">
+                        <img src="https://placehold.co/300x300/f8f9fa/333?text=iPhone+13" class="card-img-top"
+                            alt="Producto">
+                        <div class="card-body">
+                            <span class="badge bg-soft-primary text-primary mb-2">Reacondicionado</span>
+                            <h5 class="card-title h6 fw-bold">iPhone 13 - 128GB</h5>
+                            <p class="text-primary fw-bold mb-0">599.00€</p>
+                            <div class="small text-warning">★★★★☆ <span class="text-muted">(24)</span></div>
+                        </div>
+                        <div class="card-footer bg-transparent border-0 pb-3">
+                            <a href="pages/product-detail.html" class="btn btn-sm btn-outline-primary w-100">Ver
+                                detalle</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card h-100 border-0 shadow-sm product-card">
+                        <img src="https://placehold.co/300x300/f8f9fa/333?text=iPhone+13" class="card-img-top"
+                            alt="Producto">
+                        <div class="card-body">
+                            <span class="badge bg-soft-primary text-primary mb-2">Reacondicionado</span>
+                            <h5 class="card-title h6 fw-bold">iPhone 13 - 128GB</h5>
+                            <p class="text-primary fw-bold mb-0">599.00€</p>
+                            <div class="small text-warning">★★★★☆ <span class="text-muted">(24)</span></div>
+                        </div>
+                        <div class="card-footer bg-transparent border-0 pb-3">
+                            <a href="pages/product-detail.html" class="btn btn-sm btn-outline-primary w-100">Ver
+                                detalle</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-4 border-top bg-white">
+        <div class="container text-center text-muted small">
+            &copy; 2026 ReMarket+. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
