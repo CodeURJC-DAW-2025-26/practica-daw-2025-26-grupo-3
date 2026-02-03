@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publicar Producto | ReMarket+</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom mb-5">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="../index.html">ReMarket<span
+                    class="text-dark">+</span></a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card border-0 shadow-sm p-4">
+                    <h3 class="fw-bold mb-4">Publicar Producto</h3>
+                    <p class="text-muted small">Completa los datos para poner tu artículo a la venta.</p>
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Nombre del Producto</label>
+                            <input type="text" class="form-control" placeholder="Ej. MacBook Pro 2021">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Categoría</label>
+                                <select class="form-select">
+                                    <option>Electrónica</option>
+                                    <option>Hogar</option>
+                                    <option>Moda</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Precio (€)</label>
+                                <input type="number" class="form-control" placeholder="0.00">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Estado del artículo</label>
+                            <div class="btn-group w-100" role="group">
+                                <input type="radio" class="btn-check" name="status" id="nuevo" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="nuevo">Nuevo</label>
+
+                                <input type="radio" class="btn-check" name="status" id="reacon" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="reacon">Reacondicionado</label>
+
+                                <input type="radio" class="btn-check" name="status" id="usado" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="usado">Segunda Mano</label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Descripción</label>
+                            <textarea class="form-control" rows="4"
+                                placeholder="Describe brevemente el estado y características..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 mt-4 py-2 fw-bold">Publicar Ahora</button>
+                    </form>
+                </div>
+                <div class="text-center mt-3">
+                    <a href="perfil.html" class="text-muted small text-decoration-none">← Volver a mi perfil</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
