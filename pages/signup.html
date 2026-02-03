@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuenta | ReMarket+</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body,
+        html {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .mandatory {
+            color: #dc3545;
+            font-size: 0.8rem;
+        }
+
+        .card-registration {
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .logo-side {
+            background-color: #f0f4ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px 0 0 15px;
+        }
+
+        /* Botón de salida con hover en color primario */
+        .btn-exit {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 5px 15px;
+            border-radius: 50px;
+            border: 1px solid #dee2e6;
+            color: #6c757d;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-exit:hover {
+            background-color: #4e73df;
+            /* Color primario */
+            border-color: #4e73df;
+            color: white !important;
+            transform: translateX(-3px);
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+
+    <div class="container-fluid h-100">
+        <div class="row h-100 align-items-center justify-content-center py-2">
+
+            <div class="card card-registration border-0 shadow-sm overflow-hidden">
+                <div class="row g-0">
+
+                    <div class="col-md-4 logo-side d-none d-md-flex">
+                        <div class="text-center p-4">
+                            <img src="https://placehold.co/180x180/4e73df/white?text=ReMarket+" alt="Logo"
+                                class="img-fluid mb-3 rounded-circle shadow-sm">
+                            <h2 class="fw-bold text-primary">ReMarket<span class="text-dark">+</span></h2>
+                            <p class="text-muted small">Únete a nuestra comunidad</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8 bg-white p-4 p-md-5">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h1 class="h4 fw-bold mb-0">Crear Cuenta</h1>
+
+                            <a href="../index.html" class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-sm"
+                                title="Volver a la tienda">
+                                <span class="me-1">✕</span> Salir
+                            </a>
+                        </div>
+
+                        <form>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Nombre <span
+                                            class="mandatory">*</span></label>
+                                    <input type="text" class="form-control form-control-sm" placeholder="Tu nombre"
+                                        required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Apellidos <span
+                                            class="mandatory">*</span></label>
+                                    <input type="text" class="form-control form-control-sm" placeholder="Tus apellidos"
+                                        required>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label class="form-label small fw-bold">Dirección de envío <span
+                                            class="mandatory">*</span></label>
+                                    <input type="text" class="form-control form-control-sm"
+                                        placeholder="Calle, número, ciudad..." required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Correo electrónico <span
+                                            class="mandatory">*</span></label>
+                                    <input type="email" class="form-control form-control-sm"
+                                        placeholder="email@ejemplo.com" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Contraseña <span
+                                            class="mandatory">*</span></label>
+                                    <input type="password" class="form-control form-control-sm"
+                                        placeholder="Crea una contraseña" required>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 d-flex justify-content-between align-items-center">
+                                <p class="mandatory mb-0">(*) Campo obligatorio</p>
+                                <p class="small text-muted mb-0">¿Ya tienes cuenta? <a href="login.html"
+                                        class="fw-bold text-decoration-none text-primary">Inicia sesión</a></p>
+                            </div>
+
+                            <div class="mt-4">
+                                <button type="submit"
+                                    class="btn btn-primary w-100 py-2 fw-bold shadow-sm">Registrarme</button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

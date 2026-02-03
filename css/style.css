@@ -32,8 +32,8 @@ CSS STRUCTURE:
   --gray-color-500: #AEAEAE;
   --gray-color-800: #3A3A3A;
   --light-gray-color: #D7DDDF;
-  --primary-color: #72AEC8;
-  --bs-primary-rgb: 114, 174, 200;
+  --primary-color: #4e73df;
+  --bs-primary-rgb: 78, 115, 223;
   --light-color: #f8f9fa;
   --dark-color: #212529;
   --light-blue-color: #EDF1F3;
@@ -1191,4 +1191,9 @@ body {
 .stat-card {
   border-radius: 15px;
   border-left: 5px solid var(--bs-primary);
+}
+
+.mandatory {
+  color: red;
+  text-decoration: bold;
 }
