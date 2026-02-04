@@ -1187,6 +1187,17 @@ body {
   font-weight: 500;
 }
 
+.btn-danger {
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 500;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+}
+
 /* Admin Dashboard Cards */
 .stat-card {
   border-radius: 15px;
