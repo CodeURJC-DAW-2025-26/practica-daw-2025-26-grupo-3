@@ -4,217 +4,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReMarket+ | Panel Admin</title>
+    <title>Panel de Control | ReMarket+</title>
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="../../css/styles.css">
-    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <style>
-        body {
-            background: #f8f9fa;
-            font-family: "Segoe UI", sans-serif;
-        }
-
-        /* SIDEBAR */
-        .sidebar {
-            width: 240px;
-            height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            background: #212529;
-            color: white;
-            padding-top: 20px;
-        }
-
-        .sidebar a {
-            color: #adb5bd;
-            text-decoration: none;
-            padding: 12px 20px;
-            display: block;
-            font-size: 15px;
-        }
-
-        .sidebar a:hover,
-        .sidebar a.active {
-            background: #343a40;
-            color: white;
-        }
-
-        .admin-profile {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .admin-profile img {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            border: 2px solid #0d6efd;
-        }
-
-        /* CONTENIDO */
-        .content {
-            margin-left: 240px;
-            padding: 30px;
-        }
-
-        /* Gráficos */
-        .chart-box {
-            height: 220px;
-        }
-
-        .sidebar-item a {
-            color: #adb5bd;
-            text-decoration: none;
-            padding: 12px 20px;
-            display: block;
-            cursor: pointer;
-        }
-
-        .sidebar-item a:hover {
-            background: #343a40;
-            color: white;
-        }
-
-        .sidebar-subitem {
-            padding: 8px 20px;
-            font-size: 14px;
-            display: block;
-        }
-
-        .sidebar-subitem:hover {
-            background: #343a40;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="../../../css/style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body>
+<body class="bg-light">
 
-    <!-- SIDEBAR -->
-    <div class="sidebar">
+    <div class="container-fluid my-4">
 
-        <div class="admin-profile">
-            <img src="https://placehold.co/70x70" alt="Admin">
-            <h6 class="mt-2 fw-bold">Administrador</h6>
-            <small class="text-secondary">admin@remarket.com</small>
-        </div>
+        <div class="row">
 
-        <a href="../admin/panel_admin.html" class="active">Panel de control</a>
+            <div class="col-md-3 col-lg-2 px-0">
 
-        <div class="sidebar-item">
-            <a class="d-flex justify-content-between align-items-center dropdown-toggle" data-bs-toggle="collapse"
-                href="#productsMenu" role="button">Gestionar Productos</a>
-            <div class="collapse" id="productsMenu">
-                <a href="products_admin.html" class="ps-4 sidebar-subitem">• Admin Products</a>
-                <a href="products_users.html" class="ps-4 sidebar-subitem">• User Products</a>
-                <a href="products_pending.html" class="ps-4 sidebar-subitem">• Pending Approval</a>
+                <!-- SIDE BAR-->
+                <div class="sidebar bg-white p-3 border-end h-100">
+
+                    <div class="admin-profile text-center mb-4">
+                        <img src="https://placehold.co/70x70" alt="Admin" class="rounded-circle mb-2">
+                        <h6 class="fw-bold m-0">Administrador</h6>
+                    </div>
+
+                    <nav class="nav flex-column">
+
+                        <a href="../admin/admin_panel.html" class="nav-link">Panel de control</a>
+
+                        <div class="nav-item">
+                            <a class="nav-link d-flex justify-content-between align-items-center"
+                                data-bs-toggle="collapse" href="#productsMenu" role="button">
+                                Gestionar Productos <span>▼</span>
+                            </a>
+
+                            <div class="collapse ps-3" id="productsMenu">
+                                <a href="products_admin.html" class="sidebar-subitem">Añadir productos</a>
+                                <a href="products_users.html" class="sidebar-subitem">Productos publicados</a>
+                                <a href="products_pending.html" class="sidebar-subitem">Aprobar productos</a>
+                            </div>
+                        </div>
+
+                        <a href="../pedidos/lista.html" class="nav-link">Gestionar Pedidos</a>
+                        <a href="../categorias/lista.html" class="nav-link">Gestionar Usuarios</a>
+
+                        <hr class="text-secondary my-3 opacity-25">
+
+                        <a href="../admin/admin_profile.html" class="nav-link">Mi Perfil</a>
+
+                        <a href="../../anonimo/login.html" class="nav-link text-danger">Cerrar sesión</a>
+                    </nav>
+                </div>
+
+            </div>
+
+            <div class="col-md-9 col-lg-10 py-3 px-4">
+
+                <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+                    <h2 class="h3 fw-bold text-dark">Panel de Control</h2>
+                    <span class="badge bg-success rounded-pill">En línea</span>
+                </div>
+
+                <div class="row g-4 mb-4">
+                    <div class="col-md-3">
+                        <div class="card shadow-sm border-0 text-center p-3">
+                            <h6 class="fw-bold text-muted small text-uppercase">Ventas Mensuales</h6>
+                            <p class="display-6 fw-bold text-primary mb-0">€12.450</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card shadow-sm border-0 text-center p-3">
+                            <h6 class="fw-bold text-muted small text-uppercase">Usuarios</h6>
+                            <p class="display-6 fw-bold text-success mb-0">1.248</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card shadow-sm border-0 text-center p-3">
+                            <h6 class="fw-bold text-muted small text-uppercase">Pedidos Activos</h6>
+                            <p class="display-6 fw-bold text-warning mb-0">32</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="card shadow-sm border-0 text-center p-3">
+                            <h6 class="fw-bold text-muted small text-uppercase">Pdtes. Revisión</h6>
+                            <p class="display-6 fw-bold text-danger mb-0">7</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+
+                    <div class="col-md-6 col-lg-6">
+                        <div class="card shadow-sm border-0 p-4 h-100">
+                            <h6 class="fw-bold mb-3 text-dark">Evolución de Ventas</h6>
+                            <div class="chart-box">
+                                <canvas id="ventasChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-6">
+                        <div class="card shadow-sm border-0 p-4 h-100">
+                            <h6 class="fw-bold mb-3 text-dark">Top Productos</h6>
+                            <div class="chart-box">
+                                <canvas id="productosChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-6">
+                        <div class="card shadow-sm border-0 p-4 h-100">
+                            <h6 class="fw-bold mb-3 text-dark">Crecimiento Usuarios</h6>
+                            <div class="chart-box">
+                                <canvas id="usuariosChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-6">
+                        <div class="card shadow-sm border-0 p-4 h-100">
+                            <h6 class="fw-bold mb-3 text-dark">Tipos de Pedidos</h6>
+                            <div class="chart-box">
+                                <canvas id="pedidosChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
-
-        <a href="../usuarios/lista.html">Gestionar Categorías</a>
-        <a href="../pedidos/lista.html">Gestionar Pedidos</a>
-        <a href="../categorias/lista.html">Gestionar Usuarios</a>
-        <hr class="text-secondary">
-
-        <a href="../admin/profile_admin.html">Mi Perfil</a>
-        <a href="../../anonimo/login.html" class="text-danger">Cerrar sesión</a>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- CONTENIDO -->
-    <div class="content">
-
-        <h1 class="fw-bold mb-4">Panel de Control</h1>
-
-        <!-- TARJETAS -->
-        <div class="row g-4 mb-4">
-            <div class="col-md-3">
-                <div class="card shadow-sm border-0 text-center p-3">
-                    <h6 class="fw-bold">Ventas Mensuales</h6>
-                    <p class="display-6 text-primary">€12.450</p>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card shadow-sm border-0 text-center p-3">
-                    <h6 class="fw-bold">Usuarios Registrados</h6>
-                    <p class="display-6 text-success">1.248</p>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card shadow-sm border-0 text-center p-3">
-                    <h6 class="fw-bold">Pedidos Activos</h6>
-                    <p class="display-6 text-warning">32</p>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="card shadow-sm border-0 text-center p-3">
-                    <h6 class="fw-bold">Productos Pendientes</h6>
-                    <p class="display-6 text-danger">7</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- GRÁFICOS -->
-        <div class="row g-4">
-
-            <div class="col-md-6 col-lg-4">
-                <div class="card shadow-sm border-0 p-3">
-                    <h6 class="fw-bold mb-2">Ventas Mensuales</h6>
-                    <div class="chart-box">
-                        <canvas id="ventasChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="card shadow-sm border-0 p-3">
-                    <h6 class="fw-bold mb-2">Productos Más Vendidos</h6>
-                    <div class="chart-box">
-                        <canvas id="productosChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="card shadow-sm border-0 p-3">
-                    <h6 class="fw-bold mb-2">Usuarios Registrados</h6>
-                    <div class="chart-box">
-                        <canvas id="usuariosChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="card shadow-sm border-0 p-3">
-                    <h6 class="fw-bold mb-2">Pedidos por Tipo</h6>
-                    <div class="chart-box">
-                        <canvas id="pedidosChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-    <script src="../../js/bootstrap.bundle.min.js"></script>
-
-    <!-- GRÁFICOS -->
     <script>
         const chartOptions = {
             responsive: true,
             maintainAspectRatio: false,
             plugins: { legend: { labels: { font: { size: 12 } } } },
-            scales: { x: { ticks: { font: { size: 12 } } }, y: { ticks: { font: { size: 12 } } } }
+            scales: {
+                x: { grid: { display: false } }, // Ocultar rejilla X para diseño más limpio
+                y: { beginAtZero: true }
+            }
         };
 
+        // 1. Gráfico de Ventas
         new Chart(document.getElementById('ventasChart'), {
             type: 'bar',
             data: {
@@ -222,24 +159,31 @@
                 datasets: [{
                     label: 'Ventas (€)',
                     data: [1200, 1500, 1800, 2200, 2600, 3150],
-                    backgroundColor: '#0d6efd'
+                    backgroundColor: '#0d6efd',
+                    borderRadius: 4
                 }]
             },
             options: chartOptions
         });
 
+        // 2. Gráfico de Productos (Donut queda más moderno que Pie)
         new Chart(document.getElementById('productosChart'), {
-            type: 'pie',
+            type: 'doughnut', // Cambiado a doughnut por estética
             data: {
                 labels: ['iPhone 13', 'PS5', 'Samsung S22', 'iPad Air'],
                 datasets: [{
                     data: [35, 25, 20, 15],
-                    backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545']
+                    backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545'],
+                    borderWidth: 0
                 }]
             },
-            options: chartOptions
+            options: {
+                ...chartOptions,
+                scales: { x: { display: false }, y: { display: false } } // Sin ejes en donut
+            }
         });
 
+        // 3. Gráfico de Usuarios
         new Chart(document.getElementById('usuariosChart'), {
             type: 'line',
             data: {
@@ -248,26 +192,29 @@
                     label: 'Usuarios',
                     data: [120, 180, 260, 340, 420, 500],
                     borderColor: '#198754',
-                    tension: 0.3
+                    backgroundColor: 'rgba(25, 135, 84, 0.1)',
+                    tension: 0.3,
+                    fill: true
                 }]
             },
             options: chartOptions
         });
 
+        // 4. Gráfico de Pedidos
         new Chart(document.getElementById('pedidosChart'), {
             type: 'bar',
             data: {
-                labels: ['Nuevos', 'Reacondicionados', '2ª Mano'],
+                labels: ['Nuevos', 'Reacond.', '2ª Mano'],
                 datasets: [{
                     label: 'Pedidos',
                     data: [45, 30, 60],
-                    backgroundColor: ['#0d6efd', '#6f42c1', '#ffc107']
+                    backgroundColor: ['#0d6efd', '#6f42c1', '#ffc107'],
+                    borderRadius: 4
                 }]
             },
             options: chartOptions
         });
     </script>
-
 </body>
 
 </html>

@@ -1,5 +1,3 @@
--- profile admin --
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -10,48 +8,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="../admin/styles.css">
-
-    <style>
-        /* Estilo base para todos los enlaces del menú lateral */
-        .sidebar .nav-link {
-            color: #212529;
-            /* Color base: Negro oscuro (casi negro) */
-            font-weight: 500;
-            /* Grosor de letra normal */
-            padding: 10px 0;
-            /* Espacio vertical entre enlaces */
-            transition: color 0.3s ease;
-            /* Transición suave para el cambio de color */
-        }
-
-        /* COMPORTAMIENTO AL PASAR EL RATÓN (HOVER) */
-        /* Al pasar el ratón, quitamos fondo y aclaramos el texto */
-        .sidebar .nav-link:hover {
-            background-color: transparent !important;
-            /* IMPORTANTE: Elimina cualquier recuadro de fondo */
-            color: #9CA3AF !important;
-            /* Cambia el texto a un gris claro */
-        }
-
-
-        /* Ajuste para el submenú desplegable (Admin Products, etc.) */
-        .sidebar-subitem {
-            text-decoration: none;
-            color: #6c757d;
-            /* Gris medio por defecto */
-            display: block;
-            padding: 5px 0;
-            transition: color 0.3s;
-        }
-
-        .sidebar-subitem:hover {
-            color: #7a7d83;
-            /* Se aclara al pasar el ratón */
-            background-color: transparent !important;
-            /* <--- ESTO QUITA EL RECUADRO NEGRO */
-        }
-    </style>
+    <link rel="stylesheet" href="../../../css/style.css">
 </head>
 
 <body class="bg-light">
@@ -72,7 +29,7 @@
 
                     <nav class="nav flex-column">
 
-                        <a href="../admin/panel_admin.html" class="nav-link">Panel de control</a>
+                        <a href="../admin/admin_panel.html" class="nav-link">Panel de control</a>
 
                         <div class="nav-item">
                             <a class="nav-link d-flex justify-content-between align-items-center"
@@ -87,13 +44,12 @@
                             </div>
                         </div>
 
-                        <a href="../usuarios/lista.html" class="nav-link">Gestionar Categorías</a>
                         <a href="../pedidos/lista.html" class="nav-link">Gestionar Pedidos</a>
                         <a href="../categorias/lista.html" class="nav-link">Gestionar Usuarios</a>
 
                         <hr class="text-secondary my-3 opacity-25">
 
-                        <a href="../admin/profile_admin.html" class="nav-link">Mi Perfil</a>
+                        <a href="../admin/admin_profile.html" class="nav-link">Mi Perfil</a>
 
                         <a href="../../anonimo/login.html" class="nav-link text-danger">Cerrar sesión</a>
                     </nav>
