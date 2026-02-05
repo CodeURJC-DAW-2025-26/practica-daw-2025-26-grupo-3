@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos publicados | ReMarket+</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <link rel="icon" href="../../images/Logo_Remarket+.png" type="image/png">
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row min-vh-100">
+
+            <div class="col-md-3 col-lg-2 px-0 bg-light border-end">
+
+                <!-- SIDE BAR-->
+                <div class="sidebar bg-light p-3 border-end h-100">
+
+                    <div class="admin-profile text-center mb-4">
+                        <img src="https://placehold.co/70x70" alt="Admin" class="rounded-circle mb-2">
+                    </div>
+
+                    <nav class="nav flex-column">
+
+                        <a href="../admin/admin_panel.html" class="nav-link">Panel de control</a>
+
+                        <div class="nav-item">
+                            <a class="nav-link d-flex justify-content-between align-items-center"
+                                data-bs-toggle="collapse" href="#productsMenu" role="button">
+                                Gestionar Productos <span>▼</span>
+                            </a>
+
+                            <div class="collapse ps-3" id="productsMenu">
+                                <a href="../admin/new_product_form_admin.html" class="sidebar-subitem">Añadir
+                                    productos</a>
+                                <a href="../admin/products_published.html" class="sidebar-subitem">Productos
+                                    publicados</a>
+                                <a href="products_pending.html" class="sidebar-subitem">Aprobar productos</a>
+                            </div>
+                        </div>
+
+                        <a href="../pedidos/lista.html" class="nav-link">Gestionar Pedidos</a>
+                        <a href="../categorias/lista.html" class="nav-link">Gestionar Usuarios</a>
+
+                        <hr class="text-secondary my-3 opacity-25">
+
+                        <a href="../admin/admin_profile.html" class="nav-link">Mi Perfil</a>
+
+                        <a href="../../anonimo/login.html" class="nav-link text-danger">Cerrar sesión</a>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="col-md-9 col-lg-10 px-0 d-flex flex-column">
+
+                <section class="py-5 bg-light border-bottom">
+                    <div class="container">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h1 class="fw-bold">Productos Publicados</h1>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="py-5 flex-grow-1">
+                    <div class="container">
+                        <div class="row g-4">
+                            <div class="col-md-4 col-lg-3">
+                                <div class="card h-100 border-0 shadow-sm product-card">
+                                    <div class="position-relative">
+                                        <img src="../../../images/iphone13.jpg" class="card-img-top" alt="Producto">
+                                        <span class="position-absolute top-0 end-0 m-2 badge bg-success">Activo</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <span class="badge bg-soft-primary text-primary mb-2">Reacondicionado</span>
+                                        <h5 class="card-title h6 fw-bold">iPhone 13 - 128GB</h5>
+                                        <p class="text-primary fw-bold mb-0">250.00€</p>
+                                        <div class="small text-warning">★★★★☆ <span class="text-muted">(24)</span></div>
+                                        <div class="small text-muted mt-2">
+                                            <strong>Visitas:</strong> 156 | <strong>Favoritos:</strong> 12
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-0 pb-3">
+                                        <div class="d-grid gap-2">
+                                            <a href="products_detail_registered.html" class="btn btn-sm btn-primary">Ver
+                                                Detalle</a>
+                                            <a href="../admin/new_product_form_admin.html"
+                                                class="btn btn-sm btn-warning">Editar</a>
+                                            <button class="btn btn-sm btn-danger">Eliminar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-lg-3">
+                                <div class="card h-100 border-0 shadow-sm product-card">
+                                    <div class="position-relative">
+                                        <img src="https://placehold.co/300x300/f8f9fa/333?text=iPhone+13"
+                                            class="card-img-top" alt="Producto">
+                                        <span class="position-absolute top-0 end-0 m-2 badge bg-success">Activo</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <span class="badge bg-soft-primary text-primary mb-2">Reacondicionado</span>
+                                        <h5 class="card-title h6 fw-bold">iPhone 13 - 128GB</h5>
+                                        <p class="text-primary fw-bold mb-0">599.00€</p>
+                                        <div class="small text-warning">★★★★☆ <span class="text-muted">(24)</span></div>
+                                        <div class="small text-muted mt-2">
+                                            <strong>Visitas:</strong> 89 | <strong>Favoritos:</strong> 7
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-0 pb-3">
+                                        <div class="d-grid gap-2">
+                                            <a href="products_detail_registered.html" class="btn btn-sm btn-primary">Ver
+                                                Detalle</a>
+                                            <a href="../admin/new_product_form_admin.html"
+                                                class="btn btn-sm btn-warning">Editar</a>
+                                            <button class="btn btn-sm btn-danger">Eliminar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-lg-3">
+                                <div class="card h-100 border-0 shadow-sm product-card">
+                                    <div class="position-relative">
+                                        <img src="https://placehold.co/300x300/f8f9fa/333?text=iPhone+13"
+                                            class="card-img-top" alt="Producto">
+                                        <span class="position-absolute top-0 end-0 m-2 badge bg-success">Activo</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <span class="badge bg-soft-primary text-primary mb-2">Reacondicionado</span>
+                                        <h5 class="card-title h6 fw-bold">iPhone 13 - 128GB</h5>
+                                        <p class="text-primary fw-bold mb-0">599.00€</p>
+                                        <div class="small text-warning">★★★★☆ <span class="text-muted">(24)</span></div>
+                                        <div class="small text-muted mt-2">
+                                            <strong>Visitas:</strong> 203 | <strong>Favoritos:</strong> 18
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-0 pb-3">
+                                        <div class="d-grid gap-2">
+                                            <a href="products_detail_registered.html" class="btn btn-sm btn-primary">Ver
+                                                Detalle</a>
+                                            <a href="../admin/new_product_form_admin.html"
+                                                class="btn btn-sm btn-warning">Editar</a>
+                                            <button class="btn btn-sm btn-danger">Eliminar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

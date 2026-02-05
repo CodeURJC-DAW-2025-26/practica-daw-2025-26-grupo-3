@@ -16,8 +16,7 @@
     <!--NAVBAR-->
     <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom sticky-top shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-bold text-primary d-flex align-items-center"
-                href="../registered/index_registered.html">
+            <a class="navbar-brand fw-bold text-primary d-flex align-items-center" href="../admin/admin_panel.html">
                 <img src="../../../images/Logo_Remarket+.png" alt="ReMarket+ Logo" style="height: 50px; width: auto;">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -53,8 +52,11 @@
                         <div class="mb-3">
                             <label class="form-label fw-bold">Estado del artículo</label>
                             <div class="btn-group w-100" role="group">
+                                <input type="radio" class="btn-check" name="status" id="nuevo" autocomplete="off">
+                                <label class="btn btn-outline-primary" for="nuevo">Nuevo</label>
+
                                 <input type="radio" class="btn-check" name="status" id="reacon" autocomplete="off">
-                                <label class="btn btn-outline-primary" for="reacon">Segunda mano</label>
+                                <label class="btn btn-outline-primary" for="reacon">Reacondicionado</label>
                             </div>
                         </div>
                         <div class="mb-3">
@@ -67,12 +69,12 @@
                             <input type="file" class="form-control" accept="image/*">
                             <small class="form-text text-muted">Debes adjuntar al menos una imagen del producto</small>
                         </div>
-                        <a href="../registered/index_registered.html" class="btn btn-primary w-100 mt-4 py-2 fw-bold">
+                        <a href="../admin/admin_panel.html" class="btn btn-primary w-100 mt-4 py-2 fw-bold">
                             Publicar Ahora
                         </a>
                     </form>
                     <div class="mt-4 text-center">
-                        <a href="../registered/index_registered.html" class="btn btn-danger py-2 fw-bold shadow-sm"
+                        <a href="../admin/admin_panel.html" class="btn btn-danger py-2 fw-bold shadow-sm"
                             title="Volver a la tienda">
                             Volver a la tienda
                         </a>
