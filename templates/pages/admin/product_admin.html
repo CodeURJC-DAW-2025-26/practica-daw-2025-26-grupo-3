@@ -3,106 +3,226 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Detalle | ReMarket+</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar Productos | ReMarket+ Admin</title>
+
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        .sidebar {
+            width: 240px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #212529;
+            color: white;
+            padding-top: 20px;
+        }
+
+        .sidebar a {
+            color: #adb5bd;
+            text-decoration: none;
+            padding: 12px 20px;
+            display: block;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: #343a40;
+            color: white;
+        }
+
+        .content {
+            margin-left: 240px;
+            padding: 30px;
+        }
+    </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
 
-            <a class="navbar-brand fw-bold" href="../admin/index_admin.html">
-                ReMarket<span class="text-primary">+</span> Admin
-            </a>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <a href="../dashboard/index.html">📊 Dashboard</a>
+        <a href="lista.html" class="active">📦 Productos</a>
+        <a href="../usuarios/lista.html">👥 Usuarios</a>
+        <a href="../pedidos/lista.html">🧾 Pedidos</a>
+        <a href="../categorias/lista.html">🏷️ Categorías</a>
+        <a href="../valoraciones/lista.html">⭐ Valoraciones</a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <hr class="text-secondary">
 
-            <div class="collapse navbar-collapse" id="adminNav">
-                <ul class="navbar-nav ms-auto">
-
-                    <!-- Panel general -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="../admin/admin_panel.html">Dashboard</a>
-                    </li>
-
-                    <!-- Gestión de productos -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                            Productos
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="admin-productos.html">Todos los productos</a></li>
-                            <li><a class="dropdown-item" href="admin-productos.html#pendientes">Aprobar productos</a>
-                            </li>
-                            <li><a class="dropdown-item" href="admin-productos.html#nuevos">Nuevos /
-                                    Reacondicionados</a></li>
-                        </ul>
-                    </li>
-
-                    <!-- Pedidos -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="admin-pedidos.html">Pedidos</a>
-                    </li>
-
-                    <!-- Usuarios -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="admin-usuarios.html">Usuarios</a>
-                    </li>
-
-                    <!-- Categorías -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="admin-categorias.html">Categorías</a>
-                    </li>
-
-                    <!-- Valoraciones -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="admin-valoraciones.html">Valoraciones</a>
-                    </li>
-
-                    <!-- Perfil / Logout -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                            Admin
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="../registrado/perfil.html">Mi Perfil</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item text-danger" href="../anonimo/login.html">Cerrar sesión</a></li>
-                        </ul>
-                    </li>
-
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container my-5">
-        <div class="row g-5"> <!-- IMÁGENES -->
-            <div class="col-md-6"> <img src="https://placehold.co/600x600?text=Imagen+Principal"
-                    class="img-fluid rounded shadow-sm mb-3">
-                <div class="d-flex gap-2"> <img src="https://placehold.co/100x100?text=Vista1" class="img-thumbnail"
-                        style="width: 80px;"> <img src="https://placehold.co/100x100?text=Vista2" class="img-thumbnail"
-                        style="width: 80px;"> </div>
-            </div> <!-- INFORMACIÓN -->
-            <div class="col-md-6"> <span class="badge bg-secondary mb-2">Segunda Mano</span>
-                <h1 class="fw-bold">Cámara Sony Alpha a6400</h1>
-                <p class="display-6 text-primary fw-bold">720.00€</p>
-                <hr>
-                <p class="text-muted"> Cámara en excelente estado, usada solo para fotografía de viajes. Incluye lente
-                    de kit 16-50mm y batería original. </p> <!-- BOTONES DEL ADMIN -->
-                <div class="my-4 d-flex gap-3"> <a href="admin-editar-producto.html"
-                        class="btn btn-warning btn-lg px-4"> ✏️ Editar </a> <button class="btn btn-danger btn-lg px-4">
-                        🗑️ Eliminar </button> <!-- Si el producto está pendiente de aprobación --> <button
-                        class="btn btn-success btn-lg px-4"> ✔️ Aprobar </button> </div>
-                <div class="small"> <strong>Vendedor:</strong> Carlos R. (4.8/5 ★) </div>
-            </div>
-        </div>
+        <a href="../perfil.html">⚙️ Mi Perfil</a>
+        <a href="../../anonimo/login.html" class="text-danger">⛔ Cerrar sesión</a>
     </div>
+
+    <!-- CONTENIDO -->
+    <div class="content">
+
+        <h1 class="fw-bold mb-4">Gestionar Productos</h1>
+
+        <!-- BOTÓN AÑADIR PRODUCTO -->
+        <div class="mb-4">
+            <a href="nuevo.html" class="btn btn-primary">➕ Añadir Producto Propio</a>
+        </div>
+
+        <!-- PESTAÑAS -->
+        <ul class="nav nav-tabs mb-4">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" href="#admin">Productos del Administrador</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#usuarios">Productos de Usuarios</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#pendientes">Pendientes de Aprobación</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+
+            <!-- TAB 1: PRODUCTOS DEL ADMIN -->
+            <div class="tab-pane fade show active" id="admin">
+
+                <h4 class="mb-3">Productos del Administrador</h4>
+
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>#001</td>
+                            <td>iPhone 14 Pro</td>
+                            <td>999€</td>
+                            <td><span class="badge bg-success">Publicado</span></td>
+                            <td>
+                                <a href="editar.html" class="btn btn-warning btn-sm">Editar</a>
+                                <button class="btn btn-danger btn-sm">Eliminar</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>#002</td>
+                            <td>PS5 Slim</td>
+                            <td>549€</td>
+                            <td><span class="badge bg-success">Publicado</span></td>
+                            <td>
+                                <a href="editar.html" class="btn btn-warning btn-sm">Editar</a>
+                                <button class="btn btn-danger btn-sm">Eliminar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <!-- TAB 2: PRODUCTOS DE USUARIOS -->
+            <div class="tab-pane fade" id="usuarios">
+
+                <h4 class="mb-3">Productos Publicados por Usuarios</h4>
+
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Producto</th>
+                            <th>Usuario</th>
+                            <th>Precio</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>#120</td>
+                            <td>Samsung S20</td>
+                            <td>Laura G.</td>
+                            <td>320€</td>
+                            <td>
+                                <a href="detalle.html" class="btn btn-primary btn-sm">Ver</a>
+                                <button class="btn btn-danger btn-sm">Eliminar</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>#121</td>
+                            <td>iPad Mini</td>
+                            <td>Carlos R.</td>
+                            <td>250€</td>
+                            <td>
+                                <a href="detalle.html" class="btn btn-primary btn-sm">Ver</a>
+                                <button class="btn btn-danger btn-sm">Eliminar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <!-- TAB 3: PENDIENTES DE APROBACIÓN -->
+            <div class="tab-pane fade" id="pendientes">
+
+                <h4 class="mb-3">Productos Pendientes de Aprobación</h4>
+
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Producto</th>
+                            <th>Usuario</th>
+                            <th>Precio</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>#200</td>
+                            <td>Cámara Canon EOS 2000D</td>
+                            <td>Pedro L.</td>
+                            <td>280€</td>
+                            <td>
+                                <button class="btn btn-success btn-sm">Aceptar</button>
+                                <button class="btn btn-danger btn-sm">Rechazar</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>#201</td>
+                            <td>Xbox Series S</td>
+                            <td>Ana T.</td>
+                            <td>220€</td>
+                            <td>
+                                <button class="btn btn-success btn-sm">Aceptar</button>
+                                <button class="btn btn-danger btn-sm">Rechazar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="../../js/bootstrap.bundle.min.js"></script>
 
 </body>
 
