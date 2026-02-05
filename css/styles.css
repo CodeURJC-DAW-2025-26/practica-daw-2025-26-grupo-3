@@ -13959,3 +13959,46 @@ screen and (max-height: 300px) {
   height: auto !important;
   z-index: -100;
 }
+
+/* ========================================
+   ESTILOS PERSONALIZADOS PARA BOTONES
+   ======================================== */
+
+/* Mejora del hover para botones primarios (Ver Detalle) */
+.btn-primary:hover {
+  background-color: #0a58ca !important;
+  border-color: #0a58ca !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3) !important;
+  transition: all 0.3s ease;
+}
+
+/* Mejora del hover para botones warning (Editar) */
+.btn-warning:hover {
+  background-color: #cc9a06 !important;
+  border-color: #cc9a06 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4) !important;
+  transition: all 0.3s ease;
+}
+
+/* Mejora del hover para botones danger (Eliminar) */
+.btn-danger:hover {
+  background-color: #b02a37 !important;
+  border-color: #b02a37 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3) !important;
+  transition: all 0.3s ease;
+}
+
+/* Transiciones suaves para todos los botones */
+.btn {
+  transition: all 0.3s ease !important;
+}
+
+/* Hover para botones outline */
+.btn-outline-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3);
+}
+
