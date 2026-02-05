@@ -16,31 +16,40 @@
     <!--NAVBAR-->
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold text-primary d-flex align-items-center" href="../../index.html">
-                <img src="../../../images/Logo_Remarket+.png" alt="ReMarket+ Logo" style="height: 50px; width: auto;">
+            <a class="navbar-brand fw-bold text-primary d-flex align-items-center" href="index.html">
+                <img src="images/Logo_Remarket+.png" alt="ReMarket+ Logo" style="height: 50px; width: auto;">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link" href="products-search-registered.html">Productos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="product-publish.html">Publicar Producto</a>
-                    </li>
-                    <li class="nav-item dropdown ms-3">
-                        <a class="nav-link dropdown-toggle p-0 d-flex align-items-center gap-2" href="#"
-                            id="userDropdown" role="button" data-bs-toggle="dropdown" title="Menú de usuario">
-                            <img src="https://placehold.co/600x400?text=User" alt="Mi Perfil"
-                                style="height: 40px; width: 40px; border-radius: 50%; border: 2px solid #0d6efd; cursor: pointer; object-fit: cover; flex-shrink: 0;">
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="profile.html">Ver Perfil</a></li>
-                            <li><a class="dropdown-item" href="my_products.html">Mis Productos</a></li>
-                            <li><a class="dropdown-item" href="orders.html">Mis Pedidos</a></li>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="pages/products.html">Productos</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-primary fw-bold" href="#" id="userDropdown"
+                            role="button" data-bs-toggle="dropdown">Vistas Mockup</a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <h6 class="dropdown-header">Anónimo</h6>
+                            </li>
+                            <li><a class="dropdown-item" href="pages/login.html">Login</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="../anonymous/index_anonymous.html">Cerrar Sesión</a></li>
+                            <li>
+                                <h6 class="dropdown-header">Usuario</h6>
+                            </li>
+                            <li><a class="dropdown-item" href="pages/product-publish.html">Publicar Producto</a></li>
+                            <li><a class="dropdown-item" href="pages/profile.html">Mi Perfil</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <h6 class="dropdown-header">Admin</h6>
+                            </li>
+                            <li><a class="dropdown-item" href="templates/pages/admin/index_admin.html">Panel Admin</a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
@@ -57,12 +66,12 @@
                     <p class="lead text-muted">Productos nuevos, reacondicionados y usados con la mejor garantía del
                         mercado.</p>
                     <div class="mt-4">
-                        <a href="products-search-registered.html" class="btn btn-primary btn-lg px-4 me-2">Explorar</a>
-                        <a href="product-publish.html" class="btn btn-outline-dark btn-lg px-4">Vender ahora</a>
+                        <a href="pages/products.html" class="btn btn-primary btn-lg px-4 me-2">Explorar</a>
+                        <a href="pages/product-publish.html" class="btn btn-outline-dark btn-lg px-4">Vender ahora</a>
                     </div>
                 </div>
                 <div class="col-lg-6 d-none d-lg-block">
-                    <img src="../../../images/Logo_Remarket+.png" class="img-fluid rounded shadow-sm" alt="Hero">
+                    <img src="images/Logo_Remarket+.png" class="img-fluid rounded shadow-sm" alt="Hero">
                 </div>
             </div>
         </div>
@@ -76,12 +85,12 @@
                     <h2 class="fw-bold">Destacados</h2>
                     <p class="text-muted">Lo más buscado esta semana</p>
                 </div>
-                <a href="products.html" class="text-primary text-decoration-none">Ver todos →</a>
+                <a href="pages/products.html" class="text-primary text-decoration-none">Ver todos →</a>
             </div>
             <div class="row g-4">
                 <div class="col-md-3">
                     <div class="card h-100 border-0 shadow-sm product-card">
-                        <img src="../../../images/iphone13.jpg" class="card-img-top" alt="Producto">
+                        <img src="images/iphone13.jpg" class="card-img-top" alt="Producto">
                         <div class="card-body">
                             <span class="badge bg-soft-primary text-primary mb-2">Reacondicionado</span>
                             <h5 class="card-title h6 fw-bold">iPhone 13 - 128GB</h5>

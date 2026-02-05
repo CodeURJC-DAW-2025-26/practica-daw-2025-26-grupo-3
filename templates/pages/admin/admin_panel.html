@@ -6,104 +6,157 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ReMarket+ | Panel Admin</title>
 
-    <link rel="stylesheet" href="../../../css/styles.css">
-    <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 240px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #212529;
+            color: white;
+            padding-top: 20px;
+        }
+
+        .sidebar a {
+            color: #adb5bd;
+            text-decoration: none;
+            padding: 12px 20px;
+            display: block;
+            font-size: 15px;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: #343a40;
+            color: white;
+        }
+
+        .admin-profile {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .admin-profile img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 2px solid #0d6efd;
+        }
+
+        /* CONTENIDO */
+        .content {
+            margin-left: 240px;
+            padding: 30px;
+        }
+
+        /* Gráficos */
+        .chart-box {
+            height: 220px;
+        }
+
+        .sidebar-item a {
+            color: #adb5bd;
+            text-decoration: none;
+            padding: 12px 20px;
+            display: block;
+            cursor: pointer;
+        }
+
+        .sidebar-item a:hover {
+            background: #343a40;
+            color: white;
+        }
+
+        .sidebar-subitem {
+            padding: 8px 20px;
+            font-size: 14px;
+            display: block;
+        }
+
+        .sidebar-subitem:hover {
+            background: #343a40;
+            color: white;
+        }
+    </style>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-<body class="bg-light">
+<body>
 
-    <!-- NAVBAR ADMIN -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
 
-            <a class="navbar-brand fw-bold" href="index_admin.html">
-                ReMarket<span class="text-primary">+</span> Admin
-            </a>
+        <div class="admin-profile">
+            <img src="https://placehold.co/70x70" alt="Admin">
+            <h6 class="mt-2 fw-bold">Administrador</h6>
+            <small class="text-secondary">admin@remarket.com</small>
+        </div>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <a href="../admin/panel_admin.html" class="active">Panel de control</a>
 
-            <div class="collapse navbar-collapse" id="adminNav">
-                <ul class="navbar-nav ms-auto">
-
-                    <li class="nav-item">
-                        <a class="nav-link active" href="admin_panel.html">Dashboard</a>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Productos</a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="admin-productos.html">Todos los productos</a></li>
-                            <li><a class="dropdown-item" href="admin-productos.html#pendientes">Aprobar productos</a>
-                            </li>
-                            <li><a class="dropdown-item" href="admin-productos.html#nuevos">Nuevos /
-                                    Reacondicionados</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item"><a class="nav-link" href="admin-pedidos.html">Pedidos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="admin-usuarios.html">Usuarios</a></li>
-                    <li class="nav-item"><a class="nav-link" href="admin-categorias.html">Categorías</a></li>
-                    <li class="nav-item"><a class="nav-link" href="admin-valoraciones.html">Valoraciones</a></li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Admin</a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="../registrado/perfil.html">Mi Perfil</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item text-danger" href="../anonimo/login.html">Cerrar sesión</a></li>
-                        </ul>
-                    </li>
-
-                </ul>
+        <div class="sidebar-item">
+            <a class="d-flex justify-content-between align-items-center dropdown-toggle" data-bs-toggle="collapse"
+                href="#productsMenu" role="button">Gestionar Productos</a>
+            <div class="collapse" id="productsMenu">
+                <a href="products_admin.html" class="ps-4 sidebar-subitem">• Admin Products</a>
+                <a href="products_users.html" class="ps-4 sidebar-subitem">• User Products</a>
+                <a href="products_pending.html" class="ps-4 sidebar-subitem">• Pending Approval</a>
             </div>
         </div>
-    </nav>
+
+        <a href="../usuarios/lista.html">Gestionar Categorías</a>
+        <a href="../pedidos/lista.html">Gestionar Pedidos</a>
+        <a href="../categorias/lista.html">Gestionar Usuarios</a>
+        <hr class="text-secondary">
+
+        <a href="../admin/profile_admin.html">Mi Perfil</a>
+        <a href="../../anonimo/login.html" class="text-danger">Cerrar sesión</a>
+    </div>
 
     <!-- CONTENIDO -->
-    <div class="container py-4">
+    <div class="content">
 
         <h1 class="fw-bold mb-4">Panel de Control</h1>
 
-        <!-- TARJETAS RESUMEN -->
+        <!-- TARJETAS -->
         <div class="row g-4 mb-4">
             <div class="col-md-3">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body text-center">
-                        <h5 class="fw-bold">Ventas Mensuales</h5>
-                        <p class="display-6 text-primary">€12.450</p>
-                    </div>
+                <div class="card shadow-sm border-0 text-center p-3">
+                    <h6 class="fw-bold">Ventas Mensuales</h6>
+                    <p class="display-6 text-primary">€12.450</p>
                 </div>
             </div>
 
             <div class="col-md-3">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body text-center">
-                        <h5 class="fw-bold">Usuarios Registrados</h5>
-                        <p class="display-6 text-success">1.248</p>
-                    </div>
+                <div class="card shadow-sm border-0 text-center p-3">
+                    <h6 class="fw-bold">Usuarios Registrados</h6>
+                    <p class="display-6 text-success">1.248</p>
                 </div>
             </div>
 
             <div class="col-md-3">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body text-center">
-                        <h5 class="fw-bold">Pedidos Activos</h5>
-                        <p class="display-6 text-warning">32</p>
-                    </div>
+                <div class="card shadow-sm border-0 text-center p-3">
+                    <h6 class="fw-bold">Pedidos Activos</h6>
+                    <p class="display-6 text-warning">32</p>
                 </div>
             </div>
 
             <div class="col-md-3">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body text-center">
-                        <h5 class="fw-bold">Productos Pendientes</h5>
-                        <p class="display-6 text-danger">7</p>
-                    </div>
+                <div class="card shadow-sm border-0 text-center p-3">
+                    <h6 class="fw-bold">Productos Pendientes</h6>
+                    <p class="display-6 text-danger">7</p>
                 </div>
             </div>
         </div>
@@ -111,37 +164,37 @@
         <!-- GRÁFICOS -->
         <div class="row g-4">
 
-            <div class="col-md-6">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
-                        <h5 class="fw-bold mb-3">Ventas Mensuales</h5>
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-sm border-0 p-3">
+                    <h6 class="fw-bold mb-2">Ventas Mensuales</h6>
+                    <div class="chart-box">
                         <canvas id="ventasChart"></canvas>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-6">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
-                        <h5 class="fw-bold mb-3">Productos Más Vendidos</h5>
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-sm border-0 p-3">
+                    <h6 class="fw-bold mb-2">Productos Más Vendidos</h6>
+                    <div class="chart-box">
                         <canvas id="productosChart"></canvas>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-6">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
-                        <h5 class="fw-bold mb-3">Usuarios Registrados</h5>
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-sm border-0 p-3">
+                    <h6 class="fw-bold mb-2">Usuarios Registrados</h6>
+                    <div class="chart-box">
                         <canvas id="usuariosChart"></canvas>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-6">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
-                        <h5 class="fw-bold mb-3">Pedidos por Tipo</h5>
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-sm border-0 p-3">
+                    <h6 class="fw-bold mb-2">Pedidos por Tipo</h6>
+                    <div class="chart-box">
                         <canvas id="pedidosChart"></canvas>
                     </div>
                 </div>
@@ -149,63 +202,19 @@
 
         </div>
 
-        <!-- TABLA DE USUARIOS -->
-        <div class="card shadow-sm border-0 mt-5">
-            <div class="card-body">
-                <h4 class="fw-bold mb-3">Últimos Usuarios Registrados</h4>
-
-                <table class="table table-hover">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Email</th>
-                            <th>Rol</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>#1021</td>
-                            <td>Laura Gómez</td>
-                            <td>laura@example.com</td>
-                            <td>Usuario</td>
-                            <td><span class="badge bg-success">Activo</span></td>
-                        </tr>
-                        <tr>
-                            <td>#1020</td>
-                            <td>Carlos Ruiz</td>
-                            <td>carlos@example.com</td>
-                            <td>Usuario</td>
-                            <td><span class="badge bg-warning">Pendiente</span></td>
-                        </tr>
-                        <tr>
-                            <td>#1019</td>
-                            <td>Ana Torres</td>
-                            <td>ana@example.com</td>
-                            <td>Vendedor</td>
-                            <td><span class="badge bg-success">Activo</span></td>
-                        </tr>
-                        <tr>
-                            <td>#1018</td>
-                            <td>Pedro López</td>
-                            <td>pedro@example.com</td>
-                            <td>Usuario</td>
-                            <td><span class="badge bg-danger">Suspendido</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-
-            </div>
-        </div>
-
     </div>
 
     <script src="../../js/bootstrap.bundle.min.js"></script>
 
-    <!-- GRÁFICOS CHART.JS -->
+    <!-- GRÁFICOS -->
     <script>
-        // Ventas mensuales (Barras)
+        const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { labels: { font: { size: 12 } } } },
+            scales: { x: { ticks: { font: { size: 12 } } }, y: { ticks: { font: { size: 12 } } } }
+        };
+
         new Chart(document.getElementById('ventasChart'), {
             type: 'bar',
             data: {
@@ -215,10 +224,10 @@
                     data: [1200, 1500, 1800, 2200, 2600, 3150],
                     backgroundColor: '#0d6efd'
                 }]
-            }
+            },
+            options: chartOptions
         });
 
-        // Productos más vendidos (Circular)
         new Chart(document.getElementById('productosChart'), {
             type: 'pie',
             data: {
@@ -227,10 +236,10 @@
                     data: [35, 25, 20, 15],
                     backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545']
                 }]
-            }
+            },
+            options: chartOptions
         });
 
-        // Usuarios registrados (Línea)
         new Chart(document.getElementById('usuariosChart'), {
             type: 'line',
             data: {
@@ -241,10 +250,10 @@
                     borderColor: '#198754',
                     tension: 0.3
                 }]
-            }
+            },
+            options: chartOptions
         });
 
-        // Pedidos por tipo (Barras)
         new Chart(document.getElementById('pedidosChart'), {
             type: 'bar',
             data: {
@@ -254,7 +263,8 @@
                     data: [45, 30, 60],
                     backgroundColor: ['#0d6efd', '#6f42c1', '#ffc107']
                 }]
-            }
+            },
+            options: chartOptions
         });
     </script>
 
