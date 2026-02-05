@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil Administrador | ReMarket+</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="../admin/styles.css">
+
+    <style>
+        /* Estilo base para todos los enlaces del menú lateral */
+        .sidebar .nav-link {
+            color: #212529;
+            /* Color base: Negro oscuro (casi negro) */
+            font-weight: 500;
+            /* Grosor de letra normal */
+            padding: 10px 0;
+            /* Espacio vertical entre enlaces */
+            transition: color 0.3s ease;
+            /* Transición suave para el cambio de color */
+        }
+
+        /* COMPORTAMIENTO AL PASAR EL RATÓN (HOVER) */
+        /* Al pasar el ratón, quitamos fondo y aclaramos el texto */
+        .sidebar .nav-link:hover {
+            background-color: transparent !important;
+            /* IMPORTANTE: Elimina cualquier recuadro de fondo */
+            color: #9CA3AF !important;
+            /* Cambia el texto a un gris claro */
+        }
+
+
+        /* Ajuste para el submenú desplegable (Admin Products, etc.) */
+        .sidebar-subitem {
+            text-decoration: none;
+            color: #6c757d;
+            /* Gris medio por defecto */
+            display: block;
+            padding: 5px 0;
+            transition: color 0.3s;
+        }
+
+        .sidebar-subitem:hover {
+            color: #7a7d83;
+            /* Se aclara al pasar el ratón */
+            background-color: transparent !important;
+            /* <--- ESTO QUITA EL RECUADRO NEGRO */
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+
+    <div class="container-fluid my-4">
+
+        <div class="row">
+
+            <div class="col-md-3 col-lg-2 px-0">
+
+                <!-- SIDE BAR-->
+                <div class="sidebar bg-white p-3 border-end h-100">
+
+                    <div class="admin-profile text-center mb-4">
+                        <img src="https://placehold.co/70x70" alt="Admin" class="rounded-circle mb-2">
+                        <h6 class="fw-bold m-0">Administrador</h6>
+                    </div>
+
+                    <nav class="nav flex-column">
+
+                        <a href="../admin/panel_admin.html" class="nav-link">Panel de control</a>
+
+                        <div class="nav-item">
+                            <a class="nav-link d-flex justify-content-between align-items-center"
+                                data-bs-toggle="collapse" href="#productsMenu" role="button">
+                                Gestionar Productos <span>▼</span>
+                            </a>
+
+                            <div class="collapse ps-3" id="productsMenu">
+                                <a href="products_admin.html" class="sidebar-subitem">Añadir productos</a>
+                                <a href="products_users.html" class="sidebar-subitem">Productos publicados</a>
+                                <a href="products_pending.html" class="sidebar-subitem">Aprobar productos</a>
+                            </div>
+                        </div>
+
+                        <a href="../usuarios/lista.html" class="nav-link">Gestionar Categorías</a>
+                        <a href="../pedidos/lista.html" class="nav-link">Gestionar Pedidos</a>
+                        <a href="../categorias/lista.html" class="nav-link">Gestionar Usuarios</a>
+
+                        <hr class="text-secondary my-3 opacity-25">
+
+                        <a href="../admin/profile_admin.html" class="nav-link">Mi Perfil</a>
+
+                        <a href="../../anonimo/login.html" class="nav-link text-danger">Cerrar sesión</a>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="col-md-9 col-lg-10 py-3 px-4">
+
+                <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+                    <h2 class="h3 fw-bold text-dark">Mi Perfil</h2>
+                    <span class="badge bg-primary rounded-pill">Administrador</span>
+                </div>
+
+                <div class="card border-0 shadow-sm p-4 mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-bold mb-0 text-dark">Información Personal</h5>
+                        <button class="btn btn-sm btn-outline-dark rounded-pill px-3">Editar</button>
+                    </div>
+
+                    <form>
+                        <div class="row g-3">
+                            <div class="col-12 text-center mb-3">
+                                <img src="https://placehold.co/100x100" class="rounded-circle shadow-sm"
+                                    alt="Profile Pic">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-muted small fw-bold text-uppercase">Nombre
+                                    Completo</label>
+                                <input type="text" class="form-control bg-light border-0" value="Carlos Rodríguez"
+                                    readonly>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-muted small fw-bold text-uppercase">Correo
+                                    Electrónico</label>
+                                <input type="email" class="form-control bg-light border-0" value="admin@remarket.plus"
+                                    readonly>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-muted small fw-bold text-uppercase">Teléfono</label>
+                                <input type="text" class="form-control bg-light border-0" value="+34 600 123 456"
+                                    readonly>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-muted small fw-bold text-uppercase">Rol</label>
+                                <input type="text" class="form-control bg-light border-0 fw-bold" value="Super Admin"
+                                    readonly>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card border-0 shadow-sm p-4">
+                    <h5 class="fw-bold mb-4 text-dark">Seguridad y Acceso</h5>
+
+                    <div class="row align-items-center mb-3">
+                        <div class="col-md-8">
+                            <p class="mb-0 fw-bold">Contraseña</p>
+                            <small class="text-muted">Se recomienda cambiar la contraseña cada 3 meses.</small>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <button class="btn btn-outline-secondary btn-sm rounded-pill">Cambiar contraseña</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
