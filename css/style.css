@@ -32,8 +32,8 @@ CSS STRUCTURE:
   --gray-color-500: #AEAEAE;
   --gray-color-800: #3A3A3A;
   --light-gray-color: #D7DDDF;
-  --primary-color: #72AEC8;
-  --bs-primary-rgb: 114, 174, 200;
+  --primary-color: #4e73df;
+  --bs-primary-rgb: 78, 115, 223;
   --light-color: #f8f9fa;
   --dark-color: #212529;
   --light-blue-color: #EDF1F3;
@@ -1187,8 +1187,74 @@ body {
   font-weight: 500;
 }
 
+.btn-danger {
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 500;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+}
+
 /* Admin Dashboard Cards */
 .stat-card {
   border-radius: 15px;
   border-left: 5px solid var(--bs-primary);
+}
+
+.mandatory {
+  color: red;
+  text-decoration: bold;
+}
+
+/* Signup Page Styles */
+.signup-page {
+  overflow: hidden;
+}
+
+.container-fluid.signup-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mandatory-field {
+  color: #dc3545;
+  font-size: 0.8rem;
+}
+
+.card-registration {
+  max-width: 1000px;
+  width: 100%;
+}
+
+.logo-side {
+  background-color: #f0f4ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px 0 0 15px;
+}
+
+/* Botón de salida con hover en color primario */
+.btn-exit {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 5px 15px;
+  border-radius: 50px;
+  border: 1px solid #dee2e6;
+  color: #6c757d;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-exit:hover {
+  background-color: #4e73df;
+  border-color: #4e73df;
+  color: white !important;
+  transform: translateX(-3px);
 }

@@ -7,13 +7,17 @@
   <title>ReMarket+ | Compra y Vende</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="images/Logo_Remarket+.png" type="image/png">
 </head>
 
+<!--BODY-->
 <body>
-
+  <!--NAVBAR-->
   <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
     <div class="container">
-      <a class="navbar-brand fw-bold text-primary" href="index.html">ReMarket<span class="text-dark">+</span></a>
+      <a class="navbar-brand fw-bold text-primary d-flex align-items-center" href="index.html">
+        <img src="images/Logo_Remarket+.png" alt="ReMarket+ Logo" style="height: 50px; width: auto;">
+      </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -43,7 +47,7 @@
               <li>
                 <h6 class="dropdown-header">Admin</h6>
               </li>
-              <li><a class="dropdown-item" href="pages/admin-panel.html">Panel Admin</a></li>
+              <li><a class="dropdown-item" href="templates/pages/admin/index_admin.html">Panel Admin</a></li>
             </ul>
           </li>
         </ul>
@@ -51,6 +55,7 @@
     </div>
   </nav>
 
+  <!--HEADER-->
   <header class="hero-section py-5 bg-light">
     <div class="container py-5">
       <div class="row align-items-center">
@@ -63,13 +68,13 @@
           </div>
         </div>
         <div class="col-lg-6 d-none d-lg-block">
-          <img src="images/Logo_Remarket+.png" class="img-fluid rounded shadow-sm"
-            alt="Hero">
+          <img src="images/Logo_Remarket+.png" class="img-fluid rounded shadow-sm" alt="Hero">
         </div>
       </div>
     </div>
   </header>
 
+  <!--Principal content of the page-->
   <section class="py-5">
     <div class="container">
       <div class="d-flex justify-content-between align-items-end mb-4">
@@ -140,6 +145,7 @@
     </div>
   </section>
 
+  <!--FOOTER-->
   <footer class="py-4 border-top bg-white">
     <div class="container text-center text-muted small">
       &copy; 2026 ReMarket+. Todos los derechos reservados.
