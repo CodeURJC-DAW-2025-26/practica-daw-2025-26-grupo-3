@@ -14953,3 +14953,30 @@ JARALLAX PARALLAX EFFECT STYLES
   z-index: -100;
   /* <--- ESTO QUITA EL RECUADRO NEGRO */
 }
+
+/*===============================================================
+CUSTOM COMPONENT CLASSES
+===============================================================*/
+
+/* Hero Image Section */
+.hero-image {
+  background: transparent;
+  padding: 20px;
+}
+
+/* Product Image Cards */
+.product-img {
+  height: 250px;
+  object-fit: cover;
+}
+
+/* Footer Custom Styles */
+.footer-custom a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+}
+
+.footer-custom a:hover {
+  color: rgba(255, 255, 255, 1);
+  opacity: 1;
+}
