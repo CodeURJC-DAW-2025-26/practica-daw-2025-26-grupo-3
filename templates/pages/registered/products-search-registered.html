@@ -10,21 +10,39 @@
 </head>
 
 <body>
+    <!--NAVBAR-->
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold text-primary d-flex align-items-center" href="../index.html">
-                <img src="../images/Logo_Remarket+.png" alt="ReMarket+ Logo" style="height: 50px; width: auto;">
+            <a class="navbar-brand fw-bold text-primary d-flex align-items-center" href="../../index.html">
+                <img src="../../../images/Logo_Remarket+.png" alt="ReMarket+ Logo" style="height: 50px; width: auto;">
             </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="products.html">Productos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="perfil.html">Mi Perfil</a></li>
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="products.html">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="product-publish.html">Publicar Producto</a>
+                    </li>
+                    <li class="nav-item dropdown ms-3">
+                        <a class="nav-link dropdown-toggle p-0 d-flex align-items-center gap-2" href="#"
+                            id="userDropdown" role="button" data-bs-toggle="dropdown" title="Menú de usuario">
+                            <img src="https://placehold.co/600x400?text=User" alt="Mi Perfil"
+                                style="height: 40px; width: 40px; border-radius: 50%; border: 2px solid #0d6efd; cursor: pointer; object-fit: cover; flex-shrink: 0;">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="profile.html">Ver Perfil</a></li>
+                            <li><a class="dropdown-item" href="orders.html">Mis Pedidos</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="../anonymous/product-detail.html">Cerrar Sesión</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
-
     <div class="container my-5">
         <div class="row">
             <aside class="col-lg-3 mb-4">
@@ -61,7 +79,8 @@
                             <div class="card-body">
                                 <h5 class="card-title h6">MacBook Air M1</h5>
                                 <p class="text-primary fw-bold">850.00€</p>
-                                <a href="product-detail.html" class="btn btn-sm btn-outline-primary w-100">Ver
+                                <a href="products_detail_registered.html"
+                                    class="btn btn-sm btn-outline-primary w-100">Ver
                                     Detalles</a>
                             </div>
                         </div>
