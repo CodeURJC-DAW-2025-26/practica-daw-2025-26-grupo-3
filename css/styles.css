@@ -14248,6 +14248,19 @@ CUSTOM UTILITY CLASSES
   box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
 }
 
+.btn-edit-custom {
+  background-color: #ff6600;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 500;
+}
+
+.btn-edit-custom:hover {
+  background-color: #e65c00;
+  box-shadow: 0 5px 15px rgba(255, 102, 0, 0.3);
+  transform: translateY(-3px);
+}
+
 .btn-exit {
   font-size: 0.8rem;
   text-transform: uppercase;
