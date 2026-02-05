@@ -14002,3 +14002,467 @@ screen and (max-height: 300px) {
   box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3);
 }
 
+-- styles.css --
+
+/* ----------- SideBar -----------*/
+.sidebar input.search-field {
+  width: 290px;
+  height: 50px;
+  box-shadow: 5px 5px 15px 5px #eee;
+  border: 1px solid #eee;
+  padding-left: 20px;
+  outline-offset: 0;
+}
+
+.sidebar .search-icon {
+  padding: 14px;
+}
+
+.sidebar svg.search {
+  width: 20px;
+  height: 20px;
+}
+
+.sidebar h5.widget-title {
+  font-size: 1.4em;
+  margin-bottom: 15px;
+}
+
+.sidebar .sidebar-list li {
+  font-size: 1.2em;
+}
+
+.sidebar .sidebar-list li a {
+  color: var(--dark-30);
+}
+
+.sidebar .sidebar-list li a:hover {
+  color: var(--primary-color);
+}
+
+@media only screen and (max-width: 991px) {
+  .widget-search-bar form {
+    flex-wrap: wrap;
+  }
+}
+
+/* ----------- Pagination -----------*/
+.paging-navigation .pagination .page-numbers {
+  font-size: 1.4em;
+  color: var(--gray-color-500);
+}
+
+.paging-navigation .pagination .page-numbers:hover {
+  color: var(--primary-color);
+}
+
+.paging-navigation .pagination svg {
+  width: 35px;
+}
+
+
+/* 10. Single Product Page
+/*----------------------------------------------*/
+/*------------ Product Info -----------*/
+.product-info .rating svg.star-fill {
+  fill: var(--dark-color);
+}
+
+.product-info .select-list li.select-item {
+  font-size: 1.2em;
+}
+
+.product-quantity .input-group {
+  width: 140px;
+  gap: 2px;
+}
+
+.product-quantity #quantity {
+  height: auto;
+  width: 20px;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.product-quantity #quantity,
+.product-quantity .btn-number {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  background: #FFFFFF;
+  border: 1px solid #E2E2E2;
+  border-radius: 6px;
+  color: #222;
+  padding: 0;
+}
+
+.single-product .cart-wrap h4.item-title {
+  font-size: 1.5em;
+}
+
+.single-product .product-quantity .stock-number {
+  font-size: 1.2em;
+}
+
+.meta-product h4.item-title {
+  font-size: 1.2em;
+}
+
+/*------------ Product Info Tabs -----------*/
+.product-info-tabs .tabs-listing button {
+  font-size: 2em;
+  color: var(--dark-color);
+}
+
+.product-info-tabs .nav-tabs .nav-link {
+  border: none;
+}
+
+.product-info-tabs .nav-tabs .nav-item.show .nav-link,
+.product-info-tabs .nav-tabs .nav-link.active {
+  color: var(--primary-color);
+}
+
+
+@media only screen and (max-width: 991px) {
+  .product-info-tabs .tabs-listing button {
+    font-size: 1.2em;
+    padding-right: 20px !important;
+  }
+}
+
+
+/* 10. Cart Page
+-----------------------------------------------------*/
+.shopify-cart .card-price .money {
+  font-size: 1.5em;
+}
+
+.shopify-cart .total-price .money {
+  font-size: 2.9em;
+}
+
+.total-price .cart-totals {
+  font-size: 1.5em;
+}
+
+.shopify-cart .table th {
+  width: 30%;
+}
+
+
+/* 11. Checkout Page
+--------------------------------------------------------------*/
+.list-group-item span {
+  font-size: 1.2em;
+}
+
+
+/* 12. Blog Page
+--------------------------------------------------------------*/
+/*------------ Sidebar -----------*/
+.sidebar-post-item h4.card-title {
+  font-size: 1.2em;
+}
+
+/* 13. Sibgle Post Page
+--------------------------------------------------------------*/
+#single-post-navigation .post-navigation span.page-nav-title {
+  font-size: 1.5em;
+}
+
+.post-navigation svg {
+  width: 30px;
+  height: 45px;
+}
+
+.post-navigation:hover svg,
+.post-navigation:focus svg {
+  fill: var(--primary-color);
+}
+
+:root {
+  --bs-primary: #4e73df;
+  /* Azul moderno pero suave */
+  --bg-light: #f8f9fc;
+}
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background-color: var(--bg-light);
+  color: #2e3440;
+}
+
+/* Clases de utilidad personalizadas */
+.bg-soft-primary {
+  background-color: rgba(78, 115, 223, 0.1);
+}
+
+.product-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 12px;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05) !important;
+}
+
+.btn-primary {
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 500;
+}
+
+.btn-danger {
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 500;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+}
+
+/* Admin Dashboard Cards */
+.stat-card {
+  border-radius: 15px;
+  border-left: 5px solid var(--bs-primary);
+}
+
+.mandatory {
+  color: red;
+  text-decoration: bold;
+}
+
+/* Signup Page Styles */
+.signup-page {
+  overflow: hidden;
+}
+
+.container-fluid.signup-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mandatory-field {
+  color: #dc3545;
+  font-size: 0.8rem;
+}
+
+.card-registration {
+  max-width: 1000px;
+  width: 100%;
+}
+
+.logo-side {
+  background-color: #f0f4ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px 0 0 15px;
+}
+
+/* Botón de salida con hover en color primario */
+.btn-exit {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 5px 15px;
+  border-radius: 50px;
+  border: 1px solid #dee2e6;
+  color: #6c757d;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-exit:hover {
+  background-color: #4e73df;
+  border-color: #4e73df;
+  color: white !important;
+  transform: translateX(-3px);
+}
+
+.sidebar-item a {
+  color: #adb5bd;
+  text-decoration: none;
+  padding: 12px 20px;
+  display: block;
+  cursor: pointer;
+}
+
+.sidebar-item a:hover {
+  background: #343a40;
+  color: white;
+}
+
+.sidebar-subitem {
+  padding: 8px 20px;
+  font-size: 14px;
+  display: block;
+}
+
+.sidebar-subitem:hover {
+  background: #343a40;
+  color: white;
+}
+
+body {
+  background: #f8f9fa;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 240px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: #212529;
+  color: white;
+  padding-top: 20px;
+}
+
+.sidebar a {
+  color: #adb5bd;
+  text-decoration: none;
+  padding: 12px 20px;
+  display: block;
+  font-size: 15px;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+  background: #343a40;
+  color: white;
+}
+
+.admin-profile {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.admin-profile img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 2px solid #0d6efd;
+}
+
+/* CONTENIDO */
+.content {
+  margin-left: 240px;
+  padding: 30px;
+}
+
+/* Gráficos */
+.chart-box {
+  height: 220px;
+}
+
+.sidebar-item a {
+  color: #adb5bd;
+  text-decoration: none;
+  padding: 12px 20px;
+  display: block;
+  cursor: pointer;
+}
+
+.sidebar-item a:hover {
+  background: #343a40;
+  color: white;
+}
+
+.sidebar-subitem {
+  padding: 8px 20px;
+  font-size: 14px;
+  display: block;
+}
+
+.sidebar-subitem:hover {
+  background: #343a40;
+  color: white;
+}
+
+/* --- REGLAS SIDEBAR (Estilo Profile) --- */
+.sidebar .nav-link {
+  color: #212529;
+  font-weight: 500;
+  padding: 10px 0;
+  transition: color 0.3s ease;
+}
+
+.sidebar .nav-link:hover {
+  background-color: transparent !important;
+  color: #9CA3AF !important;
+}
+
+.sidebar .nav-link.active {
+  color: #000000 !important;
+  font-weight: 800 !important;
+  background-color: transparent !important;
+}
+
+.sidebar-subitem {
+  text-decoration: none;
+  color: #6c757d;
+  display: block;
+  padding: 5px 0 5px 15px;
+  transition: color 0.3s;
+}
+
+.sidebar-subitem:hover {
+  color: #9CA3AF !important;
+  background-color: transparent !important;
+}
+
+/* --- REGLAS ESPECÍFICAS DEL PANEL (Gráficos) --- */
+.chart-box {
+  height: 250px;
+  /* Altura controlada para los gráficos */
+  width: 100%;
+}
+
+/* Estilo base para todos los enlaces del menú lateral */
+.sidebar .nav-link {
+  color: #212529;
+  /* Color base: Negro oscuro (casi negro) */
+  font-weight: 500;
+  /* Grosor de letra normal */
+  padding: 10px 0;
+  /* Espacio vertical entre enlaces */
+  transition: color 0.3s ease;
+  /* Transición suave para el cambio de color */
+}
+
+/* COMPORTAMIENTO AL PASAR EL RATÓN (HOVER) */
+/* Al pasar el ratón, quitamos fondo y aclaramos el texto */
+.sidebar .nav-link:hover {
+  background-color: transparent !important;
+  /* IMPORTANTE: Elimina cualquier recuadro de fondo */
+  color: #9CA3AF !important;
+  /* Cambia el texto a un gris claro */
+}
+
+
+/* Ajuste para el submenú desplegable (Admin Products, etc.) */
+.sidebar-subitem {
+  text-decoration: none;
+  color: #6c757d;
+  /* Gris medio por defecto */
+  display: block;
+  padding: 5px 0;
+  transition: color 0.3s;
+}
+
+.sidebar-subitem:hover {
+  color: #7a7d83;
+  /* Se aclara al pasar el ratón */
+  background-color: transparent !important;
+  /* <--- ESTO QUITA EL RECUADRO NEGRO */
+}
