@@ -38,6 +38,29 @@ CUSTOM UTILITY CLASSES
   background-color: rgba(78, 115, 223, 0.1);
 }
 
+/* Navbar darker theme */
+.navbar.navbar-light.bg-light {
+  background-color: #1F2A44 !important;
+}
+
+.navbar.navbar-light .navbar-brand,
+.navbar.navbar-light .nav-link {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.navbar.navbar-light .nav-link:hover,
+.navbar.navbar-light .nav-link:focus {
+  color: #ffffff !important;
+}
+
+.navbar.navbar-light .navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.navbar.navbar-light .navbar-toggler-icon {
+  filter: invert(1);
+}
+
 /* Product Card Styles */
 .product-card {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -116,13 +139,17 @@ ADMIN DASHBOARD STYLES
   position: fixed;
   left: 0;
   top: 0;
-  background: var(--dark-color);
+  background: #182033;
   color: white;
   padding-top: 20px;
 }
 
+.sidebar.bg-light {
+  background-color: #182033 !important;
+}
+
 .sidebar a {
-  color: #adb5bd;
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
   padding: 12px 20px;
   display: block;
@@ -131,12 +158,12 @@ ADMIN DASHBOARD STYLES
 
 .sidebar a:hover,
 .sidebar a.active {
-  background: #343a40;
-  color: white;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
 }
 
 .sidebar-item a {
-  color: #adb5bd;
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
   padding: 12px 20px;
   display: block;
@@ -144,8 +171,8 @@ ADMIN DASHBOARD STYLES
 }
 
 .sidebar-item a:hover {
-  background: #343a40;
-  color: white;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
 }
 
 .sidebar-subitem {
@@ -153,12 +180,12 @@ ADMIN DASHBOARD STYLES
   font-size: 14px;
   display: block;
   text-decoration: none;
-  color: #6c757d;
+  color: rgba(255, 255, 255, 0.65);
   transition: color 0.3s;
 }
 
 .sidebar-subitem:hover {
-  background: #343a40;
+  background: rgba(255, 255, 255, 0.08);
   color: white !important;
 }
 
@@ -188,7 +215,7 @@ ADMIN DASHBOARD STYLES
 
 /* Profile Sidebar Styles */
 .sidebar .nav-link {
-  color: #212529;
+  color: rgba(255, 255, 255, 0.85);
   font-weight: 500;
   padding: 10px 0;
   transition: color 0.3s ease;
@@ -263,6 +290,28 @@ CUSTOM COMPONENT CLASSES
 }
 
 /* Footer Custom Styles */
+.footer-custom {
+  background-color: #1F2A44 !important;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.footer-custom h5,
+.footer-custom h6 {
+  color: #ffffff;
+}
+
+.footer-custom .text-dark {
+  color: #ffffff !important;
+}
+
+.footer-custom .text-muted {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.footer-custom hr {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
 .footer-custom a {
   color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
