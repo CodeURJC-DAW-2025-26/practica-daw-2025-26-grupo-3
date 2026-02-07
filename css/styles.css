@@ -30,6 +30,11 @@ body {
   color: #2e3440;
 }
 
+/* Smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
 /*===============================================================
 CUSTOM UTILITY CLASSES
 ===============================================================*/
@@ -46,11 +51,71 @@ CUSTOM UTILITY CLASSES
 .navbar.navbar-light .navbar-brand,
 .navbar.navbar-light .nav-link {
   color: rgba(255, 255, 255, 0.9) !important;
+  transition: all 0.3s ease;
+}
+
+.navbar.navbar-light .nav-link {
+  position: relative;
+}
+
+.navbar.navbar-light .nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background-color: #4e73df;
+  transform: translateX(-50%);
+  transition: width 0.3s ease;
+}
+
+.navbar.navbar-light .nav-link:hover::after {
+  width: 80%;
+}
+
+/* Remove custom underline effect from dropdown toggle, but keep Bootstrap arrow */
+.navbar.navbar-light .nav-link.dropdown-toggle::after {
+  content: "" !important;
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  border-top: 0.3em solid;
+  border-right: 0.3em solid transparent;
+  border-bottom: 0;
+  border-left: 0.3em solid transparent;
+  margin-left: 0.5em;
+  vertical-align: middle;
+  background-color: transparent !important;
 }
 
 .navbar.navbar-light .nav-link:hover,
 .navbar.navbar-light .nav-link:focus {
   color: #ffffff !important;
+  transform: translateY(-2px);
+}
+
+/* User dropdown specific styles */
+.navbar.navbar-light .dropdown-toggle.user-dropdown {
+  transform: none !important;
+}
+
+.navbar.navbar-light .dropdown-toggle.user-dropdown:hover {
+  transform: none !important;
+  opacity: 0.85;
+}
+
+.navbar.navbar-light .dropdown-toggle.user-dropdown::after {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.navbar.navbar-light .btn-primary {
+  transition: all 0.3s ease;
+}
+
+.navbar.navbar-light .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(78, 115, 223, 0.4);
 }
 
 .navbar.navbar-light .navbar-toggler {
@@ -77,17 +142,34 @@ CUSTOM UTILITY CLASSES
   border-radius: 8px;
   padding: 10px 20px;
   font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(78, 115, 223, 0.4);
+}
+
+.btn-outline-primary {
+  transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(78, 115, 223, 0.3);
 }
 
 .btn-danger {
   border-radius: 8px;
   padding: 10px 20px;
   font-weight: 500;
+  transition: all 0.3s ease;
 }
 
 .btn-danger:hover {
   background-color: #c82333;
   box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+  transform: translateY(-2px);
 }
 
 .btn-edit-custom {
@@ -96,11 +178,13 @@ CUSTOM UTILITY CLASSES
   padding: 10px 20px;
   font-weight: 500;
   border: none;
+  transition: all 0.3s ease;
 }
 
 .btn-edit-custom:hover {
   background-color: #e65c00;
   box-shadow: 0 5px 15px rgba(255, 102, 0, 0.3);
+  transform: translateY(-2px);
 }
 
 .btn-exit {
@@ -120,6 +204,7 @@ CUSTOM UTILITY CLASSES
   border-color: var(--theme-primary);
   color: white !important;
   transform: translateX(-3px);
+  box-shadow: 0 3px 10px rgba(78, 115, 223, 0.3);
 }
 
 /*===============================================================
@@ -315,9 +400,104 @@ CUSTOM COMPONENT CLASSES
 .footer-custom a {
   color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
 }
 
 .footer-custom a:hover {
-  color: rgba(255, 255, 255, 1);
-  opacity: 1;
+  color: #4e73df;
+  transform: translateX(5px);
+}
+
+.footer-custom a i {
+  transition: transform 0.3s ease;
+}
+
+.footer-custom a:hover i {
+  transform: scale(1.2);
+}
+
+/* Social Media Specific Hover Colors */
+.footer-custom a[aria-label="Instagram"]:hover {
+  color: #E1306C !important;
+}
+
+.footer-custom a[aria-label="Facebook"]:hover {
+  color: #1877F2 !important;
+}
+
+.footer-custom a[aria-label="Twitter"]:hover {
+  color: #1DA1F2 !important;
+}
+
+.footer-custom a[aria-label="TikTok"]:hover {
+  color: #EE1D52 !important;
+}
+
+/*===============================================================
+ADDITIONAL HOVER EFFECTS
+===============================================================*/
+
+/* Small buttons hover effects */
+.btn-sm {
+  transition: all 0.3s ease;
+}
+
+.btn-sm:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Rounded pill buttons */
+.rounded-pill {
+  transition: all 0.3s ease;
+}
+
+.rounded-pill:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Success button hover */
+.btn-success {
+  transition: all 0.3s ease;
+}
+
+.btn-success:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+}
+
+/* Info button hover */
+.btn-info {
+  transition: all 0.3s ease;
+}
+
+.btn-info:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(23, 162, 184, 0.3);
+}
+
+/* Warning button hover */
+.btn-warning {
+  transition: all 0.3s ease;
+}
+
+.btn-warning:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
+}
+
+/* Badge hover effects */
+.badge {
+  transition: all 0.3s ease;
+}
+
+/* List items in footer */
+.footer-custom ul li {
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.footer-custom ul li:hover {
+  padding-left: 5px;
 }
