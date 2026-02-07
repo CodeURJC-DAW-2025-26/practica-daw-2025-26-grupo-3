@@ -37,12 +37,14 @@
                 <div class="card border-0 shadow-sm p-3">
                     <h5 class="fw-bold mb-3">Filtros</h5>
                     <div class="mb-3">
-                        <label class="form-label small fw-bold">Categoría</label>
-                        <select class="form-select form-select-sm">
-                            <option>Todas</option>
-                            <option>Electrónica</option>
-                            <option>Hogar</option>
-                        </select>
+                        <label class="form-label small fw-bold" for="nameSearch">Buscar por nombre</label>
+                        
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text" aria-hidden="true">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input id="nameSearch" type="text" class="form-control" placeholder="Ej. iPhone 14" aria-label="Buscar por nombre">
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Estado</label>
@@ -52,9 +54,39 @@
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="f2">
+                            <label class="form-check-label small" for="f2">Segunda mano</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="f2">
                             <label class="form-check-label small" for="f2">Reacondicionado</label>
                         </div>
+                        
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Precio</label>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <input type="number" class="form-control form-control-sm" placeholder="Min" min="0" aria-label="Precio minimo">
+                            </div>
+                            <div class="col-6">
+                                <input type="number" class="form-control form-control-sm" placeholder="Max" min="0" aria-label="Precio maximo">
+                            </div>
+                        </div>
+                    </div>
+                    <form class="mb-3">
+                        <label class="form-label small fw-bold" for="brandSelect">Marca</label>
+                        <select id="brandSelect" class="form-select form-select-sm" aria-label="Seleccionar marca">
+                            <option value="" selected disabled>Elige una marca</option>
+                            <option value="apple">Apple</option>
+                            <option value="samsung">Samsung</option>
+                            <option value="xiaomi">Xiaomi</option>
+                            <option value="huawei">Huawei</option>
+                            <option value="google">Google</option>
+                            <option value="oneplus">OnePlus</option>
+                            <option value="oppo">Oppo</option>
+                            <option value="motorola">Motorola</option>
+                        </select>
+                    </form>
                     <button class="btn btn-primary btn-sm w-100">Aplicar</button>
                 </div>
             </aside>
