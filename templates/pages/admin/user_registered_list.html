@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios | ReMarket+</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+
+<body class="bg-light">
+
+    <div class="container-fluid my-4">
+
+        <div class="row">
+
+            <div class="col-md-3 col-lg-2 px-0">
+                <!-- SIDE BAR-->
+                <div class="sidebar bg-light p-3 border-end h-100">
+
+                    <div class="admin-profile text-center mb-4">
+                        <img src="https://placehold.co/70x70" alt="Admin" class="rounded-circle mb-2">
+                    </div>
+
+                    <nav class="nav flex-column">
+
+                        <a href="../admin/admin_panel.html" class="nav-link">Panel de control</a>
+
+                        <div class="nav-item">
+                            <a class="nav-link d-flex justify-content-between align-items-center"
+                                data-bs-toggle="collapse" href="#productsMenu" role="button">
+                                Gestionar Productos <span>▼</span>
+                            </a>
+
+                            <div class="collapse ps-3" id="productsMenu">
+                                <a href="../admin/new_product_form_admin.html" class="sidebar-subitem">Añadir
+                                    productos</a>
+                                <a href="../admin/products_published.html" class="sidebar-subitem">Productos
+                                    publicados</a>
+                                <a href="../admin/products_pending_list.html" class="sidebar-subitem">Aprobar
+                                    productos</a>
+                            </div>
+                        </div>
+
+                        <a href="../admin/orders_list.html" class="nav-link">Gestionar Pedidos</a>
+                        <a href="../admin/user_registered_list.html" class="nav-link">Gestionar Usuarios</a>
+
+                        <hr class="text-secondary my-3 opacity-25">
+
+                        <a href="../admin/admin_profile.html" class="nav-link">Mi Perfil</a>
+
+                        <a href="../../pages/anonymous/login.html" class="nav-link text-danger">Cerrar sesión</a>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="col-md-9 col-lg-10 py-3 px-4">
+
+                <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+                    <div>
+                        <h2 class="h3 fw-bold text-dark mb-0">Gestión de Usuarios</h2>
+                        <p class="text-muted small mb-0">Administra el acceso y estado de los usuarios registrados.</p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <input type="text" class="form-control form-control-sm" placeholder="Nombre o Email...">
+                        <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-search"></i></button>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th class="ps-4 py-3">Usuario</th>
+                                        <th class="py-3">Rol</th>
+                                        <th class="py-3">Registro</th>
+                                        <th class="py-3">Reportes</th>
+                                        <th class="py-3">Estado</th>
+                                        <th class="py-3 text-end pe-4">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr>
+                                        <td class="ps-4">
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://placehold.co/40x40" class="rounded-circle me-2"
+                                                    alt="Avatar">
+                                                <div>
+                                                    <div class="fw-bold">Laura Martínez</div>
+                                                    <div class="small text-muted">laura.m@email.com</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span
+                                                class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary">Comprador</span>
+                                        </td>
+                                        <td>15 Ene 2025</td>
+                                        <td><span class="text-muted small">-</span></td>
+                                        <td><span class="badge bg-success bg-opacity-75"><i
+                                                    class="bi bi-check-circle me-1"></i> Activo</span></td>
+                                        <td class="text-end pe-4">
+                                            <div class="d-flex justify-content-end gap-2">
+                                                <button class="btn btn-sm btn-outline-dark" title="Ver Historial">
+                                                    <i class="bi bi-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger d-flex align-items-center"
+                                                    title="Bloquear Usuario">
+                                                    <i class="bi bi-ban me-1"></i> Bloquear
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="ps-4">
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center me-2"
+                                                    style="width: 40px; height: 40px;">RT</div>
+                                                <div>
+                                                    <div class="fw-bold">Roberto Torres</div>
+                                                    <div class="small text-muted">r.torres@tienda.com</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span
+                                                class="badge bg-primary bg-opacity-10 text-primary border border-primary">Vendedor</span>
+                                        </td>
+                                        <td>02 Feb 2026</td>
+                                        <td><span class="badge bg-warning text-dark">3 Reportes</span></td>
+                                        <td><span class="badge bg-success bg-opacity-75"><i
+                                                    class="bi bi-check-circle me-1"></i> Activo</span></td>
+                                        <td class="text-end pe-4">
+                                            <div class="d-flex justify-content-end gap-2">
+                                                <button class="btn btn-sm btn-outline-dark" title="Ver Historial">
+                                                    <i class="bi bi-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-danger d-flex align-items-center"
+                                                    title="Bloquear Usuario">
+                                                    <i class="bi bi-ban me-1"></i> Bloquear
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="table-light text-muted">
+                                        <td class="ps-4">
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://placehold.co/40x40?text=X"
+                                                    class="rounded-circle me-2 grayscale" alt="Avatar"
+                                                    style="filter: grayscale(100%);">
+                                                <div>
+                                                    <div class="fw-bold text-decoration-line-through">Carlos D.</div>
+                                                    <div class="small text-muted">carlos.bad@email.com</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span
+                                                class="badge bg-secondary bg-opacity-10 text-secondary">Comprador</span>
+                                        </td>
+                                        <td>10 Dic 2025</td>
+                                        <td><span class="text-danger fw-bold">Estafa</span></td>
+                                        <td><span class="badge bg-danger"><i class="bi bi-slash-circle me-1"></i>
+                                                Bloqueado</span></td>
+                                        <td class="text-end pe-4">
+                                            <div class="d-flex justify-content-end gap-2">
+                                                <button class="btn btn-sm btn-outline-dark" title="Ver Historial">
+                                                    <i class="bi bi-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-success d-flex align-items-center"
+                                                    title="Reactivar Usuario">
+                                                    <i class="bi bi-unlock me-1"></i> Desbloquear
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

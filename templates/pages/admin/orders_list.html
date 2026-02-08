@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos Pendientes | ReMarket+</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+
+<body class="bg-light">
+
+    <div class="container-fluid my-4">
+
+        <div class="row">
+
+            <div class="col-md-3 col-lg-2 px-0">
+                <!-- SIDE BAR-->
+                <div class="sidebar bg-light p-3 border-end h-100">
+
+                    <div class="admin-profile text-center mb-4">
+                        <img src="https://placehold.co/70x70" alt="Admin" class="rounded-circle mb-2">
+                    </div>
+
+                    <nav class="nav flex-column">
+
+                        <a href="../admin/admin_panel.html" class="nav-link">Panel de control</a>
+
+                        <div class="nav-item">
+                            <a class="nav-link d-flex justify-content-between align-items-center"
+                                data-bs-toggle="collapse" href="#productsMenu" role="button">
+                                Gestionar Productos <span>▼</span>
+                            </a>
+
+                            <div class="collapse ps-3" id="productsMenu">
+                                <a href="../admin/new_product_form_admin.html" class="sidebar-subitem">Añadir
+                                    productos</a>
+                                <a href="../admin/products_published.html" class="sidebar-subitem">Productos
+                                    publicados</a>
+                                <a href="../admin/products_pending_list.html" class="sidebar-subitem">Aprobar
+                                    productos</a>
+                            </div>
+                        </div>
+
+                        <a href="../admin/orders_list.html" class="nav-link">Gestionar Pedidos</a>
+                        <a href="../admin/user_registered_list.html" class="nav-link">Gestionar Usuarios</a>
+
+                        <hr class="text-secondary my-3 opacity-25">
+
+                        <a href="../admin/admin_profile.html" class="nav-link">Mi Perfil</a>
+
+                        <a href="../../pages/anonymous/login.html" class="nav-link text-danger">Cerrar sesión</a>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="col-md-9 col-lg-10 py-3 px-4">
+
+                <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+                    <div>
+                        <h2 class="h3 fw-bold text-dark mb-0">Pedidos Pendientes</h2>
+                        <p class="text-muted small mb-0">Revisa y gestiona los pedidos que requieren aprobación.</p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <input type="text" class="form-control form-control-sm" placeholder="Buscar ID o Cliente...">
+                        <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-search"></i></button>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th class="ps-4 py-3">ID Pedido</th>
+                                        <th class="py-3">Cliente</th>
+                                        <th class="py-3">Fecha</th>
+                                        <th class="py-3">Total</th>
+                                        <th class="py-3">Estado</th>
+                                        <th class="py-3 text-end pe-4">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="ps-4 fw-bold text-primary">#ORD-2026-001</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://placehold.co/40x40" class="rounded-circle me-2"
+                                                    alt="Avatar">
+                                                <div>
+                                                    <div class="fw-bold">Juan Pérez</div>
+                                                    <div class="small text-muted">juan.perez@email.com</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>08 Feb 2026</td>
+                                        <td class="fw-bold">720.00€</td>
+                                        <td><span class="badge bg-warning text-dark"><i class="bi bi-clock me-1"></i>
+                                                Pendiente</span></td>
+                                        <td class="text-end pe-4">
+                                            <div class="d-flex justify-content-end gap-2">
+                                                <button class="btn btn-sm btn-success d-flex align-items-center"
+                                                    title="Aceptar">
+                                                    <i class="bi bi-check-lg me-1"></i> Aceptar
+                                                </button>
+                                                <button class="btn btn-sm btn-danger d-flex align-items-center"
+                                                    title="Rechazar">
+                                                    <i class="bi bi-x-lg me-1"></i> Rechazar
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="ps-4 fw-bold text-primary">#ORD-2026-002</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2"
+                                                    style="width: 40px; height: 40px;">ML</div>
+                                                <div>
+                                                    <div class="fw-bold">María López</div>
+                                                    <div class="small text-muted">maria.lopez@email.com</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>07 Feb 2026</td>
+                                        <td class="fw-bold">1,250.00€</td>
+                                        <td><span class="badge bg-warning text-dark"><i class="bi bi-clock me-1"></i>
+                                                Pendiente</span></td>
+                                        <td class="text-end pe-4">
+                                            <div class="d-flex justify-content-end gap-2">
+                                                <button class="btn btn-sm btn-success d-flex align-items-center">
+                                                    <i class="bi bi-check-lg me-1"></i> Aceptar
+                                                </button>
+                                                <button class="btn btn-sm btn-danger d-flex align-items-center">
+                                                    <i class="bi bi-x-lg me-1"></i> Rechazar
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="ps-4 fw-bold text-primary">#ORD-2026-003</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://placehold.co/40x40?text=CR"
+                                                    class="rounded-circle me-2" alt="Avatar">
+                                                <div>
+                                                    <div class="fw-bold">Carlos Ruiz</div>
+                                                    <div class="small text-muted">carlos.ruiz@email.com</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>06 Feb 2026</td>
+                                        <td class="fw-bold">340.50€</td>
+                                        <td><span class="badge bg-danger"><i
+                                                    class="bi bi-exclamation-triangle me-1"></i> Revisión Pago</span>
+                                        </td>
+                                        <td class="text-end pe-4">
+                                            <div class="d-flex justify-content-end gap-2">
+                                                <button class="btn btn-sm btn-success d-flex align-items-center">
+                                                    <i class="bi bi-check-lg me-1"></i> Aceptar
+                                                </button>
+                                                <button class="btn btn-sm btn-danger d-flex align-items-center">
+                                                    <i class="bi bi-x-lg me-1"></i> Rechazar
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
