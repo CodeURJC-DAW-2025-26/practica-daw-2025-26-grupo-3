@@ -107,34 +107,34 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 
 > Se describen a continuación las diferentes pantallas de las que se compone nuestra aplicación web. En el caso de que una pantalla pueda ser accedida tanto para usuarios registrados como para usuarios no registrados, se asume que el navbar cambia para mostrar las opciones acordes al tipo de usuario que hace uso de la página.
 
-#### **1. Página Principal / Home
+#### **1. Página Principal / Home**
 ![Página Principal anonimo](images/index_anonymous.png)
 
 ![Página Principal usuario registrado](images/index_registered.png)
 
 > Página de inicio de la aplicación. Incluye una cabecera con el logotipo y eslogan de la marca y una lista de productos destacados.
 
-#### **2. Inicio de Sesión / Log In
+#### **2. Inicio de Sesión / Log In**
 ![log in](images/login.png)
 
 > Formulario que permite a los usuarios registrados introducir su usuario y contraseña para inciar sesión y poder utilizar los servicios principales de la tienda.
 
-#### **3. Registro de Usuario / Sign Up
+#### **3. Registro de Usuario / Sign Up**
 ![sign up](images/signup.png)
 
 > Formulario que permite a los usuarios no registrados registrarse para poder utilizar los servicios de la tienda como usuario identificado.
 
-#### **4. Visualización de todos los productos / Búsqueda de productos
+#### **4. Visualización de todos los productos / Búsqueda de productos**
 ![product search](images/products_search.png)
 
 > Página que muestra todos los productos disponibles en la tienda actualmente. Incluye un formulario a la izquierda que permite buscar y filtar productos, para que el usuario pueda encontrar el producto que necesite comprar.
 
-#### **5. Detalle de producto
+#### **5. Detalle de producto**
 ![product detail](images/product_detail.png)
 
 > Página que muestra las principales características de un producto, así como sus imágenes. En caso de estar registrado el usuario, podrá añadirlo al carrito desde esta página. Además, si el producto es nuevo o reacondicionado, aparecerán reseñas del mismo. Como los productos de segunda mano no se producen ni distribuyen en masa, no tendrán reseñas al tener un único comprador.
 
-#### **6. Publicación de nuevo producto
+#### **6. Publicación de nuevo producto**
 ![product publish](images/product_publish.png)
 
 > Formulario que recoge los datos de los productos de segunda mano que los usuarios registrados quieren publicar para su venta. Observar que el estado indica directamente segunda mando: esto es así debido a que los usuarios registrados no pueden poner a la venta productos nuevos o reacondicionados, sólo pueden vender objetos de segunda mano. Los productos publicados por los usuarios registrados deben ser aprobados por un administrador.
@@ -143,52 +143,52 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 
 > Exisite un formulario diferente para administradores, los cuales pueden publicar artículos nuevos y reacondicionados.
 
-#### **7. Carrito de la compra
+#### **7. Carrito de la compra**
 ![shopping cart](images/shopping_cart.png)
 
 > Página que muestra los productos que el usuario registrado acumula para su posterior compra en conjunto.
 
-#### **8. Perfil de usuario registrado
+#### **8. Perfil de usuario registrado**
 ![user profile](images/profile.png)
 
 > Página que muestra todos los datos del usuario registrado que está haciendo uso de la aplicación. Desde esta pantalla los usuarios registrados pueden acceder a todos los servicios que la aplicación ofrece para este tipo de usuario.
 
-#### **9. Productos publicados de usuario registrado / Mis productos
+#### **9. Productos publicados de usuario registrado / Mis productos**
 ![my products](images/my_products.png)
 
 > Página que muestra todos los productos que el usuario registrado ha puesto a la venta. Desde esta pantalla el usuario puede publicar, ver detalle, editar, y eliminar los poroductos que ha puesto a la venta.
 
-#### **10. Resumen de pedidos de usuario registrado / Mis pedidos
+#### **10. Resumen de pedidos de usuario registrado / Mis pedidos**
 ![my orders](images/my_orders.png)
 
 > Página que muestra un resumen de todos los pedidos que el usuario registrado ha realizado.
 
-#### **11. Panel de administrador
+#### **11. Panel de administrador**
 ![admin panel](images/admin_panel.png)
 
 > Página que muestra diversas métricas útiles para la administración del negocio.
 
-#### **12. Productos publicados / Admin
+#### **12. Productos publicados / Admin**
 ![published admin products](images/admin_published_products.png)
 
 > Página exclusiva de administradores en la que se pueden visualizar todos los productos publicados actualemente en la web.
 
-#### **13. Aprobación de productos
+#### **13. Aprobación de productos**
 ![admin approve](images/admin_approve.png)
 
 > Página en que permite a los administradores aprobar (o denegar) las solicitudes de aprobación de los productos que los usuarios registrados publican.  
 
-#### **14. Gestión de pedidos
+#### **14. Gestión de pedidos**
 ![admin orders](images/admin_orders.png)
 
 > Página que permite a los administrados aprobar (o denegar) los pedidos que hacen los usuarios registrados. 
 
-#### **15. Gestión de usuarios
+#### **15. Gestión de usuarios**
 ![admin users](images/home-page.png)
 
 > Página que permite a los administradores controlar los usuarios que tienen acceso a la aplicación web, pudiendo bloquearles en caso de incumplir las normas de publicación de ReMarket+.
 
-#### **16. Perfil de administrador
+#### **16. Perfil de administrador**
 ![Página Principal](images/admin_users.png)
 
 > Página que muestra los datos del administrador que se encuentra utilizando la aplicación.
