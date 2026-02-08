@@ -184,7 +184,7 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 > Página que permite a los administrados aprobar (o denegar) los pedidos que hacen los usuarios registrados. 
 
 #### **15. Gestión de usuarios**
-![admin users](images/home-page.png)
+![admin users](images/admin_users.png)
 
 > Página que permite a los administradores controlar los usuarios que tienen acceso a la aplicación web, pudiendo bloquearles en caso de incumplir las normas de publicación de ReMarket+.
 
