@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-Practica2526Application<practica25_26>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "es.grupo3.practica25_26.Practica2526Application",
+            "projectName": "practica25_26",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
