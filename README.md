@@ -137,11 +137,11 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 #### **6. Publicación de nuevo producto**
 ![product publish](images/product_publish.png)
 
-> Formulario que recoge los datos de los productos de segunda mano que los usuarios registrados quieren publicar para su venta. Observar que el estado indica directamente segunda mando: esto es así debido a que los usuarios registrados no pueden poner a la venta productos nuevos o reacondicionados, sólo pueden vender objetos de segunda mano. Los productos publicados por los usuarios registrados deben ser aprobados por un administrador.
+> Formulario que recoge los datos de los productos de segunda mano que los usuarios registrados quieren publicar para su venta. Observar que el estado indica directamente segunda mano: esto es así debido a que los usuarios registrados no pueden poner a la venta productos nuevos o reacondicionados, sólo pueden vender objetos de segunda mano. Los productos publicados por los usuarios registrados deben ser aprobados por un administrador.
 
 ![admin product publish](images/product_publish_admin.png)
 
-> Exisite un formulario diferente para administradores, los cuales pueden publicar artículos nuevos y reacondicionados.
+> Existe un formulario diferente para administradores, los cuales pueden publicar artículos nuevos y reacondicionados.
 
 #### **7. Carrito de la compra**
 ![shopping cart](images/shopping_cart.png)
@@ -156,7 +156,7 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 #### **9. Productos publicados de usuario registrado / Mis productos**
 ![my products](images/my_products.png)
 
-> Página que muestra todos los productos que el usuario registrado ha puesto a la venta. Desde esta pantalla el usuario puede publicar, ver detalle, editar, y eliminar los poroductos que ha puesto a la venta.
+> Página que muestra todos los productos que el usuario registrado ha puesto a la venta. Desde esta pantalla el usuario puede publicar, ver detalle, editar, y eliminar los productos que ha puesto a la venta.
 
 #### **10. Resumen de pedidos de usuario registrado / Mis pedidos**
 ![my orders](images/my_orders.png)
