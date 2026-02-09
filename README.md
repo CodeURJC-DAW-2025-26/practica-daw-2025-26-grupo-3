@@ -99,9 +99,9 @@ Indicar cuál será el algoritmo o consulta avanzada que se implementará:
 ### **Diagrama de Navegación**
 Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicación:
 
-![Diagrama de Navegación](images/navigation-diagram.png)
+![Diagrama de Navegación](images/nav_diagram.jpg)
 
-> [Descripción opcional del flujo de navegación: Ej: "El usuario puede acceder desde la página principal a todas las secciones mediante el menú de navegación. Los usuarios anónimos solo tienen acceso a las páginas públicas, mientras que los registrados pueden acceder a su perfil y panel de usuario."]
+> El flujo comienza en la página principal. El usuario puede iniciar sesión o registrarse, así como ver y buscar los productos publicados en la página (pero no ver su detalle). En caso de iniciar sesión con una cuenta de administrador, la aplicación le llevará a la web de control de administrador. En caso contrario, el usuario volverá a la página principal, pero como usuario registrado. Ahora, el usuario tiene permitido ver el detalle de los productos, ver su perfil, publicar productos de segunda mano, y ver sus pedidos, su resumen de productos publicados y su carrito de la compra. Por su parte, el administrador puede ver estadísticas globales de la aplicación, aprovar pedidos y productos, y bloquear y desbloquear usuarios.
 
 ### **Capturas de Pantalla y Descripción de Páginas**
 
