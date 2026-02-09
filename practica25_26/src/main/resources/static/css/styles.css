@@ -1,0 +1,509 @@
+/*===============================================================
+REMARKET+ - CUSTOM STYLES
+===============================================================*/
+
+/*===============================================================
+CUSTOM CSS VARIABLES
+===============================================================*/
+:root {
+  --accent-color: #717171;
+  --white-color: #fff;
+  --black-color: #000;
+  --gray-color: #F3F3F3;
+  --gray-color-300: #D8D8D8;
+  --gray-color-500: #AEAEAE;
+  --gray-color-800: #3A3A3A;
+  --light-gray-color: #D7DDDF;
+  --theme-primary: #4e73df;
+  --light-color: #f8f9fa;
+  --dark-color: #212529;
+  --light-blue-color: #EDF1F3;
+  --navbar-color: #131814;
+  --swiper-theme-color: #4A4A4A;
+  --bg-light: #f8f9fc;
+}
+
+/* Custom Body Styles */
+body {
+  background-color: var(--bg-light);
+  color: #2e3440;
+}
+
+/* Smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/*===============================================================
+CUSTOM UTILITY CLASSES
+===============================================================*/
+
+.bg-soft-primary {
+  background-color: rgba(78, 115, 223, 0.1);
+}
+
+/* Navbar darker theme */
+.navbar.navbar-light.bg-light {
+  background-color: #1F2A44 !important;
+}
+
+.navbar.navbar-light .navbar-brand,
+.navbar.navbar-light .nav-link {
+  color: rgba(255, 255, 255, 0.9) !important;
+  transition: all 0.3s ease;
+}
+
+.navbar.navbar-light .nav-link {
+  position: relative;
+}
+
+
+.navbar.navbar-light .nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background-color: #4e73df;
+  transform: translateX(-50%);
+  transition: width 0.3s ease;
+}
+
+.navbar.navbar-light .nav-link:hover::after {
+  width: 80%;
+}
+
+/* Remove custom underline effect from dropdown toggle, but keep Bootstrap arrow */
+.navbar.navbar-light .nav-link.dropdown-toggle::after {
+  content: "" !important;
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  border-top: 0.3em solid;
+  border-right: 0.3em solid transparent;
+  border-bottom: 0;
+  border-left: 0.3em solid transparent;
+  margin-left: 0.5em;
+  vertical-align: middle;
+  background-color: transparent !important;
+}
+
+.navbar.navbar-light .nav-link:hover,
+.navbar.navbar-light .nav-link:focus {
+  color: #ffffff !important;
+  transform: translateY(-2px);
+}
+
+/* User dropdown specific styles */
+.navbar.navbar-light .dropdown-toggle.user-dropdown {
+  transform: none !important;
+}
+
+.navbar.navbar-light .dropdown-toggle.user-dropdown:hover {
+  transform: none !important;
+  opacity: 0.85;
+}
+
+.navbar.navbar-light .dropdown-toggle.user-dropdown::after {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.navbar.navbar-light .btn-primary {
+  transition: all 0.3s ease;
+}
+
+.navbar.navbar-light .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(78, 115, 223, 0.4);
+}
+
+.navbar.navbar-light .navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.navbar.navbar-light .navbar-toggler-icon {
+  filter: invert(1);
+}
+
+/* Product Card Styles */
+.product-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 12px;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Button Enhancements */
+.btn-primary {
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(78, 115, 223, 0.4);
+}
+
+.btn-outline-primary {
+  transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(78, 115, 223, 0.3);
+}
+
+.btn-danger {
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-admin-action {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.btn-edit-custom {
+  background-color: #ff6600;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 500;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-edit-custom:hover {
+  background-color: #e65c00;
+  box-shadow: 0 5px 15px rgba(255, 102, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-exit {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 5px 15px;
+  border-radius: 50px;
+  border: 1px solid #dee2e6;
+  color: #6c757d;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-exit:hover {
+  background-color: var(--theme-primary);
+  border-color: var(--theme-primary);
+  color: white !important;
+  transform: translateX(-3px);
+  box-shadow: 0 3px 10px rgba(78, 115, 223, 0.3);
+}
+
+/*===============================================================
+ADMIN DASHBOARD STYLES
+===============================================================*/
+
+/* Admin Dashboard Cards */
+.stat-card {
+  border-radius: 15px;
+  border-left: 5px solid var(--theme-primary);
+}
+
+/* Sidebar Navigation */
+.sidebar {
+  width: 240px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: #182033;
+  color: white;
+  padding-top: 20px;
+}
+
+.sidebar.bg-light {
+  background-color: #182033 !important;
+}
+
+.sidebar a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  padding: 12px 20px;
+  display: block;
+  font-size: 15px;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.sidebar-item a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  padding: 12px 20px;
+  display: block;
+  cursor: pointer;
+}
+
+.sidebar-item a:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.sidebar-subitem {
+  padding: 8px 20px;
+  font-size: 14px;
+  display: block;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.65);
+  transition: color 0.3s;
+}
+
+.sidebar-subitem:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: white !important;
+}
+
+.admin-profile {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.admin-profile img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 2px solid #0d6efd;
+}
+
+/* Main Content Area */
+.content {
+  margin-left: 240px;
+  padding: 30px;
+}
+
+/* Charts Container */
+.chart-box {
+  height: 250px;
+  width: 100%;
+}
+
+/* Profile Sidebar Styles */
+.sidebar .nav-link {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+  padding: 10px 0;
+  transition: color 0.3s ease;
+}
+
+.sidebar .nav-link:hover {
+  background-color: transparent !important;
+  color: #9CA3AF !important;
+}
+
+.sidebar .nav-link.active {
+  color: #000000 !important;
+  font-weight: 800 !important;
+  background-color: transparent !important;
+}
+
+/*===============================================================
+FORM AND REGISTRATION STYLES
+===============================================================*/
+
+/* Mandatory Field Indicator */
+.mandatory {
+  color: #dc3545;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.mandatory-field {
+  color: #dc3545;
+  font-size: 0.8rem;
+}
+
+/* Signup Page Styles */
+.signup-page {
+  overflow: hidden;
+}
+
+.container-fluid.signup-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-registration {
+  max-width: 1000px;
+  width: 100%;
+}
+
+.logo-side {
+  background-color: #f0f4ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px 0 0 15px;
+}
+
+/*===============================================================
+CUSTOM COMPONENT CLASSES
+===============================================================*/
+
+/* Hero Image Section */
+.hero-image {
+  background: transparent;
+  padding: 20px;
+}
+
+/* Product Image Cards */
+.product-img {
+  height: 250px;
+  object-fit: cover;
+}
+
+/* Footer Custom Styles */
+.footer-custom {
+  background-color: #1F2A44 !important;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.footer-custom h5,
+.footer-custom h6 {
+  color: #ffffff;
+}
+
+.footer-custom .text-dark {
+  color: #ffffff !important;
+}
+
+.footer-custom .text-muted {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.footer-custom hr {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.footer-custom a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.footer-custom a:hover {
+  color: #4e73df;
+  transform: translateX(5px);
+}
+
+.footer-custom a i {
+  transition: transform 0.3s ease;
+}
+
+.footer-custom a:hover i {
+  transform: scale(1.2);
+}
+
+/* Social Media Specific Hover Colors */
+.footer-custom a[aria-label="Instagram"]:hover {
+  color: #E1306C !important;
+}
+
+.footer-custom a[aria-label="Facebook"]:hover {
+  color: #1877F2 !important;
+}
+
+.footer-custom a[aria-label="Twitter"]:hover {
+  color: #1DA1F2 !important;
+}
+
+.footer-custom a[aria-label="TikTok"]:hover {
+  color: #EE1D52 !important;
+}
+
+/*===============================================================
+ADDITIONAL HOVER EFFECTS
+===============================================================*/
+
+/* Small buttons hover effects */
+.btn-sm {
+  transition: all 0.3s ease;
+}
+
+.btn-sm:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Rounded pill buttons */
+.rounded-pill {
+  transition: all 0.3s ease;
+}
+
+.rounded-pill:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Success button hover */
+.btn-success {
+  transition: all 0.3s ease;
+}
+
+.btn-success:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+}
+
+/* Info button hover */
+.btn-info {
+  transition: all 0.3s ease;
+}
+
+.btn-info:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(23, 162, 184, 0.3);
+}
+
+/* Warning button hover */
+.btn-warning {
+  transition: all 0.3s ease;
+}
+
+.btn-warning:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
+}
+
+/* Badge hover effects */
+.badge {
+  transition: all 0.3s ease;
+}
+
+/* List items in footer */
+.footer-custom ul li {
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.footer-custom ul li:hover {
+  padding-left: 5px;
+}
