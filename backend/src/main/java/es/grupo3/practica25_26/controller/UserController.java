@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -35,11 +36,19 @@ public class UserController {
         if (op.isPresent()) { // If credentials are correct and user is found
             User user = op.get();
             this.currentUser = user;
-            model.addAttribute("user_logged", true);
+            sesion.setAttribute("user_logged", true);
             sesion.setAttribute("currentUser", user);
         } else {
             sesion.setAttribute("user_logged", false);
         }
         return "redirect:/";
     }
+
+    @GetMapping("/log_out")
+    public String logOut(HttpSession sesion) {
+        currentUser = null;
+        sesion.invalidate();
+        return "redirect:/";
+    }
+
 }
