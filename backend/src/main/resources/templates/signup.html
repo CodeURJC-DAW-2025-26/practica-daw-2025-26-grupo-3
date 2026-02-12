@@ -35,37 +35,39 @@
 
                         </div>
 
-                        <form action="/index_registered" method="GET">
+                        <form action="/user_register" method="POST">
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold">Nombre <span
                                             class="mandatory">*</span></label>
-                                    <input type="text" class="form-control form-control-sm" placeholder="Tu nombre">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Tu nombre"
+                                        name="userName" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold">Apellidos <span
                                             class="mandatory">*</span></label>
-                                    <input type="text" class="form-control form-control-sm" placeholder="Tus apellidos">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Tus apellidos"
+                                        name="surname" required>
                                 </div>
 
                                 <div class="col-md-12">
                                     <label class="form-label small fw-bold">Dirección de envío <span
                                             class="mandatory">*</span></label>
                                     <input type="text" class="form-control form-control-sm"
-                                        placeholder="Calle, número, ciudad...">
+                                        placeholder="Calle, número, ciudad..." name="address" required>
                                 </div>
 
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold">Correo electrónico <span
                                             class="mandatory">*</span></label>
                                     <input type="email" class="form-control form-control-sm"
-                                        placeholder="email@ejemplo.com">
+                                        placeholder="email@ejemplo.com" name="email" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold">Contraseña <span
                                             class="mandatory">*</span></label>
                                     <input type="password" class="form-control form-control-sm"
-                                        placeholder="Crea una contraseña">
+                                        placeholder="Crea una contraseña" name="password" required>
                                 </div>
                             </div>
 
@@ -81,8 +83,7 @@
                             </div>
                         </form>
                         <div class="mt-4">
-                            <a href="/" class="btn btn-danger w-100 py-2 fw-bold shadow-sm"
-                                title="Volver a la tienda">
+                            <a href="/" class="btn btn-danger w-100 py-2 fw-bold shadow-sm" title="Volver a la tienda">
                                 Volver a la tienda
                             </a>
                         </div>

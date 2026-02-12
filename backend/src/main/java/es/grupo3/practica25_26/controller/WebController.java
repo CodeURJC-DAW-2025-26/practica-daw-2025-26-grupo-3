@@ -1,11 +1,19 @@
 package es.grupo3.practica25_26.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import es.grupo3.practica25_26.model.User;
+import es.grupo3.practica25_26.repository.UserRepository;
 
 @Controller
 public class WebController {
+
+    @Autowired
+    UserRepository userRepository;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -115,5 +123,11 @@ public class WebController {
     @GetMapping("/user_registered_list")
     public String userRegisteredList(Model model) {
         return "user_registered_list";
+    }
+
+    @PostMapping("/user_register")
+    public String userRegister(User newUser) {
+        userRepository.save(newUser);
+        return "index_registered";
     }
 }
