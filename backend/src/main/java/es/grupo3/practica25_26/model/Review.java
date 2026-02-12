@@ -2,7 +2,15 @@ package es.grupo3.practica25_26.model;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Review {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String client;
     private String title;
     private String description;

@@ -1,20 +1,45 @@
 package es.grupo3.practica25_26.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+
+@Entity
 public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
 
     private String productName;
     private double price;
     private int state; // 0 New product, 1 reconditioned product, 2 Second hand product
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User seller;
+
     public Product() {
     }
 
-    public Product(String productName, double price, int state, String description) {
+    public Product(String productName, double price, int state, String description, User seller) {
         this.productName = productName;
         this.price = price;
         this.state = state;
         this.description = description;
+        this.seller = seller;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getProductName() {
@@ -33,6 +58,10 @@ public class Product {
         return description;
     }
 
+    public User getSeller() {
+        return seller;
+    }
+
     public void setProductName(String productName) {
         this.productName = productName;
     }
@@ -47,6 +76,10 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setSeller(User seller) {
+        this.seller = seller;
     }
 
 }
