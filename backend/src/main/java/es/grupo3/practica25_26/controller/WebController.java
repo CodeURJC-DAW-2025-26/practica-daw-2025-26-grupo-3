@@ -10,8 +10,7 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class WebController {
 
-    @GetMapping("/")
-    public String index(Model model, HttpSession sesion) {
+    private void getUserNavInfo(Model model, HttpSession sesion) {
         User currentUser;
         boolean user_logged = true;
         try {
@@ -22,7 +21,36 @@ public class WebController {
             user_logged = false;
         }
         model.addAttribute("user_logged", user_logged);
+    }
+
+    @GetMapping("/")
+    public String index(Model model, HttpSession sesion) {
+        getUserNavInfo(model, sesion);
         return "index";
+    }
+
+    @GetMapping("/product_search")
+    public String productSearch(Model model, HttpSession sesion) {
+        getUserNavInfo(model, sesion);
+        return "product_search";
+    }
+
+    @GetMapping("/product_detail")
+    public String productDetail(Model model, HttpSession sesion) {
+        getUserNavInfo(model, sesion);
+        return "product_detail";
+    }
+
+    @GetMapping("/product-publish")
+    public String productPublish(Model model, HttpSession sesion) {
+        getUserNavInfo(model, sesion);
+        return "product-publish";
+    }
+
+    @GetMapping("/shopping-cart")
+    public String shoppingCart(Model model, HttpSession sesion) {
+        getUserNavInfo(model, sesion);
+        return "shopping-cart";
     }
 
     @GetMapping("/login")
@@ -35,11 +63,6 @@ public class WebController {
         return "signup";
     }
 
-    @GetMapping("/products-search-anonymous")
-    public String productsSearchAnonymous(Model model) {
-        return "products-search-anonymous";
-    }
-
     @GetMapping("/my_products")
     public String myProducts(Model model) {
         return "my_products";
@@ -50,34 +73,9 @@ public class WebController {
         return "orders";
     }
 
-    @GetMapping("/product-publish")
-    public String productPublish(Model model) {
-        return "product-publish";
-    }
-
-    @GetMapping("/products_detail_registered")
-    public String productsDetailRegistered(Model model) {
-        return "products_detail_registered";
-    }
-
-    @GetMapping("/products_detail_registered_new")
-    public String productsDetailRegisteredNew(Model model) {
-        return "products_detail_registered_new";
-    }
-
-    @GetMapping("/products-search-registered")
-    public String productsSearchRegistered(Model model) {
-        return "products-search-registered";
-    }
-
     @GetMapping("/profile")
     public String profile(Model model) {
         return "profile";
-    }
-
-    @GetMapping("/shopping-cart")
-    public String shoppingCart(Model model) {
-        return "shopping-cart";
     }
 
     @GetMapping("/admin_panel")
