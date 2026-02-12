@@ -51,4 +51,10 @@ public class UserController {
         return "redirect:/";
     }
 
+    @GetMapping("/profile")
+    public String profile(Model model) {
+        model.addAttribute("user", currentUser);
+        return "profile";
+    }
+
 }

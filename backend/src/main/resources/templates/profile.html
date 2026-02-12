@@ -12,117 +12,119 @@
 
 <body>
 
-    {{#user_logged}}
-    {{> user_navbar}}
-    {{/user_logged}}
-    {{^user_logged}}
-    {{> anonymous_navbar}}
-    {{/user_logged}}
-
-
-    <div class="container my-5">
-        <div class="row">
-            <div class="col-md-4 col-lg-3 mb-4">
-                <div class="card border-0 shadow-sm text-center p-4">
-                    <img src="https://placehold.co/100x100?text=User" class="rounded-circle mx-auto mb-3" width="80">
-                    <h5 class="fw-bold mb-0">Rodrigo Fernández</h5>
-                    <p class="text-muted small">Miembro desde 2023</p>
-                    <hr>
-                    <div class="d-grid gap-2">
-                        <a href="/my_products"
-                            class="btn btn-sm btn-primary rounded d-flex align-items-center justify-content-center py-2">Mis
-                            Productos</a>
-                        <a href="/orders"
-                            class="btn btn-sm btn-secondary rounded d-flex align-items-center justify-content-center py-2 text-white">Mis
-                            Pedidos</a>
-                        <a href="/product-publish"
-                            class="btn btn-sm btn-success rounded d-flex align-items-center justify-content-center py-2">Publicar
-                            Producto</a>
-                        <a href="/"
-                            class="btn btn-sm btn-danger rounded d-flex align-items-center justify-content-center py-2">Cerrar
-                            Sesión</a>
-                    </div>
-                </div>
+    <body class="bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom sticky-top shadow-sm">
+            <div class="container">
+                <a class="navbar-brand fw-bold text-primary d-flex align-items-center" href="/">
+                    <img src="/images/Logo_Remarket+.png" alt="ReMarket+ Logo" style="height: 50px; width: auto;">
+                </a>
             </div>
+        </nav>
 
-            <div class="col-md-8 col-lg-9">
-                <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
-                    <h2 class="h3 fw-bold text-dark">Mi Perfil</h2>
-                    <span class="badge bg-secondary rounded-pill">Usuario</span>
-                </div>
-
-                <div class="card border-0 shadow-sm p-4 mb-4">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h5 class="fw-bold mb-0 text-dark">Información Personal</h5>
-                        <button class="btn btn-sm btn-outline-dark rounded-pill px-3">Editar</button>
-                    </div>
-
-                    <form>
-                        <div class="row g-3">
-                            <div class="col-12 text-center mb-3">
-                                <img src="https://placehold.co/100x100" class="rounded-circle shadow-sm"
-                                    alt="Profile Pic">
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label text-muted small fw-bold text-uppercase">Nombre
-                                    Completo</label>
-                                <input type="text" class="form-control bg-light border-0" value="Rodrigo Fernández"
-                                    readonly>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label text-muted small fw-bold text-uppercase">Correo
-                                    Electrónico</label>
-                                <input type="email" class="form-control bg-light border-0" value="admin@remarket.plus"
-                                    readonly>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label text-muted small fw-bold text-uppercase">Teléfono</label>
-                                <input type="text" class="form-control bg-light border-0" value="+34 600 123 456"
-                                    readonly>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label text-muted small fw-bold text-uppercase">Rol</label>
-                                <input type="text" class="form-control bg-light border-0 fw-bold" value="Usuario"
-                                    readonly>
-                            </div>
+        <div class="container my-5">
+            <div class="row">
+                <div class="col-md-4 col-lg-3 mb-4">
+                    <div class="card border-0 shadow-sm text-center p-4">
+                        <img src="https://placehold.co/100x100?text=User" class="rounded-circle mx-auto mb-3"
+                            width="80">
+                        <h5 class="fw-bold mb-0">{{user.userName}}</h5>
+                        <p class="text-muted small">Miembro desde 2023</p>
+                        <hr>
+                        <div class="d-grid gap-2">
+                            <a href="/my_products"
+                                class="btn btn-sm btn-primary rounded d-flex align-items-center justify-content-center py-2">Mis
+                                Productos</a>
+                            <a href="/orders"
+                                class="btn btn-sm btn-secondary rounded d-flex align-items-center justify-content-center py-2 text-white">Mis
+                                Pedidos</a>
+                            <a href="/product-publish"
+                                class="btn btn-sm btn-success rounded d-flex align-items-center justify-content-center py-2">Publicar
+                                Producto</a>
+                            <a href="/"
+                                class="btn btn-sm btn-danger rounded d-flex align-items-center justify-content-center py-2">Cerrar
+                                Sesión</a>
                         </div>
-                    </form>
+                    </div>
                 </div>
-                <div class="card border-0 shadow-sm p-4">
-                    <h4 class="fw-bold mb-4">Mis Pedidos Recientes</h4>
-                    <table class="table align-middle">
-                        <thead class="table-light small text-uppercase">
-                            <tr>
-                                <th>Pedido ID</th>
-                                <th>Fecha</th>
-                                <th>Estado</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>#RM-9021</td>
-                                <td>12 Oct, 2023</td>
-                                <td><span class="badge bg-success">Entregado</span></td>
-                                <td class="fw-bold">45.00€</td>
-                            </tr>
-                        </tbody>
-                    </table>
+
+                <div class="col-md-8 col-lg-9">
+                    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+                        <h2 class="h3 fw-bold text-dark">Mi Perfil</h2>
+                        <span class="badge bg-secondary rounded-pill">Usuario</span>
+                    </div>
+
+                    <div class="card border-0 shadow-sm p-4 mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="fw-bold mb-0 text-dark">Información Personal</h5>
+                            <button class="btn btn-sm btn-outline-dark rounded-pill px-3">Editar</button>
+                        </div>
+
+                        <form>
+                            <div class="row g-3">
+                                <div class="col-12 text-center mb-3">
+                                    <img src="https://placehold.co/100x100" class="rounded-circle shadow-sm"
+                                        alt="Profile Pic">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted small fw-bold text-uppercase">Nombre
+                                        Completo</label>
+                                    <input type="text" class="form-control bg-light border-0"
+                                        value="{{user.userName}} {{user.surname}}" readonly>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted small fw-bold text-uppercase">Correo
+                                        Electrónico</label>
+                                    <input type="email" class="form-control bg-light border-0" value="{{user.email}}"
+                                        readonly>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted small fw-bold text-uppercase">Dirección</label>
+                                    <input type="text" class="form-control bg-light border-0" value="{{user.address}}"
+                                        readonly>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted small fw-bold text-uppercase">Rol</label>
+                                    <input type="text" class="form-control bg-light border-0 fw-bold" value="Usuario"
+                                        readonly>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card border-0 shadow-sm p-4">
+                        <h4 class="fw-bold mb-4">Mis Pedidos Recientes</h4>
+                        <table class="table align-middle">
+                            <thead class="table-light small text-uppercase">
+                                <tr>
+                                    <th>Pedido ID</th>
+                                    <th>Fecha</th>
+                                    <th>Estado</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#RM-9021</td>
+                                    <td>12 Oct, 2023</td>
+                                    <td><span class="badge bg-success">Entregado</span></td>
+                                    <td class="fw-bold">45.00€</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
+            <div class="mt-4 text-center">
+                <a href="/index_registered" class="btn btn-danger py-2 fw-bold shadow-sm" title="Volver a la tienda">
+                    Volver a la tienda
+                </a>
+            </div>
         </div>
-        <div class="mt-4 text-center">
-            <a href="/index_registered" class="btn btn-danger py-2 fw-bold shadow-sm" title="Volver a la tienda">
-                Volver a la tienda
-            </a>
-        </div>
-    </div>
 
-    {{> footer}}
-</body>
+        {{> footer}}
+    </body>
 
 </html>

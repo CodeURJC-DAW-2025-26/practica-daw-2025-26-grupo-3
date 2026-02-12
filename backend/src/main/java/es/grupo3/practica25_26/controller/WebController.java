@@ -73,11 +73,6 @@ public class WebController {
         return "orders";
     }
 
-    @GetMapping("/profile")
-    public String profile(Model model) {
-        return "profile";
-    }
-
     @GetMapping("/admin_panel")
     public String adminPanel(Model model) {
         return "admin_panel";
