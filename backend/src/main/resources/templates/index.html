@@ -34,9 +34,15 @@
           <p class="lead text-muted mb-4">Productos nuevos, reacondicionados y usados con la mejor garantía del mercado.
           </p>
           <div class="mt-4 d-flex gap-3 flex-wrap">
+            {{^user_logged}}
             <a href="/login" class="btn btn-primary btn-lg px-5 shadow">Iniciar
               sesión</a>
             <a href="/signup" class="btn btn-outline-primary btn-lg px-5">Registrarse</a>
+            {{/user_logged}}
+            {{#user_logged}}
+            <a href="/products-search-registered" class="btn btn-primary btn-lg px-5 shadow">Explorar ahora</a>
+            <a href="/product-publish" class="btn btn-outline-primary btn-lg px-5">Vender productos</a>
+            {{/user_logged}}
           </div>
         </div>
         <div class="col-lg-6 d-none d-lg-block">
@@ -67,8 +73,14 @@
               <div class="small text-warning">★★★★☆ <span class="text-muted">(24)</span></div>
             </div>
             <div class="card-footer bg-transparent border-0 pb-3">
+              {{^user_logged}}
               <a href="/login" class="btn btn-sm btn-primary w-100 rounded-pill">Iniciar
                 sesión para ver más detalles</a>
+              {{/user_logged}}
+              {{#user_logged}}
+              <a href="/products_detail_registered_new" class="btn btn-sm btn-primary w-100 rounded-pill">Ver más
+                detalles</a>
+              {{/user_logged}}
             </div>
           </div>
         </div>
@@ -83,8 +95,14 @@
               <div class="small text-warning">★★★★★ <span class="text-muted">(48)</span></div>
             </div>
             <div class="card-footer bg-transparent border-0 pb-3">
+              {{^user_logged}}
               <a href="/login" class="btn btn-sm btn-primary w-100 rounded-pill">Iniciar
                 sesión para ver más detalles</a>
+              {{/user_logged}}
+              {{#user_logged}}
+              <a href="/products_detail_registered_new" class="btn btn-sm btn-primary w-100 rounded-pill">Ver más
+                detalles</a>
+              {{/user_logged}}
             </div>
           </div>
         </div>
@@ -99,8 +117,14 @@
               <div class="small text-warning">★★★★☆ <span class="text-muted">(15)</span></div>
             </div>
             <div class="card-footer bg-transparent border-0 pb-3">
+              {{^user_logged}}
               <a href="/login" class="btn btn-sm btn-primary w-100 rounded-pill">Iniciar
                 sesión para ver más detalles</a>
+              {{/user_logged}}
+              {{#user_logged}}
+              <a href="/products_detail_registered_new" class="btn btn-sm btn-primary w-100 rounded-pill">Ver más
+                detalles</a>
+              {{/user_logged}}
             </div>
           </div>
         </div>
@@ -116,17 +140,22 @@
               <div class="small text-warning">★★★★★ <span class="text-muted">(82)</span></div>
             </div>
             <div class="card-footer bg-transparent border-0 pb-3">
+              {{^user_logged}}
               <a href="/login" class="btn btn-sm btn-primary w-100 rounded-pill">Iniciar
                 sesión para ver más detalles</a>
+              {{/user_logged}}
+              {{#user_logged}}
+              <a href="/products_detail_registered_new" class="btn btn-sm btn-primary w-100 rounded-pill">Ver más
+                detalles</a>
+              {{/user_logged}}
             </div>
           </div>
         </div>
+        <div class="text-center mt-5">
+          <a href="/products-search-anonymous" class="btn btn-outline-primary btn-lg px-5 rounded-pill">Ver todos los
+            productos →</a>
+        </div>
       </div>
-      <div class="text-center mt-5">
-        <a href="/products-search-anonymous" class="btn btn-outline-primary btn-lg px-5 rounded-pill">Ver todos los
-          productos →</a>
-      </div>
-    </div>
   </section>
 
   {{>footer}}
