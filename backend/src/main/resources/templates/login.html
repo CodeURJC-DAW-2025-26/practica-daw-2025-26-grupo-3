@@ -33,10 +33,10 @@
 
                     </div>
 
-                    <form action="/index_registered" method="GET">
+                    <form action="/login_query" method="POST">
                         <div class="mb-3">
                             <label class="form-label small fw-bold">Email</label>
-                            <input type="email" class="form-control" placeholder="Tu email">
+                            <input type="email" class="form-control" placeholder="Tu email" name="email">
                         </div>
                         <div class="mb-3">
                             <div class="d-flex justify-content-between">
@@ -44,7 +44,7 @@
                                 <a href="#" class="small text-decoration-none" style="font-size: 0.75rem;">¿La
                                     olvidaste?</a>
                             </div>
-                            <input type="password" class="form-control" placeholder="Tu contraseña">
+                            <input type="password" class="form-control" placeholder="Tu contraseña" name="password">
                         </div>
 
                         <div class="mt-4">
@@ -52,8 +52,7 @@
                         </div>
                     </form>
                     <div class="mt-4">
-                        <a href="/" class="btn btn-danger w-100 py-2 fw-bold shadow-sm"
-                            title="Volver a la tienda">
+                        <a href="/" class="btn btn-danger w-100 py-2 fw-bold shadow-sm" title="Volver a la tienda">
                             Volver a la tienda
                         </a>
                     </div>

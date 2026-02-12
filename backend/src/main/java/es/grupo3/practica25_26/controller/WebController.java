@@ -1,19 +1,25 @@
 package es.grupo3.practica25_26.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class WebController {
 
     @Autowired
     UserRepository userRepository;
+
+    private User logged_user;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -126,8 +132,24 @@ public class WebController {
     }
 
     @PostMapping("/user_register")
-    public String userRegister(User newUser) {
+    public String userRegister(Model model, User newUser, HttpSession sesion) {
         userRepository.save(newUser);
-        return "index_registered";
+        sesion.setAttribute("infoUsuario", newUser);
+        model.addAttribute("user_logged", true);
+        return "index";
+    }
+
+    @PostMapping("/login_query")
+    public String loginQuery(Model model, @RequestParam String email, @RequestParam String password,
+            HttpSession sesion) {
+        Optional<User> op = userRepository.findByEmailAndPassword(email, password);
+        if (op.isPresent()) {
+            User user = op.get();
+            model.addAttribute("user_logged", true);
+            sesion.setAttribute("infoUsuario", user);
+        } else {
+            model.addAttribute("user_logged", false);
+        }
+        return "index";
     }
 }
