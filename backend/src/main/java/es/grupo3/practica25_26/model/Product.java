@@ -10,18 +10,20 @@ import jakarta.persistence.JoinColumn;
 @Entity
 public class Product {
 
+    // Primary key
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
+    // Foreign key to user table
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User seller;
 
     private String productName;
     private double price;
     private int state; // 0 New product, 1 reconditioned product, 2 Second hand product
     private String description;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User seller;
 
     public Product() {
     }

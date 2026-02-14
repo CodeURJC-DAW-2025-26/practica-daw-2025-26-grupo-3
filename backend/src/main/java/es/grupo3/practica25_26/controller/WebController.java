@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.repository.UserRepository;
+import es.grupo3.practica25_26.service.ProductService;
 
 @Controller
 public class WebController {
@@ -15,8 +16,12 @@ public class WebController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    ProductService ProductService;
+
     @GetMapping("/")
     public String index(Model model) {
+        model.addAttribute("products", ProductService.findAll());
         return "index";
     }
 
@@ -37,6 +42,7 @@ public class WebController {
 
     @GetMapping("/index_registered")
     public String indexRegistered(Model model) {
+        model.addAttribute("products", ProductService.findAll());
         return "index_registered";
     }
 
