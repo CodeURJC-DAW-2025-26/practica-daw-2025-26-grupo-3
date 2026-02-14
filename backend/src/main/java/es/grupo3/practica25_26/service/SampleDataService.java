@@ -22,7 +22,7 @@ public class SampleDataService {
 
     @PostConstruct
     public void init() {
-        if (productRepository.count() > 0) {
+        if (userRepository.count() > 0) {
             return;
         }
 

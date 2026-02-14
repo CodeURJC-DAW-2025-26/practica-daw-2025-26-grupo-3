@@ -29,7 +29,8 @@ public class WebController {
     }
 
     @GetMapping("/")
-    public String index(Model model) {
+    public String index(Model model, HttpSession sesion) {
+        getUserNavInfo(model, sesion);
         model.addAttribute("products", ProductService.findAll());
         return "index";
     }
@@ -37,6 +38,7 @@ public class WebController {
     @GetMapping("/product_search")
     public String productSearch(Model model, HttpSession sesion) {
         getUserNavInfo(model, sesion);
+        model.addAttribute("products", ProductService.findAll());
         return "product_search";
     }
 

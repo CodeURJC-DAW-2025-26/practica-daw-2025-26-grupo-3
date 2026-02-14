@@ -74,8 +74,13 @@
               <div class="small text-warning">★★★★☆ <span class="text-muted">(24)</span></div>
             </div>
             <div class="card-footer bg-transparent border-0 pb-3">
+              {{^user_logged}}
               <a href="/login" class="btn btn-sm btn-primary w-100 rounded-pill">Iniciar
                 sesión para ver más detalles</a>
+              {{/user_logged}}
+              {{#user_logged}}
+              <a href="/product_detail" class="btn btn-sm btn-primary w-100 rounded-pill">Ver detalles</a>
+              {{/user_logged}}
             </div>
           </div>
         </div>
