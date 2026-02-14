@@ -6,7 +6,6 @@
 | Daniel Hernanz Corral | d.hernanz.2023@alumnos.urjc.es | DanielHernanz9 |
 | Marcos Hernández Martín | m.hernandez.2023@alumnos.urjc.es | MarcosHM851 |
 | Jorge Naranjo Ballesteros | j.naranjo.2023@alumnos.urjc.es | 2005JNB |
-| [Nombre 4] | [email4]@alumnos.urjc.es | [User4] |
 
 ---
 

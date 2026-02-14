@@ -5,8 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.ProductService;
+import es.grupo3.practica25_26.service.UserService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -15,55 +15,51 @@ public class WebController {
     @Autowired
     ProductService ProductService;
 
-    private void getUserNavInfo(Model model, HttpSession sesion) {
-        User currentUser;
-        boolean user_logged = true;
-        try {
-            user_logged = (boolean) sesion.getAttribute("user_logged");
-            currentUser = (User) sesion.getAttribute("currentUser");
-            model.addAttribute("userName", currentUser.getUserName());
-        } catch (Exception e) { // If we get no data from sesion, then we asume that there is no logged user.
-            user_logged = false;
-        }
-        model.addAttribute("user_logged", user_logged);
-    }
+    @Autowired
+    UserService userService;
 
     @GetMapping("/")
-    public String index(Model model, HttpSession sesion) {
-        getUserNavInfo(model, sesion);
+    public String index(Model model, HttpSession session) {
+        userService.getUserNavInfo(model, session);
         model.addAttribute("products", ProductService.findAll());
         return "index";
     }
 
     @GetMapping("/product_search")
-    public String productSearch(Model model, HttpSession sesion) {
-        getUserNavInfo(model, sesion);
+    public String productSearch(Model model, HttpSession session) {
+        userService.getUserNavInfo(model, session);
         model.addAttribute("products", ProductService.findAll());
         return "product_search";
     }
 
     @GetMapping("/product_detail")
-    public String productDetail(Model model, HttpSession sesion) {
-        getUserNavInfo(model, sesion);
+    public String productDetail(Model model, HttpSession session) {
+        userService.getUserNavInfo(model, session);
         return "product_detail";
     }
 
     @GetMapping("/product-publish")
-    public String productPublish(Model model, HttpSession sesion) {
-        getUserNavInfo(model, sesion);
+    public String productPublish(Model model, HttpSession session) {
+        userService.getUserNavInfo(model, session);
         return "product-publish";
     }
 
     @GetMapping("/shopping-cart")
-    public String shoppingCart(Model model, HttpSession sesion) {
-        getUserNavInfo(model, sesion);
+    public String shoppingCart(Model model, HttpSession session) {
+        userService.getUserNavInfo(model, session);
         return "shopping-cart";
     }
 
     @GetMapping("/orders")
-    public String orders(Model model, HttpSession sesion) {
-        getUserNavInfo(model, sesion);
+    public String orders(Model model, HttpSession session) {
+        userService.getUserNavInfo(model, session);
         return "orders";
+    }
+
+    @GetMapping("/my_products")
+    public String productsPublished(Model model, HttpSession session) {
+        userService.getUserNavInfo(model, session);
+        return "my_products";
     }
 
     @GetMapping("/login")
@@ -85,11 +81,6 @@ public class WebController {
     public String indexRegistered(Model model) {
         model.addAttribute("products", ProductService.findAll());
         return "index_registered";
-    }
-
-    @GetMapping("/my_products")
-    public String myProducts(Model model) {
-        return "my_products";
     }
 
     @GetMapping("/admin_panel")
@@ -125,11 +116,6 @@ public class WebController {
     @GetMapping("/products_pending_list")
     public String productsPendingList(Model model) {
         return "products_pending_list";
-    }
-
-    @GetMapping("/products_published")
-    public String productsPublished(Model model) {
-        return "products_published";
     }
 
     @GetMapping("/user_registered_list")
