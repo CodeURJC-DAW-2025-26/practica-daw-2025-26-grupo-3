@@ -1,21 +1,32 @@
 package es.grupo3.practica25_26.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import es.grupo3.practica25_26.model.User;
-import es.grupo3.practica25_26.repository.UserRepository;
 import es.grupo3.practica25_26.service.ProductService;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class WebController {
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
     ProductService ProductService;
+
+    private void getUserNavInfo(Model model, HttpSession sesion) {
+        User currentUser;
+        boolean user_logged = true;
+        try {
+            user_logged = (boolean) sesion.getAttribute("user_logged");
+            currentUser = (User) sesion.getAttribute("currentUser");
+            model.addAttribute("userName", currentUser.getUserName());
+        } catch (Exception e) { // If we get no data from sesion, then we asume that there is no logged user.
+            user_logged = false;
+        }
+        model.addAttribute("user_logged", user_logged);
+    }
 
     @GetMapping("/")
     public String index(Model model) {
