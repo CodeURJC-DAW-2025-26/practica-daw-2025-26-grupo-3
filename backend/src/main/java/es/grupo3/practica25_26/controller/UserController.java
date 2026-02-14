@@ -19,8 +19,6 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
-    private User currentUser;
-
     @PostMapping("/user_register")
     public String userRegister(Model model, User newUser, HttpSession sesion) {
         userRepository.save(newUser);
@@ -35,7 +33,6 @@ public class UserController {
         Optional<User> op = userRepository.findByEmailAndPassword(email, password);
         if (op.isPresent()) { // If credentials are correct and user is found
             User user = op.get();
-            this.currentUser = user;
             sesion.setAttribute("user_logged", true);
             sesion.setAttribute("currentUser", user);
         } else {
@@ -46,13 +43,13 @@ public class UserController {
 
     @GetMapping("/log_out")
     public String logOut(HttpSession sesion) {
-        currentUser = null;
         sesion.invalidate();
         return "redirect:/";
     }
 
     @GetMapping("/profile")
-    public String profile(Model model) {
+    public String profile(Model model, HttpSession sesion) {
+        User currentUser = (User) sesion.getAttribute("currentUser");
         model.addAttribute("user", currentUser);
         return "profile";
     }

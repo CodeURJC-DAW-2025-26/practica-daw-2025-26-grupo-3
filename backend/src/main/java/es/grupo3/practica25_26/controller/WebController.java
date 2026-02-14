@@ -53,6 +53,12 @@ public class WebController {
         return "shopping-cart";
     }
 
+    @GetMapping("/orders")
+    public String orders(Model model, HttpSession sesion) {
+        getUserNavInfo(model, sesion);
+        return "orders";
+    }
+
     @GetMapping("/login")
     public String login(Model model) {
         return "login";
@@ -66,11 +72,6 @@ public class WebController {
     @GetMapping("/my_products")
     public String myProducts(Model model) {
         return "my_products";
-    }
-
-    @GetMapping("/orders")
-    public String orders(Model model) {
-        return "orders";
     }
 
     @GetMapping("/admin_panel")
