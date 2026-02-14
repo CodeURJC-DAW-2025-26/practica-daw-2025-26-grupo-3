@@ -60,7 +60,9 @@
         <h2 class="fw-bold display-8 mb-2">Lo más buscado esta semana</h2>
         <p class="text-muted">Descubre los productos más populares entre nuestra comunidad</p>
       </div>
-      <div class="row g-4">
+      <div class="row g-4 justify-content-center">
+
+        {{#products}}
         <div class="col-md-3">
           <div class="card h-100 border-0 shadow-sm product-card position-relative">
             <span class="position-absolute top-0 end-0 m-3 badge bg-success">-15%</span>
@@ -68,8 +70,8 @@
               alt="Producto">
             <div class="card-body">
               <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary mb-2">Reacondicionado</span>
-              <h5 class="card-title h6 fw-bold">iPhone 13 - 128GB</h5>
-              <p class="text-primary fw-bold fs-5 mb-1">250.00€</p>
+              <h5 class="card-title h6 fw-bold">{{productName}}</h5>
+              <p class="text-primary fw-bold fs-5 mb-1">{{price}}</p>
               <div class="small text-warning">★★★★☆ <span class="text-muted">(24)</span></div>
             </div>
             <div class="card-footer bg-transparent border-0 pb-3">
@@ -84,6 +86,7 @@
             </div>
           </div>
         </div>
+<<<<<<< HEAD
         <div class="col-md-3">
           <div class="card h-100 border-0 shadow-sm product-card">
             <img src="https://placehold.co/300x250/667eea/ffffff?text=iPhone+13" class="card-img-top product-img"
@@ -104,8 +107,20 @@
                 detalles</a>
               {{/user_logged}}
             </div>
+=======
+        {{/products}}
+
+        {{^products}}
+        <div class="col-12">
+          <div class="alert alert-info text-center" role="alert">
+            No hay productos destacados disponibles en este momento. ¡Vuelve pronto para descubrir nuevas ofertas!
+>>>>>>> orderClasses
           </div>
+
+          {{/products}}
+
         </div>
+<<<<<<< HEAD
         <div class="col-md-3">
           <div class="card h-100 border-0 shadow-sm product-card">
             <img src="https://placehold.co/300x250/764ba2/ffffff?text=MacBook+Air" class="card-img-top product-img"
@@ -150,6 +165,11 @@
               {{/user_logged}}
             </div>
           </div>
+=======
+        <div class="text-center mt-5">
+          <a href="/products-search-anonymous" class="btn btn-outline-primary btn-lg px-5 rounded-pill">Ver todos los
+            productos →</a>
+>>>>>>> orderClasses
         </div>
         <div class="text-center mt-5">
           <a href="/product_search" class="btn btn-outline-primary btn-lg px-5 rounded-pill">Ver todos los

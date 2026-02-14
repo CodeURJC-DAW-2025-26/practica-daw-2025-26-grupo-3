@@ -5,27 +5,21 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import es.grupo3.practica25_26.model.User;
-import jakarta.servlet.http.HttpSession;
+import es.grupo3.practica25_26.repository.UserRepository;
+import es.grupo3.practica25_26.service.ProductService;
 
 @Controller
 public class WebController {
 
-    private void getUserNavInfo(Model model, HttpSession sesion) {
-        User currentUser;
-        boolean user_logged = true;
-        try {
-            user_logged = (boolean) sesion.getAttribute("user_logged");
-            currentUser = (User) sesion.getAttribute("currentUser");
-            model.addAttribute("userName", currentUser.getUserName());
-        } catch (Exception e) { // If we get no data from sesion, then we asume that there is no logged user.
-            user_logged = false;
-        }
-        model.addAttribute("user_logged", user_logged);
-    }
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    ProductService ProductService;
 
     @GetMapping("/")
-    public String index(Model model, HttpSession sesion) {
-        getUserNavInfo(model, sesion);
+    public String index(Model model) {
+        model.addAttribute("products", ProductService.findAll());
         return "index";
     }
 
@@ -67,6 +61,17 @@ public class WebController {
     @GetMapping("/signup")
     public String signup(Model model) {
         return "signup";
+    }
+
+    @GetMapping("/products-search-anonymous")
+    public String productsSearchAnonymous(Model model) {
+        return "products-search-anonymous";
+    }
+
+    @GetMapping("/index_registered")
+    public String indexRegistered(Model model) {
+        model.addAttribute("products", ProductService.findAll());
+        return "index_registered";
     }
 
     @GetMapping("/my_products")
