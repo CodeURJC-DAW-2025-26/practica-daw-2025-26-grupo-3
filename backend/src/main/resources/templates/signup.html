@@ -71,7 +71,9 @@
                                     <label class="form-label small fw-bold">Contraseña <span
                                             class="mandatory">*</span></label>
                                     <input type="password" class="form-control form-control-sm"
-                                        placeholder="Crea una contraseña" name="password" required>
+                                        placeholder="Crea una contraseña"
+                                        value="{{#newUser.password}}{{newUser.password}}{{/newUser.password}}"
+                                        name="password" required>
                                 </div>
                             </div>
 
