@@ -17,6 +17,22 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
+    // DATABASE QUERIES
+
+    public void saveUser(User user) {
+        userRepository.save(user);
+    }
+
+    public Optional<User> findUserByLogin(String email, String pass) {
+        return userRepository.findByEmailAndPassword(email, pass);
+    }
+
+    public Optional<User> findUserByEmail(String email) {
+        return userRepository.findDistinctByEmail(email);
+    }
+
+    // OTTHER METHODS
+
     public void getUserNavInfo(Model model, HttpSession session) {
         User currentUser;
         boolean user_logged = true;
@@ -28,14 +44,6 @@ public class UserService {
             user_logged = false;
         }
         model.addAttribute("user_logged", user_logged);
-    }
-
-    public void saveUser(User user) {
-        userRepository.save(user);
-    }
-
-    public Optional<User> findUserByLogin(String email, String pass) {
-        return userRepository.findByEmailAndPassword(email, pass);
     }
 
     public void logOut(HttpSession session) {

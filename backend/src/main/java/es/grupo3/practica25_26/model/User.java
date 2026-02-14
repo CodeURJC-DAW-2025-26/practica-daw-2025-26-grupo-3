@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+
 import java.util.List;
 
 @Entity
@@ -17,7 +19,10 @@ public class User {
     private String userName;
     private String surname;
     private String address;
+
+    @Column(unique = true)
     private String email;
+
     private String password;
 
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)

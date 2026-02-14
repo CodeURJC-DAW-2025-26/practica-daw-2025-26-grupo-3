@@ -9,4 +9,7 @@ import es.grupo3.practica25_26.model.User;
 public interface UserRepository extends JpaRepository<User, Long> {
     @Query
     Optional<User> findByEmailAndPassword(String email, String password);
+
+    @Query
+    Optional<User> findDistinctByEmail(String email);
 }

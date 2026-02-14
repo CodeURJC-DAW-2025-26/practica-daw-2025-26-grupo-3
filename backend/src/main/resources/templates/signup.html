@@ -41,27 +41,31 @@
                                     <label class="form-label small fw-bold">Nombre <span
                                             class="mandatory">*</span></label>
                                     <input type="text" class="form-control form-control-sm" placeholder="Tu nombre"
-                                        name="userName" required>
+                                        name="userName"
+                                        value="{{#newUser.userName}}{{newUser.userName}}{{/newUser.userName}}" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold">Apellidos <span
                                             class="mandatory">*</span></label>
                                     <input type="text" class="form-control form-control-sm" placeholder="Tus apellidos"
-                                        name="surname" required>
+                                        name="surname"
+                                        value="{{#newUser.surname}}{{newUser.surname}}{{/newUser.surname}}" required>
                                 </div>
 
                                 <div class="col-md-12">
                                     <label class="form-label small fw-bold">Dirección de envío <span
                                             class="mandatory">*</span></label>
                                     <input type="text" class="form-control form-control-sm"
-                                        placeholder="Calle, número, ciudad..." name="address" required>
+                                        placeholder="Calle, número, ciudad..." name="address"
+                                        value="{{#newUser.address}}{{newUser.address}}{{/newUser.address}}" required>
                                 </div>
 
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold">Correo electrónico <span
                                             class="mandatory">*</span></label>
                                     <input type="email" class="form-control form-control-sm"
-                                        placeholder="email@ejemplo.com" name="email" required>
+                                        placeholder="email@ejemplo.com" name="email"
+                                        value="{{#newUser.email}}{{newUser.email}}{{/newUser.email}}" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold">Contraseña <span

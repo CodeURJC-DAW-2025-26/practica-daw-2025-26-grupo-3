@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.ProductService;
 import es.grupo3.practica25_26.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -68,7 +69,11 @@ public class WebController {
     }
 
     @GetMapping("/signup")
-    public String signup(Model model) {
+    public String signup(Model model, HttpSession session) {
+        if (session.getAttribute("user_failed_register") != null) {
+            model.addAttribute("newUser", session.getAttribute("user_failed_register"));
+            session.removeAttribute("user_failed_register");
+        }
         return "signup";
     }
 
