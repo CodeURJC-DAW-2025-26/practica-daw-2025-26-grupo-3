@@ -40,8 +40,7 @@ public class User {
 
     }
 
-    public User(long id, String userName, String surname, String address, String email, String password) {
-        this.id = id;
+    public User(String userName, String surname, String address, String email, String password) {
         this.userName = userName;
         this.surname = surname;
         this.address = address;

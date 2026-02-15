@@ -14,49 +14,70 @@ import jakarta.annotation.PostConstruct;
 @Service
 public class SampleDataService {
 
-    @Autowired
-    private ProductRepository productRepository;
+        @Autowired
+        private ProductRepository productRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+        @Autowired
+        private UserRepository userRepository;
 
-    @PostConstruct
-    public void init() {
-        if (userRepository.count() > 0) {
-            return;
+        @PostConstruct
+        public void init() {
+                if (userRepository.count() > 0) {
+                        return;
+                }
+
+                User exampleUser1 = new User("Marta", "Lopez", "Calle Mayor 12, Madrid", "marta@example.com",
+                                "demo1234");
+                User exampleUser2 = new User("Carlos", "Gomez", "Avenida Sol 7, Valencia", "carlos@example.com",
+                                "demo1234");
+                User exampleUser3 = new User("Juan", "Cuesta", "Calle Desengaño 21, Madrid", "juan@example.com",
+                                "demo1234");
+                User exampleUser4 = new User("Pedro", "Ramirez", "Calle Tetuan 5, Sevilla", "pedro@example.com",
+                                "demo1234");
+                User exampleUser5 = new User("Ana", "Fernandez", "Avenida Diagonal 200, Barcelona",
+                                "ana@example.com", "demo1234");
+                User exampleUser6 = new User("Luis", "García", "Plaza España 1, Zaragoza", "luis@example.com",
+                                "demo1234");
+                User exampleUser7 = new User("Maria", "Sanchez", "Gran Vía 33, Bilbao", "maria@example.com",
+                                "demo1234");
+                User exampleUser8 = new User("Sofia", "Ruiz", "Calle Larios 10, Málaga", "sofia@example.com",
+                                "demo1234");
+                User exampleUser9 = new User("Javier", "Torres", "Paseo de la Castellana 100, Madrid",
+                                "javier@example.com", "demo1234");
+                User exampleUser10 = new User("Lucia", "Martin", "Calle San Vicente 4, Valencia",
+                                "lucia@example.com", "demo1234");
+                User exampleUser11 = new User("David", "Moreno", "Rúa do Franco 15, Santiago de Compostela",
+                                "david@example.com", "demo1234");
+                User exampleUser12 = new User("Elena", "Jimenez", "Calle Santa María 2, Toledo",
+                                "elena@example.com", "demo1234");
+                User exampleUser13 = new User("Pablo", "Diaz", "Calle Corrida 8, Gijón", "pablo@example.com",
+                                "demo1234");
+
+                userRepository.saveAll(List.of(exampleUser1, exampleUser2, exampleUser3, exampleUser4, exampleUser5,
+                                exampleUser6, exampleUser7, exampleUser8, exampleUser9, exampleUser10,
+                                exampleUser11,
+                                exampleUser12, exampleUser13));
+
+                // EXAMPLE PRODUCTS
+
+                if (productRepository.count() > 0) {
+                        return;
+                }
+                Product p1 = new Product("Portatil Lenovo ThinkPad", 450.0, 2,
+                                "Portatil usado en buen estado, 16GB RAM, 512GB SSD", exampleUser1);
+                Product p2 = new Product("iPhone 12", 520.0, 1,
+                                "Reacondicionado con bateria al 90% y garantia", exampleUser1);
+                Product p3 = new Product("Auriculares Sony WH-1000XM4", 180.0, 1,
+                                "Cancelacion de ruido y estuche incluido", exampleUser1);
+
+                Product p4 = new Product("Nintendo Switch", 210.0, 2,
+                                "Incluye Joy-Con y dock, con caja", exampleUser2);
+                Product p5 = new Product("Teclado mecanico Keychron K2", 75.0, 0,
+                                "Nuevo, interruptores brown, layout ES", exampleUser2);
+                Product p6 = new Product("Monitor LG 27\" 4K", 230.0, 2,
+                                "Panel IPS, sin pixeles muertos", exampleUser2);
+
+                productRepository.saveAll(List.of(p1, p2, p3, p4, p5, p6));
         }
-
-        User sellerOne = new User();
-        sellerOne.setUserName("Marta");
-        sellerOne.setSurname("Lopez");
-        sellerOne.setAddress("Calle Mayor 12, Madrid");
-        sellerOne.setEmail("marta@example.com");
-        sellerOne.setPassword("demo1234");
-
-        User sellerTwo = new User();
-        sellerTwo.setUserName("Carlos");
-        sellerTwo.setSurname("Gomez");
-        sellerTwo.setAddress("Avenida Sol 7, Valencia");
-        sellerTwo.setEmail("carlos@example.com");
-        sellerTwo.setPassword("demo1234");
-
-        userRepository.saveAll(List.of(sellerOne, sellerTwo));
-
-        Product p1 = new Product("Portatil Lenovo ThinkPad", 450.0, 2,
-                "Portatil usado en buen estado, 16GB RAM, 512GB SSD", sellerOne);
-        Product p2 = new Product("iPhone 12", 520.0, 1,
-                "Reacondicionado con bateria al 90% y garantia", sellerOne);
-        Product p3 = new Product("Auriculares Sony WH-1000XM4", 180.0, 1,
-                "Cancelacion de ruido y estuche incluido", sellerOne);
-
-        Product p4 = new Product("Nintendo Switch", 210.0, 2,
-                "Incluye Joy-Con y dock, con caja", sellerTwo);
-        Product p5 = new Product("Teclado mecanico Keychron K2", 75.0, 0,
-                "Nuevo, interruptores brown, layout ES", sellerTwo);
-        Product p6 = new Product("Monitor LG 27\" 4K", 230.0, 2,
-                "Panel IPS, sin pixeles muertos", sellerTwo);
-
-        productRepository.saveAll(List.of(p1, p2, p3, p4, p5, p6));
-    }
 
 }
