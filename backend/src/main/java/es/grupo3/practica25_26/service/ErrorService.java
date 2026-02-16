@@ -13,7 +13,8 @@ public class ErrorService {
     @Autowired
     UserService userService;
 
-    public String setErrorPage(Model model, HttpSession session, String title, String message, boolean extraButton,
+    public String setErrorPageWithButton(Model model, HttpSession session, String title, String message,
+            boolean extraButton,
             String buttonName, String buttonLink) {
         Error error = new Error(title, message);
 
@@ -24,6 +25,16 @@ public class ErrorService {
         model.addAttribute("buttonName", buttonName);
         model.addAttribute("buttonLink", buttonLink);
 
+        return "error";
+    }
+
+    public String setErrorPage(Model model, HttpSession session, String title, String message) {
+        Error error = new Error(title, message);
+
+        userService.getUserNavInfo(model, session);
+
+        model.addAttribute("error", error);
+        model.addAttribute("extraButton", false);
         return "error";
     }
 
