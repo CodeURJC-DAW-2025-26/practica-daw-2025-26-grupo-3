@@ -19,9 +19,16 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public List<Product> findAll() {
+    public void saveAll(List<Product> products) {
+        productRepository.saveAll(products);
+    }
 
-        return productRepository.findAll();
+    public long count() {
+        return productRepository.count();
+    }
+
+    public List<Product> findAll() {
+        return productRepository.findAllWithImages();
     }
 
     // optional because the product with the given id may not exist

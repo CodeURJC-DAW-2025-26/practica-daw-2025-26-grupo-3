@@ -3,6 +3,7 @@ package es.grupo3.practica25_26.service;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.repository.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,14 @@ public class UserService {
 
     public void saveUser(User user) {
         userRepository.save(user);
+    }
+
+    public void saveAll(List<User> users) {
+        userRepository.saveAll(users);
+    }
+
+    public long count() {
+        return userRepository.count();
     }
 
     public Optional<User> findUserByLogin(String email, String pass) {
