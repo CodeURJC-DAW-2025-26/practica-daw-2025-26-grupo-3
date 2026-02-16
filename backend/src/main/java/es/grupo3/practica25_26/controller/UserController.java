@@ -109,4 +109,25 @@ public class UserController {
         return "profile";
     }
 
+    @GetMapping("/profile/edit")
+    public String editProfile(Model model, HttpSession session) {
+        User currentUser = (User) session.getAttribute("currentUser");
+
+        model.addAttribute("user", currentUser);
+        return "profile_edit";
+    }
+
+    @PostMapping("/profile/update")
+    public String updateProfile(Model model, HttpSession session, @RequestParam String userName,
+            @RequestParam String surname,
+            @RequestParam String email, @RequestParam String address) {
+        User currentUser = (User) session.getAttribute("currentUser");
+        userService.updateUserInfo(currentUser, userName, surname, email, address);
+        session.setAttribute("currentUser", currentUser);
+        User updatedUser = new User(userName, surname, email, address, currentUser.getPassword());
+
+        model.addAttribute("user", updatedUser);
+        return "profile";
+    }
+
 }

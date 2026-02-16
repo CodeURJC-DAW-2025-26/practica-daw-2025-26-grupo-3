@@ -53,4 +53,14 @@ public class UserService {
     public User getCurrentUser(HttpSession session) {
         return (User) session.getAttribute("currentUser");
     }
+
+    public void updateUserInfo(User currentUser, String userName, String surname, String email, String address) {
+
+        currentUser.setUserName(userName);
+        currentUser.setSurname(surname);
+        currentUser.setEmail(email);
+        currentUser.setAddress(address);
+
+        userRepository.save(currentUser);
+    }
 }
