@@ -109,5 +109,17 @@ public class Product {
     public void setImages(List<Image> images) {
         this.images = images;
     }
+    
+    public Image getFirstImage(){
+
+        if (images != null && !images.isEmpty()) { //If list of images not empty
+            return images.get(0);
+        }
+        return null; //If empty return null
+
+    }
+    public boolean hasImage() {
+        return images != null && !images.isEmpty();
+    }
 
 }

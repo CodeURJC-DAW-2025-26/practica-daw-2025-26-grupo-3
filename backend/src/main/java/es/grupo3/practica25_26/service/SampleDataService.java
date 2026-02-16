@@ -51,25 +51,34 @@ public class SampleDataService {
 
                         productService.saveAll(List.of(p1, p2, p3, p4, p5, p6));
 
-                        // Cargar imágenes específicas para cada producto desde recursos
-                        setImageForProduct(p1, "/sample_images/images/commentor-item1.jpg");
                         
-                        setImageForProduct(p2, "/sample_images/images/commentor-item2.jpg");
-                        setImageForProduct(p3, "/sample_images/images/commentor-item3.jpg");
-                        setImageForProduct(p4, "/sample_images/images/commentor-item1.jpg");
-                        setImageForProduct(p5, "/sample_images/images/commentor-item2.jpg");
-                        setImageForProduct(p6, "/sample_images/images/commentor-item3.jpg");
-                }
+                        addImageToProduct(p1, "/sample_images/images/commentor-item1.jpg");
+                        addImageToProduct(p1, "/sample_images/images/admin_panel.png"); // Segunda imagen
+
+
+                        addImageToProduct(p2, "/sample_images/images/commentor-item2.jpg");
+                        addImageToProduct(p3, "/sample_images/images/commentor-item3.jpg");
+                        
+                        
+                        addImageToProduct(p4, "/sample_images/images/commentor-item1.jpg");
+                        addImageToProduct(p4, "/sample_images/images/commentor-item2.jpg");
+
+                        addImageToProduct(p5, "/sample_images/images/commentor-item2.jpg");
+                        addImageToProduct(p6, "/sample_images/images/commentor-item3.jpg");
+                                
+                        //We save all the products at once
+                        productService.saveAll(List.of(p1, p2, p3, p4, p5, p6));  
+        }
         }
 
-        private void setImageForProduct(Product product, String classpathResource) throws IOException {
+        private void addImageToProduct(Product product, String classpathResource) throws IOException {
 
                 Resource image = new ClassPathResource(classpathResource);
 
                 Image createdImage = imageService.createImage(image.getInputStream());
                 createdImage.setProduct(product);
                 product.getImages().add(createdImage);
-                productService.save(product);
+               
         }
 
         private User getOrCreateUser(String name, String surname, String address, String email, String password) {

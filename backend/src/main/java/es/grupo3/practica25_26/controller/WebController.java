@@ -83,11 +83,6 @@ public class WebController {
         return "products-search-anonymous";
     }
 
-    @GetMapping("/index_registered")
-    public String indexRegistered(Model model) {
-        model.addAttribute("products", ProductService.findAll());
-        return "index_registered";
-    }
 
     @GetMapping("/admin_panel")
     public String adminPanel(Model model) {
