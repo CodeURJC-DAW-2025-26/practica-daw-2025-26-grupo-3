@@ -14,7 +14,6 @@ public class ErrorService {
     UserService userService;
 
     public String setErrorPageWithButton(Model model, HttpSession session, String title, String message,
-            boolean extraButton,
             String buttonName, String buttonLink) {
         Error error = new Error(title, message);
 
