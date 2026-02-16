@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import es.grupo3.practica25_26.model.User;
+import es.grupo3.practica25_26.model.Error;
 import es.grupo3.practica25_26.service.ErrorService;
 import es.grupo3.practica25_26.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -26,54 +27,81 @@ public class UserController {
     @PostMapping("/user_register")
     public String userRegister(Model model, User newUser, HttpSession session) {
         Optional<User> op = userService.findUserByEmail(newUser.getEmail());
+        Error error = null;
+        String errorTitle = "";
+        String errorMessage = "";
         if (op.isPresent()) {
             session.setAttribute("user_failed_register", newUser);
             session.setAttribute("user_logged", false);
-            return errorService.setErrorPageWithButton(model, session, "El e-mail escogido está en uso.",
-                    "El correo electrónico introducido en el fomulario de registro ya pertenece a otro usuario. Por favor, utiliza otro correo electrónico para registrarte.",
-                    "Volver al registro", "/signup");
+
+            errorTitle = "El e-mail escogido está en uso.";
+            errorMessage = "El correo electrónico introducido en el fomulario de registro ya pertenece a otro usuario. Por favor, utiliza otro correo electrónico para registrarte.";
+
+            error = new Error(errorTitle, errorMessage);
         } else if (newUser.getUserName().length() > 8) {
             session.setAttribute("user_failed_register", newUser);
             session.setAttribute("user_logged", false);
-            return errorService.setErrorPageWithButton(model, session, "¡Demasiados caracteres en tu nombre!",
-                    "Tu nombre de usuario no debe tener más de 8 caracteres. Has introducido "
-                            + newUser.getUserName().length() + " caracteres.",
-                    "Volver al registro", "/signup");
+
+            errorTitle = "¡Demasiados caracteres en tu nombre!";
+            errorMessage = "Tu nombre de usuario no debe tener más de 8 caracteres. Has introducido "
+                    + newUser.getUserName().length() + " caracteres.";
+
+            error = new Error(errorTitle, errorMessage);
+
         } else if (newUser.getSurname().length() > 30) {
             session.setAttribute("user_failed_register", newUser);
             session.setAttribute("user_logged", false);
-            return errorService.setErrorPageWithButton(model, session, "¡Demasiados caracteres en tu apellido!",
-                    "Tu apellido no debe tener más de 30 caracteres. Has introducido "
-                            + newUser.getSurname().length() + " caracteres.",
-                    "Volver al registro", "/signup");
+
+            errorTitle = "¡Demasiados caracteres en tu apellido!";
+            errorMessage = "Tu apellido no debe tener más de 30 caracteres. Has introducido "
+                    + newUser.getSurname().length() + " caracteres.";
+
+            error = new Error(errorTitle, errorMessage);
+
         } else if (newUser.getAddress().length() > 30) {
             session.setAttribute("user_failed_register", newUser);
             session.setAttribute("user_logged", false);
-            return errorService.setErrorPageWithButton(model, session, "¡Demasiados caracteres en tu dirección!",
-                    "Tu dirección no debe tener más de 30 caracteres. Has introducido "
-                            + newUser.getAddress().length() + " caracteres.",
-                    "Volver al registro", "/signup");
+
+            errorTitle = "¡Demasiados caracteres en tu dirección!";
+            errorMessage = "Tu dirección no debe tener más de 30 caracteres. Has introducido "
+                    + newUser.getAddress().length() + " caracteres.";
+
+            error = new Error(errorTitle, errorMessage);
+
         } else if (newUser.getUserName().length() == 0 || newUser.getSurname().length() == 0 ||
                 newUser.getAddress().length() == 0 || newUser.getEmail().length() == 0
                 || newUser.getPassword().length() == 0) {
             session.setAttribute("user_failed_register", newUser);
             session.setAttribute("user_logged", false);
-            return errorService.setErrorPageWithButton(model, session, "¡Formulario incompleto!",
-                    "No has rellenado todos los campos obligatorios del formulario.",
-                    "Volver al registro", "/signup");
+
+            errorTitle = "¡Formulario incompleto!";
+            errorMessage = "No has rellenado todos los campos obligatorios del formulario.";
+
+            error = new Error(errorTitle, errorMessage);
+
         } else if (newUser.getEmail().indexOf("@") == -1) {
             session.setAttribute("user_failed_register", newUser);
             session.setAttribute("user_logged", false);
-            return errorService.setErrorPageWithButton(model, session, "¡E-mail inválido!",
-                    "El correo electrónico introducido no es válido",
-                    "Volver al registro", "/signup");
+
+            errorTitle = "¡E-mail inválido!";
+            errorMessage = "El correo electrónico que has introducido no es correcto.";
+
+            error = new Error(errorTitle, errorMessage);
+
         } else if (newUser.getPassword().length() < 8 || newUser.getPassword().length() > 20) {
             session.setAttribute("user_failed_register", newUser);
             session.setAttribute("user_logged", false);
-            return errorService.setErrorPageWithButton(model, session, "¡Contraseña inválida!",
-                    "Tu contraseña debe tener entre 8 y 20 caracteres. Has introducido "
-                            + newUser.getPassword().length() + " caracteres.",
-                    "Volver al registro", "/signup");
+
+            errorTitle = "¡Contraseña inválida!";
+            errorMessage = "Tu contraseña debe tener entre 8 y 20 caracteres. Has introducido "
+                    + newUser.getPassword().length() + " caracteres.";
+
+            error = new Error(errorTitle, errorMessage);
+        }
+
+        if (error != null) {
+            return errorService.setErrorPageWithButton(model, session, errorTitle, errorMessage, "Volver al registro",
+                    "/signup");
         } else {
             session.setAttribute("currentUser", newUser);
             userService.saveUser(newUser);
@@ -111,9 +139,14 @@ public class UserController {
 
     @GetMapping("/profile/edit")
     public String editProfile(Model model, HttpSession session) {
-        User currentUser = (User) session.getAttribute("currentUser");
-
-        model.addAttribute("user", currentUser);
+        User failedUser = (User) session.getAttribute("user_failed_update");
+        if (failedUser != null) {
+            model.addAttribute("user", failedUser);
+            session.removeAttribute("user_failed_update");
+        } else {
+            User currentUser = (User) session.getAttribute("currentUser");
+            model.addAttribute("user", currentUser);
+        }
         return "profile_edit";
     }
 
@@ -121,13 +154,82 @@ public class UserController {
     public String updateProfile(Model model, HttpSession session, @RequestParam String userName,
             @RequestParam String surname,
             @RequestParam String email, @RequestParam String address) {
+
+        Error error = null;
+        String errorTitle = "";
+        String errorMessage = "";
         User currentUser = (User) session.getAttribute("currentUser");
-        userService.updateUserInfo(currentUser, userName, surname, email, address);
-        session.setAttribute("currentUser", currentUser);
         User updatedUser = new User(userName, surname, email, address, currentUser.getPassword());
+        Optional<User> op = userService.findUserByEmail(email);
+        if (!op.isPresent()) {
+            session.setAttribute("user_failed_update", updatedUser);
+            session.setAttribute("user_logged", true);
 
-        model.addAttribute("user", updatedUser);
-        return "profile";
+            errorTitle = "El e-mail escogido está en uso.";
+            errorMessage = "El correo electrónico introducido en el fomulario de registro ya pertenece a otro usuario. Por favor, utiliza otro correo electrónico.";
+
+            error = new Error(errorTitle, errorMessage);
+        } else if (userName.length() > 8) {
+            session.setAttribute("user_failed_update", updatedUser);
+            session.setAttribute("user_logged", true);
+
+            errorTitle = "¡Demasiados caracteres en tu nombre!";
+            errorMessage = "Tu nombre de usuario no debe tener más de 8 caracteres. Has introducido "
+                    + updatedUser.getUserName().length() + " caracteres.";
+
+            error = new Error(errorTitle, errorMessage);
+        } else if (surname.length() > 30) {
+            session.setAttribute("user_failed_update", updatedUser);
+            session.setAttribute("user_logged", true);
+
+            errorTitle = "¡Demasiados caracteres en tu apellido!";
+            errorMessage = "Tu apellido no debe tener más de 30 caracteres. Has introducido "
+                    + updatedUser.getSurname().length() + " caracteres.";
+
+            error = new Error(errorTitle, errorMessage);
+        } else if (email.indexOf("@") == -1) {
+            session.setAttribute("user_failed_update", updatedUser);
+            session.setAttribute("user_logged", true);
+
+            errorTitle = "¡E-mail inválido!";
+            errorMessage = "El correo electrónico que has introducido no es correcto.";
+
+            error = new Error(errorTitle, errorMessage);
+        } else if (email.length() > 50) {
+            session.setAttribute("user_failed_update", updatedUser);
+            session.setAttribute("user_logged", true);
+
+            errorTitle = "¡E-mail inválido!";
+            errorMessage = "El correo electrónico que has introducido no es correcto.";
+
+            error = new Error(errorTitle, errorMessage);
+        } else if (address.length() > 30) {
+            session.setAttribute("user_failed_update", updatedUser);
+            session.setAttribute("user_logged", true);
+
+            errorTitle = "¡Demasiados caracteres en tu dirección!";
+            errorMessage = "Tu dirección no debe tener más de 30 caracteres. Has introducido "
+                    + updatedUser.getAddress().length() + " caracteres.";
+
+            error = new Error(errorTitle, errorMessage);
+        } else if (userName.length() == 0 || surname.length() == 0 || email.length() == 0 || address.length() == 0) {
+            session.setAttribute("user_failed_update", updatedUser);
+            session.setAttribute("user_logged", true);
+
+            errorTitle = "¡Formulario incompleto!";
+            errorMessage = "No has rellenado todos los campos obligatorios del formulario.";
+
+            error = new Error(errorTitle, errorMessage);
+        }
+
+        if (error != null) {
+            return errorService.setErrorPageWithButton(model, session, errorTitle, errorMessage,
+                    "Volver a edición de perfil", "/profile/edit");
+        } else {
+            userService.updateUserInfo(currentUser, userName, surname, email, address);
+            session.setAttribute("currentUser", updatedUser);
+            model.addAttribute("user", updatedUser);
+            return "profile";
+        }
     }
-
 }

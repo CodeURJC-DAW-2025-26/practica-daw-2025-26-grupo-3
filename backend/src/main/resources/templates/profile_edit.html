@@ -40,26 +40,26 @@
                                     <label class="form-label text-muted small fw-bold text-uppercase">Nombre
                                     </label>
                                     <input type="text" class="form-control bg-light border-0" name="userName"
-                                        value="{{user.userName}}" required>
+                                        value="{{user.userName}}" maxlength="8" required>
                                 </div>
 
                                 <div class="col-md-6">
                                     <label class="form-label text-muted small fw-bold text-uppercase">Apellidos</label>
                                     <input type="text" class="form-control bg-light border-0" name="surname"
-                                        value="{{user.surname}}" required>
+                                        value="{{user.surname}}" maxlength="30" required>
                                 </div>
 
                                 <div class="col-md-6">
                                     <label class="form-label text-muted small fw-bold text-uppercase">Correo
                                         Electrónico</label>
                                     <input type="email" class="form-control bg-light border-0" name="email"
-                                        value="{{user.email}}">
+                                        value="{{user.email}}" required>
                                 </div>
 
                                 <div class="col-md-6">
                                     <label class="form-label text-muted small fw-bold text-uppercase">Dirección</label>
                                     <input type="text" class="form-control bg-light border-0" name="address"
-                                        value="{{user.address}}" required>
+                                        value="{{user.address}}" maxlength="30" required>
                                 </div>
 
                                 <div class="col-12 text-end mt-4">
