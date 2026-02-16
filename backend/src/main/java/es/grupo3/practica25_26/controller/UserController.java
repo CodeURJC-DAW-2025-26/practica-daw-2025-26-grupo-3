@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import es.grupo3.practica25_26.model.User;
-import es.grupo3.practica25_26.model.Error;
+import es.grupo3.practica25_26.service.ErrorService;
 import es.grupo3.practica25_26.service.UserService;
 import jakarta.servlet.http.HttpSession;
 
@@ -20,23 +20,18 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    ErrorService errorService;
+
     @PostMapping("/user_register")
     public String userRegister(Model model, User newUser, HttpSession session) {
         Optional<User> op = userService.findUserByEmail(newUser.getEmail());
         if (op.isPresent()) {
             session.setAttribute("user_failed_register", newUser);
-            Error error = new Error("El e-mail escogido está en uso.",
-                    "El correo electrónico introducido en el fomulario de registro ya pertenece a otro usuario. Por favor, utiliza otro correo electrónico para registrarte.");
-
-            userService.getUserNavInfo(model, session);
-
-            model.addAttribute("error", error);
-            model.addAttribute("extraButton", true);
-            model.addAttribute("buttonName", "Volver al registro");
-            model.addAttribute("buttonLink", "/signup");
-
             session.setAttribute("user_logged", false);
-            return "error";
+            return errorService.setErrorPage(model, session, "El e-mail escogido está en uso.",
+                    "El correo electrónico introducido en el fomulario de registro ya pertenece a otro usuario. Por favor, utiliza otro correo electrónico para registrarte.",
+                    true, "Volver al registro", "/signup");
         } else {
             session.setAttribute("currentUser", newUser);
             userService.saveUser(newUser);
