@@ -41,14 +41,14 @@
                                     <label class="form-label small fw-bold">Nombre <span
                                             class="mandatory">*</span></label>
                                     <input type="text" class="form-control form-control-sm" placeholder="Tu nombre"
-                                        name="userName"
+                                        name="userName" maxlength="8"
                                         value="{{#newUser.userName}}{{newUser.userName}}{{/newUser.userName}}" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold">Apellidos <span
                                             class="mandatory">*</span></label>
                                     <input type="text" class="form-control form-control-sm" placeholder="Tus apellidos"
-                                        name="surname"
+                                        name="surname" maxlength="30"
                                         value="{{#newUser.surname}}{{newUser.surname}}{{/newUser.surname}}" required>
                                 </div>
 
@@ -56,7 +56,7 @@
                                     <label class="form-label small fw-bold">Dirección de envío <span
                                             class="mandatory">*</span></label>
                                     <input type="text" class="form-control form-control-sm"
-                                        placeholder="Calle, número, ciudad..." name="address"
+                                        placeholder="Calle, número, ciudad..." name="address" maxlength="30"
                                         value="{{#newUser.address}}{{newUser.address}}{{/newUser.address}}" required>
                                 </div>
 
@@ -73,7 +73,7 @@
                                     <input type="password" class="form-control form-control-sm"
                                         placeholder="Crea una contraseña"
                                         value="{{#newUser.password}}{{newUser.password}}{{/newUser.password}}"
-                                        name="password" required>
+                                        name="password" minlength="8" maxlength="20" required>
                                 </div>
                             </div>
 
