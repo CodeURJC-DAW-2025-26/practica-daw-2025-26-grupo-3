@@ -11,10 +11,16 @@
                 <ul class="list-unstyled">
                     <li><a href="/product_search" class="text-muted text-decoration-none"><i class="bi bi-bag"></i>
                             Productos</a></li>
+                    {{^ user_logged}}
                     <li><a href="/login" class="text-muted text-decoration-none"><i
                                 class="bi bi-box-arrow-in-right"></i> Iniciar Sesión</a></li>
                     <li><a href="/signup" class="text-muted text-decoration-none"><i class="bi bi-person-plus"></i>
                             Registrarse</a></li>
+                    {{/user_logged}}
+                    {{# user_logged}}
+                    <li><a href="/log_out" class="text-muted text-decoration-none"><i class="bi bi-box-arrow-right"></i>
+                            Cerrar Sesión</a></li>
+                    {{/ user_logged}}
                     <li><a href="#" class="text-muted text-decoration-none"><i class="bi bi-arrow-up-circle"></i> Volver
                             arriba</a></li>
                 </ul>

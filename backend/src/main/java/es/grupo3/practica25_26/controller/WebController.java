@@ -70,8 +70,9 @@ public class WebController {
 
     @GetMapping("/signup")
     public String signup(Model model, HttpSession session) {
-        if (session.getAttribute("user_failed_register") != null) {
-            model.addAttribute("newUser", session.getAttribute("user_failed_register"));
+        User failedUser = (User) session.getAttribute("user_failed_register");
+        if (failedUser != null) {
+            model.addAttribute("newUser", failedUser);
             session.removeAttribute("user_failed_register");
         }
         return "signup";

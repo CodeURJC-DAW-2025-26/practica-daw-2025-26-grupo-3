@@ -40,27 +40,26 @@ public class UserService {
         return userRepository.findDistinctByEmail(email);
     }
 
-    // OTTHER METHODS
+    // GET CURRENT USER INFO
 
     public void getUserNavInfo(Model model, HttpSession session) {
-        User currentUser;
-        boolean user_logged = true;
-        try {
-            user_logged = (boolean) session.getAttribute("user_logged");
-            currentUser = (User) session.getAttribute("currentUser");
+        User currentUser = (User) session.getAttribute("currentUser");
+        boolean user_logged = (currentUser != null);
+
+        if (user_logged) {
             model.addAttribute("userName", currentUser.getUserName());
-        } catch (Exception e) { // If we get no data from session, then we asume that there is no logged user.
-            user_logged = false;
         }
         model.addAttribute("user_logged", user_logged);
     }
 
-    public void logOut(HttpSession session) {
-        session.invalidate();
-    }
-
     public User getCurrentUser(HttpSession session) {
         return (User) session.getAttribute("currentUser");
+    }
+
+    // OTHER METHODS
+
+    public void logOut(HttpSession session) {
+        session.invalidate();
     }
 
     public void updateUserInfo(User currentUser, String userName, String surname, String email, String address) {
@@ -72,4 +71,10 @@ public class UserService {
 
         userRepository.save(currentUser);
     }
+
+    public void updateUserPassword(User currentUser, String newPassword) {
+        currentUser.setPassword(newPassword);
+        userRepository.save(currentUser);
+    }
+
 }
