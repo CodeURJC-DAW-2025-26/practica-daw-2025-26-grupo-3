@@ -1,10 +1,15 @@
 package es.grupo3.practica25_26.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.JoinColumn;
 
 @Entity
@@ -20,6 +25,9 @@ public class Product {
     @JoinColumn(name = "user_id")
     private User seller;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Image> images = new ArrayList<>();
+
     private String productName;
     private double price;
     private int state; // 0 New product, 1 reconditioned product, 2 Second hand product
@@ -34,6 +42,15 @@ public class Product {
         this.state = state;
         this.description = description;
         this.seller = seller;
+    }
+
+    public Product(User seller, List<Image> images, String productName, double price, int state, String description) {
+        this.seller = seller;
+        this.images = images;
+        this.productName = productName;
+        this.price = price;
+        this.state = state;
+        this.description = description;
     }
 
     public long getId() {
@@ -82,6 +99,14 @@ public class Product {
 
     public void setSeller(User seller) {
         this.seller = seller;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 
 }

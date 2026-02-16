@@ -1,12 +1,22 @@
 package es.grupo3.practica25_26.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.List;
+
+import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.model.Product;
 import es.grupo3.practica25_26.model.User;
+import es.grupo3.practica25_26.repository.ImageRepository;
 import es.grupo3.practica25_26.repository.ProductRepository;
 import es.grupo3.practica25_26.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
@@ -19,6 +29,9 @@ public class SampleDataService {
 
         @Autowired
         private UserRepository userRepository;
+
+        @Autowired
+        private ImageRepository imageRepository;
 
         @PostConstruct
         public void init() {
@@ -78,6 +91,37 @@ public class SampleDataService {
                                 "Panel IPS, sin pixeles muertos", exampleUser2);
 
                 productRepository.saveAll(List.of(p1, p2, p3, p4, p5, p6));
+
+                // Cargar imágenes específicas para cada producto desde static/images
+                loadImageForProduct(p1, "commentor-item1.jpg");
+                loadImageForProduct(p2, "commentor-item2.jpg");
+                loadImageForProduct(p3, "commentor-item3.jpg");
+                loadImageForProduct(p4, "commentor-item1.jpg");
+                loadImageForProduct(p5, "commentor-item2.jpg");
+                loadImageForProduct(p6, "commentor-item3.jpg");
+        }
+
+        private void loadImageForProduct(Product product, String imageName) {
+
+                String imagePath = "src/main/resources/sample_images/images/" + imageName;
+                Path path = Paths.get(imagePath);
+
+                if (!Files.exists(path)) {
+                        System.out.println(" Imagen no encontrada: " + imagePath);
+                        return;
+                }
+
+                try {
+                        byte[] imageBytes = Files.readAllBytes(path);
+                        Image image = new Image(new SerialBlob(imageBytes));
+                        imageRepository.save(image);
+                        product.getImages().add(image);
+                        productRepository.save(product);
+                        System.out.println(" Imagen cargada: " + imageName);
+                } catch (IOException | SQLException e) {
+                        System.err.println(" Error cargando imagen: " + imageName);
+                        e.printStackTrace();
+                }
         }
 
 }
