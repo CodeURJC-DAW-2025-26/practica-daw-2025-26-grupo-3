@@ -106,6 +106,7 @@ public class UserController {
             return errorService.setErrorPageWithButton(model, session, errorTitle, errorMessage, "Volver al registro",
                     "/signup");
         } else {
+            newUser.setRole(Role.USER);
             session.setAttribute("currentUser", newUser);
             userService.saveUser(newUser);
 
