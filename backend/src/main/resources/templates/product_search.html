@@ -90,7 +90,13 @@
                     {{#products}}
                     <div class="col-md-4">
                         <div class="card h-100 border-0 shadow-sm product-card">
-                            <img src="https://placehold.co/300x300?text={{productName}}" class="card-img-top" alt="...">
+                            {{#hasImage}}
+                            <img src="/product-images/{{id}}" class="card-img-top product-img" alt="{{productName}}">
+                            {{/hasImage}}
+                            {{^hasImage}}
+                            <img src="https://placehold.co/300x250/667eea/ffffff?text={{productName}}"
+                                class="card-img-top product-img" alt="Producto">
+                            {{/hasImage}}
                             <div class="card-body">
                                 <h5 class="card-title h6">{{productName}}</h5>
                                 <p class="text-primary fw-bold">{{price}}€</p>

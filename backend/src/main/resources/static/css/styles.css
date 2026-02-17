@@ -377,7 +377,11 @@ CUSTOM COMPONENT CLASSES
 /* Product Image Cards */
 .product-img {
   height: 250px;
-  object-fit: cover;
+  width: 100%;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px;
 }
 
 /* Footer Custom Styles */

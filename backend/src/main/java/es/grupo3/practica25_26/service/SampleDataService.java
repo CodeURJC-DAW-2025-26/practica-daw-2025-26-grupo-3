@@ -88,7 +88,6 @@ public class SampleDataService {
                 Resource image = new ClassPathResource(classpathResource);
 
                 Image createdImage = imageService.createImage(image.getInputStream());
-                createdImage.setProduct(product);
                 product.getImages().add(createdImage);
 
         }
