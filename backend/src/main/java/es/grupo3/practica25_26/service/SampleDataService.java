@@ -40,12 +40,22 @@ public class SampleDataService {
                 // Create or retrieve admin user first
                 User adminUser = getOrCreateAdmin("Admin", "System", "Admin Street 1, Spain",
                                 "admin@admin.com", "12345678");
+                if (adminUser.getImage() == null) {
+                        addImageToUser(adminUser, "/sample_images/images/profile.png");
+                }
 
                 // Create or retrieve regular users
                 User exampleUser1 = getOrCreateUser("Marta", "Lopez", "Calle Mayor 12, Madrid",
                                 "marta@example.com", "demo1234");
+                if (exampleUser1.getImage() == null) {
+                        addImageToUser(exampleUser1, "/sample_images/images/commentor-item2.jpg");
+                }
+
                 User exampleUser2 = getOrCreateUser("Carlos", "Gomez", "Avenida Sol 7, Valencia",
                                 "carlos@example.com", "demo1234");
+                if (exampleUser2.getImage() == null) {
+                        addImageToUser(exampleUser2, "/sample_images/images/commentor-item1.jpg");
+                }
 
                 // EXAMPLE PRODUCTS
 
@@ -90,6 +100,14 @@ public class SampleDataService {
                 Image createdImage = imageService.createImage(image.getInputStream());
                 product.getImages().add(createdImage);
 
+        }
+
+        private void addImageToUser(User user, String classpathResource) throws IOException {
+                Resource image = new ClassPathResource(classpathResource);
+
+                Image createdImage = imageService.createImage(image.getInputStream());
+                user.setImage(createdImage);
+                userService.saveUser(user);
         }
 
         private User getOrCreateUser(String name, String surname, String address, String email, String password) {

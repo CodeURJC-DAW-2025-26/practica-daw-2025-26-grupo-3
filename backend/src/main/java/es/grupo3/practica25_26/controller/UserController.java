@@ -1,5 +1,6 @@
 package es.grupo3.practica25_26.controller;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -165,11 +166,27 @@ public class UserController {
         if (failedUser != null && failedPassword == null) {
             model.addAttribute("user", failedUser);
             model.addAttribute("newPassword", "");
+
+            User currentUser = userService.getCurrentUser(session);
+            if (currentUser.getImage() != null) {
+                model.addAttribute("has_image", true);
+                model.addAttribute("id", currentUser.getImage().getId());
+            } else {
+                model.addAttribute("has_image", false);
+            }
+
             session.removeAttribute("user_failed_update");
         } else if (failedPassword != null) {
             User currentUser = userService.getCurrentUser(session);
             model.addAttribute("user", currentUser);
-            model.addAttribute("user", currentUser);
+
+            if (currentUser.getImage() != null) {
+                model.addAttribute("has_image", true);
+                model.addAttribute("id", currentUser.getImage().getId());
+            } else {
+                model.addAttribute("has_image", false);
+            }
+
             model.addAttribute("newPassword", failedPassword);
             session.removeAttribute("failed_password");
             if (failedUser != null) {
@@ -196,14 +213,23 @@ public class UserController {
     @PostMapping("/profile/update")
     public String updateProfile(Model model, HttpSession session, @RequestParam String userName,
             @RequestParam String surname,
-            @RequestParam String email, @RequestParam String address) {
+            @RequestParam String email, @RequestParam String address, @RequestParam MultipartFile imageFile)
+            throws IOException {
 
         Error error = null;
         String errorTitle = "";
         String errorMessage = "";
         User currentUser = userService.getCurrentUser(session);
-        User updatedUser = new User(userName, surname, email, address, currentUser.getPassword(),
+        User updatedUser = new User(userName, surname, address, email, currentUser.getPassword(),
                 currentUser.getRole());
+
+        Image updatedImage = null;
+        if (!imageFile.isEmpty()) {
+            updatedImage = imageService.createImage(imageFile.getInputStream());
+        } else {
+            updatedImage = currentUser.getImage();
+        }
+
         Optional<User> op = userService.findUserByEmail(email);
         if (!op.isPresent()) {
             session.setAttribute("user_failed_update", updatedUser);
@@ -265,9 +291,10 @@ public class UserController {
                     "Volver a edición de perfil", "/profile/edit");
         } else {
             userService.updateUserInfo(currentUser, userName, surname, email, address);
-            session.setAttribute("currentUser", updatedUser);
-            model.addAttribute("user", updatedUser);
-            return "profile";
+            User updatedUserWithImage = userService.addImageToUser(currentUser.getId(), updatedImage);
+            session.setAttribute("currentUser", updatedUserWithImage);
+            model.addAttribute("user", updatedUserWithImage);
+            return "redirect:/profile";
         }
     }
 

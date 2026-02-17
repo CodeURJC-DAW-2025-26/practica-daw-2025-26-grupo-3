@@ -1,5 +1,7 @@
 package es.grupo3.practica25_26.service;
 
+import java.sql.Blob;
+
 import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.repository.UserRepository;
@@ -87,8 +89,29 @@ public class UserService {
 
     public User addImageToUser(long id, Image image) {
         User user = userRepository.findById(id).orElseThrow();
-        user.setImage(image);
-        image.setUser(user);
+
+        if (user.getImage() != null) {
+            user.getImage().setImageFile(image.getImageFile());
+        } else {
+            user.setImage(image);
+            image.setUser(user);
+        }
+
+        userRepository.save(user);
+        return user;
+    }
+
+    public User addImageToUser(long id, Blob imageBlob) {
+        User user = userRepository.findById(id).orElseThrow();
+
+        if (user.getImage() != null) {
+            user.getImage().setImageFile(imageBlob);
+        } else {
+            Image image = new Image(imageBlob);
+            user.setImage(image);
+            image.setUser(user);
+        }
+
         userRepository.save(user);
         return user;
     }

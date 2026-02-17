@@ -44,14 +44,8 @@
                                         <label
                                             class="form-label text-muted small fw-bold text-uppercase d-block">Cambiar
                                             Foto</label>
-                                        {{^ has_image}}
                                         <input type="file" class="form-control form-control-sm w-50 mx-auto"
-                                            name="image" accept="image/*">
-                                        {{/ has_image}}
-                                        {{# has_image}}
-                                        <input type="file" class="form-control form-control-sm w-50 mx-auto"
-                                            name="image" value="/user-images/{{id}}" accept="image/*">
-                                        {{/has_image}}
+                                            name="imageFile" accept="image/*">
                                     </div>
                                 </div>
 

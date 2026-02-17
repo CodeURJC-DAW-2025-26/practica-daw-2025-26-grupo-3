@@ -36,7 +36,8 @@ public class User {
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
     private List<Product> products;
 
-    @OneToOne(cascade = CascadeType.ALL) // This makes de image to be persistent when created.
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // This makes de image to be
+                                                                                  // persistent when created.
     private Image image;
 
     public String getSurname() {
