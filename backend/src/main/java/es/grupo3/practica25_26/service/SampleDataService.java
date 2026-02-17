@@ -51,24 +51,47 @@ public class SampleDataService {
 
                         productService.saveAll(List.of(p1, p2, p3, p4, p5, p6));
 
-                        
-                        addImageToProduct(p1, "/sample_images/images/commentor-item1.jpg");
-                        addImageToProduct(p1, "/sample_images/images/admin_panel.png"); // Segunda imagen
+                        // Product 1
+                        addImageToProduct(p1, "/sample_images/images/lenovothinkpad1.jpg");
+                        addImageToProduct(p1, "/sample_images/images/lenovothinkpad2.jpg");
+                        addImageToProduct(p1, "/sample_images/images/lenovothinkpad3.jpg");
 
+                        // Product 2
+                        addImageToProduct(p2, "/sample_images/images/iphone12_1.jpg");
+                        addImageToProduct(p2, "/sample_images/images/iphone12_2.jpg");
+                        addImageToProduct(p2, "/sample_images/images/iphone12_3.jpg");
 
-                        addImageToProduct(p2, "/sample_images/images/commentor-item2.jpg");
-                        addImageToProduct(p3, "/sample_images/images/commentor-item3.jpg");
-                        
-                        
-                        addImageToProduct(p4, "/sample_images/images/commentor-item1.jpg");
-                        addImageToProduct(p4, "/sample_images/images/commentor-item2.jpg");
+                        // Product 3
+                        addImageToProduct(p3,
+                                        "/sample_images/images/2393-sony-wh1000xm5bce7-auriculares-inalambricos-con-cancelacion-de-ruido-negros-soft-case-comprar2.jpg");
+                        addImageToProduct(p3,
+                                        "/sample_images/images/sony-wh1000xm5bce7-auriculares-inalambricos-con-cancelacion-de-ruido-negros-soft-case.jpg");
+                        addImageToProduct(p3,
+                                        "/sample_images/images/4839-sony-wh1000xm5bce7-auriculares-inalambricos-con-cancelacion-de-ruido-negros-soft-case-estuche.jpg");
+                        // Product 4
+                        addImageToProduct(p4, "/sample_images/images/nintendoSwitch1.jpg");
+                        addImageToProduct(p4, "/sample_images/images/nintendoSwitch2.jpg");
+                        addImageToProduct(p4, "/sample_images/images/nintendoSwitch3.jpg");
 
-                        addImageToProduct(p5, "/sample_images/images/commentor-item2.jpg");
-                        addImageToProduct(p6, "/sample_images/images/commentor-item3.jpg");
-                                
-                        //We save all the products at once
-                        productService.saveAll(List.of(p1, p2, p3, p4, p5, p6));  
-        }
+                        // Product 5
+                        addImageToProduct(p5,
+                                        "/sample_images/images/Keychron-K2-wireless-mechanical-keyboard-for-Mac-Windows-iOS-Gateron-switch-red-with-type-C-RGB-white-backlight-aluminum-frame.jpg");
+                        addImageToProduct(p5,
+                                        "/sample_images/images/Keychron-K2-wireless-mechanical-keyboard-for-Mac-Windows-iOS-Gateron-switch-red-with-type-C-RGB-white-backlight-exclusive-color.jpg");
+                        addImageToProduct(p5,
+                                        "/sample_images/images/Keychron-K2-wireless-mechanical-keyboard-1.jpg");
+
+                        // Product 6
+                        addImageToProduct(p6,
+                                        "/sample_images/images/1918-monitor-lg-27u730a-b-27-ultrahd-4k-60hz-ips-usb-c-altavoces-ajustable.jpg");
+                        addImageToProduct(p6,
+                                        "/sample_images/images/2879-monitor-lg-27u730a-b-27-ultrahd-4k-60hz-ips-usb-c-altavoces-ajustable-comprar.jpg");
+                        addImageToProduct(p6,
+                                        "/sample_images/images/8370-monitor-lg-27u730a-b-27-ultrahd-4k-60hz-ips-usb-c-altavoces-ajustable-foto.jpg");
+
+                        // We save all the products at once
+                        productService.saveAll(List.of(p1, p2, p3, p4, p5, p6));
+                }
         }
 
         private void addImageToProduct(Product product, String classpathResource) throws IOException {
@@ -78,7 +101,7 @@ public class SampleDataService {
                 Image createdImage = imageService.createImage(image.getInputStream());
                 createdImage.setProduct(product);
                 product.getImages().add(createdImage);
-               
+
         }
 
         private User getOrCreateUser(String name, String surname, String address, String email, String password) {
