@@ -7,6 +7,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 import java.util.List;
 
@@ -24,6 +26,11 @@ public class User {
     private String email;
 
     private String password;
+
+    // it save role in the BD as text, for example, "USER" or "ADMIN", instead of
+    // using the ordinal value of the enum
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.USER;
 
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
     private List<Product> products;
@@ -46,6 +53,16 @@ public class User {
         this.address = address;
         this.email = email;
         this.password = password;
+        this.role = Role.USER;
+    }
+
+    public User(String userName, String surname, String address, String email, String password, Role role) {
+        this.userName = userName;
+        this.surname = surname;
+        this.address = address;
+        this.email = email;
+        this.password = password;
+        this.role = role;
     }
 
     public void setAddress(String address) {
@@ -94,6 +111,18 @@ public class User {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    // it is used to retrieve the role of the user, for example, to check
+    // permissions or to display the role in the user profile
+    public Role getRole() {
+        return role;
+    }
+
+    // it is used to assign a role to the user, for example, when creating a new
+    // user or when changing the role of an existing user
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     // Añadir relación con productos y pedidos
