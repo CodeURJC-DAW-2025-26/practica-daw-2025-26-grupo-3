@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import es.grupo3.practica25_26.model.Error;
+import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.model.Role;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.ErrorService;
