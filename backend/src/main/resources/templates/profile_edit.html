@@ -29,11 +29,30 @@
                             <h5 class="fw-bold mb-0 text-dark">Información Personal</h5>
                         </div>
 
-                        <form action="/profile/update" method="POST">
+                        <form action="/profile/update" method="POST" enctype="multipart/form-data">
                             <div class="row g-3">
                                 <div class="col-12 text-center mb-3">
+                                    {{^ has_image}}
                                     <img src="https://placehold.co/100x100" class="rounded-circle shadow-sm"
                                         alt="Profile Pic">
+                                    {{/ has_image}}
+                                    {{# has_image}}
+                                    <img src="/user-images/{{id}}" class="rounded-circle shadow-sm" alt="Profile Pic">
+                                    {{/ has_image}}
+
+                                    <div class="mt-3">
+                                        <label
+                                            class="form-label text-muted small fw-bold text-uppercase d-block">Cambiar
+                                            Foto</label>
+                                        {{^ has_image}}
+                                        <input type="file" class="form-control form-control-sm w-50 mx-auto"
+                                            name="image" accept="image/*">
+                                        {{/ has_image}}
+                                        {{# has_image}}
+                                        <input type="file" class="form-control form-control-sm w-50 mx-auto"
+                                            name="image" value="/user-images/{{id}}" accept="image/*">
+                                        {{/has_image}}
+                                    </div>
                                 </div>
 
                                 <div class="col-md-6">

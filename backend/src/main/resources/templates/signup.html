@@ -35,7 +35,7 @@
 
                         </div>
 
-                        <form action="/user_register" method="POST">
+                        <form action="/user_register" method="POST" enctype="multipart/form-data">
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold">Nombre <span
@@ -74,6 +74,11 @@
                                         placeholder="Crea una contraseña"
                                         value="{{#newUser.password}}{{newUser.password}}{{/newUser.password}}"
                                         name="password" minlength="8" maxlength="20" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small fw-bold">Imagen de perfil</label>
+                                    <input type="file" class="form-control form-control-sm" name="imageFile"
+                                        accept="image/*">
                                 </div>
                             </div>
 

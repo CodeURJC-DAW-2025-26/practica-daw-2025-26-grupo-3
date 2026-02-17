@@ -1,5 +1,6 @@
 package es.grupo3.practica25_26.service;
 
+import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.repository.UserRepository;
 
@@ -48,7 +49,14 @@ public class UserService {
 
         if (user_logged) {
             model.addAttribute("userName", currentUser.getUserName());
+            if (currentUser.getImage() != null) {
+                model.addAttribute("has_image", true);
+                model.addAttribute("id", currentUser.getImage().getId());
+            } else {
+                model.addAttribute("has_image", false);
+            }
         }
+
         model.addAttribute("user_logged", user_logged);
     }
 
@@ -75,6 +83,14 @@ public class UserService {
     public void updateUserPassword(User currentUser, String newPassword) {
         currentUser.setPassword(newPassword);
         userRepository.save(currentUser);
+    }
+
+    public User addImageToUser(long id, Image image) {
+        User user = userRepository.findById(id).orElseThrow();
+        user.setImage(image);
+        image.setUser(user);
+        userRepository.save(user);
+        return user;
     }
 
 }

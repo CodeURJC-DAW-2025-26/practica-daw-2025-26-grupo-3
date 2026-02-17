@@ -8,10 +8,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.model.Error;
+import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.service.ErrorService;
+import es.grupo3.practica25_26.service.ImageService;
 import es.grupo3.practica25_26.service.UserService;
 import jakarta.servlet.http.HttpSession;
 
@@ -24,8 +27,13 @@ public class UserController {
     @Autowired
     ErrorService errorService;
 
+    @Autowired
+    ImageService imageService;
+
     @PostMapping("/user_register")
-    public String userRegister(Model model, User newUser, HttpSession session) {
+    public String userRegister(Model model, User newUser, HttpSession session,
+            @RequestParam("imageFile") MultipartFile imageFile)
+            throws Exception {
         Optional<User> op = userService.findUserByEmail(newUser.getEmail());
         Error error = null;
         String errorTitle = "";
@@ -98,6 +106,12 @@ public class UserController {
         } else {
             session.setAttribute("currentUser", newUser);
             userService.saveUser(newUser);
+
+            if (!imageFile.isEmpty()) {
+                Image image = imageService.createImage(imageFile.getInputStream());
+                userService.addImageToUser(newUser.getId(), image);
+            }
+
             return "redirect:/";
         }
     }
@@ -123,6 +137,16 @@ public class UserController {
     @GetMapping("/profile")
     public String profile(Model model, HttpSession session) {
         User currentUser = userService.getCurrentUser(session);
+
+        Image image = currentUser.getImage();
+
+        if (image != null) {
+            model.addAttribute("has_image", true);
+            model.addAttribute("id", image.getId());
+        } else {
+            model.addAttribute("has_image", false);
+        }
+
         model.addAttribute("user", currentUser);
         return "profile";
     }
@@ -137,14 +161,23 @@ public class UserController {
             session.removeAttribute("user_failed_update");
         } else if (failedPassword != null) {
             User currentUser = userService.getCurrentUser(session);
-            model.addAttribute("user", currentUser); 
+            model.addAttribute("user", currentUser);
             model.addAttribute("newPassword", failedPassword);
             session.removeAttribute("failed_password");
             if (failedUser != null) {
-                 session.removeAttribute("user_failed_update"); 
+                session.removeAttribute("user_failed_update");
             }
         } else {
             User currentUser = userService.getCurrentUser(session);
+
+            Image image = currentUser.getImage();
+
+            if (image != null) {
+                model.addAttribute("has_image", true);
+                model.addAttribute("id", image.getId());
+            } else {
+                model.addAttribute("has_image", false);
+            }
             model.addAttribute("user", currentUser);
             model.addAttribute("newPassword", "");
         }
