@@ -24,6 +24,10 @@ public class ImageController {
 
         Resource imageFile = imageService.getMainImageByProductId(id);
 
+        if (imageFile == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         MediaType mediaType = MediaTypeFactory
                 .getMediaType(imageFile)
                 .orElse(MediaType.IMAGE_JPEG);

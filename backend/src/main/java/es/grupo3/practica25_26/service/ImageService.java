@@ -15,6 +15,7 @@ import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.model.Product;
 import es.grupo3.practica25_26.repository.ImageRepository;
 import es.grupo3.practica25_26.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class ImageService {
@@ -49,13 +50,16 @@ public class ImageService {
         }
     }
 
+    @Transactional
     public Resource getMainImageByProductId(long productId) throws SQLException {
 
-        Product product = productRepository.findById(productId).orElseThrow();
+        Product product = productRepository.findById(productId).orElse(null);
 
         if (product != null && !product.getImages().isEmpty()) {
             Image image = product.getImages().get(0); // we get the first image if it has images
-            return new InputStreamResource(image.getImageFile().getBinaryStream());
+            if (image.getImageFile() != null) {
+                return new InputStreamResource(image.getImageFile().getBinaryStream());
+            }
         }
 
         return null;
