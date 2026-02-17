@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
-import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.model.Error;
-import es.grupo3.practica25_26.model.Image;
+import es.grupo3.practica25_26.model.Role;
+import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.ErrorService;
 import es.grupo3.practica25_26.service.ImageService;
 import es.grupo3.practica25_26.service.UserService;
@@ -34,6 +33,8 @@ public class UserController {
     public String userRegister(Model model, User newUser, HttpSession session,
             @RequestParam("imageFile") MultipartFile imageFile)
             throws Exception {
+        // force default role for new registrations.
+        newUser.setRole(Role.USER);
         Optional<User> op = userService.findUserByEmail(newUser.getEmail());
         Error error = null;
         String errorTitle = "";
@@ -120,10 +121,14 @@ public class UserController {
     public String loginQuery(Model model, @RequestParam String email, @RequestParam String password,
             HttpSession session) {
         Optional<User> op = userService.findUserByLogin(email, password);
-        if (op.isPresent()) { // If credentials are correct and user is found
+        // If credentials are correct and user is found
+        if (op.isPresent()) {
             User user = op.get();
             session.setAttribute("currentUser", user);
-        } else {
+            // Redirect to admin panel if user is admin
+            if (user.getRole().equals(Role.ADMIN)) {
+                return "redirect:/admin_panel";
+            }
         }
         return "redirect:/";
     }
@@ -162,9 +167,11 @@ public class UserController {
         } else if (failedPassword != null) {
             User currentUser = userService.getCurrentUser(session);
             model.addAttribute("user", currentUser);
+            model.addAttribute("user", currentUser);
             model.addAttribute("newPassword", failedPassword);
             session.removeAttribute("failed_password");
             if (failedUser != null) {
+                session.removeAttribute("user_failed_update");
                 session.removeAttribute("user_failed_update");
             }
         } else {
@@ -193,7 +200,8 @@ public class UserController {
         String errorTitle = "";
         String errorMessage = "";
         User currentUser = userService.getCurrentUser(session);
-        User updatedUser = new User(userName, surname, email, address, currentUser.getPassword());
+        User updatedUser = new User(userName, surname, email, address, currentUser.getPassword(),
+                currentUser.getRole());
         Optional<User> op = userService.findUserByEmail(email);
         if (!op.isPresent()) {
             session.setAttribute("user_failed_update", updatedUser);

@@ -26,7 +26,7 @@ public class Product {
     @JoinColumn(name = "user_id")
     private User seller;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 
     private String productName;
@@ -109,15 +109,16 @@ public class Product {
     public void setImages(List<Image> images) {
         this.images = images;
     }
-    
-    public Image getFirstImage(){
 
-        if (images != null && !images.isEmpty()) { //If list of images not empty
+    public Image getFirstImage() {
+
+        if (images != null && !images.isEmpty()) { // If list of images not empty
             return images.get(0);
         }
-        return null; //If empty return null
+        return null; // If empty return null
 
     }
+
     public boolean hasImage() {
         return images != null && !images.isEmpty();
     }

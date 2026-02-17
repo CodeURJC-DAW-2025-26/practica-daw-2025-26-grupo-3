@@ -10,9 +10,19 @@ import org.springframework.core.io.Resource;
 
 import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.model.Product;
+import es.grupo3.practica25_26.model.Role;
 import es.grupo3.practica25_26.model.User;
 import jakarta.annotation.PostConstruct;
 
+/**
+ * Service to create sample data for the application, such as users, products
+ * and images,
+ * when the application starts. This is useful for testing and development
+ * purposes,
+ * as it allows us to have some initial data to work with without having to
+ * manually create
+ * it through the application's user interface.
+ */
 @Service
 public class SampleDataService {
 
@@ -27,6 +37,11 @@ public class SampleDataService {
 
         @PostConstruct
         public void init() throws IOException {
+                // Create or retrieve admin user first
+                User adminUser = getOrCreateAdmin("Admin", "System", "Admin Street 1, Spain",
+                                "admin@admin.com", "12345678");
+
+                // Create or retrieve regular users
                 User exampleUser1 = getOrCreateUser("Marta", "Lopez", "Calle Mayor 12, Madrid",
                                 "marta@example.com", "demo1234");
                 User exampleUser2 = getOrCreateUser("Carlos", "Gomez", "Avenida Sol 7, Valencia",
@@ -51,24 +66,21 @@ public class SampleDataService {
 
                         productService.saveAll(List.of(p1, p2, p3, p4, p5, p6));
 
-                        
                         addImageToProduct(p1, "/sample_images/images/commentor-item1.jpg");
                         addImageToProduct(p1, "/sample_images/images/admin_panel.png"); // Segunda imagen
 
-
                         addImageToProduct(p2, "/sample_images/images/commentor-item2.jpg");
                         addImageToProduct(p3, "/sample_images/images/commentor-item3.jpg");
-                        
-                        
+
                         addImageToProduct(p4, "/sample_images/images/commentor-item1.jpg");
                         addImageToProduct(p4, "/sample_images/images/commentor-item2.jpg");
 
                         addImageToProduct(p5, "/sample_images/images/commentor-item2.jpg");
                         addImageToProduct(p6, "/sample_images/images/commentor-item3.jpg");
-                                
-                        //We save all the products at once
-                        productService.saveAll(List.of(p1, p2, p3, p4, p5, p6));  
-        }
+
+                        // We save all the products at once
+                        productService.saveAll(List.of(p1, p2, p3, p4, p5, p6));
+                }
         }
 
         private void addImageToProduct(Product product, String classpathResource) throws IOException {
@@ -76,9 +88,8 @@ public class SampleDataService {
                 Resource image = new ClassPathResource(classpathResource);
 
                 Image createdImage = imageService.createImage(image.getInputStream());
-                createdImage.setProduct(product);
                 product.getImages().add(createdImage);
-               
+
         }
 
         private User getOrCreateUser(String name, String surname, String address, String email, String password) {
@@ -89,4 +100,13 @@ public class SampleDataService {
                 });
         }
 
+        // Helper method to create or retrieve an admin user with ADMIN role
+        private User getOrCreateAdmin(String name, String surname, String address, String email, String password) {
+                return userService.findUserByEmail(email).orElseGet(() -> {
+                        User adminUser = new User(name, surname, address, email, password, Role.ADMIN);
+                        userService.saveUser(adminUser);
+                        return adminUser;
+                });
+
+        }
 }
