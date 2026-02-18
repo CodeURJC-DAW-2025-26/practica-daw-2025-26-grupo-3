@@ -73,7 +73,6 @@ public class UserService {
 
     public void updateUserPassword(User currentUser, String newPassword) {
         currentUser.setPassword(newPassword);
-        userRepository.save(currentUser);
     }
 
     public User addImageToUser(long id, Image image) {
