@@ -19,8 +19,14 @@
                     <a class="nav-link dropdown-toggle user-dropdown d-flex align-items-center gap-2" href="#"
                         id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"
                         title="Menú de usuario">
+                        {{^ has_image}}
                         <img src="https://placehold.co/600x400?text=User" alt="Mi Perfil"
                             style="height: 40px; width: 40px; border-radius: 50%; border: 2px solid #0d6efd; cursor: pointer; object-fit: cover; flex-shrink: 0;">
+                        {{/has_image}}
+                        {{#has_image}}
+                        <img src="/user-images/{{id}}" alt="Mi Perfil"
+                            style="height: 40px; width: 40px; border-radius: 50%; border: 2px solid #0d6efd; cursor: pointer; object-fit: cover; flex-shrink: 0;">
+                        {{/has_image}}
                         <span class="d-none d-lg-inline">{{userName}}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">

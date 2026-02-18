@@ -49,12 +49,17 @@ public class SampleDataService {
 
                 User adminUser = getOrCreateAdmin("Admin", "System", "Admin Street 1, Spain",
                                 "admin@admin.com", "12345678");
+                if (adminUser.getImage() == null) {
+                        addImageToUser(adminUser, "/sample_images/images/profile.png");
+                }
 
                 User exampleUser1 = getOrCreateUser("Marta", "Lopez", "Calle Mayor 12, Madrid",
                                 "marta@example.com", "demo1234");
-
                 User exampleUser2 = getOrCreateUser("Carlos", "Gomez", "Avenida Sol 7, Valencia",
                                 "carlos@example.com", "demo1234");
+                if (exampleUser2.getImage() == null) {
+                        addImageToUser(exampleUser2, "/sample_images/images/commentor-item1.jpg");
+                }
 
                 // 2. Initialize Products
                 // We only create products if the database is empty to prevent duplicates on
@@ -110,6 +115,14 @@ public class SampleDataService {
                         Image createdImage = imageService.createImage(image.getInputStream());
                         product.getImages().add(createdImage);
                 }
+        }
+
+        private void addImageToUser(User user, String classpathResource) throws IOException {
+                Resource image = new ClassPathResource(classpathResource);
+
+                Image createdImage = imageService.createImage(image.getInputStream());
+                user.setImage(createdImage);
+                userService.saveUser(user);
         }
 
         /**

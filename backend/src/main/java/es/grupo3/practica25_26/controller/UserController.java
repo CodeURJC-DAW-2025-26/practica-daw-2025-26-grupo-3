@@ -1,5 +1,6 @@
 package es.grupo3.practica25_26.controller;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import es.grupo3.practica25_26.model.Error;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.ErrorService;
+import es.grupo3.practica25_26.service.ImageService;
 import es.grupo3.practica25_26.service.UserService;
 import jakarta.servlet.http.HttpSession;
 
@@ -22,6 +25,9 @@ public class UserController {
 
     @Autowired
     ErrorService errorService;
+
+    @Autowired
+    ImageService imageService;
 
     @PostMapping("/user_register")
     public String userRegister(Model model, User newUser, HttpSession session) {
@@ -95,8 +101,15 @@ public class UserController {
             return errorService.setErrorPageWithButton(model, session, errorTitle, errorMessage, "Volver al registro",
                     "/signup");
         } else {
+            newUser.setRole(Role.USER);
             session.setAttribute("currentUser", newUser);
             userService.saveUser(newUser);
+
+            if (!imageFile.isEmpty()) {
+                Image image = imageService.createImage(imageFile.getInputStream());
+                userService.addImageToUser(newUser.getId(), image);
+            }
+
             return "redirect:/";
         }
     }
@@ -122,6 +135,16 @@ public class UserController {
     @GetMapping("/profile")
     public String profile(Model model, HttpSession session) {
         User currentUser = userService.getCurrentUser(session);
+
+        Image image = currentUser.getImage();
+
+        if (image != null) {
+            model.addAttribute("has_image", true);
+            model.addAttribute("id", image.getId());
+        } else {
+            model.addAttribute("has_image", false);
+        }
+
         model.addAttribute("user", currentUser);
         return "profile";
     }
@@ -133,17 +156,44 @@ public class UserController {
         if (failedUser != null && failedPassword == null) {
             model.addAttribute("user", failedUser);
             model.addAttribute("newPassword", "");
+
+            User currentUser = userService.getCurrentUser(session);
+            if (currentUser.getImage() != null) {
+                model.addAttribute("has_image", true);
+                model.addAttribute("id", currentUser.getImage().getId());
+            } else {
+                model.addAttribute("has_image", false);
+            }
+
             session.removeAttribute("user_failed_update");
         } else if (failedPassword != null) {
             User currentUser = userService.getCurrentUser(session);
             model.addAttribute("user", currentUser);
+
+            if (currentUser.getImage() != null) {
+                model.addAttribute("has_image", true);
+                model.addAttribute("id", currentUser.getImage().getId());
+            } else {
+                model.addAttribute("has_image", false);
+            }
+
             model.addAttribute("newPassword", failedPassword);
             session.removeAttribute("failed_password");
             if (failedUser != null) {
                 session.removeAttribute("user_failed_update");
+                session.removeAttribute("user_failed_update");
             }
         } else {
             User currentUser = userService.getCurrentUser(session);
+
+            Image image = currentUser.getImage();
+
+            if (image != null) {
+                model.addAttribute("has_image", true);
+                model.addAttribute("id", image.getId());
+            } else {
+                model.addAttribute("has_image", false);
+            }
             model.addAttribute("user", currentUser);
             model.addAttribute("newPassword", "");
         }
@@ -153,7 +203,8 @@ public class UserController {
     @PostMapping("/profile/update")
     public String updateProfile(Model model, HttpSession session, @RequestParam String userName,
             @RequestParam String surname,
-            @RequestParam String email, @RequestParam String address) {
+            @RequestParam String email, @RequestParam String address, @RequestParam MultipartFile imageFile)
+            throws IOException {
 
         Error error = null;
         String errorTitle = "";
@@ -221,9 +272,10 @@ public class UserController {
                     "Volver a edición de perfil", "/profile/edit");
         } else {
             userService.updateUserInfo(currentUser, userName, surname, email, address);
-            session.setAttribute("currentUser", updatedUser);
-            model.addAttribute("user", updatedUser);
-            return "profile";
+            User updatedUserWithImage = userService.addImageToUser(currentUser.getId(), updatedImage);
+            session.setAttribute("currentUser", updatedUserWithImage);
+            model.addAttribute("user", updatedUserWithImage);
+            return "redirect:/profile";
         }
     }
 

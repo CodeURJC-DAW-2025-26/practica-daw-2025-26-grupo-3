@@ -5,6 +5,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.*;
@@ -39,6 +40,10 @@ public class User {
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
     private List<Product> products;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // This makes de image to be
+                                                                                  // persistent when created.
+    private Image image;
+
     public String getSurname() {
         return surname;
     }
@@ -49,6 +54,10 @@ public class User {
 
     public User() {
 
+    }
+
+    public Image getImage() {
+        return image;
     }
 
     public User(String userName, String surname, String address, String email, String password) {
@@ -109,6 +118,10 @@ public class User {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 
     // Getter for roles

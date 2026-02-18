@@ -83,7 +83,6 @@ public class WebController {
         return "products-search-anonymous";
     }
 
-
     @GetMapping("/admin_panel")
     public String adminPanel(Model model) {
         return "admin_panel";

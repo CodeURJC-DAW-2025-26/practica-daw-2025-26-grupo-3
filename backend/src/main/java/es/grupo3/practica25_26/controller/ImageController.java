@@ -38,4 +38,18 @@ public class ImageController {
                 .body(imageFile);
     }
 
+    @GetMapping("/user-images/{id}")
+    public ResponseEntity<Object> getUserImageFile(@PathVariable long id) throws SQLException {
+        Resource imageFile = imageService.getImageFile(id);
+
+        MediaType mediaType = MediaTypeFactory
+                .getMediaType(imageFile)
+                .orElse(MediaType.IMAGE_JPEG);
+
+        return ResponseEntity
+                .ok()
+                .contentType(mediaType)
+                .body(imageFile);
+    }
+
 }
