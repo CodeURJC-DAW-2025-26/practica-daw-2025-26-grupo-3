@@ -241,16 +241,18 @@ public class UserController {
     }
 
     @PostMapping("profile/update_password")
-    public String updatePassword(Model model, HttpSession session, @RequestParam String oldPassword,
+    public String updatePassword(Model model, HttpSession session, HttpServletRequest request,
+            @RequestParam String oldPassword,
             @RequestParam String newPassword) {
         Error error = null;
         String errorTitle = "";
         String errorMessage = "";
 
-        User currentUser = (User) session.getAttribute("currentUser");
-        User existUser = userService.findUserByEmail(currentUser.getEmail());
+        String email = request.getUserPrincipal().getName();
+        User currentUser = userService.findUserByEmail(email);
+        String currentPassword = currentUser.getEncodedPassword();
 
-        if (existUser != null) {
+        if (!passwordEncoder.matches(oldPassword, currentPassword)) {
 
             errorTitle = "¡Contraseña incorrecta!";
             errorMessage = "No has introducido correctamente tu contraseña actual, por lo que no puedes establecer la nueva.";
@@ -270,16 +272,16 @@ public class UserController {
 
             error = new Error(errorTitle, errorMessage);
         }
+
         if (error != null) {
             session.setAttribute("user_failed_update", currentUser);
             session.setAttribute("failed_password", newPassword);
             return errorService.setErrorPageWithButton(model, session, error.getTitle(), error.getMessage(),
                     "Volver a edición de perfil", "/profile/edit");
+        } else {
+            userService.updateUserPassword(currentUser, passwordEncoder.encode(newPassword));
+            userService.saveUser(currentUser);
+            return "redirect:/profile";
         }
-
-        userService.updateUserPassword(currentUser, newPassword);
-        session.setAttribute("user", currentUser);
-
-        return "redirect:/profile";
     }
 }
