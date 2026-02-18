@@ -40,14 +40,13 @@ public class WebSecurityConfig {
                         // PUBLIC PAGES
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/images/**").permitAll()
-                        .requestMatchers("/books/**").permitAll()
-                        .requestMatchers("/assets/**").permitAll() // Allow access to static resources
-                        .requestMatchers("/favicon.ico").permitAll()
+                        .requestMatchers("/product_search/**").permitAll()
                         // PRIVATE PAGES
-                        .requestMatchers("/newbook").hasAnyRole("USER")
-                        .requestMatchers("/editbook").hasAnyRole("USER")
-                        .requestMatchers("/editbook/*").hasAnyRole("USER")
-                        .requestMatchers("/removebook/*").hasAnyRole("ADMIN"))
+                        .requestMatchers("/product_detail/*").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/product-publish/*").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/profile/*").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/shopping-cart").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/admin_panel/").hasAnyRole("ADMIN"))
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .failureUrl("/loginerror")

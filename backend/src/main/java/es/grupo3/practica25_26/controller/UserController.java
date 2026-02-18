@@ -1,6 +1,8 @@
 package es.grupo3.practica25_26.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import es.grupo3.practica25_26.model.Error;
+import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.ErrorService;
 import es.grupo3.practica25_26.service.ImageService;
@@ -30,7 +33,8 @@ public class UserController {
     ImageService imageService;
 
     @PostMapping("/user_register")
-    public String userRegister(Model model, User newUser, HttpSession session) {
+    public String userRegister(Model model, User newUser, HttpSession session, MultipartFile imageFile)
+            throws IOException {
         Optional<User> op = userService.findUserByEmail(newUser.getEmail());
         Error error = null;
         String errorTitle = "";
@@ -101,7 +105,9 @@ public class UserController {
             return errorService.setErrorPageWithButton(model, session, errorTitle, errorMessage, "Volver al registro",
                     "/signup");
         } else {
-            newUser.setRole(Role.USER);
+            List<String> roles = new ArrayList<>();
+            roles.add("USER");
+            newUser.setRoles(roles);
             session.setAttribute("currentUser", newUser);
             userService.saveUser(newUser);
 
@@ -209,7 +215,11 @@ public class UserController {
         Error error = null;
         String errorTitle = "";
         String errorMessage = "";
+        Image updatedImage = null;
         User currentUser = userService.getCurrentUser(session);
+
+        updatedImage = currentUser.getImage();
+
         User updatedUser = new User(userName, surname, email, address, currentUser.getEncodedPassword());
         Optional<User> op = userService.findUserByEmail(email);
         if (!op.isPresent()) {
