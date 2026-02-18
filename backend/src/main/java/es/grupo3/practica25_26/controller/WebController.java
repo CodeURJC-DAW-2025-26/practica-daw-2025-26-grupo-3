@@ -24,40 +24,40 @@ public class WebController {
     ErrorService errorService;
 
     @GetMapping("/")
-    public String index(Model model, HttpSession session) {
+    public String index(Model model) {
         model.addAttribute("products", ProductService.findAll());
         return "index";
     }
 
     @GetMapping("/product_search")
-    public String productSearch(Model model, HttpSession session) {
+    public String productSearch(Model model) {
 
         model.addAttribute("products", ProductService.findAll());
         return "product_search";
     }
 
     @GetMapping("/product_detail")
-    public String productDetail(Model model, HttpSession session) {
+    public String productDetail(Model model) {
         return "product_detail";
     }
 
     @GetMapping("/product-publish")
-    public String productPublish(Model model, HttpSession session) {
+    public String productPublish(Model model) {
         return "product-publish";
     }
 
     @GetMapping("/shopping-cart")
-    public String shoppingCart(Model model, HttpSession session) {
+    public String shoppingCart(Model model) {
         return "shopping-cart";
     }
 
     @GetMapping("/orders")
-    public String orders(Model model, HttpSession session) {
+    public String orders(Model model) {
         return "orders";
     }
 
     @GetMapping("/my_products")
-    public String productsPublished(Model model, HttpSession session) {
+    public String productsPublished(Model model) {
         return "my_products";
     }
 

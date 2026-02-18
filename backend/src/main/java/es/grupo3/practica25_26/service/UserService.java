@@ -11,7 +11,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import jakarta.servlet.http.HttpSession;
+//import jakarta.servlet.http.HttpSession;
 
 @Service
 public class UserService {
@@ -33,6 +33,7 @@ public class UserService {
         return userRepository.count();
     }
 
+    /*  Spring already checks the password automatically, so this is not necessary
     public User findUserByLogin(String email, String pass) {
         Optional<User> op = userRepository.findByEmailAndPassword(email, pass);
         if (op.isPresent()) {
@@ -42,6 +43,7 @@ public class UserService {
             return null;
         }
     }
+        */
 
     public User findUserByEmail(String email) {
         Optional<User> op = userRepository.findDistinctByEmail(email);
@@ -55,9 +57,11 @@ public class UserService {
 
     // OTHER METHODS
 
+    /* Spring handles logout in the configuration when its necessary
     public void logOut(HttpSession session) {
         session.invalidate();
     }
+    */
 
     public void updateUserInfo(User currentUser, String userName, String surname, String email, String address) {
 
