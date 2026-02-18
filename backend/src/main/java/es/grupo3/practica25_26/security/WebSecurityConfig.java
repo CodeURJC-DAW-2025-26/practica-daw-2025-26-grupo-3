@@ -57,11 +57,11 @@ public class WebSecurityConfig {
                         .requestMatchers("/user-images/**").permitAll()
                         .requestMatchers("/product-images/**").permitAll()
                         // PRIVATE PAGES
-                        .requestMatchers("/product_detail/*").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/product-publish/*").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/profile/*").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/product_detail/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/product-publish/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/profile/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/shopping-cart").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/admin_panel/").hasAnyRole("ADMIN"))
+                        .requestMatchers("/admin_panel/**").hasAnyRole("ADMIN"))
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .loginProcessingUrl("/login/getUser")

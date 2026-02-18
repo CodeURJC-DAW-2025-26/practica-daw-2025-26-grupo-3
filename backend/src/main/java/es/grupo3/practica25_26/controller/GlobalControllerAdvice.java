@@ -34,7 +34,12 @@ public class GlobalControllerAdvice {
             if (user != null) {
                 model.addAttribute("user", user);
                 model.addAttribute("user_logged", true);
-                model.addAttribute("id", user.getImage().getId());
+                if (user.getImage() != null) {
+                    model.addAttribute("id", user.getImage().getId());
+                    model.addAttribute("has_image", true);
+                } else {
+                    model.addAttribute("has_image", false);
+                }
             }
 
         } else {

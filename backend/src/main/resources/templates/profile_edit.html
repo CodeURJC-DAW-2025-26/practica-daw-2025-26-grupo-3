@@ -30,6 +30,7 @@
                         </div>
 
                         <form action="/profile/update" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="_csrf" value="{{token}}" />
                             <div class="row g-3">
                                 <div class="col-12 text-center mb-3">
                                     {{^ has_image}}
@@ -94,6 +95,7 @@
                         </div>
 
                         <form action="/profile/update_password" method="POST">
+                            <input type="hidden" name="_csrf" value="{{token}}" />
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label class="form-label text-muted small fw-bold text-uppercase">Contraseña

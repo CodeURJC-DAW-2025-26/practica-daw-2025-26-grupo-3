@@ -1,7 +1,6 @@
 package es.grupo3.practica25_26.controller;
 
 import java.io.IOException;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -49,8 +48,8 @@ public class UserController {
         String errorTitle = "";
         String errorMessage = "";
 
-        Optional<User> op = userService.findUserByEmail(newUser.getEmail());
-        if (op.isPresent()) {
+        User existUser = userService.findUserByEmail(newUser.getEmail());
+        if (existUser != null) {
             session.setAttribute("user_failed_register", newUser);
 
             errorTitle = "El e-mail escogido está en uso.";
@@ -139,17 +138,19 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public String profile(Model model, HttpSession session) {
+    public String profile() {
         return "profile";
     }
 
     @GetMapping("/profile/edit")
     public String editProfile(Model model, HttpSession session) {
+        model.addAttribute("newPassword", "");
         return "profile_edit";
     }
 
     @PostMapping("/profile/update")
-    public String updateProfile(Model model, HttpSession session, @RequestParam String userName,
+    public String updateProfile(Model model, HttpServletRequest request, HttpSession session,
+            @RequestParam String userName,
             @RequestParam String surname,
             @RequestParam String email, @RequestParam String address, @RequestParam MultipartFile imageFile)
             throws IOException {
@@ -158,69 +159,83 @@ public class UserController {
         String errorTitle = "";
         String errorMessage = "";
 
-        User currentUser = (User) session.getAttribute("currentUser");
+        String currentEmail = request.getUserPrincipal().getName();
+        User currentUser = userService.findUserByEmail(currentEmail);
+        User existUser = null;
+        User failedUser = new User(userName, surname, address, email, currentUser.getEncodedPassword());
 
-        User updatedUser = new User(userName, surname, email, address, currentUser.getEncodedPassword());
-        Optional<User> op = userService.findUserByEmail(email);
-        if (!op.isPresent()) { // cambiar por el request
-            session.setAttribute("user_failed_update", updatedUser);
+        if (!email.equals(currentEmail)) {
+            existUser = userService.findUserByEmail(email);
 
-            errorTitle = "El e-mail escogido está en uso.";
-            errorMessage = "El correo electrónico introducido en el fomulario de registro ya pertenece a otro usuario. Por favor, utiliza otro correo electrónico.";
+            if (existUser != null) {
+                session.setAttribute("user_failed_update", failedUser);
 
-            error = new Error(errorTitle, errorMessage);
-        } else if (userName.length() > 8) {
-            session.setAttribute("user_failed_update", updatedUser);
+                errorTitle = "El e-mail escogido está en uso.";
+                errorMessage = "El correo electrónico introducido en el fomulario de registro ya pertenece a otro usuario. Por favor, utiliza otro correo electrónico.";
+
+                error = new Error(errorTitle, errorMessage);
+            }
+        }
+
+        if (userName.length() > 8) {
+            session.setAttribute("user_failed_update", failedUser);
 
             errorTitle = "¡Demasiados caracteres en tu nombre!";
             errorMessage = "Tu nombre de usuario no debe tener más de 8 caracteres. Has introducido "
-                    + updatedUser.getUserName().length() + " caracteres.";
+                    + failedUser.getUserName().length() + " caracteres.";
 
             error = new Error(errorTitle, errorMessage);
         } else if (surname.length() > 30) {
-            session.setAttribute("user_failed_update", updatedUser);
+            session.setAttribute("user_failed_update", failedUser);
 
             errorTitle = "¡Demasiados caracteres en tu apellido!";
             errorMessage = "Tu apellido no debe tener más de 30 caracteres. Has introducido "
-                    + updatedUser.getSurname().length() + " caracteres.";
+                    + failedUser.getSurname().length() + " caracteres.";
 
             error = new Error(errorTitle, errorMessage);
         } else if (email.indexOf("@") == -1) {
-            session.setAttribute("user_failed_update", updatedUser);
+            session.setAttribute("user_failed_update", failedUser);
 
             errorTitle = "¡E-mail inválido!";
             errorMessage = "El correo electrónico que has introducido no es correcto.";
 
             error = new Error(errorTitle, errorMessage);
         } else if (email.length() > 50) {
-            session.setAttribute("user_failed_update", updatedUser);
+            session.setAttribute("user_failed_update", failedUser);
 
             errorTitle = "¡E-mail inválido!";
             errorMessage = "El correo electrónico que has introducido no es correcto.";
 
             error = new Error(errorTitle, errorMessage);
         } else if (address.length() > 30) {
-            session.setAttribute("user_failed_update", updatedUser);
+            session.setAttribute("user_failed_update", failedUser);
 
             errorTitle = "¡Demasiados caracteres en tu dirección!";
             errorMessage = "Tu dirección no debe tener más de 30 caracteres. Has introducido "
-                    + updatedUser.getAddress().length() + " caracteres.";
+                    + failedUser.getAddress().length() + " caracteres.";
 
             error = new Error(errorTitle, errorMessage);
         } else if (userName.length() == 0 || surname.length() == 0 || email.length() == 0 || address.length() == 0) {
-            session.setAttribute("user_failed_update", updatedUser);
+            session.setAttribute("user_failed_update", failedUser);
 
             errorTitle = "¡Formulario incompleto!";
             errorMessage = "No has rellenado todos los campos obligatorios del formulario.";
 
             error = new Error(errorTitle, errorMessage);
         }
-
         if (error != null) {
-
             return errorService.setErrorPageWithButton(model, session, error.getTitle(), error.getMessage(),
                     "Volver a edición de perfil", "/profile/edit");
         } else {
+            userService.updateUserInfo(currentUser, userName, surname, email, address);
+
+            if (!imageFile.isEmpty()) {
+                Image image = imageService.createImage(imageFile.getInputStream());
+                userService.addImageToUser(currentUser.getId(), image);
+            }
+
+            userService.saveUser(currentUser);
+
             return "redirect:/profile";
         }
     }
@@ -233,9 +248,9 @@ public class UserController {
         String errorMessage = "";
 
         User currentUser = (User) session.getAttribute("currentUser");
-        Optional<User> op = userService.findUserByEmail(currentUser.getEmail());
+        User existUser = userService.findUserByEmail(currentUser.getEmail());
 
-        if (!op.isPresent()) {
+        if (existUser != null) {
 
             errorTitle = "¡Contraseña incorrecta!";
             errorMessage = "No has introducido correctamente tu contraseña actual, por lo que no puedes establecer la nueva.";

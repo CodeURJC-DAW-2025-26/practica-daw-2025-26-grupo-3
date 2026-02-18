@@ -33,12 +33,24 @@ public class UserService {
         return userRepository.count();
     }
 
-    public Optional<User> findUserByLogin(String email, String pass) {
-        return userRepository.findByEmailAndPassword(email, pass);
+    public User findUserByLogin(String email, String pass) {
+        Optional<User> op = userRepository.findByEmailAndPassword(email, pass);
+        if (op.isPresent()) {
+            User user = op.get();
+            return user;
+        } else {
+            return null;
+        }
     }
 
-    public Optional<User> findUserByEmail(String email) {
-        return userRepository.findDistinctByEmail(email);
+    public User findUserByEmail(String email) {
+        Optional<User> op = userRepository.findDistinctByEmail(email);
+        if (op.isPresent()) {
+            User user = op.get();
+            return user;
+        } else {
+            return null;
+        }
     }
 
     // OTHER METHODS
@@ -53,8 +65,6 @@ public class UserService {
         currentUser.setSurname(surname);
         currentUser.setEmail(email);
         currentUser.setAddress(address);
-
-        userRepository.save(currentUser);
     }
 
     public void updateUserPassword(User currentUser, String newPassword) {
@@ -75,21 +85,6 @@ public class UserService {
         userRepository.save(user);
         return user;
     }
-
-    /*
-     * public User addImageToUser(long id, Blob imageBlob) {
-     * User user = userRepository.findById(id).orElseThrow();
-     * 
-     * if (user.getImage() != null) {
-     * user.getImage().setImageFile(imageBlob);
-     * } else {
-     * Image image = new Image(imageBlob);
-     * user.setImage(image);
-     * image.setUser(user);
-     * }
-     * return user;
-     * }
-     */
 
     public void addRoles(User user, String... roles) {
         List<String> roleList = user.getRoles();
