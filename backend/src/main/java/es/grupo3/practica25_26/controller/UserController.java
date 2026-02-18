@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import es.grupo3.practica25_26.model.Error;
-import es.grupo3.practica25_26.model.Role;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.ErrorService;
 import es.grupo3.practica25_26.service.UserService;
@@ -26,8 +25,6 @@ public class UserController {
 
     @PostMapping("/user_register")
     public String userRegister(Model model, User newUser, HttpSession session) {
-        // force default role for new registrations.
-        newUser.setRole(Role.USER);
         Optional<User> op = userService.findUserByEmail(newUser.getEmail());
         Error error = null;
         String errorTitle = "";
@@ -68,7 +65,7 @@ public class UserController {
 
         } else if (newUser.getUserName().length() == 0 || newUser.getSurname().length() == 0 ||
                 newUser.getAddress().length() == 0 || newUser.getEmail().length() == 0
-                || newUser.getPassword().length() == 0) {
+                || newUser.getEncodedPassword().length() == 0) {
             session.setAttribute("user_failed_register", newUser);
 
             errorTitle = "¡Formulario incompleto!";
@@ -84,12 +81,12 @@ public class UserController {
 
             error = new Error(errorTitle, errorMessage);
 
-        } else if (newUser.getPassword().length() < 8 || newUser.getPassword().length() > 20) {
+        } else if (newUser.getEncodedPassword().length() < 8 || newUser.getEncodedPassword().length() > 20) {
             session.setAttribute("user_failed_register", newUser);
 
             errorTitle = "¡Contraseña inválida!";
             errorMessage = "Tu contraseña debe tener entre 8 y 20 caracteres. Has introducido "
-                    + newUser.getPassword().length() + " caracteres.";
+                    + newUser.getEncodedPassword().length() + " caracteres.";
 
             error = new Error(errorTitle, errorMessage);
         }
@@ -112,10 +109,6 @@ public class UserController {
         if (op.isPresent()) {
             User user = op.get();
             session.setAttribute("currentUser", user);
-            // Redirect to admin panel if user is admin
-            if (user.getRole().equals(Role.ADMIN)) {
-                return "redirect:/admin_panel";
-            }
         }
         return "redirect:/";
     }
@@ -166,8 +159,7 @@ public class UserController {
         String errorTitle = "";
         String errorMessage = "";
         User currentUser = userService.getCurrentUser(session);
-        User updatedUser = new User(userName, surname, email, address, currentUser.getPassword(),
-                currentUser.getRole());
+        User updatedUser = new User(userName, surname, email, address, currentUser.getEncodedPassword());
         Optional<User> op = userService.findUserByEmail(email);
         if (!op.isPresent()) {
             session.setAttribute("user_failed_update", updatedUser);
@@ -260,7 +252,7 @@ public class UserController {
 
             errorTitle = "¡Contraseña inválida!";
             errorMessage = "Tu contraseña debe tener entre 8 y 20 caracteres. Has introducido "
-                    + currentUser.getPassword().length() + " caracteres.";
+                    + currentUser.getEncodedPassword().length() + " caracteres.";
 
             error = new Error(errorTitle, errorMessage);
         }

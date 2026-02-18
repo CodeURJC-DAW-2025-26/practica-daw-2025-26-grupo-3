@@ -7,9 +7,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.FetchType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,15 +24,17 @@ public class User {
     private String surname;
     private String address;
 
+    // identifier for login, must be unique
     @Column(unique = true)
     private String email;
 
     private String password;
 
-    // it save role in the BD as text, for example, "USER" or "ADMIN", instead of
-    // using the ordinal value of the enum
-    @Enumerated(EnumType.STRING)
-    private Role role = Role.USER;
+    // Stores a list of roles (Strings) in a separate table and loads them
+    // immediately with the User because the default case for @ElementCollection is
+    // LAZY, but we want to have the roles available as soon as we load the user.
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles;
 
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
     private List<Product> products;
@@ -53,16 +57,8 @@ public class User {
         this.address = address;
         this.email = email;
         this.password = password;
-        this.role = Role.USER;
-    }
-
-    public User(String userName, String surname, String address, String email, String password, Role role) {
-        this.userName = userName;
-        this.surname = surname;
-        this.address = address;
-        this.email = email;
-        this.password = password;
-        this.role = role;
+        this.roles = new ArrayList<>();
+        this.roles.add("USER");
     }
 
     public void setAddress(String address) {
@@ -85,7 +81,9 @@ public class User {
         return email;
     }
 
-    public String getPassword() {
+    // We store the encoded password in the database, so this getter returns the
+    // encoded version.
+    public String getEncodedPassword() {
         return password;
     }
 
@@ -113,16 +111,14 @@ public class User {
         this.products = products;
     }
 
-    // it is used to retrieve the role of the user, for example, to check
-    // permissions or to display the role in the user profile
-    public Role getRole() {
-        return role;
+    // Getter for roles
+    public List<String> getRoles() {
+        return roles;
     }
 
-    // it is used to assign a role to the user, for example, when creating a new
-    // user or when changing the role of an existing user
-    public void setRole(Role role) {
-        this.role = role;
+    // Setter for roles
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 
     // Añadir relación con productos y pedidos

@@ -2,26 +2,24 @@ package es.grupo3.practica25_26.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList; // Necessary for Lists
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.core.io.Resource;
+import org.springframework.security.crypto.password.PasswordEncoder; // Valid import now
 
 import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.model.Product;
-import es.grupo3.practica25_26.model.Role;
 import es.grupo3.practica25_26.model.User;
 import jakarta.annotation.PostConstruct;
 
 /**
- * Service to create sample data for the application, such as users, products
- * and images,
- * when the application starts. This is useful for testing and development
- * purposes,
- * as it allows us to have some initial data to work with without having to
- * manually create
- * it through the application's user interface.
+ * Service responsible for populating the database with sample data
+ * (Users, Products, Images) upon application startup.
+ * This ensures the application always has data for testing purposes
+ * without needing manual entry.
  */
 @Service
 public class SampleDataService {
@@ -35,21 +33,35 @@ public class SampleDataService {
         @Autowired
         private ImageService imageService;
 
+        @Autowired
+        private PasswordEncoder passwordEncoder; // Injected dependency for password hashing
+
+        /**
+         * This method runs automatically after the bean is initialized.
+         * It checks if the database is empty and adds sample data if needed.
+         */
         @PostConstruct
         public void init() throws IOException {
-                // Create or retrieve admin user first
+
+                // 1. Initialize Users (Admin and Standard)
+                // We pass raw passwords here ("12345678"); they will be encoded in the helper
+                // methods.
+
                 User adminUser = getOrCreateAdmin("Admin", "System", "Admin Street 1, Spain",
                                 "admin@admin.com", "12345678");
 
-                // Create or retrieve regular users
                 User exampleUser1 = getOrCreateUser("Marta", "Lopez", "Calle Mayor 12, Madrid",
                                 "marta@example.com", "demo1234");
+
                 User exampleUser2 = getOrCreateUser("Carlos", "Gomez", "Avenida Sol 7, Valencia",
                                 "carlos@example.com", "demo1234");
 
-                // EXAMPLE PRODUCTS
-
+                // 2. Initialize Products
+                // We only create products if the database is empty to prevent duplicates on
+                // restart.
                 if (productService.count() == 0) {
+
+                        // Creating product instances linked to the users created above
                         Product p1 = new Product("Portatil Lenovo ThinkPad", 450.0, 2,
                                         "Portatil usado en buen estado, 16GB RAM, 512GB SSD", exampleUser1);
                         Product p2 = new Product("iPhone 12", 520.0, 1,
@@ -64,49 +76,64 @@ public class SampleDataService {
                         Product p6 = new Product("Monitor LG 27\" 4K", 230.0, 2,
                                         "Panel IPS, sin pixeles muertos", exampleUser2);
 
+                        // Save products first to generate their IDs in the database
                         productService.saveAll(List.of(p1, p2, p3, p4, p5, p6));
 
-                        addImageToProduct(p1, "/sample_images/images/commentor-item1.jpg");
-                        addImageToProduct(p1, "/sample_images/images/admin_panel.png"); // Segunda imagen
+                        // 3. Load and assign images from the classpath resources
+                        // Using a try-catch block to prevent crash if images are missing
+                        try {
+                                // IMPORTANT: Ensure these folders exist in src/main/resources
+                                addImageToProduct(p1, "/static/images/laptop.jpg");
+                                addImageToProduct(p1, "/static/images/admin_panel.png");
 
-                        addImageToProduct(p2, "/sample_images/images/commentor-item2.jpg");
-                        addImageToProduct(p3, "/sample_images/images/commentor-item3.jpg");
+                                // You can uncomment these lines once you have the actual image files
+                                // addImageToProduct(p2, "/static/images/iphone.jpg");
+                                // addImageToProduct(p3, "/static/images/sony.jpg");
 
-                        addImageToProduct(p4, "/sample_images/images/commentor-item1.jpg");
-                        addImageToProduct(p4, "/sample_images/images/commentor-item2.jpg");
+                        } catch (Exception e) {
+                                System.out.println(
+                                                "Could not load sample images (Checked exception): " + e.getMessage());
+                        }
 
-                        addImageToProduct(p5, "/sample_images/images/commentor-item2.jpg");
-                        addImageToProduct(p6, "/sample_images/images/commentor-item3.jpg");
-
-                        // We save all the products at once
+                        // Update products to save the new image relationships
                         productService.saveAll(List.of(p1, p2, p3, p4, p5, p6));
                 }
         }
 
+        /**
+         * Helper method to load an image from src/main/resources and attach it to a
+         * product.
+         */
         private void addImageToProduct(Product product, String classpathResource) throws IOException {
-
                 Resource image = new ClassPathResource(classpathResource);
-
-                Image createdImage = imageService.createImage(image.getInputStream());
-                product.getImages().add(createdImage);
-
+                if (image.exists()) {
+                        Image createdImage = imageService.createImage(image.getInputStream());
+                        product.getImages().add(createdImage);
+                }
         }
 
+        /**
+         * Retrieves an existing user or creates a new one with the USER role.
+         * Encodes the password using BCrypt before saving.
+         */
         private User getOrCreateUser(String name, String surname, String address, String email, String password) {
                 return userService.findUserByEmail(email).orElseGet(() -> {
-                        User user = new User(name, surname, address, email, password);
+                        User user = new User(name, surname, address, email, passwordEncoder.encode(password));
+                        user.setRoles(new ArrayList<>(List.of("USER"))); // Assign default role
                         userService.saveUser(user);
                         return user;
                 });
         }
 
-        // Helper method to create or retrieve an admin user with ADMIN role
+        /**
+         * Retrieves an existing admin or creates a new one with USER and ADMIN roles.
+         */
         private User getOrCreateAdmin(String name, String surname, String address, String email, String password) {
                 return userService.findUserByEmail(email).orElseGet(() -> {
-                        User adminUser = new User(name, surname, address, email, password, Role.ADMIN);
-                        userService.saveUser(adminUser);
-                        return adminUser;
+                        User user = new User(name, surname, address, email, passwordEncoder.encode(password));
+                        user.setRoles(new ArrayList<>(List.of("USER", "ADMIN"))); // Assign Admin privileges
+                        userService.saveUser(user);
+                        return user;
                 });
-
         }
 }
