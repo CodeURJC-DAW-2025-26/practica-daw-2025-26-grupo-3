@@ -10,12 +10,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import es.grupo3.practica25_26.service.UserService;
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
 
     @Autowired
     RepositoryUserDetailsService userDetailsService;
+
+    @Autowired
+    UserService userService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -39,7 +44,12 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         // PUBLIC PAGES
                         .requestMatchers("/").permitAll()
+                        .requestMatchers("/signup").permitAll()
                         .requestMatchers("/images/**").permitAll()
+                        .requestMatchers("/css/**").permitAll()
+                        .requestMatchers("/login/**").permitAll()
+                        .requestMatchers("/loginerror").permitAll()
+                        .requestMatchers("/error").permitAll()
                         .requestMatchers("/product_search/**").permitAll()
                         // PRIVATE PAGES
                         .requestMatchers("/product_detail/*").hasAnyRole("USER", "ADMIN")
@@ -49,8 +59,10 @@ public class WebSecurityConfig {
                         .requestMatchers("/admin_panel/").hasAnyRole("ADMIN"))
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
+                        .loginProcessingUrl("/login/getUser")
+                        .usernameParameter("email")
                         .failureUrl("/loginerror")
-                        .defaultSuccessUrl("/")
+                        .defaultSuccessUrl("/", true)
                         .permitAll())
                 .logout(logout -> logout
                         .logoutUrl("/logout")

@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import es.grupo3.practica25_26.model.User;
+import es.grupo3.practica25_26.service.ErrorService;
 import es.grupo3.practica25_26.service.ProductService;
 import es.grupo3.practica25_26.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -19,9 +20,12 @@ public class WebController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    ErrorService errorService;
+
     @GetMapping("/")
     public String index(Model model, HttpSession session) {
-        userService.getUserNavInfo(model, session);
+        // userService.getUserNavInfo(model, session);
         model.addAttribute("products", ProductService.findAll());
         return "index";
     }
@@ -65,7 +69,14 @@ public class WebController {
 
     @GetMapping("/login")
     public String login(Model model) {
+        model.addAttribute("error", false);
         return "login";
+    }
+
+    @GetMapping("/loginerror")
+    public String loginError(Model model, HttpSession session) {
+        return errorService.setErrorPageWithButton(model, session, "Error de inicio de sesión",
+                "Usuario o contraseña incorrectos", "Volver a intentar", "/login");
     }
 
     @GetMapping("/signup")

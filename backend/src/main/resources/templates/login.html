@@ -29,11 +29,15 @@
                         <div>
                             <h1 class="h4 fw-bold mb-1">Bienvenido</h1>
                             <p class="text-muted small mb-0">Accede a tu cuenta</p>
+                            {{#error}}
+                            <p class="text-danger small fw-bold">Las credenciales son incorrectas</p>
+                            {{/error}}
                         </div>
 
                     </div>
 
-                    <form action="/login_query" method="POST">
+                    <form action="/login/getUser" method="post">
+                        <input type="hidden" name="_csrf" value="{{_csrf.token}}">
                         <div class="mb-3">
                             <label class="form-label small fw-bold">Email</label>
                             <input type="email" class="form-control" placeholder="Tu email" name="email">

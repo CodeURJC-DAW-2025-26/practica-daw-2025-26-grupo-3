@@ -48,7 +48,7 @@ public class SampleDataService {
                 // methods.
 
                 User adminUser = getOrCreateAdmin("Admin", "System", "Admin Street 1, Spain",
-                                "admin@admin.com", "12345678");
+                                "admin@admin.com", "admin1234");
                 if (adminUser.getImage() == null) {
                         addImageToUser(adminUser, "/sample_images/images/profile.png");
                 }

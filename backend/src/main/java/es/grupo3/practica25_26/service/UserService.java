@@ -6,6 +6,7 @@ import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -111,9 +112,15 @@ public class UserService {
             user.setImage(image);
             image.setUser(user);
         }
-
-        userRepository.save(user);
         return user;
+    }
+
+    public void addRoles(User user, String... roles) {
+        List<String> roleList = new ArrayList<>();
+
+        for (String role : roles) {
+            roleList.add(role);
+        }
     }
 
 }

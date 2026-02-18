@@ -1,11 +1,10 @@
 package es.grupo3.practica25_26.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +16,7 @@ import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.ErrorService;
 import es.grupo3.practica25_26.service.ImageService;
+import es.grupo3.practica25_26.service.SampleDataService;
 import es.grupo3.practica25_26.service.UserService;
 import jakarta.servlet.http.HttpSession;
 
@@ -31,6 +31,12 @@ public class UserController {
 
     @Autowired
     ImageService imageService;
+
+    @Autowired
+    SampleDataService dataService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/user_register")
     public String userRegister(Model model, User newUser, HttpSession session, MultipartFile imageFile)
@@ -105,31 +111,19 @@ public class UserController {
             return errorService.setErrorPageWithButton(model, session, errorTitle, errorMessage, "Volver al registro",
                     "/signup");
         } else {
-            List<String> roles = new ArrayList<>();
-            roles.add("USER");
-            newUser.setRoles(roles);
+            userService.addRoles(newUser, "USER");
+            newUser.setPassword(passwordEncoder.encode(newUser.getEncodedPassword()));
             session.setAttribute("currentUser", newUser);
-            userService.saveUser(newUser);
 
             if (!imageFile.isEmpty()) {
                 Image image = imageService.createImage(imageFile.getInputStream());
                 userService.addImageToUser(newUser.getId(), image);
             }
 
+            userService.saveUser(newUser);
+
             return "redirect:/";
         }
-    }
-
-    @PostMapping("/login_query")
-    public String loginQuery(Model model, @RequestParam String email, @RequestParam String password,
-            HttpSession session) {
-        Optional<User> op = userService.findUserByLogin(email, password);
-        // If credentials are correct and user is found
-        if (op.isPresent()) {
-            User user = op.get();
-            session.setAttribute("currentUser", user);
-        }
-        return "redirect:/";
     }
 
     @GetMapping("/log_out")
