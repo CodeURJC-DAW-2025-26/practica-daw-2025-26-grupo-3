@@ -44,9 +44,12 @@
                             <a href="/product-publish"
                                 class="btn btn-sm btn-success rounded d-flex align-items-center justify-content-center py-2">Publicar
                                 Producto</a>
-                            <a href="/log_out"
-                                class="btn btn-sm btn-danger rounded d-flex align-items-center justify-content-center py-2">Cerrar
-                                Sesión</a>
+                            <form action="/logout" method="post" class="w-100">
+                                <input type="hidden" name="_csrf" value="{{token}}" />
+                                <button type="submit"
+                                    class="btn btn-sm btn-danger rounded d-flex align-items-center justify-content-center py-2 w-100">Cerrar
+                                    Sesión</button>
+                            </form>
                         </div>
                     </div>
                 </div>

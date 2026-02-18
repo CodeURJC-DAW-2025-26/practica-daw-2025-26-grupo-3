@@ -59,7 +59,12 @@
                         <a href="/admin_profile" class="nav-link">Mi Perfil</a>
                         <a href="/" class="nav-link">Modo usuario</a>
 
-                        <a href="/login" class="nav-link text-danger">Cerrar sesión</a>
+                        <form action="/logout" method="post">
+                            <input type="hidden" name="_csrf" value="{{token}}" />
+                            <button type="submit"
+                                class="nav-link text-danger w-100 text-start bg-transparent border-0">Cerrar
+                                sesión</button>
+                        </form>
                     </nav>
                 </div>
 

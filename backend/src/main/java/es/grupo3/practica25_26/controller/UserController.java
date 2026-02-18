@@ -126,12 +126,6 @@ public class UserController {
         }
     }
 
-    @GetMapping("/log_out")
-    public String logOut(HttpSession session) {
-        userService.logOut(session);
-        return "redirect:/";
-    }
-
     @GetMapping("/profile")
     public String profile(Model model, HttpSession session) {
         User currentUser = userService.getCurrentUser(session);

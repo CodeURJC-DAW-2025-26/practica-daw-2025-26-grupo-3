@@ -18,8 +18,15 @@
                             Registrarse</a></li>
                     {{/user_logged}}
                     {{# user_logged}}
-                    <li><a href="/log_out" class="text-muted text-decoration-none"><i class="bi bi-box-arrow-right"></i>
-                            Cerrar Sesión</a></li>
+                    <li>
+                        <form action="/logout" method="post" style="display: inline;">
+                            <input type="hidden" name="_csrf" value="{{token}}" />
+                            <button type="submit" class="btn btn-link text-muted text-decoration-none p-0 border-0"
+                                style="vertical-align: baseline;">
+                                <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                            </button>
+                        </form>
+                    </li>
                     {{/ user_logged}}
                     <li><a href="#" class="text-muted text-decoration-none"><i class="bi bi-arrow-up-circle"></i> Volver
                             arriba</a></li>

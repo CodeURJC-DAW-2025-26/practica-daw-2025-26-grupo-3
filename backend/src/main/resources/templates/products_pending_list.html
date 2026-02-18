@@ -51,7 +51,12 @@
 
                         <a href="/admin_profile" class="nav-link">Mi Perfil</a>
 
-                        <a href="/login" class="nav-link text-danger">Cerrar sesión</a>
+                        <form action="/logout" method="post">
+                            <input type="hidden" name="_csrf" value="{{token}}" />
+                            <button type="submit"
+                                class="nav-link text-danger w-100 text-start bg-transparent border-0">Cerrar
+                                sesión</button>
+                        </form>
                     </nav>
                 </div>
             </div>
@@ -113,8 +118,7 @@
 
                                         <td class="text-end pe-4">
                                             <div class="d-flex justify-content-end gap-2">
-                                                <a href="/product_detail_admin"
-                                                    class="btn btn-sm btn-outline-primary"
+                                                <a href="/product_detail_admin" class="btn btn-sm btn-outline-primary"
                                                     title="Ver todos los detalles">
                                                     <i class="bi bi-eye"></i> Detalles
                                                 </a>

@@ -44,29 +44,6 @@ public class UserService {
         return userRepository.findDistinctByEmail(email);
     }
 
-    // GET CURRENT USER INFO
-
-    public void getUserNavInfo(Model model, HttpSession session) {
-        User currentUser = (User) session.getAttribute("currentUser");
-        boolean user_logged = (currentUser != null);
-
-        if (user_logged) {
-            model.addAttribute("userName", currentUser.getUserName());
-            if (currentUser.getImage() != null) {
-                model.addAttribute("has_image", true);
-                model.addAttribute("id", currentUser.getImage().getId());
-            } else {
-                model.addAttribute("has_image", false);
-            }
-        }
-
-        model.addAttribute("user_logged", user_logged);
-    }
-
-    public User getCurrentUser(HttpSession session) {
-        return (User) session.getAttribute("currentUser");
-    }
-
     // OTHER METHODS
 
     public void logOut(HttpSession session) {
