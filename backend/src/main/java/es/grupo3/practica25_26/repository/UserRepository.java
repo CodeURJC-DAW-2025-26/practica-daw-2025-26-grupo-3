@@ -12,4 +12,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query
     Optional<User> findDistinctByEmail(String email);
+
+    @Query
+    Optional<User> findDistinctById(long id);
 }

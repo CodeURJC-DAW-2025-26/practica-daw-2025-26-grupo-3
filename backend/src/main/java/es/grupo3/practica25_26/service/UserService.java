@@ -1,7 +1,5 @@
 package es.grupo3.practica25_26.service;
 
-import java.sql.Blob;
-
 import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.repository.UserRepository;
@@ -11,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.stereotype.Service;
 
 import jakarta.servlet.http.HttpSession;
@@ -68,9 +65,9 @@ public class UserService {
     public User addImageToUser(long id, Image image) {
         User user = userRepository.findById(id).orElseThrow();
 
-        if (user.getImage() != null) {
+        if (user.getImage() != null) { // If user has image, we change the image file
             user.getImage().setImageFile(image.getImageFile());
-        } else {
+        } else { // Else, we set the new image to the user, and the user to the image.
             user.setImage(image);
             image.setUser(user);
         }
@@ -79,21 +76,27 @@ public class UserService {
         return user;
     }
 
-    public User addImageToUser(long id, Blob imageBlob) {
-        User user = userRepository.findById(id).orElseThrow();
-
-        if (user.getImage() != null) {
-            user.getImage().setImageFile(imageBlob);
-        } else {
-            Image image = new Image(imageBlob);
-            user.setImage(image);
-            image.setUser(user);
-        }
-        return user;
-    }
+    /*
+     * public User addImageToUser(long id, Blob imageBlob) {
+     * User user = userRepository.findById(id).orElseThrow();
+     * 
+     * if (user.getImage() != null) {
+     * user.getImage().setImageFile(imageBlob);
+     * } else {
+     * Image image = new Image(imageBlob);
+     * user.setImage(image);
+     * image.setUser(user);
+     * }
+     * return user;
+     * }
+     */
 
     public void addRoles(User user, String... roles) {
-        List<String> roleList = new ArrayList<>();
+        List<String> roleList = user.getRoles();
+        if (roleList == null) {
+            roleList = new ArrayList<>();
+            user.setRoles(roleList);
+        }
 
         for (String role : roles) {
             roleList.add(role);

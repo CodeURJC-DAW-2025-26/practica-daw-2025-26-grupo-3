@@ -25,45 +25,39 @@ public class WebController {
 
     @GetMapping("/")
     public String index(Model model, HttpSession session) {
-        // userService.getUserNavInfo(model, session);
         model.addAttribute("products", ProductService.findAll());
         return "index";
     }
 
     @GetMapping("/product_search")
     public String productSearch(Model model, HttpSession session) {
-        userService.getUserNavInfo(model, session);
+
         model.addAttribute("products", ProductService.findAll());
         return "product_search";
     }
 
     @GetMapping("/product_detail")
     public String productDetail(Model model, HttpSession session) {
-        userService.getUserNavInfo(model, session);
         return "product_detail";
     }
 
     @GetMapping("/product-publish")
     public String productPublish(Model model, HttpSession session) {
-        userService.getUserNavInfo(model, session);
         return "product-publish";
     }
 
     @GetMapping("/shopping-cart")
     public String shoppingCart(Model model, HttpSession session) {
-        userService.getUserNavInfo(model, session);
         return "shopping-cart";
     }
 
     @GetMapping("/orders")
     public String orders(Model model, HttpSession session) {
-        userService.getUserNavInfo(model, session);
         return "orders";
     }
 
     @GetMapping("/my_products")
     public String productsPublished(Model model, HttpSession session) {
-        userService.getUserNavInfo(model, session);
         return "my_products";
     }
 

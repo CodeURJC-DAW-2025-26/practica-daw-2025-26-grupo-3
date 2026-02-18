@@ -17,8 +17,6 @@ public class ErrorService {
             String buttonName, String buttonLink) {
         Error error = new Error(title, message);
 
-        userService.getUserNavInfo(model, session);
-
         model.addAttribute("error", error);
         model.addAttribute("extraButton", true);
         model.addAttribute("buttonName", buttonName);
@@ -29,8 +27,6 @@ public class ErrorService {
 
     public String setErrorPage(Model model, HttpSession session, String title, String message) {
         Error error = new Error(title, message);
-
-        userService.getUserNavInfo(model, session);
 
         model.addAttribute("error", error);
         model.addAttribute("extraButton", false);

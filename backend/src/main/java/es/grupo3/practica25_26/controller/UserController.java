@@ -18,6 +18,8 @@ import es.grupo3.practica25_26.service.ErrorService;
 import es.grupo3.practica25_26.service.ImageService;
 import es.grupo3.practica25_26.service.SampleDataService;
 import es.grupo3.practica25_26.service.UserService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -39,12 +41,15 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/user_register")
-    public String userRegister(Model model, User newUser, HttpSession session, MultipartFile imageFile)
-            throws IOException {
-        Optional<User> op = userService.findUserByEmail(newUser.getEmail());
+    public String userRegister(Model model, User newUser, HttpSession session, HttpServletRequest request,
+            MultipartFile imageFile)
+            throws IOException, ServletException {
+
         Error error = null;
         String errorTitle = "";
         String errorMessage = "";
+
+        Optional<User> op = userService.findUserByEmail(newUser.getEmail());
         if (op.isPresent()) {
             session.setAttribute("user_failed_register", newUser);
 
@@ -111,9 +116,10 @@ public class UserController {
             return errorService.setErrorPageWithButton(model, session, errorTitle, errorMessage, "Volver al registro",
                     "/signup");
         } else {
+            String pass = newUser.getEncodedPassword();
             userService.addRoles(newUser, "USER");
-            newUser.setPassword(passwordEncoder.encode(newUser.getEncodedPassword()));
-            session.setAttribute("currentUser", newUser);
+            newUser.setPassword(passwordEncoder.encode(pass));
+            userService.saveUser(newUser);
 
             if (!imageFile.isEmpty()) {
                 Image image = imageService.createImage(imageFile.getInputStream());
@@ -122,75 +128,23 @@ public class UserController {
 
             userService.saveUser(newUser);
 
+            try {
+                request.login(newUser.getEmail(), pass);
+            } catch (ServletException e) {
+                e.printStackTrace();
+            }
+
             return "redirect:/";
         }
     }
 
     @GetMapping("/profile")
     public String profile(Model model, HttpSession session) {
-        User currentUser = userService.getCurrentUser(session);
-
-        Image image = currentUser.getImage();
-
-        if (image != null) {
-            model.addAttribute("has_image", true);
-            model.addAttribute("id", image.getId());
-        } else {
-            model.addAttribute("has_image", false);
-        }
-
-        model.addAttribute("user", currentUser);
         return "profile";
     }
 
     @GetMapping("/profile/edit")
     public String editProfile(Model model, HttpSession session) {
-        User failedUser = (User) session.getAttribute("user_failed_update");
-        String failedPassword = (String) session.getAttribute("failed_password");
-        if (failedUser != null && failedPassword == null) {
-            model.addAttribute("user", failedUser);
-            model.addAttribute("newPassword", "");
-
-            User currentUser = userService.getCurrentUser(session);
-            if (currentUser.getImage() != null) {
-                model.addAttribute("has_image", true);
-                model.addAttribute("id", currentUser.getImage().getId());
-            } else {
-                model.addAttribute("has_image", false);
-            }
-
-            session.removeAttribute("user_failed_update");
-        } else if (failedPassword != null) {
-            User currentUser = userService.getCurrentUser(session);
-            model.addAttribute("user", currentUser);
-
-            if (currentUser.getImage() != null) {
-                model.addAttribute("has_image", true);
-                model.addAttribute("id", currentUser.getImage().getId());
-            } else {
-                model.addAttribute("has_image", false);
-            }
-
-            model.addAttribute("newPassword", failedPassword);
-            session.removeAttribute("failed_password");
-            if (failedUser != null) {
-                session.removeAttribute("user_failed_update");
-                session.removeAttribute("user_failed_update");
-            }
-        } else {
-            User currentUser = userService.getCurrentUser(session);
-
-            Image image = currentUser.getImage();
-
-            if (image != null) {
-                model.addAttribute("has_image", true);
-                model.addAttribute("id", image.getId());
-            } else {
-                model.addAttribute("has_image", false);
-            }
-            model.addAttribute("user", currentUser);
-            model.addAttribute("newPassword", "");
-        }
         return "profile_edit";
     }
 
@@ -203,14 +157,12 @@ public class UserController {
         Error error = null;
         String errorTitle = "";
         String errorMessage = "";
-        Image updatedImage = null;
-        User currentUser = userService.getCurrentUser(session);
 
-        updatedImage = currentUser.getImage();
+        User currentUser = (User) session.getAttribute("currentUser");
 
         User updatedUser = new User(userName, surname, email, address, currentUser.getEncodedPassword());
         Optional<User> op = userService.findUserByEmail(email);
-        if (!op.isPresent()) {
+        if (!op.isPresent()) { // cambiar por el request
             session.setAttribute("user_failed_update", updatedUser);
 
             errorTitle = "El e-mail escogido está en uso.";
@@ -265,14 +217,10 @@ public class UserController {
         }
 
         if (error != null) {
-            userService.getUserNavInfo(model, session);
+
             return errorService.setErrorPageWithButton(model, session, error.getTitle(), error.getMessage(),
                     "Volver a edición de perfil", "/profile/edit");
         } else {
-            userService.updateUserInfo(currentUser, userName, surname, email, address);
-            User updatedUserWithImage = userService.addImageToUser(currentUser.getId(), updatedImage);
-            session.setAttribute("currentUser", updatedUserWithImage);
-            model.addAttribute("user", updatedUserWithImage);
             return "redirect:/profile";
         }
     }
@@ -283,8 +231,9 @@ public class UserController {
         Error error = null;
         String errorTitle = "";
         String errorMessage = "";
-        User currentUser = userService.getCurrentUser(session);
-        Optional<User> op = userService.findUserByLogin(currentUser.getEmail(), oldPassword);
+
+        User currentUser = (User) session.getAttribute("currentUser");
+        Optional<User> op = userService.findUserByEmail(currentUser.getEmail());
 
         if (!op.isPresent()) {
 
@@ -307,7 +256,6 @@ public class UserController {
             error = new Error(errorTitle, errorMessage);
         }
         if (error != null) {
-            userService.getUserNavInfo(model, session);
             session.setAttribute("user_failed_update", currentUser);
             session.setAttribute("failed_password", newPassword);
             return errorService.setErrorPageWithButton(model, session, error.getTitle(), error.getMessage(),

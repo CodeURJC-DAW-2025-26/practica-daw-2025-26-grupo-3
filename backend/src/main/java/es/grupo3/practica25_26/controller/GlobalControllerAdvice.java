@@ -34,10 +34,12 @@ public class GlobalControllerAdvice {
             if (user != null) {
                 model.addAttribute("user", user);
                 model.addAttribute("user_logged", true);
-                return;
+                model.addAttribute("id", user.getImage().getId());
             }
+
+        } else {
+            model.addAttribute("user_logged", false);
         }
 
-        model.addAttribute("user_logged", false);
     }
 }

@@ -45,6 +45,7 @@ public class WebSecurityConfig {
                         // PUBLIC PAGES
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/signup").permitAll()
+                        .requestMatchers("/user_register").permitAll()
                         .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/css/**").permitAll()
                         .requestMatchers("/login/**").permitAll()
@@ -53,6 +54,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/product_search/**").permitAll()
                         .requestMatchers("/css/**").permitAll()
                         .requestMatchers("/js/**").permitAll()
+                        .requestMatchers("/user-images/**").permitAll()
                         // PRIVATE PAGES
                         .requestMatchers("/product_detail/*").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/product-publish/*").hasAnyRole("USER", "ADMIN")
