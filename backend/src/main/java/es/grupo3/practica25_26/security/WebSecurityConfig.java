@@ -51,6 +51,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/loginerror").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/product_search/**").permitAll()
+                        .requestMatchers("/css/**").permitAll()
+                        .requestMatchers("/js/**").permitAll()
                         // PRIVATE PAGES
                         .requestMatchers("/product_detail/*").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/product-publish/*").hasAnyRole("USER", "ADMIN")

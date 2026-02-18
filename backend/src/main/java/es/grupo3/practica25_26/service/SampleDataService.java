@@ -87,9 +87,48 @@ public class SampleDataService {
                         // 3. Load and assign images from the classpath resources
                         // Using a try-catch block to prevent crash if images are missing
                         try {
+
                                 // IMPORTANT: Ensure these folders exist in src/main/resources
-                                addImageToProduct(p1, "/static/images/laptop.jpg");
-                                addImageToProduct(p1, "/static/images/admin_panel.png");
+                                // addImageToProduct(p1, "static/images/laptop.jpg");
+                                // addImageToProduct(p1, "static/images/admin_panel.png");
+
+                                // Product 1
+                                addImageToProduct(p1, "static/images/lenovothinkpad1.jpg");
+                                addImageToProduct(p1, "static/images/lenovothinkpad2.jpg");
+                                addImageToProduct(p1, "static/images/lenovothinkpad3.jpg");
+
+                                // Product 2
+                                addImageToProduct(p2, "static/images/iphone12_1.jpg");
+                                addImageToProduct(p2, "static/images/iphone12_2.jpg");
+                                addImageToProduct(p2, "static/images/iphone12_3.jpg");
+
+                                // Product 3
+                                addImageToProduct(p3,
+                                                "static/images/2393-sony-wh1000xm5bce7-auriculares-inalambricos-con-cancelacion-de-ruido-negros-soft-case-comprar2.jpg");
+                                addImageToProduct(p3,
+                                                "static/images/sony-wh1000xm5bce7-auriculares-inalambricos-con-cancelacion-de-ruido-negros-soft-case.jpg");
+                                addImageToProduct(p3,
+                                                "static/images/4839-sony-wh1000xm5bce7-auriculares-inalambricos-con-cancelacion-de-ruido-negros-soft-case-estuche.jpg");
+                                // Product 4
+                                addImageToProduct(p4, "static/images/nintendoSwitch1.jpg");
+                                addImageToProduct(p4, "static/images/nintendoSwitch2.jpg");
+                                addImageToProduct(p4, "static/images/nintendoSwitch3.jpg");
+
+                                // Product 5
+                                addImageToProduct(p5,
+                                                "static/images/Keychron-K2-wireless-mechanical-keyboard-for-Mac-Windows-iOS-Gateron-switch-red-with-type-C-RGB-white-backlight-aluminum-frame.jpg");
+                                addImageToProduct(p5,
+                                                "static/images/Keychron-K2-wireless-mechanical-keyboard-for-Mac-Windows-iOS-Gateron-switch-red-with-type-C-RGB-white-backlight-exclusive-color.jpg");
+                                addImageToProduct(p5,
+                                                "static/images/Keychron-K2-wireless-mechanical-keyboard-1.jpg");
+
+                                // Product 6
+                                addImageToProduct(p6,
+                                                "static/images/1918-monitor-lg-27u730a-b-27-ultrahd-4k-60hz-ips-usb-c-altavoces-ajustable.jpg");
+                                addImageToProduct(p6,
+                                                "static/images/2879-monitor-lg-27u730a-b-27-ultrahd-4k-60hz-ips-usb-c-altavoces-ajustable-comprar.jpg");
+                                addImageToProduct(p6,
+                                                "static/images/8370-monitor-lg-27u730a-b-27-ultrahd-4k-60hz-ips-usb-c-altavoces-ajustable-foto.jpg");
 
                                 // You can uncomment these lines once you have the actual image files
                                 // addImageToProduct(p2, "/static/images/iphone.jpg");
