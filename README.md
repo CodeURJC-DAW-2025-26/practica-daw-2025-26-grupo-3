@@ -98,7 +98,7 @@ Indicar cuál será el algoritmo o consulta avanzada que se implementará:
 ### **Diagrama de Navegación**
 Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicación:
 
-![Diagrama de Navegación](practica25_26/src/main/resources/static/assets/nav_diagram.jpg)
+![Diagrama de Navegación](backend/src/main/resources/static/assets/nav_diagram.jpg)
 
 > El flujo comienza en la página principal. El usuario puede iniciar sesión o registrarse, así como ver y buscar los productos publicados en la página (pero no ver su detalle). En caso de iniciar sesión con una cuenta de administrador, la aplicación le llevará a la web de control de administrador. En caso contrario, el usuario volverá a la página principal, pero como usuario registrado. Ahora, el usuario tiene permitido ver el detalle de los productos, ver su perfil, publicar productos de segunda mano, y ver sus pedidos, su resumen de productos publicados y su carrito de la compra. Por su parte, el administrador puede ver estadísticas globales de la aplicación, aprovar pedidos y productos, y bloquear y desbloquear usuarios.
 
@@ -107,83 +107,83 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 > Se describen a continuación las diferentes pantallas de las que se compone nuestra aplicación web. En el caso de que una pantalla pueda ser accedida tanto para usuarios registrados como para usuarios no registrados, se asume que el navbar cambia para mostrar las opciones acordes al tipo de usuario que hace uso de la página.
 
 #### **1. Página Principal / Home**
-![Página Principal anonimo](practica25_26/src/main/resources/static/assets/index_anonymous.png)
+![Página Principal anonimo](backend/src/main/resources/static/assets/index_anonymous.png)
 
-![Página Principal usuario registrado](practica25_26/src/main/resources/static/assets/index_registered.png)
+![Página Principal usuario registrado](backend/src/main/resources/static/assets/index_registered.png)
 
 > Página de inicio de la aplicación. Incluye una cabecera con el logotipo y eslogan de la marca y una lista de productos destacados.
 
 #### **2. Inicio de Sesión / Log In**
-![log in](practica25_26/src/main/resources/static/assets/login.png)
+![log in](backend/src/main/resources/static/assets/login.png)
 
 > Formulario que permite a los usuarios registrados introducir su usuario y contraseña para inciar sesión y poder utilizar los servicios principales de la tienda.
 
 #### **3. Registro de Usuario / Sign Up**
-![sign up](practica25_26/src/main/resources/static/assets/signup.png)
+![sign up](backend/src/main/resources/static/assets/signup.png)
 
 > Formulario que permite a los usuarios no registrados registrarse para poder utilizar los servicios de la tienda como usuario identificado.
 
 #### **4. Visualización de todos los productos / Búsqueda de productos**
-![product search](practica25_26/src/main/resources/static/assets/products_search.png)
+![product search](backend/src/main/resources/static/assets/products_search.png)
 
 > Página que muestra todos los productos disponibles en la tienda actualmente. Incluye un formulario a la izquierda que permite buscar y filtar productos, para que el usuario pueda encontrar el producto que necesite comprar.
 
 #### **5. Detalle de producto**
-![product detail](practica25_26/src/main/resources/static/assets/product_detail.png)
+![product detail](backend/src/main/resources/static/assets/product_detail.png)
 
 > Página que muestra las principales características de un producto, así como sus imágenes. En caso de estar registrado el usuario, podrá añadirlo al carrito desde esta página. Además, si el producto es nuevo o reacondicionado, aparecerán reseñas del mismo. Como los productos de segunda mano no se producen ni distribuyen en masa, no tendrán reseñas al tener un único comprador.
 
 #### **6. Publicación de nuevo producto**
-![product publish](practica25_26/src/main/resources/static/assets/product_publish.png)
+![product publish](backend/src/main/resources/static/assets/product_publish.png)
 
 > Formulario que recoge los datos de los productos de segunda mano que los usuarios registrados quieren publicar para su venta. Observar que el estado indica directamente segunda mano: esto es así debido a que los usuarios registrados no pueden poner a la venta productos nuevos o reacondicionados, sólo pueden vender objetos de segunda mano. Los productos publicados por los usuarios registrados deben ser aprobados por un administrador.
 
-![admin product publish](practica25_26/src/main/resources/static/assets/product_publish_admin.png)
+![admin product publish](backend/src/main/resources/static/assets/product_publish_admin.png)
 
 > Existe un formulario diferente para administradores, los cuales pueden publicar artículos nuevos y reacondicionados.
 
 #### **7. Carrito de la compra**
-![shopping cart](practica25_26/src/main/resources/static/assets/shopping_cart.png)
+![shopping cart](backend/src/main/resources/static/assets/shopping_cart.png)
 
 > Página que muestra los productos que el usuario registrado acumula para su posterior compra en conjunto.
 
 #### **8. Perfil de usuario registrado**
-![user profile](practica25_26/src/main/resources/static/assets/profile.png)
+![user profile](backend/src/main/resources/static/assets/profile.png)
 
 > Página que muestra todos los datos del usuario registrado que está haciendo uso de la aplicación. Desde esta pantalla los usuarios registrados pueden acceder a todos los servicios que la aplicación ofrece para este tipo de usuario.
 
 #### **9. Productos publicados de usuario registrado / Mis productos**
-![my products](practica25_26/src/main/resources/static/assets/my_products.png)
+![my products](backend/src/main/resources/static/assets/my_products.png)
 
 > Página que muestra todos los productos que el usuario registrado ha puesto a la venta. Desde esta pantalla el usuario puede publicar, ver detalle, editar, y eliminar los productos que ha puesto a la venta.
 
 #### **10. Resumen de pedidos de usuario registrado / Mis pedidos**
-![my orders](practica25_26/src/main/resources/static/assets/my_orders.png)
+![my orders](backend/src/main/resources/static/assets/my_orders.png)
 
 > Página que muestra un resumen de todos los pedidos que el usuario registrado ha realizado.
 
 #### **11. Panel de administrador**
-![admin panel](practica25_26/src/main/resources/static/assets/admin_panel.png)
+![admin panel](backend/src/main/resources/static/assets/admin_panel.png)
 
 > Página que muestra diversas métricas útiles para la administración del negocio.
 
 #### **12. Productos publicados / Admin**
-![published admin products](practica25_26/src/main/resources/static/assets/admin_published_products.png)
+![published admin products](backend/src/main/resources/static/assets/admin_published_products.png)
 
 > Página exclusiva de administradores en la que se pueden visualizar todos los productos publicados actualemente en la web.
 
 #### **13. Aprobación de productos**
-![admin approve](practica25_26/src/main/resources/static/assets/admin_approve.png)
+![admin approve](backend/src/main/resources/static/assets/admin_approve.png)
 
 > Página en que permite a los administradores aprobar (o denegar) las solicitudes de aprobación de los productos que los usuarios registrados publican.  
 
 #### **14. Gestión de pedidos**
-![admin orders](practica25_26/src/main/resources/static/assets/admin_orders.png)
+![admin orders](backend/src/main/resources/static/assets/admin_orders.png)
 
 > Página que permite a los administrados aprobar (o denegar) los pedidos que hacen los usuarios registrados. 
 
 #### **15. Gestión de usuarios**
-![admin users](practica25_26/src/main/resources/static/assets/admin_users.png)
+![admin users](backend/src/main/resources/static/assets/admin_users.png)
 
 > Página que permite a los administradores controlar los usuarios que tienen acceso a la aplicación web, pudiendo bloquearles en caso de incumplir las normas de publicación de ReMarket+.
 
@@ -236,7 +236,7 @@ Solo si han cambiado.
 
 Diagrama mostrando las entidades, sus campos y relaciones:
 
-![Diagrama Entidad-Relación](practica25_26/src/main/resources/static/assets/database-diagram.png)
+![Diagrama Entidad-Relación](backend/src/main/resources/static/assets/database-diagram.png)
 
 > [Descripción opcional: Ej: "El diagrama muestra las 4 entidades principales: Usuario, Producto, Pedido y Categoría, con sus respectivos atributos y relaciones 1:N y N:M."]
 
@@ -244,7 +244,7 @@ Diagrama mostrando las entidades, sus campos y relaciones:
 
 Diagrama de clases de la aplicación con diferenciación por colores o secciones:
 
-![Diagrama de Clases](practica25_26/src/main/resources/static/assets/classes-diagram.png)
+![Diagrama de Clases](backend/src/main/resources/static/assets/classes-diagram.png)
 
 > [Descripción opcional del diagrama y relaciones principales]
 
@@ -326,7 +326,7 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 
 Diagrama actualizado incluyendo los @RestController y su relación con los @Service compartidos:
 
-![Diagrama de Clases Actualizado](static/assets/complete-classes-diagram.png)
+![Diagrama de Clases Actualizado](backend/src/main/resources/static/assets/complete-classes-diagram.png)
 
 ### **Instrucciones de Ejecución con Docker**
 
@@ -491,7 +491,7 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 
 Diagrama mostrando los componentes React, hooks personalizados, servicios y sus relaciones:
 
-![Diagrama de Componentes React](static/assets/spa-classes-diagram.png)
+![Diagrama de Componentes React](backend/src/main/resources/static/assets/spa-classes-diagram.png)
 
 ### **Participación de Miembros en la Práctica 3**
 
