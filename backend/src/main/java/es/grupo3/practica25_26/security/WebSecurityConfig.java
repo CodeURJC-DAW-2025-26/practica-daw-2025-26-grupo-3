@@ -10,17 +10,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import es.grupo3.practica25_26.service.UserService;
-
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
 
     @Autowired
     RepositoryUserDetailsService userDetailsService;
-
-    @Autowired
-    UserService userService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
