@@ -64,7 +64,7 @@
         {{#products}}
         <div class="col-md-3">
           <div class="card h-100 border-0 shadow-sm product-card position-relative">
-            <span class="position-absolute top-0 end-0 m-3 badge bg-success">-15%</span>
+            <!--<span class="position-absolute top-0 end-0 m-3 badge bg-success">-15%</span>-->
             {{#hasImage}}
             <img src="/product-images/{{id}}" class="card-img-top product-img" alt="{{productName}}">
             {{/hasImage}}
@@ -73,7 +73,7 @@
               alt="Producto">
             {{/hasImage}}
             <div class="card-body">
-              <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary mb-2">Reacondicionado</span>
+              <span class="badge rounded-pill {{stateClass}} mb-2">{{stateName}}</span>
               <h5 class="card-title h6 fw-bold">{{productName}}</h5>
               <p class="text-primary fw-bold fs-5 mb-1">{{price}}€</p>
               <div class="small text-warning">★★★★☆ <span class="text-muted">(24)</span></div>

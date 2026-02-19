@@ -98,6 +98,7 @@
                                 class="card-img-top product-img" alt="Producto">
                             {{/hasImage}}
                             <div class="card-body">
+                                <span class="badge rounded-pill {{stateClass}} mb-2">{{stateName}}</span>
                                 <h5 class="card-title h6">{{productName}}</h5>
                                 <p class="text-primary fw-bold">{{price}}€</p>
                                 {{^user_logged}}
@@ -105,7 +106,7 @@
                                     detalles</a>
                                 {{/user_logged}}
                                 {{#user_logged}}
-                                <a href="/product_detail" class="btn btn-sm btn-primary w-100">Ver más
+                                <a href="/product_detail/{{id}}" class="btn btn-sm btn-primary w-100">Ver más
                                     detalles</a>
                                 {{/user_logged}}
                             </div>

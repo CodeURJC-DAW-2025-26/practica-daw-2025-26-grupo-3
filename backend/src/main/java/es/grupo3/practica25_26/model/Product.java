@@ -123,4 +123,31 @@ public class Product {
         return images != null && !images.isEmpty();
     }
 
+    public String getStateName() {
+        switch (this.state) {
+            case 0:
+                return "Nuevo";
+            case 1:
+                return "Reacondicionado";
+            case 2:
+                return "Segunda Mano";
+            default:
+                return "Estado desconocido";
+        }
+    }
+
+    // Method to get the CSS class for the state badge
+    public String getStateClass() {
+        switch (this.state) {
+            case 0: // new
+                return "bg-primary bg-opacity-10 text-primary"; // light blue
+            case 1: // reconditioned
+                return "bg-info bg-opacity-10 text-info"; // Blue
+            case 2: // second hand
+                return "bg-warning bg-opacity-10 text-warning"; // Yellow
+            default:
+                return "bg-secondary text-white";
+        }
+    }
+
 }

@@ -41,7 +41,7 @@ public class WebController {
     }
 
     @GetMapping("/product_detail/{id}")
-    public String productDetail(Model model,@PathVariable Long id) {
+    public String productDetail(Model model, @PathVariable Long id) {
 
         Optional<Product> productOptional = ProductService.findById(id);
 
@@ -54,7 +54,6 @@ public class WebController {
             return "redirect:/";
         }
 
-        
     }
 
     @GetMapping("/product-publish")
@@ -73,8 +72,14 @@ public class WebController {
     }
 
     @GetMapping("/my_products")
-    public String productsPublished(Model model) {
+    public String myPublishedProducts(Model model) {
         return "my_products";
+    }
+
+    @GetMapping("/products_published")
+    public String productsPublished(Model model) {
+        model.addAttribute("products", ProductService.findAll());
+        return "products_published";
     }
 
     @GetMapping("/login")

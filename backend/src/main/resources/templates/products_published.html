@@ -77,25 +77,29 @@
                 <section class="py-5 flex-grow-1">
                     <div class="container">
                         <div class="row g-4">
+                            {{#products}}
                             <div class="col-md-4 col-lg-3">
                                 <div class="card h-100 border-0 shadow-sm product-card">
                                     <div class="position-relative">
-                                        <img src="https://placehold.co/300x300/f8f9fa/333?text=iPhone+13"
-                                            class="card-img-top" alt="Producto">
+                                        {{#hasImage}}
+                                        <img src="/product-images/{{id}}" class="card-img-top product-img"
+                                            alt="{{productName}}">
+                                        {{/hasImage}}
+                                        {{^hasImage}}
+                                        <img src="https://placehold.co/300x250/667eea/ffffff?text={{productName}}"
+                                            class="card-img-top product-img" alt="Producto">
+                                        {{/hasImage}}
                                         <span class="position-absolute top-0 end-0 m-2 badge bg-success">Activo</span>
                                     </div>
                                     <div class="card-body">
-                                        <span class="badge bg-soft-primary text-primary mb-2">Reacondicionado</span>
-                                        <h5 class="card-title h6 fw-bold">iPhone 13 - 128GB</h5>
-                                        <p class="text-primary fw-bold mb-0">250.00€</p>
-                                        <div class="small text-warning">★★★★☆ <span class="text-muted">(24)</span></div>
-                                        <div class="small text-muted mt-2">
-                                            <strong>Visitas:</strong> 156 | <strong>Favoritos:</strong> 12
-                                        </div>
+                                        <span class="badge rounded-pill {{stateClass}} mb-2">{{stateName}}</span>
+                                        <h5 class="card-title h6 fw-bold">{{productName}}</h5>
+                                        <p class="text-primary fw-bold mb-0">{{price}}€</p>
+
                                     </div>
                                     <div class="card-footer bg-transparent border-0 pb-3">
                                         <div class="d-grid gap-2">
-                                            <a href="/product_detail_admin"
+                                            <a href="/product_detail/{{id}}"
                                                 class="btn btn-sm btn-primary d-flex align-items-center justify-content-center">Ver
                                                 Detalle</a>
                                             <a href="/edit_product_form_admin"
@@ -106,67 +110,14 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="col-md-4 col-lg-3">
-                                <div class="card h-100 border-0 shadow-sm product-card">
-                                    <div class="position-relative">
-                                        <img src="https://placehold.co/300x300/f8f9fa/333?text=iPhone+13"
-                                            class="card-img-top" alt="Producto">
-                                        <span class="position-absolute top-0 end-0 m-2 badge bg-success">Activo</span>
-                                    </div>
-                                    <div class="card-body">
-                                        <span class="badge bg-soft-primary text-primary mb-2">Reacondicionado</span>
-                                        <h5 class="card-title h6 fw-bold">iPhone 13 - 128GB</h5>
-                                        <p class="text-primary fw-bold mb-0">599.00€</p>
-                                        <div class="small text-warning">★★★★☆ <span class="text-muted">(24)</span></div>
-                                        <div class="small text-muted mt-2">
-                                            <strong>Visitas:</strong> 89 | <strong>Favoritos:</strong> 7
-                                        </div>
-                                    </div>
-                                    <div class="card-footer bg-transparent border-0 pb-3">
-                                        <div class="d-grid gap-2">
-                                            <a href="/product_detail_admin"
-                                                class="btn btn-sm btn-primary d-flex align-items-center justify-content-center">Ver
-                                                Detalle</a>
-                                            <a href="/edit_product_form_admin"
-                                                class="btn btn-sm btn-edit-custom text-white d-flex align-items-center justify-content-center">Editar</a>
-                                            <button
-                                                class="btn btn-sm btn-danger d-flex align-items-center justify-content-center">Eliminar</button>
-                                        </div>
-                                    </div>
+                            {{/products}}
+                            {{^products}}
+                            <div class="col-12">
+                                <div class="alert alert-info text-center" role="alert">
+                                    No se han encontrado productos publicados.
                                 </div>
                             </div>
-
-                            <div class="col-md-4 col-lg-3">
-                                <div class="card h-100 border-0 shadow-sm product-card">
-                                    <div class="position-relative">
-                                        <img src="https://placehold.co/300x300/f8f9fa/333?text=iPhone+13"
-                                            class="card-img-top" alt="Producto">
-                                        <span class="position-absolute top-0 end-0 m-2 badge bg-success">Activo</span>
-                                    </div>
-                                    <div class="card-body">
-                                        <span class="badge bg-soft-primary text-primary mb-2">Reacondicionado</span>
-                                        <h5 class="card-title h6 fw-bold">iPhone 13 - 128GB</h5>
-                                        <p class="text-primary fw-bold mb-0">599.00€</p>
-                                        <div class="small text-warning">★★★★☆ <span class="text-muted">(24)</span></div>
-                                        <div class="small text-muted mt-2">
-                                            <strong>Visitas:</strong> 203 | <strong>Favoritos:</strong> 18
-                                        </div>
-                                    </div>
-                                    <div class="card-footer bg-transparent border-0 pb-3">
-                                        <div class="d-grid gap-2">
-                                            <a href="/product_detail_admin"
-                                                class="btn btn-sm btn-primary d-flex align-items-center justify-content-center">Ver
-                                                Detalle</a>
-                                            <a href="/edit_product_form_admin"
-                                                class="btn btn-sm btn-edit-custom text-white d-flex align-items-center justify-content-center">Editar</a>
-                                            <button
-                                                class="btn btn-sm btn-danger d-flex align-items-center justify-content-center">Eliminar</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
+                            {{/products}}
                         </div>
                     </div>
                 </section>
