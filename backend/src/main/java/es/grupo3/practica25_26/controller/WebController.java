@@ -1,10 +1,14 @@
 package es.grupo3.practica25_26.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import es.grupo3.practica25_26.model.Product;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.ErrorService;
 import es.grupo3.practica25_26.service.ProductService;
@@ -36,9 +40,21 @@ public class WebController {
         return "product_search";
     }
 
-    @GetMapping("/product_detail")
-    public String productDetail(Model model) {
-        return "product_detail";
+    @GetMapping("/product_detail/{id}")
+    public String productDetail(Model model,@PathVariable Long id) {
+
+        Optional<Product> productOptional = ProductService.findById(id);
+
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+            model.addAttribute("product", product);
+            return "product_detail";
+        } else {
+            // If the product does not exist, we redirect to the homepage or an error page.
+            return "redirect:/";
+        }
+
+        
     }
 
     @GetMapping("/product-publish")

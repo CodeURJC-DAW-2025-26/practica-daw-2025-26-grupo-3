@@ -9,7 +9,7 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="/css/styles.css">
-    <link rel="icon" href="/images/Logo_Remarket+.png" type="image/png">
+    <link rel="icon" href="/assets/Logo_Remarket+.png" type="image/png">
 </head>
 
 <body>
@@ -23,35 +23,112 @@
 
 
     <div class="container my-5">
+        {{#product}}
         <div class="row g-5">
-            <div class="col-md-6">
-                <img src="https://placehold.co/600x600?text=Imagen+Principal" class="img-fluid rounded shadow-sm mb-3">
-                <div class="d-flex gap-2">
-                    <img src="https://placehold.co/100x100?text=Vist1" class="img-thumbnail" style="width: 80px;">
-                    <img src="https://placehold.co/100x100?text=Vista2" class="img-thumbnail" style="width: 80px;">
+            <div class="col-md-6 mb-4">
+                <div id="productCarousel" class="carousel slide shadow-sm rounded" data-bs-ride="carousel">
+
+                    <!--Indicators of the carousel, (below the image) -->
+                    <div class="carousel-indicators">
+                        {{#images}}
+                        <button type="button" data-bs-target="#productCarousel" class="carousel-indicator-item"
+                            aria-current="false" aria-label="Slide"></button>
+                        {{/images}}
+                    </div>
+
+                    <div class="carousel-inner rounded">
+                        <!--If it has images-->
+                        {{#images}}
+                        <div class="carousel-item">
+                            <img src="/images/{{id}}" class="d-block w-100" alt="Imagen del producto"
+                                style="object-fit: contain; height: 600px; background-color: #f8f9fa;">
+                        </div>
+                        {{/images}}
+                        <!--If not-->
+                        {{^images}}
+                        <div class="carousel-item active">
+                            <img src="https://placehold.co/600x600?text=Sin+Imagen" class="d-block w-100"
+                                alt="Sin imagen" style="object-fit: cover; height: 600px;">
+                        </div>
+                        {{/images}}
+                    </div>
+
+                    <!--Buttons from the carousel-->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon bg-dark rounded-circle p-2" aria-hidden="true"
+                            style="background-size: 50%;"></span>
+                        <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#productCarousel"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon bg-dark rounded-circle p-2" aria-hidden="true"
+                            style="background-size: 50%;"></span>
+                        <span class="visually-hidden">Siguiente</span>
+                    </button>
+
+                </div>
+
+                <div class="d-flex justify-content-center gap-2 mt-3 overflow-auto">
+                    {{#images}}
+                    <img src="/images/{{id}}" class="img-thumbnail opacity-75"
+                        style="width: 60px; height: 60px; object-fit: cover; cursor: pointer;"
+                        onclick="moveToSlide(this)">
+                    {{/images}}
                 </div>
             </div>
+
             <div class="col-md-6">
-                <span class="badge bg-soft-primary text-primary mb-2">Segunda Mano</span>
-                <h1 class="fw-bold">Cámara Sony Alpha a6400</h1>
-                <p class="display-6 text-primary fw-bold">720.00€</p>
+                <span class="badge bg-soft-primary text-primary mb-2">Estado: {{state}}</span>
+                <h1 class="fw-bold">{{productName}}</h1>
+                <p class="display-6 text-primary fw-bold">{{price}}€</p>
                 <hr>
-                <p class="text-muted">Cámara en excelente estado, usada solo para fotografía de viajes. Incluye lente de
-                    kit 16-50mm y batería original.</p>
+                <p class="text-muted">{{description}}</p>
                 <div class="my-4">
-                    <button class="btn btn-primary btn-lg px-5">Añadir al Carrito</button>
-                    <button class="btn btn-outline-dark btn-lg ms-2">♥</button>
+                    <div class="my-4">
+                        <form action="/cart/add/{{id}}" method="POST"> <button type="submit"
+                                class="btn btn-primary btn-lg px-5">Añadir al Carrito</button>
+                            <button type="button" class="btn btn-outline-dark btn-lg ms-2">♥</button>
+                        </form>
+                    </div>
+                    <!--<button class="btn btn-outline-dark btn-lg ms-2">♥</button>-->
                 </div>
                 <div class="small">
-                    <strong>Vendedor:</strong> Carlos R. (4.8/5 ★)
+                    <strong>Vendedor:</strong> {{seller.userName}} {{seller.surname}} (4.8/5 ★)
                 </div>
             </div>
         </div>
+        {{/product}}
     </div>
 
     {{> footer}}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Activate the first item in the carousel
+
+            const firstItem = document.querySelector('#productCarousel .carousel-item');
+            if (firstItem) {
+                firstItem.classList.add('active');
+            }
+
+            // Activate and index the first indicator
+            const indicators = document.querySelectorAll('.carousel-indicator-item');
+            if (indicators.length > 0) {
+                indicators[0].classList.add('active');
+                indicators[0].setAttribute('aria-current', 'true');
+
+                // Assign the correct indices to the indicators
+                indicators.forEach((indicator, index) => {
+                    indicator.setAttribute('data-bs-slide-to', index);
+                    indicator.setAttribute('aria-label', `Slide ${index + 1}`);
+                });
+            }
+        });
+        //Not implemented
+        //function moveToSlide(thumbnail) {}
+    </script>
 </body>
 
 </html>

@@ -47,7 +47,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/signup").permitAll()
                         .requestMatchers("/user_register").permitAll()
                         .requestMatchers("/images/**").permitAll()
-                        .requestMatchers("/css/**").permitAll()
+                        .requestMatchers("/assets/**").permitAll()
                         .requestMatchers("/login/**").permitAll()
                         .requestMatchers("/loginerror").permitAll()
                         .requestMatchers("/error").permitAll()
