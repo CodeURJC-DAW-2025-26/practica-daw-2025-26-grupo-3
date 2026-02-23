@@ -102,7 +102,7 @@ public class UserService {
         String email = request.getUserPrincipal().getName();
         User currentUser = this.findUserByEmail(email);
 
-        if (!passwordEncoder.matches(currentUser.getEncodedPassword(), passwordEncoder.encode(password))) {
+        if (!passwordEncoder.matches(password, currentUser.getEncodedPassword())) {
             return new Error("¡Contraseña incorrecta!", "La contraseña introducida no es correcta.");
         }
         return null;
@@ -169,6 +169,18 @@ public class UserService {
 
         for (String role : roles) {
             roleList.add(role);
+        }
+    }
+
+    public void deleteUserById(Long id, HttpServletRequest request) throws NullPointerException {
+        String email = request.getUserPrincipal().getName();
+        Optional<User> op = userRepository.findDistinctByEmail(email);
+
+        if (op.isPresent()) {
+            User user = op.get();
+            userRepository.deleteById(user.getId());
+        } else {
+            throw new NullPointerException("User was not found");
         }
     }
 }

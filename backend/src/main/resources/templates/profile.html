@@ -121,12 +121,44 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <div class="card border-0 shadow-sm p-4 mt-4">
+                        <h4 class="fw-bold mb-4 text-danger">Borrar Cuenta</h4>
+                        <div class="alert alert-warning">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            Advertencia: Esta acción es irreversible. Todos tus datos serán eliminados permanentemente.
+                        </div>
+                        <form action="/profile/delete" method="POST">
+                            <input type="hidden" name="_csrf" value="{{token}}" />
+
+                            <div class="mb-3">
+                                <label for="deletePassword" class="form-label fw-bold">Introduce tu contraseña</label>
+                                <input type="password" class="form-control" id="deletePassword" name="currentPassword"
+                                    required>
+                            </div>
+
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="confirmDelete" name="confirmDelete"
+                                    required>
+                                <label class="form-check-label" for="confirmDelete">
+                                    Confirmo que quiero borrar mi cuenta permanentemente
+                                </label>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-danger fw-bold">
+                                    Borrar Cuenta
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="mt-4 text-center">
+                        <a href="/" class="btn btn-danger py-2 fw-bold shadow-sm" title="Volver a la tienda">
+                            Volver a la tienda
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <div class="mt-4 text-center">
-                <a href="/" class="btn btn-danger py-2 fw-bold shadow-sm" title="Volver a la tienda">
-                    Volver a la tienda
-                </a>
             </div>
         </div>
 
