@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import es.grupo3.practica25_26.model.Error;
 import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.model.User;
@@ -41,7 +43,7 @@ public class UserController {
 
     @PostMapping("/user_register")
     public String userRegister(Model model, User newUser, HttpSession session, HttpServletRequest request,
-            MultipartFile imageFile)
+            MultipartFile imageFile, RedirectAttributes redirectAttributes)
             throws IOException, ServletException {
 
         Error error = null;
@@ -93,6 +95,9 @@ public class UserController {
             } catch (ServletException e) {
                 e.printStackTrace();
             }
+
+            redirectAttributes.addFlashAttribute("successful_register", true);
+            redirectAttributes.addFlashAttribute("user_name", newUser.getUserName());
 
             return "redirect:/";
         }

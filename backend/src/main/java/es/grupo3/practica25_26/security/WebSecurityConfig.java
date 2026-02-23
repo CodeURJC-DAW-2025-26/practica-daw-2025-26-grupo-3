@@ -17,6 +17,12 @@ public class WebSecurityConfig {
     @Autowired
     RepositoryUserDetailsService userDetailsService;
 
+    @Autowired
+    LoginSuccessHandler loginSuccessHandler;
+
+    @Autowired
+    LogoutSuccessHandler logoutSuccessHandler;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -70,11 +76,11 @@ public class WebSecurityConfig {
                         .loginProcessingUrl("/login/getUser")
                         .usernameParameter("email")
                         .failureUrl("/loginerror")
-                        .defaultSuccessUrl("/", true)
+                        .successHandler(loginSuccessHandler)
                         .permitAll())
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/")
+                        .logoutSuccessHandler(logoutSuccessHandler)
                         .permitAll());
 
         return http.build();
