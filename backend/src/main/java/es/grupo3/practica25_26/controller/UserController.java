@@ -191,4 +191,41 @@ public class UserController {
             return "redirect:/profile";
         }
     }
+
+    @PostMapping("profile/delete")
+    public String deleteProfile(Model model, HttpServletRequest request,
+            @RequestParam String currentPassword,
+            @RequestParam(required = false, defaultValue = "false") boolean confirmDelete) {
+
+        Error error = null;
+
+        if (!confirmDelete) {
+            System.out.println("Error: No se confirmó el borrado");
+            error = new Error("¡Pendiente de confirmación!",
+                    "Por motivos de seguridad, debes marcar la casilla de confirmación para eliminar tu cuenta.");
+        } else {
+            error = userService.correctPassCheck(currentPassword, request);
+            if (error != null) {
+                System.out.println("Error de contraseña: " + error.getTitle());
+            }
+        }
+
+        if (error != null) {
+            return errorService.setErrorPageWithButton(model, null, error.getTitle(), error.getMessage(),
+                    "Volver al perfil", "/profile");
+        }
+
+        String email = request.getUserPrincipal().getName();
+        User currentUser = userService.findUserByEmail(email);
+        userService.deleteUserById(currentUser.getId(), request);
+
+        // We force user logout manually to avoid problems with erased user in database
+        try {
+            request.logout();
+        } catch (ServletException e) {
+            e.printStackTrace();
+        }
+
+        return "redirect:/";
+    }
 }
