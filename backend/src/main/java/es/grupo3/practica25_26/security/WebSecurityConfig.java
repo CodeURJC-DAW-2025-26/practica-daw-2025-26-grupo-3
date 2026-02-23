@@ -70,7 +70,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/product_detail_admin/**").hasAnyRole("ADMIN")
                         .requestMatchers("/products_pending_list/**").hasAnyRole("ADMIN")
                         .requestMatchers("/products_published/**").hasAnyRole("ADMIN")
-                        .requestMatchers("/user_registered_list/**").hasAnyRole("ADMIN"))
+                        .requestMatchers("/user_registered_list/**").hasAnyRole("ADMIN")
+                        .requestMatchers("/my_products/**").hasAnyRole("USER"))
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .loginProcessingUrl("/login/getUser")

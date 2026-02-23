@@ -171,16 +171,4 @@ public class UserService {
             roleList.add(role);
         }
     }
-
-    public void deleteUserById(Long id, HttpServletRequest request) throws NullPointerException {
-        String email = request.getUserPrincipal().getName();
-        Optional<User> op = userRepository.findDistinctByEmail(email);
-
-        if (op.isPresent()) {
-            User user = op.get();
-            userRepository.deleteById(user.getId());
-        } else {
-            throw new NullPointerException("User was not found");
-        }
-    }
 }

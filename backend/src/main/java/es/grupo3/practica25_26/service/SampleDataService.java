@@ -48,15 +48,15 @@ public class SampleDataService {
                         // methods.
 
                         User adminUser = getOrCreateAdmin("Admin", "System", "Admin Street 1, Spain",
-                                        "admin@admin.com", "admin1234");
+                                        "admin@admin.com", "admin1234", true);
                         if (adminUser.getImage() == null) {
                                 addImageToUser(adminUser, "sample_images/images/profile.png");
                         }
 
                         User exampleUser1 = getOrCreateUser("Marta", "Lopez", "Calle Mayor 12, Madrid",
-                                        "marta@example.com", "demo1234");
+                                        "marta@example.com", "demo1234", true);
                         User exampleUser2 = getOrCreateUser("Carlos", "Gomez", "Avenida Sol 7, Valencia",
-                                        "carlos@example.com", "demo1234");
+                                        "carlos@example.com", "demo1234", true);
                         if (exampleUser2.getImage() == null) {
                                 addImageToUser(exampleUser2, "sample_images/images/commentor-item1.jpg");
                         }
@@ -175,27 +175,30 @@ public class SampleDataService {
          * Retrieves an existing user or creates a new one with the USER role.
          * Encodes the password using BCrypt before saving.
          */
-        private User getOrCreateUser(String name, String surname, String address, String email, String password) {
+        private User getOrCreateUser(String name, String surname, String address, String email, String password,
+                        boolean state) {
                 User user = userService.findUserByEmail(email);
                 if (user != null) {
                         return user;
                 }
                 User newUser = new User(name, surname, address, email, passwordEncoder.encode(password));
                 newUser.setRoles(new ArrayList<>(List.of("USER"))); // Assign default role
-                userService.saveUser(newUser);
+                newUser.setState(state); // Set user as active
                 return newUser;
         }
 
         /**
          * Retrieves an existing admin or creates a new one with USER and ADMIN roles.
          */
-        private User getOrCreateAdmin(String name, String surname, String address, String email, String password) {
+        private User getOrCreateAdmin(String name, String surname, String address, String email, String password,
+                        boolean state) {
                 User user = userService.findUserByEmail(email);
                 if (user != null) {
                         return user;
                 }
                 User newUser = new User(name, surname, address, email, passwordEncoder.encode(password));
                 newUser.setRoles(new ArrayList<>(List.of("USER", "ADMIN"))); // Assign Admin privileges
+                newUser.setState(state);
                 userService.saveUser(newUser);
                 return newUser;
         }
