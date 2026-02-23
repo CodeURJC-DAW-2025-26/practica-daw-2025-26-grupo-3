@@ -36,36 +36,49 @@
                     </div>
 
                     <p class="text-muted small">Completa los datos para poner tu artículo a la venta.</p>
-                    <form>
+                    <form action="/publish_new_product" method="post" enctype="multipart/form-data">
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Nombre del Producto</label>
-                            <input type="text" class="form-control" placeholder="Ej. MacBook Pro 2021">
+                            <label class="form-label fw-bold" for="productName">Nombre del Producto</label>
+                            <input type="text" class="form-control" id="productName" name="productName"
+                                placeholder="Ej. MacBook Pro 2021" required>
                         </div>
-                        <div class="row">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Precio (€)</label>
-                                <input type="number" class="form-control" placeholder="0.00">
-                            </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold" for="price">Precio (€)</label>
+                            <input type="number" class="form-control" id="price" name="price" placeholder="0.00" min="0"
+                                step="5.0" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold">Estado del artículo</label>
-                            <div class="btn-group w-100" role="group">
-                                <p>Segunda mano</p>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="state" id="nuevo" value="0" required>
+                                <label class="form-check-label" for="nuevo">Nuevo</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="state" id="segunda_mano" value="2"
+                                    required>
+                                <label class="form-check-label" for="segunda_mano">Segunda mano</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="state" id="reacondicionado" value="1"
+                                    required>
+                                <label class="form-check-label" for="reacondicionado">Reacondicionado</label>
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Descripción</label>
-                            <textarea class="form-control" rows="4"
-                                placeholder="Describe brevemente el estado y características de tu producto"></textarea>
+                            <label class="form-label fw-bold" for="description">Descripción</label>
+                            <textarea class="form-control" id="description" name="description" rows="4"
+                                placeholder="Describe brevemente el estado y características de tu producto"
+                                required></textarea>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Imagen </label>
-                            <input type="file" class="form-control" accept="image/*">
+                            <label class="form-label fw-bold" for="images">Imagen</label>
+                            <input type="file" class="form-control" id="images" name="images[]" accept="image/*"
+                                multiple required>
                             <small class="form-text text-muted">Debes adjuntar al menos una imagen del producto</small>
                         </div>
-                        <a href="/" class="btn btn-primary w-100 mt-4 py-2 fw-bold">
+                        <button type="submit" class="btn btn-primary w-100 mt-4 py-2 fw-bold">
                             Publicar Ahora
-                        </a>
+                        </button>
                     </form>
                     <div class="mt-4 text-center">
                         <a href="/" class="btn btn-danger py-2 fw-bold shadow-sm" title="Volver a la tienda">
