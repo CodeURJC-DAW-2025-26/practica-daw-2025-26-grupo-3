@@ -30,6 +30,8 @@ public class User {
 
     private String password;
 
+    private boolean state;
+
     // Stores a list of roles (Strings) in a separate table and loads them
     // immediately with the User because the default case for @ElementCollection is
     // LAZY, but we want to have the roles available as soon as we load the user.
@@ -67,6 +69,7 @@ public class User {
         this.password = password;
         this.roles = new ArrayList<>();
         this.roles.add("USER");
+        this.state = true;
     }
 
     public void setAddress(String address) {
@@ -131,6 +134,16 @@ public class User {
     // Setter for roles
     public void setRoles(List<String> roles) {
         this.roles = roles;
+    }
+
+    // Getter for state
+    public boolean getState() {
+        return state;
+    }
+
+    // Setter for state
+    public void setState(boolean state) {
+        this.state = state;
     }
 
     // Añadir relación con productos y pedidos

@@ -171,4 +171,8 @@ public class UserService {
             roleList.add(role);
         }
     }
+
+    public List<User> getUsersWithoutAdmins() {
+        return userRepository.findUsersWithoutRole("ADMIN");
+    }
 }

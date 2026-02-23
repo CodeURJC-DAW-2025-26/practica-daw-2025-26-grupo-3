@@ -17,7 +17,6 @@
         <div class="row">
 
             <div class="col-md-3 col-lg-2 px-0">
-                <!-- SIDE BAR-->
                 <div class="sidebar bg-light p-3 border-end h-100">
 
                     <div class="admin-profile text-center mb-4">
@@ -25,7 +24,6 @@
                     </div>
 
                     <nav class="nav flex-column">
-
                         <a href="/admin_panel" class="nav-link">Panel de control</a>
 
                         <div class="nav-item">
@@ -33,34 +31,28 @@
                                 data-bs-toggle="collapse" href="#productsMenu" role="button">
                                 Gestionar Productos <span>▼</span>
                             </a>
-
                             <div class="collapse ps-3" id="productsMenu">
-                                <a href="/new_product_form_admin" class="sidebar-subitem">Añadir
-                                    productos</a>
-                                <a href="/products_published" class="sidebar-subitem">Productos
-                                    publicados</a>
-                                <a href="/products_pending_list" class="sidebar-subitem">Aprobar
-                                    productos</a>
+                                <a href="/new_product_form_admin" class="sidebar-subitem">Añadir productos</a>
+                                <a href="/products_published" class="sidebar-subitem">Productos publicados</a>
+                                <a href="/products_pending_list" class="sidebar-subitem">Aprobar productos</a>
                             </div>
                         </div>
 
                         <a href="/orders_list" class="nav-link">Gestionar Pedidos</a>
-                        <a href="/user_registered_list" class="nav-link">Gestionar Usuarios</a>
+                        <a href="/user_registered_list" class="nav-link fw-bold">Gestionar Usuarios</a>
 
                         <hr class="text-secondary my-3 opacity-25">
-
                         <a href="/admin_profile" class="nav-link">Mi Perfil</a>
 
-                        <form action="/logout" method="post">
+                        <form action="/logout" method="post" class="m-0">
                             <input type="hidden" name="_csrf" value="{{token}}" />
-                            <button type="submit"
-                                class="nav-link text-danger w-100 text-start bg-transparent border-0">Cerrar
-                                sesión</button>
+                            <button type="submit" class="nav-link text-danger w-100 text-start bg-transparent border-0">
+                                Cerrar sesión
+                            </button>
                         </form>
                     </nav>
                 </div>
             </div>
-
             <div class="col-md-9 col-lg-10 py-3 px-4">
 
                 <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
@@ -81,103 +73,66 @@
                                 <thead class="bg-light">
                                     <tr>
                                         <th class="ps-4 py-3">Usuario</th>
-                                        <th class="py-3">Rol</th>
-                                        <th class="py-3">Registro</th>
-                                        <th class="py-3">Reportes</th>
                                         <th class="py-3">Estado</th>
                                         <th class="py-3 text-end pe-4">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
+                                    {{#users}}
                                     <tr>
                                         <td class="ps-4">
                                             <div class="d-flex align-items-center">
                                                 <img src="https://placehold.co/40x40" class="rounded-circle me-2"
                                                     alt="Avatar">
                                                 <div>
-                                                    <div class="fw-bold">Laura Martínez</div>
-                                                    <div class="small text-muted">laura.m@email.com</div>
+                                                    <div class="fw-bold">{{userName}} {{surname}}</div>
+                                                    <div class="small text-muted">{{email}}</div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td><span
-                                                class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary">Comprador</span>
+
+                                        <td>
+                                            {{#state}}
+                                            <span class="badge bg-success bg-opacity-75">
+                                                <i class="bi bi-check-circle me-1"></i>Activo
+                                            </span>
+                                            {{/state}}
+
+                                            {{^state}}
+                                            <span class="badge bg-danger bg-opacity-75">
+                                                <i class="bi bi-x-circle me-1"></i>Bloqueado
+                                            </span>
+                                            {{/state}}
                                         </td>
-                                        <td>15 Ene 2025</td>
-                                        <td><span class="text-muted small">-</span></td>
-                                        <td><span class="badge bg-success bg-opacity-75"><i
-                                                    class="bi bi-check-circle me-1"></i> Activo</span></td>
+
                                         <td class="text-end pe-4">
                                             <div class="d-flex justify-content-end gap-2">
-                                                <button
-                                                    class="btn btn-sm btn-danger d-flex align-items-center btn-admin-action"
-                                                    title="Bloquear Usuario">
-                                                    <i class="bi bi-ban me-1"></i> Bloquear
-                                                </button>
+
+                                                {{#state}}
+                                                <form action="/user/{{id}}/block" method="post" class="m-0">
+                                                    <input type="hidden" name="_csrf" value="{{token}}" />
+                                                    <button type="submit"
+                                                        class="btn btn-sm btn-danger d-flex align-items-center">
+                                                        <i class="bi bi-ban me-1"></i> Bloquear
+                                                    </button>
+                                                </form>
+                                                {{/state}}
+
+                                                {{^state}}
+                                                <form action="/user/{{id}}/unblock" method="post" class="m-0">
+                                                    <input type="hidden" name="_csrf" value="{{token}}" />
+                                                    <button type="submit"
+                                                        class="btn btn-sm btn-success d-flex align-items-center">
+                                                        <i class="bi bi-unlock me-1"></i> Desbloquear
+                                                    </button>
+                                                </form>
+                                                {{/state}}
+
                                             </div>
                                         </td>
                                     </tr>
-
-                                    <tr>
-                                        <td class="ps-4">
-                                            <div class="d-flex align-items-center">
-                                                <div class="bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center me-2"
-                                                    style="width: 40px; height: 40px;">RT</div>
-                                                <div>
-                                                    <div class="fw-bold">Roberto Torres</div>
-                                                    <div class="small text-muted">r.torres@tienda.com</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td><span
-                                                class="badge bg-primary bg-opacity-10 text-primary border border-primary">Vendedor</span>
-                                        </td>
-                                        <td>02 Feb 2026</td>
-                                        <td><span class="badge bg-warning text-dark">3 Reportes</span></td>
-                                        <td><span class="badge bg-success bg-opacity-75"><i
-                                                    class="bi bi-check-circle me-1"></i> Activo</span></td>
-                                        <td class="text-end pe-4">
-                                            <div class="d-flex justify-content-end gap-2">
-                                                <button
-                                                    class="btn btn-sm btn-danger d-flex align-items-center btn-admin-action"
-                                                    title="Bloquear Usuario">
-                                                    <i class="bi bi-ban me-1"></i> Bloquear
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr class="table-light text-muted">
-                                        <td class="ps-4">
-                                            <div class="d-flex align-items-center">
-                                                <img src="https://placehold.co/40x40?text=X"
-                                                    class="rounded-circle me-2 grayscale" alt="Avatar"
-                                                    style="filter: grayscale(100%);">
-                                                <div>
-                                                    <div class="fw-bold text-decoration-line-through">Carlos D.</div>
-                                                    <div class="small text-muted">carlos.bad@email.com</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td><span
-                                                class="badge bg-secondary bg-opacity-10 text-secondary">Comprador</span>
-                                        </td>
-                                        <td>10 Dic 2025</td>
-                                        <td><span class="text-danger fw-bold">Estafa</span></td>
-                                        <td><span class="badge bg-danger"><i class="bi bi-slash-circle me-1"></i>
-                                                Bloqueado</span></td>
-                                        <td class="text-end pe-4">
-                                            <div class="d-flex justify-content-end gap-2">
-                                                <button
-                                                    class="btn btn-sm btn-success d-flex align-items-center btn-admin-action"
-                                                    title="Reactivar Usuario">
-                                                    <i class="bi bi-unlock me-1"></i> Desbloquear
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-
+                                    {{/users}}
                                 </tbody>
                             </table>
                         </div>
