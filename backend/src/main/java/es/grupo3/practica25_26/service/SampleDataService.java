@@ -50,7 +50,7 @@ public class SampleDataService {
                         User adminUser = getOrCreateAdmin("Admin", "System", "Admin Street 1, Spain",
                                         "admin@admin.com", "admin1234", true);
                         if (adminUser.getImage() == null) {
-                                addImageToUser(adminUser, "sample_images/images/profile.png");
+                                // addImageToUser(adminUser, "static/images/profile.png");
                         }
 
                         User exampleUser1 = getOrCreateUser("Marta", "Lopez", "Calle Mayor 12, Madrid",
@@ -58,7 +58,7 @@ public class SampleDataService {
                         User exampleUser2 = getOrCreateUser("Carlos", "Gomez", "Avenida Sol 7, Valencia",
                                         "carlos@example.com", "demo1234", true);
                         if (exampleUser2.getImage() == null) {
-                                addImageToUser(exampleUser2, "sample_images/images/commentor-item1.jpg");
+                                addImageToUser(exampleUser2, "static/images/commentor-item1.jpg");
                         }
 
                         // 2. Initialize Products
@@ -184,6 +184,7 @@ public class SampleDataService {
                 User newUser = new User(name, surname, address, email, passwordEncoder.encode(password));
                 newUser.setRoles(new ArrayList<>(List.of("USER"))); // Assign default role
                 newUser.setState(state); // Set user as active
+                userService.saveUser(newUser); // Save the user to the database
                 return newUser;
         }
 

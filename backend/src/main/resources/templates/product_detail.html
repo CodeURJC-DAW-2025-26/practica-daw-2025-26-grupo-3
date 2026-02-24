@@ -86,8 +86,9 @@
                 <p class="text-muted">{{description}}</p>
                 <div class="my-4">
                     <div class="my-4">
-                        <form action="/cart/add/{{id}}" method="POST"> <button type="submit"
-                                class="btn btn-primary btn-lg px-5">Añadir al Carrito</button>
+                        <form action="/cart/add/{{id}}" method="POST">
+                            <input type="hidden" name="_csrf" value="{{token}}" />
+                            <button type="submit" class="btn btn-primary btn-lg px-5">Añadir al Carrito</button>
                             <button type="button" class="btn btn-outline-dark btn-lg ms-2">♥</button>
                         </form>
                     </div>

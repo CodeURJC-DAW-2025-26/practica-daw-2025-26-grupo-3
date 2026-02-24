@@ -45,6 +45,17 @@ public class User {
                                                                                   // persistent when created.
     private Image image;
 
+    @OneToOne
+    private ShoppingCart shoppingCart;
+
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
     public String getSurname() {
         return surname;
     }
@@ -144,6 +155,10 @@ public class User {
     // Setter for state
     public void setState(boolean state) {
         this.state = state;
+    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
     }
 
     // Añadir relación con productos y pedidos

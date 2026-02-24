@@ -29,11 +29,6 @@ public class WebController {
         return "index";
     }
 
-    @GetMapping("/shopping-cart")
-    public String shoppingCart(Model model) {
-        return "shopping-cart";
-    }
-
     @GetMapping("/orders")
     public String orders(Model model) {
         return "orders";

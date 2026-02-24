@@ -26,11 +26,12 @@
                 <div class="col-md-4 col-lg-3 mb-4">
                     <div class="card border-0 shadow-sm text-center p-4">
                         {{^ has_image}}
-                        <img src="https://placehold.co/100x100?text=User" class="rounded-circle mx-auto mb-3"
-                            width="80">
+                        <img src="https://placehold.co/100x100?text=User" class="rounded-circle mx-auto mb-3" width="80"
+                            height="80" style="object-fit:cover;">
                         {{/ has_image}}
                         {{#has_image}}
-                        <img src="/user-images/{{id}}" class="rounded-circle mx-auto mb-3" width="80">
+                        <img src="/user-images/{{id}}" class="rounded-circle mx-auto mb-3" width="80" height="80"
+                            style="object-fit:cover;">
                         {{/has_image}}
                         <h5 class="fw-bold mb-0">{{user.userName}}</h5>
                         <hr>
@@ -70,10 +71,11 @@
                             <div class="col-12 text-center mb-3">
                                 {{^ has_image}}
                                 <img src="https://placehold.co/100x100" class="rounded-circle shadow-sm"
-                                    alt="Profile Pic">
+                                    alt="Profile Pic" style="width: 150px; height: 150px; object-fit: cover;">
                                 {{/ has_image}}
                                 {{#has_image}}
-                                <img src="/user-images/{{id}}" class="rounded-circle shadow-sm" alt="Profile Pic">
+                                <img src="/user-images/{{id}}" class="rounded-circle shadow-sm" alt="Profile Pic"
+                                    style="width: 150px; height: 150px; object-fit: cover;">
                                 {{/has_image}}
                             </div>
 
