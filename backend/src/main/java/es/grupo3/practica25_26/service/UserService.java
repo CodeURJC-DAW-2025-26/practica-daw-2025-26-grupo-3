@@ -183,4 +183,8 @@ public class UserService {
             throw new NullPointerException("User was not found");
         }
     }
+
+    public List<User> getUsersWithoutAdmins() {
+        return userRepository.findUsersWithoutRole("ADMIN");
+    }
 }
