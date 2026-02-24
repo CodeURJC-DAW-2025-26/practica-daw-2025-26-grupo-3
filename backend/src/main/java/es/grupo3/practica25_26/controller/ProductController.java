@@ -41,13 +41,28 @@ public class ProductController {
     }
 
     @GetMapping("/product_detail/{id}")
-    public String productDetail(Model model, @PathVariable Long id) {
+    public String productDetail(Model model, @PathVariable Long id, HttpServletRequest request) {
 
         Optional<Product> productOptional = ProductService.findById(id);
 
         if (productOptional.isPresent()) {
             Product product = productOptional.get();
             model.addAttribute("product", product);
+
+            boolean isOwner = false;
+            if (request.getUserPrincipal() != null) {
+
+                // Get the email of the logged-in user and the seller's email to compare them
+                String loggedInEmail = request.getUserPrincipal().getName();
+                String sellerEmail = product.getSeller().getEmail();
+
+                if (loggedInEmail.equals(sellerEmail)) {
+                    isOwner = true;
+                }
+            }
+            // Le pasamos la variable a Mustache
+            model.addAttribute("isOwner", isOwner);
+
             return "product_detail";
         } else {
             // If the product does not exist, we redirect to the homepage or an error page.
@@ -133,6 +148,36 @@ public class ProductController {
         ProductService.save(product);
 
         return "redirect:/product_search";
+    }
+
+    @PostMapping("/delete_product/{id}")
+    public String deleteProduct(@PathVariable Long id, HttpServletRequest request) {
+
+        Optional<Product> productOpt = ProductService.findById(id);
+
+        if (productOpt.isPresent() && request.getUserPrincipal() != null) {
+
+            Product product = productOpt.get();
+            String loggedInEmail = request.getUserPrincipal().getName();
+            User seller = product.getSeller();
+            String sellerEmail = seller.getEmail();
+
+            // unlink the relationship between user and his product before deleting it
+            if (seller.getProducts() != null) {
+                seller.getProducts().remove(product);
+            }
+
+            System.out.println("Usuario logueado: " + loggedInEmail);
+            System.out.println("Dueño del producto: " + sellerEmail);
+
+            // prove that seller email and logged email are equal
+            if (sellerEmail.equals(loggedInEmail)) {
+                ProductService.deleteById(id);
+            }
+        }
+
+        return "redirect:/product_search";
+
     }
 
 }

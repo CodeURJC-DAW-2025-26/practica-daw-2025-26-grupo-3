@@ -64,12 +64,14 @@ public class User {
         this.surname = surname;
     }
 
-    public User() {
-
-    }
-
     public Image getImage() {
         return image;
+    }
+
+    // Constructor indicates that the state of the user is unblocked (true) by
+    // default when created.
+    public User() {
+        this.state = true;
     }
 
     public User(String userName, String surname, String address, String email, String password) {

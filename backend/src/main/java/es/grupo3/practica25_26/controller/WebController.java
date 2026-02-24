@@ -79,7 +79,7 @@ public class WebController {
     }
 
     // Show error for blocked users
-    @GetMapping("/usuario_bloqueado")
+    @GetMapping("/blocked_user_error")
     public String usuarioBloqueado(Model model, HttpSession session) {
         return errorService.setErrorPageWithButton(
                 model,

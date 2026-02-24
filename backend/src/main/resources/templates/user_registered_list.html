@@ -20,7 +20,8 @@
                 <div class="sidebar bg-light p-3 border-end h-100">
 
                     <div class="admin-profile text-center mb-4">
-                        <img src="https://placehold.co/70x70" alt="Admin" class="rounded-circle mb-2">
+                        <img src="https://placehold.co/70x70" alt="Admin" class="rounded-circle mb-2" width="70"
+                            height="70" style="object-fit: cover;">
                     </div>
 
                     <nav class="nav flex-column">
@@ -83,8 +84,14 @@
                                     <tr>
                                         <td class="ps-4">
                                             <div class="d-flex align-items-center">
+                                                {{#image}}
+                                                <img src="/images/{{id}}" class="rounded-circle me-2" alt="Avatar"
+                                                    width="40" height="40" style="object-fit: cover;">
+                                                {{/image}}
+                                                {{^image}}
                                                 <img src="https://placehold.co/40x40" class="rounded-circle me-2"
-                                                    alt="Avatar">
+                                                    alt="Default" width="40" height="40" style="object-fit: cover;">
+                                                {{/image}}
                                                 <div>
                                                     <div class="fw-bold">{{userName}} {{surname}}</div>
                                                     <div class="small text-muted">{{email}}</div>
