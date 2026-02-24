@@ -3,22 +3,35 @@ package es.grupo3.practica25_26.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.model.Product;
+import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.ProductService;
+import es.grupo3.practica25_26.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+
+import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class ProductController {
 
     @Autowired
     ProductService ProductService;
+
+    @Autowired
+    UserService userService;
 
     @GetMapping("/product_search")
     public String productSearch(Model model) {
@@ -85,11 +98,41 @@ public class ProductController {
     }
 
     @PostMapping("/publish_new_product")
-    public String publishNewProduct(Model model, @RequestParam Product product) {
+    public String publishNewProduct(Model model, Product product,
+            @RequestParam("productimages") List<MultipartFile> Productimages, HttpServletRequest request)
+            throws IOException {
+
+        String email = request.getUserPrincipal().getName();
+
+        User seller = userService.findUserByEmail(email);
+
+        product.setSeller(seller);
+
+        List<Image> productImages = new ArrayList<>();
+
+        for (MultipartFile file : Productimages) {
+
+            if (!file.isEmpty()) {
+
+                Image image = new Image();
+                try {
+                    image.setImageFile(new SerialBlob(file.getBytes()));
+                } catch (Exception e) {
+                    throw new IOException("Failed to create image", e);
+                }
+
+                productImages.add(image);
+
+            }
+
+        }
+
+        // assign the images to the product
+        product.setImages(productImages);
 
         ProductService.save(product);
 
-        return "redirect:/products_published";
+        return "redirect:/product_search";
     }
 
 }
