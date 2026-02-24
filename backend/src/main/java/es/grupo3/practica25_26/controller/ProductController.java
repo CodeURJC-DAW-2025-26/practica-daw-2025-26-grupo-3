@@ -49,19 +49,20 @@ public class ProductController {
             Product product = productOptional.get();
             model.addAttribute("product", product);
 
-            boolean isOwner = false;
+            boolean canModifyProduct = false;
             if (request.getUserPrincipal() != null) {
 
                 // Get the email of the logged-in user and the seller's email to compare them
                 String loggedInEmail = request.getUserPrincipal().getName();
                 String sellerEmail = product.getSeller().getEmail();
 
-                if (loggedInEmail.equals(sellerEmail)) {
-                    isOwner = true;
+                //If the user is an admin, or a owner of the product, he can edit or remove it
+                if (loggedInEmail.equals(sellerEmail) || request.isUserInRole("ADMIN")) {
+                    canModifyProduct = true;
                 }
             }
             // Le pasamos la variable a Mustache
-            model.addAttribute("isOwner", isOwner);
+            model.addAttribute("canModifyProduct", canModifyProduct);
 
             return "product_detail";
         } else {
