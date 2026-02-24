@@ -45,7 +45,7 @@ public class User {
                                                                                   // persistent when created.
     private Image image;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private ShoppingCart shoppingCart;
 
     public ShoppingCart getShoppingCart() {

@@ -44,17 +44,56 @@ public class OrderController {
                     "El producto que intentas añadir no existe", "Volver al inicio", "/");
         }
 
-        return "shopping-cart";
+        String email = request.getUserPrincipal().getName();
+        User user = userService.findUserByEmail(email);
+        model.addAttribute("address", user.getAddress());
+
+        return "redirect:/shopping-cart";
     }
 
     @GetMapping("/shopping-cart")
     public String shoppingCart(Model model, HttpServletRequest request) {
         String email = request.getUserPrincipal().getName();
         User user = userService.findUserByEmail(email);
-
         ShoppingCart userCart = user.getShoppingCart();
-        model.addAttribute("cart", userCart);
+        model.addAttribute("address", user.getAddress());
+
+        if (userCart != null) {
+            // We add the shopping cart entity attribute to template
+            model.addAttribute("cart", userCart);
+
+            // We add order sumary info (right part of screen)
+            model.addAttribute("productNum", shoppingCartService.getProductNumById(userCart.getId()));
+            model.addAttribute("total", shoppingCartService.productPriceSum(userCart.getId()));
+        } else {
+            model.addAttribute("productNum", 0);
+            model.addAttribute("total", 0);
+        }
 
         return "shopping-cart";
+    }
+
+    @PostMapping("/cart/add_unit/{operation}/{id}")
+    public String addUnit(HttpServletRequest request, @PathVariable int operation,
+            @PathVariable int id)
+            throws Exception {
+        String email = request.getUserPrincipal().getName();
+        User user = userService.findUserByEmail(email);
+        ShoppingCart userCart = user.getShoppingCart();
+
+        shoppingCartService.quantityUpdateByItemId(userCart, id, operation);
+
+        return "redirect:/shopping-cart";
+    }
+
+    @PostMapping("/cart/delete/{id}")
+    public String deleteCartItem(HttpServletRequest request, @PathVariable long id) throws Exception {
+        String email = request.getUserPrincipal().getName();
+        User user = userService.findUserByEmail(email);
+        ShoppingCart userCart = user.getShoppingCart();
+
+        shoppingCartService.deleteCartItem(userCart, id);
+
+        return "redirect:/shopping-cart";
     }
 }
