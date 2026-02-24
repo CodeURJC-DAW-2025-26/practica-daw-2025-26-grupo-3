@@ -77,12 +77,10 @@ public class WebController {
     }
 
     // Obtain only the users, not the admins
-    /*
-     * @GetMapping("/user_registered_list")
-     * public String userRegisteredList(Model model) {
-     * model.addAttribute("users", userService.getUsersWithoutAdmins());
-     * return "user_registered_list";
-     * }
-     */
+    @GetMapping("/user_registered_list")
+    public String userRegisteredList(Model model) {
+        model.addAttribute("users", userService.getUsersWithoutAdmins());
+        return "user_registered_list";
+    }
 
 }
