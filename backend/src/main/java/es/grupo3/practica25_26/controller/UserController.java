@@ -23,7 +23,6 @@ import es.grupo3.practica25_26.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import jakarta.websocket.server.PathParam;
 
 @Controller
 public class UserController {
