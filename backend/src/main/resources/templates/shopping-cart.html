@@ -49,138 +49,86 @@
 										</tr>
 									</thead>
 									<tbody>
+										{{#cart.cartItems}}
 										<tr>
 											<td class="ps-4">
 												<div class="d-flex align-items-center">
-													<img src="https://placehold.co/72x72?text=iPhone+13" alt="iPhone 13"
-														class="rounded-3 me-3"
+													<img src="/product/{{product.id}}/image"
+														alt="{{product.productName}}" class="rounded-3 me-3"
 														style="width: 72px; height: 72px; object-fit: cover;">
 													<div>
-														<div class="fw-bold">iPhone 13 - 128GB</div>
-														<div class="small text-muted">Vendedor: Roberto T.</div>
+														<div class="fw-bold">{{product.productName}}</div>
+														<div class="small text-muted">Vendedor:
+															{{product.seller.userName}}</div>
 													</div>
 												</div>
-											</td>
-											<td><span
-													class="badge bg-info bg-opacity-10 text-info">Reacondicionado</span>
-											</td>
-											<td>250.00 EUR</td>
-											<td>
-												<div class="input-group input-group-sm" style="max-width: 120px;">
-													<button class="btn btn-outline-secondary" type="button">-</button>
-													<input type="text" class="form-control text-center" value="1"
-														aria-label="Cantidad">
-													<button class="btn btn-outline-secondary" type="button">+</button>
-												</div>
-											</td>
-											<td class="fw-semibold">250.00 EUR</td>
-											<td class="text-end pe-4">
-												<button class="btn btn-sm btn-outline-danger" title="Quitar">
-													<i class="bi bi-trash"></i>
-												</button>
-											</td>
-										</tr>
-										<tr>
-											<td class="ps-4">
-												<div class="d-flex align-items-center">
-													<img src="https://placehold.co/300x250/f093fb/ffffff?text=AirPods+Pro"
-														alt="AirPods Pro" class="rounded-3 me-3"
-														style="width: 72px; height: 72px; object-fit: cover;">
-													<div>
-														<div class="fw-bold">AirPods Pro</div>
-														<div class="small text-muted">Vendedor: Laura M.</div>
-													</div>
-												</div>
-											</td>
-											<td><span
-													class="badge bg-primary bg-opacity-10 text-primary">Reacondicionado</span>
-											</td>
-											<td>199.00 EUR</td>
-											<td>
-												<div class="input-group input-group-sm" style="max-width: 120px;">
-													<button class="btn btn-outline-secondary" type="button">-</button>
-													<input type="text" class="form-control text-center" value="2"
-														aria-label="Cantidad">
-													<button class="btn btn-outline-secondary" type="button">+</button>
-												</div>
-											</td>
-											<td class="fw-semibold">398.00 EUR</td>
-											<td class="text-end pe-4">
-												<button class="btn btn-sm btn-outline-danger" title="Quitar">
-													<i class="bi bi-trash"></i>
-												</button>
-											</td>
-										</tr>
-										<tr>
-											<td class="ps-4">
-												<div class="d-flex align-items-center">
-													<img src="https://placehold.co/300x250/764ba2/ffffff?text=MacBook+Air"
-														alt="MacBook Air" class="rounded-3 me-3"
-														style="width: 72px; height: 72px; object-fit: cover;">
-													<div>
-														<div class="fw-bold">MacBook Air M1</div>
-														<div class="small text-muted">Vendedor: Carlos D.</div>
-													</div>
-												</div>
-											</td>
-											<td><span class="badge bg-warning bg-opacity-10 text-warning">Segunda
-													mano</span></td>
-											<td>799.00 EUR</td>
-											<td>
-												<div class="input-group input-group-sm" style="max-width: 120px;">
-													<button class="btn btn-outline-secondary" type="button">-</button>
-													<input type="text" class="form-control text-center" value="1"
-														aria-label="Cantidad">
-													<button class="btn btn-outline-secondary" type="button">+</button>
-												</div>
-											</td>
-											<td class="fw-semibold">799.00 EUR</td>
-											<td class="text-end pe-4">
-												<button class="btn btn-sm btn-outline-danger" title="Quitar">
-													<i class="bi bi-trash"></i>
-												</button>
-											</td>
-										</tr>
-									</tbody>
-								</table>
 							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-lg-4">
-					<div class="card shadow-sm border-0">
-						<div class="card-body">
-							<h2 class="h5 fw-bold mb-3">Resumen del pedido</h2>
-							<div class="d-flex justify-content-between mb-2">
-								<span class="text-muted">Productos (4)</span>
-								<span>1,447.00 EUR</span>
-							</div>
-							<div class="d-flex justify-content-between mb-2">
-								<span class="text-muted">Envio</span>
-								<span>9.90 EUR</span>
-							</div>
-							<hr>
-							<div class="d-flex justify-content-between mb-4">
-								<span class="fw-bold">Total</span>
-								<span class="fw-bold">1,456.90 EUR</span>
-							</div>
-							<a class="btn btn-primary w-100 mb-2" href="/">Finalizar compra</a>
-							<a class="btn btn-outline-secondary w-100" href="/">Guardar para mas
-								tarde</a>
-						</div>
-					</div>
-
-					<div class="card shadow-sm border-0 mt-4">
-						<div class="card-body">
-							<h3 class="h6 fw-bold mb-3">Dirección de entrega</h3>
-							<p class="text-muted mb-2">Calle Falsa 123, 2B</p>
-							<p class="text-muted mb-3">28080 Madrid, Espana</p>
-							<a href="" class="btn btn-sm btn-outline-primary">Editar dirección</a>
+							</td>
+							<td><span class="badge bg-info bg-opacity-10 text-info">Reacondicionado</span>
+							</td>
+							<td>{{product.price}} EUR</td>
+							<td>
+								<div class="input-group input-group-sm" style="max-width: 120px;">
+									<button class="btn btn-outline-secondary" type="button">-</button>
+									<input type="text" class="form-control text-center" value="{{quantity}}"
+										aria-label="Cantidad">
+									<button class="btn btn-outline-secondary" type="button">+</button>
+								</div>
+							</td>
+							<td class="fw-semibold">100.00 EUR</td>
+							<td class="text-end pe-4">
+								<button class="btn btn-sm btn-outline-danger" title="Quitar">
+									<i class="bi bi-trash"></i>
+								</button>
+							</td>
+							</tr>
+							{{/cart.cartItems}}
+							{{^cart.cartItems}}
+							<tr>
+								<td colspan="6" class="text-center py-4">No tienes productos en el carrito
+								</td>
+							</tr>
+							{{/cart.cartItems}}
+							</tbody>
+							</table>
 						</div>
 					</div>
 				</div>
 			</div>
+
+			<div class="col-lg-4">
+				<div class="card shadow-sm border-0">
+					<div class="card-body">
+						<h2 class="h5 fw-bold mb-3">Resumen del pedido</h2>
+						<div class="d-flex justify-content-between mb-2">
+							<span class="text-muted">Productos (4)</span>
+							<span>1,447.00 EUR</span>
+						</div>
+						<div class="d-flex justify-content-between mb-2">
+							<span class="text-muted">Envio</span>
+							<span>9.90 EUR</span>
+						</div>
+						<hr>
+						<div class="d-flex justify-content-between mb-4">
+							<span class="fw-bold">Total</span>
+							<span class="fw-bold">1,456.90 EUR</span>
+						</div>
+						<a class="btn btn-primary w-100 mb-2" href="/">Finalizar compra</a>
+						<a class="btn btn-outline-secondary w-100" href="/">Guardar para mas
+							tarde</a>
+					</div>
+				</div>
+
+				<div class="card shadow-sm border-0 mt-4">
+					<div class="card-body">
+						<h3 class="h6 fw-bold mb-3">Dirección de entrega</h3>
+						<p class="text-muted mb-2">Calle Falsa 123, 2B</p>
+						<p class="text-muted mb-3">28080 Madrid, Espana</p>
+						<a href="" class="btn btn-sm btn-outline-primary">Editar dirección</a>
+					</div>
+				</div>
+			</div>
+		</div>
 		</div>
 	</section>
 	<!--FOOTER-->

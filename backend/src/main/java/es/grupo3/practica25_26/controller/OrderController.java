@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import jakarta.servlet.http.HttpServletRequest;
-
 import es.grupo3.practica25_26.model.Product;
+import es.grupo3.practica25_26.model.ShoppingCart;
+import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.ErrorService;
 import es.grupo3.practica25_26.service.ProductService;
 import es.grupo3.practica25_26.service.ShoppingCartService;
+import es.grupo3.practica25_26.service.UserService;
 
 @Controller
 public class OrderController {
@@ -24,6 +26,9 @@ public class OrderController {
 
     @Autowired
     ShoppingCartService shoppingCartService;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     ErrorService errorService;
@@ -43,8 +48,13 @@ public class OrderController {
     }
 
     @GetMapping("/shopping-cart")
-    public String shoppingCart(Model model) {
+    public String shoppingCart(Model model, HttpServletRequest request) {
+        String email = request.getUserPrincipal().getName();
+        User user = userService.findUserByEmail(email);
+
+        ShoppingCart userCart = user.getShoppingCart();
+        model.addAttribute("cart", userCart);
+
         return "shopping-cart";
     }
-
 }

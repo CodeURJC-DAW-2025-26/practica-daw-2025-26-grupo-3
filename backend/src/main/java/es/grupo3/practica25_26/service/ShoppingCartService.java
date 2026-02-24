@@ -1,12 +1,13 @@
 package es.grupo3.practica25_26.service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import es.grupo3.practica25_26.model.CartItem;
 import es.grupo3.practica25_26.model.Product;
 import es.grupo3.practica25_26.model.ShoppingCart;
 import es.grupo3.practica25_26.model.User;
@@ -48,13 +49,13 @@ public class ShoppingCartService {
                 user.setShoppingCart(cart);
             }
 
-            Map<Product, Long> cartMap = cart.getProducts(); // Get existing products
-            if (cartMap == null) {
-                cartMap = new HashMap<>();
+            List<CartItem> cartItems = cart.getCartItems();
+            if (cartItems == null) {
+                cartItems = new ArrayList<>();
             }
 
-            cartMap.put(product, (long) 1);
-            cart.setProducts(cartMap);
+            cartItems.add(new CartItem(product, 1));
+            cart.setCartItems(cartItems);
             shoppingCartRepository.save(cart);
             userService.saveUser(user);
         }
