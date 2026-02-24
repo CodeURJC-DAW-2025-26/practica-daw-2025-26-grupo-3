@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +23,7 @@ import es.grupo3.practica25_26.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.server.PathParam;
 
 @Controller
 public class UserController {
@@ -233,4 +235,33 @@ public class UserController {
 
         return "redirect:/";
     }
+
+    // Route to unblock users
+    @PostMapping("/user/{id}/unblock")
+    public String unblockUser(Model model, HttpServletRequest request, @PathVariable Long id) {
+        User userToUnblock = userService.findUserById(id);
+        if (userToUnblock != null && !userToUnblock.getState()) {
+            userService.unblockUser(userToUnblock);
+        }
+        // If we do not put redirect here, we get an error because after blocking a
+        // user, if we try to block another user without refreshing the page, the
+        // blocked user appears as unblocked in the list, and when we try to block the
+        // second user, it tries to block the first one again (because of the error in
+        // the list), which is already blocked, so it returns an error because it cannot
+        // block an already blocked user. With the redirect, we force the page to
+        // refresh and update the users' states in the list.
+        return "redirect:/user_registered_list";
+    }
+
+    // Route to block users
+    @PostMapping("/user/{id}/block")
+    public String blockUser(Model model, HttpServletRequest request, @PathVariable Long id) {
+        User userToBlock = userService.findUserById(id);
+        if (userToBlock != null && userToBlock.getState()) {
+            userService.blockUser(userToBlock);
+        }
+        return "redirect:/user_registered_list";
+
+    }
+
 }

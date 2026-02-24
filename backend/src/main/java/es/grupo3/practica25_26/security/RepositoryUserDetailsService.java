@@ -32,9 +32,12 @@ public class RepositoryUserDetailsService implements UserDetailsService {
             roles.add(new SimpleGrantedAuthority("ROLE_" + role));
         }
 
-        // use getEmail() beacuse is the identifier for login
+        // we use the full constructor of the User class, which includes the "enabled"
+        // field, to be able to block users by setting that field to false when we want
+        // to block them, and to true when we want to unblock them. If we use the
+        // constructor without the "enabled" field, all users
         return new org.springframework.security.core.userdetails.User(user.getEmail(),
-                user.getEncodedPassword(), roles);
+                user.getEncodedPassword(), user.getState(), true, true, true, roles);
 
     }
 }

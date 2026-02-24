@@ -83,4 +83,16 @@ public class WebController {
         return "user_registered_list";
     }
 
+    // Show error for blocked users
+    @GetMapping("/usuario_bloqueado")
+    public String usuarioBloqueado(Model model, HttpSession session) {
+        return errorService.setErrorPageWithButton(
+                model,
+                session,
+                "¡Acceso Denegado!",
+                "Tu cuenta ha sido bloqueada por un administrador. Si crees que se trata de un error, contacta con soporte.",
+                "Volver al inicio",
+                "/");
+    }
+
 }
