@@ -21,4 +21,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // Query to find users that do not have ADMIN role
     @Query("SELECT u FROM User u WHERE :role NOT IN elements(u.roles)")
     List<User> findUsersWithoutRole(@Param("role") String role);
+
+    // Query to find users by their ID in the DDBB
+    Optional<User> findById(long id);
 }

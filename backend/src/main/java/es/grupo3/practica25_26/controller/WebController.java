@@ -72,12 +72,22 @@ public class WebController {
     }
 
     // Obtain only the users, not the admins
-    /*
-     * @GetMapping("/user_registered_list")
-     * public String userRegisteredList(Model model) {
-     * model.addAttribute("users", userService.getUsersWithoutAdmins());
-     * return "user_registered_list";
-     * }
-     */
+    @GetMapping("/user_registered_list")
+    public String userRegisteredList(Model model) {
+        model.addAttribute("users", userService.getUsersWithoutAdmins());
+        return "user_registered_list";
+    }
+
+    // Show error for blocked users
+    @GetMapping("/usuario_bloqueado")
+    public String usuarioBloqueado(Model model, HttpSession session) {
+        return errorService.setErrorPageWithButton(
+                model,
+                session,
+                "¡Acceso Denegado!",
+                "Tu cuenta ha sido bloqueada por un administrador. Si crees que se trata de un error, contacta con soporte.",
+                "Volver al inicio",
+                "/");
+    }
 
 }

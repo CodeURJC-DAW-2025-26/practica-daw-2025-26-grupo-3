@@ -183,4 +183,27 @@ public class UserService {
             throw new NullPointerException("User was not found");
         }
     }
+
+    // Obtain list of users without admins
+    public List<User> getUsersWithoutAdmins() {
+        return userRepository.findUsersWithoutRole("ADMIN");
+    }
+
+    // Change user's state to unblocked (true)
+    public void unblockUser(User user) {
+        user.setState(true);
+        userRepository.save(user);
+    }
+
+    // Change user's state to blocked (false)
+    public void blockUser(User user) {
+        user.setState(false);
+        userRepository.save(user);
+    }
+
+    // If we find the user by id, we return it, else we return null
+    public User findUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
 }

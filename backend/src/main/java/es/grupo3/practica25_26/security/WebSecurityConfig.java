@@ -57,6 +57,10 @@ public class WebSecurityConfig {
                         .requestMatchers("/js/**").permitAll()
                         .requestMatchers("/user-images/**").permitAll()
                         .requestMatchers("/product-images/**").permitAll()
+                        // we allow everyone to access the blocked user error page, so that if a user
+                        // tries to log in with a blocked account, they will be redirected to this page
+                        // and informed about their account status.
+                        .requestMatchers("/blocked_user_error").permitAll()
                         // PRIVATE PAGES
                         .requestMatchers("/product_detail/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/product-publish/**").hasAnyRole("USER", "ADMIN")
@@ -72,14 +76,24 @@ public class WebSecurityConfig {
                         .requestMatchers("/products_pending_list/**").hasAnyRole("ADMIN")
                         .requestMatchers("/products_published/**").hasAnyRole("ADMIN")
                         .requestMatchers("/user_registered_list/**").hasAnyRole("ADMIN")
-                        .requestMatchers("/my_products/**").hasAnyRole("USER"))
+                        .requestMatchers("/my_products/**").hasAnyRole("USER")
+                        .requestMatchers("/publish_new_product/**").hasAnyRole("USER")
+                        .requestMatchers("/user/**").hasAnyRole("ADMIN"))
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .loginProcessingUrl("/login/getUser")
                         .usernameParameter("email")
-                        .failureUrl("/loginerror")
-                        .successHandler(loginSuccessHandler)
-                        .permitAll())
+
+                        // ---> NUEVO: Reemplazamos el .failureUrl() por esto:
+                        .failureHandler((request, response, exception) -> {
+                            if (exception instanceof org.springframework.security.authentication.DisabledException) {
+                                // Si está bloqueado, lo mandamos a tu pantalla bonita
+                                response.sendRedirect("/blocked_user_error");
+                            } else {
+                                // Si falló por otra cosa (mala contraseña), va a tu error normal
+                                response.sendRedirect("/loginerror");
+                            }
+                        }))
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessHandler(logoutSuccessHandler)

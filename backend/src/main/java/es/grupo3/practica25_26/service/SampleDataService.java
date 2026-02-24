@@ -184,7 +184,7 @@ public class SampleDataService {
                 User newUser = new User(name, surname, address, email, passwordEncoder.encode(password));
                 newUser.setRoles(new ArrayList<>(List.of("USER"))); // Assign default role
                 newUser.setState(state); // Set user as active
-                userService.saveUser(newUser); // Save the user to the database
+                userService.saveUser(newUser);
                 return newUser;
         }
 
