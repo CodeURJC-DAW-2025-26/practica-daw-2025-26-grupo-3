@@ -100,12 +100,25 @@
                                     <div class="card-footer bg-transparent border-0 pb-3">
                                         <div class="d-grid gap-2">
                                             <a href="/product_detail/{{id}}"
-                                                class="btn btn-sm btn-primary d-flex align-items-center justify-content-center">Ver
-                                                Detalle</a>
-                                            <a href="/edit_product_form_admin"
-                                                class="btn btn-sm btn-edit-custom text-white d-flex align-items-center justify-content-center">Editar</a>
-                                            <button
-                                                class="btn btn-sm btn-danger d-flex align-items-center justify-content-center">Eliminar</button>
+                                                class="btn btn-sm btn-primary d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-eye-fill me-2"></i> Ver Detalle
+                                            </a>
+                                            <a href="/edit_product/{{id}}"
+                                                class="btn btn-sm btn-edit-custom text-white d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-pencil-square me-2"></i> Editar
+                                            </a>
+                                            <form action="/delete_product/{{id}}" method="post"
+                                                style="display: inline;">
+
+                                                <input type="hidden" name="_csrf" value="{{token}}" />
+
+                                                <button type="submit"
+                                                    onclick="return confirm('¿Estás seguro de que deseas borrar este producto?');"
+                                                    class="btn btn-sm btn-danger d-flex align-items-center justify-content-center w-100">
+                                                    <i class="bi bi-trash me-2"></i> Eliminar
+                                                </button>
+
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
