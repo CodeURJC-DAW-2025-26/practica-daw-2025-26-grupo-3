@@ -84,6 +84,7 @@ public class WebSecurityConfig {
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .loginProcessingUrl("/login/getUser")
+                        .successHandler(loginSuccessHandler)
                         .usernameParameter("email")
 
                         // ---> NUEVO: Reemplazamos el .failureUrl() por esto:

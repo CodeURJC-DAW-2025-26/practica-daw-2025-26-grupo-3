@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping; // Added import for PostMapping
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -14,6 +14,7 @@ import es.grupo3.practica25_26.model.Product;
 import es.grupo3.practica25_26.model.ShoppingCart;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.ErrorService;
+import es.grupo3.practica25_26.service.OrderService;
 import es.grupo3.practica25_26.service.ProductService;
 import es.grupo3.practica25_26.service.ShoppingCartService;
 import es.grupo3.practica25_26.service.UserService;
@@ -29,6 +30,9 @@ public class OrderController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    OrderService orderService;
 
     @Autowired
     ErrorService errorService;
@@ -95,5 +99,14 @@ public class OrderController {
         shoppingCartService.deleteCartItem(userCart, id);
 
         return "redirect:/shopping-cart";
+    }
+
+    @GetMapping("/cart/save_order")
+    public String saveOrder(HttpServletRequest request) {
+        String email = request.getUserPrincipal().getName();
+        User user = userService.findUserByEmail(email);
+        orderService.saveOrderByUser(user);
+
+        return "redirect:/profile";
     }
 }

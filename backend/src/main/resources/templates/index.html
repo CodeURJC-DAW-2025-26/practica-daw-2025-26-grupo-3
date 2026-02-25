@@ -26,25 +26,28 @@
 
   <!--HEADER-->
   <header class="hero-section py-5 bg-light">
-    <div class="container py-5">
+    <!-- ALERTAS SUPERIORES FIJAS -->
+    <div class="alert-container">
       {{#successful_login}}
-      <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
         ¡Inicio de sesión exitoso!
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
       {{/successful_login}}
       {{#successful_logout}}
-      <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
         Se ha cerrado la sesión correctamente.
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
       {{/successful_logout}}
       {{#successful_register}}
-      <div class="alert alert-primary alert-dismissible fade show mb-4" role="alert">
+      <div class="alert alert-primary alert-dismissible fade show" role="alert">
         ¡Bienvenido {{user_name}}! Te has registrado correctamente.
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
       {{/successful_register}}
+    </div>
+    <div class="container py-5">
       <div class="row align-items-center">
         <div class="col-lg-6">
           <span class="badge bg-primary text-white mb-3 px-3 py-2">🌱 Sostenible y confiable</span>

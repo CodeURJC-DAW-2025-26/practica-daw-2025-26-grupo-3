@@ -1,6 +1,7 @@
 package es.grupo3.practica25_26.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import es.grupo3.practica25_26.model.Error;
 import es.grupo3.practica25_26.model.Image;
+import es.grupo3.practica25_26.model.Order;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.ErrorService;
 import es.grupo3.practica25_26.service.ImageService;
@@ -81,7 +83,11 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public String profile() {
+    public String profile(Model model, HttpServletRequest request) {
+        String email = request.getUserPrincipal().getName();
+        User user = userService.findUserByEmail(email);
+        List<Order> userOrders = user.getOrders();
+        model.addAttribute("orders", userOrders);
         return "profile";
     }
 

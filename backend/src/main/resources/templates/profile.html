@@ -103,23 +103,50 @@
                         </div>
                     </div>
                     <div class="card border-0 shadow-sm p-4">
-                        <h4 class="fw-bold mb-4">Mis Pedidos Recientes</h4>
+                        <h4 class="fw-bold mb-4">Mis Pedidos</h4>
+                        {{#orders}}
                         <table class="table align-middle">
-                            <thead class="table-light small text-uppercase">
+                            <thead class="table-light small">
                                 <tr>
-                                    <th>Pedido ID</th>
+                                    <th class="text-center">ID del pedido</th>
                                     <th>Fecha</th>
                                     <th>Estado</th>
-                                    <th>Total</th>
+                                    <th class="text-center">Total</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>#RM-9021</td>
-                                    <td>12 Oct, 2023</td>
-                                    <td><span class="badge bg-success">Entregado</span></td>
-                                    <td class="fw-bold">45.00€</td>
+                                    <td class="text-center">#{{orderID}}</td>
+                                    <td>{{date}}</td>
+                                    <td>{{stateText}}</td>
+                                    <td class="fw-bold text-center">{{totalPrice}}€</td>
                                 </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <div>
+                                            <h6 class="fw-bold">Productos del pedido:</h6>
+                                            <table class="table table-sm mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Producto</th>
+                                                        <th class="text-center">Cantidad</th>
+                                                        <th class="text-center">Precio unitario</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {{#orderItems}}
+                                                    <tr>
+                                                        <td>{{product.productName}}</td>
+                                                        <td class="text-center">{{quantity}}</td>
+                                                        <td class="text-center">{{product.price}}€</td>
+                                                    </tr>
+                                                    {{/orderItems}}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {{/orders}}
                             </tbody>
                         </table>
                     </div>

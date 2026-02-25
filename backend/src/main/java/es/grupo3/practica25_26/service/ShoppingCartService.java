@@ -140,4 +140,10 @@ public class ShoppingCartService {
             shoppingCartRepository.save(cart);
         }
     }
+
+    public void deleteShoppingCartByUser(User user) {
+        ShoppingCart deleteCart = user.getShoppingCart();
+        user.setShoppingCart(null);
+        shoppingCartRepository.delete(deleteCart);
+    }
 }
