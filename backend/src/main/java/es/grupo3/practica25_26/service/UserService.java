@@ -19,6 +19,94 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
+    public Error userRegisterCheck(User newUser) {
+        if (findUserByEmail(newUser.getEmail()) != null) {
+            return new Error("El e-mail escogido está en uso.",
+                    "El correo electrónico introducido en el fomulario de registro ya pertenece a otro usuario. Por favor, utiliza otro correo electrónico para registrarte.");
+        }
+        Error error = userNameCheck(newUser.getUserName());
+        if (error != null)
+            return error;
+        error = surnameCheck(newUser.getSurname());
+        if (error != null)
+            return error;
+        error = addressCheck(newUser.getAddress());
+        if (error != null)
+            return error;
+        error = notFilledFormCheck(newUser.getUserName(), newUser.getSurname(), newUser.getAddress(),
+                newUser.getEmail(), newUser.getEncodedPassword());
+        if (error != null)
+            return error;
+        error = emailCheck(newUser.getEmail());
+        if (error != null)
+            return error;
+        error = passwordCheck(newUser.getEncodedPassword());
+        return error;
+    }
+
+    public Error userUpdateCheck(String userName, String surname, String email, String address,
+            HttpServletRequest request) {
+        String currentEmail = request.getUserPrincipal().getName();
+        if (!email.equals(currentEmail) && findUserByEmail(email) != null) {
+            return new Error("El e-mail escogido está en uso.",
+                    "El correo electrónico introducido en el fomulario de registro ya pertenece a otro usuario. Por favor, utiliza otro correo electrónico.");
+        }
+        Error error = userNameCheck(userName);
+        if (error != null)
+            return error;
+        error = surnameCheck(surname);
+        if (error != null)
+            return error;
+        error = emailCheck(email);
+        if (error != null)
+            return error;
+        error = addressCheck(address);
+        if (error != null)
+            return error;
+        error = notFilledFormCheck(userName, surname, email, address);
+        return error;
+    }
+
+    public Error userPasswordUpdateCheck(String newPassword, String oldPassword, HttpServletRequest request) {
+        Error error = notFilledFormCheck(newPassword, oldPassword);
+        if (error != null)
+            return error;
+        error = passwordCheck(newPassword);
+        if (error != null)
+            return error;
+        error = correctPassCheck(oldPassword, request);
+        return error;
+    }
+
+    public Error userDeleteCheck(String currentPassword, boolean confirmDelete, HttpServletRequest request) {
+        if (!confirmDelete) {
+            return new Error("¡Pendiente de confirmación!",
+                    "Por motivos de seguridad, debes marcar la casilla de confirmación para eliminar tu cuenta.");
+        }
+        Error error = correctPassCheck(currentPassword, request);
+        return error;
+    }
+
+    public Error userBlockCheck(User userToBlock) {
+        if (userToBlock == null) {
+            return new Error("Usuario no encontrado", "No se ha encontrado el usuario a bloquear.");
+        }
+        if (!userToBlock.getState()) {
+            return new Error("Usuario ya bloqueado", "El usuario ya está bloqueado.");
+        }
+        return null;
+    }
+
+    public Error userUnblockCheck(User userToUnblock) {
+        if (userToUnblock == null) {
+            return new Error("Usuario no encontrado", "No se ha encontrado el usuario a desbloquear.");
+        }
+        if (userToUnblock.getState()) {
+            return new Error("Usuario ya desbloqueado", "El usuario ya está desbloqueado.");
+        }
+        return null;
+    }
+
     @Autowired
     private final PasswordEncoder passwordEncoder;
 
@@ -92,7 +180,7 @@ public class UserService {
     public Error passwordCheck(String password) {
         if (password.length() < 8 || password.length() > 30) {
             return new Error("¡Contraseña inválida!",
-                    "La contraseña debe contene entre 8 y 30 caracteres. Has introducido: " + password.length()
+                    "La contraseña debe contener entre 8 y 30 caracteres. Has introducido: " + password.length()
                             + " caracteres.");
         }
         return null;

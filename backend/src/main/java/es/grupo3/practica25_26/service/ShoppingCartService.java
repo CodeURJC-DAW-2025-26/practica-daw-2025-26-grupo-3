@@ -59,7 +59,18 @@ public class ShoppingCartService {
             }
 
             cart.setCartItems(cartItems);
-            cartItems.add(new CartItem(product, 1, cartItems.size()));
+            CartItem newItem = new CartItem(product, 1, cartItems.size());
+            cartItems.add(newItem);
+
+            int productState = newItem.getProduct().getState();
+            if (productState == 0) {
+                newItem.setState("Nuevo");
+            } else if (productState == 1) {
+                newItem.setState("Reacondicionado");
+            } else if (productState == 2) {
+                newItem.setState("Segunda mano");
+            }
+
             shoppingCartRepository.save(cart);
             userService.saveUser(user);
         }

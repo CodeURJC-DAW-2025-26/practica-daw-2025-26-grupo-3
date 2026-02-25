@@ -17,6 +17,7 @@ public class CartItem {
 
     int quantity;
     int listIndex;
+    String state;
 
     public CartItem() {
 
@@ -34,12 +35,20 @@ public class CartItem {
         this.listIndex = listIndex;
     }
 
+    public String getState() {
+        return state;
+    }
+
     public long getId() {
         return id;
     }
 
     public int getListIndex() {
         return listIndex;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     public void setId(long id) {
