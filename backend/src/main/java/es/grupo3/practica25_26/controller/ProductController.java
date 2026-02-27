@@ -142,8 +142,7 @@ public class ProductController {
 
             try {
 
-                // ProductService.updateProduct(id, editedProduct, removeImages, newImages,
-                // loggedInEmail, isAdmin);
+                ProductService.updateProduct(id, editedProduct, removeImages, newImages,loggedInEmail, isAdmin);
 
                 return "redirect:/product_detail/" + id;
 

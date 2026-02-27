@@ -51,7 +51,6 @@ public class WebSecurityConfig {
                         .requestMatchers("/assets/**").permitAll()
                         .requestMatchers("/login/**").permitAll()
                         .requestMatchers("/loginerror").permitAll()
-                        .requestMatchers("/permission_error").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/product_search/**").permitAll()
                         .requestMatchers("/css/**").permitAll()
