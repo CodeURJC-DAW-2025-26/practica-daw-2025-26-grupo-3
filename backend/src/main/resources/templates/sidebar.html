@@ -1,0 +1,39 @@
+<!-- SIDE BAR-->
+<div class="sidebar bg-light p-3 border-end h-100">
+
+    <div class="admin-profile text-center mb-4">
+        <img src="https://placehold.co/70x70" alt="Admin" class="rounded-circle mb-2">
+    </div>
+
+    <nav class="nav flex-column">
+
+        <a href="/admin_panel" class="nav-link">Panel de control</a>
+
+        <div class="nav-item">
+            <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse"
+                href="#productsMenu" role="button">
+                Gestionar Productos <span>▼</span>
+            </a>
+
+            <div class="collapse ps-3" id="productsMenu">
+                <a href="/new_product_form_admin" class="sidebar-subitem">Añadir
+                    productos</a>
+                <a href="/products_published" class="sidebar-subitem">Productos
+                    publicados</a>
+            </div>
+        </div>
+
+        <a href="/orders_list" class="nav-link">Gestionar Pedidos</a>
+        <a href="/user_registered_list" class="nav-link">Gestionar Usuarios</a>
+
+        <hr class="text-secondary my-3 opacity-25">
+
+        <a href="/admin_profile" class="nav-link">Mi Perfil</a>
+
+        <form action="/logout" method="post">
+            <input type="hidden" name="_csrf" value="{{token}}" />
+            <button type="submit" class="nav-link text-danger w-100 text-start bg-transparent border-0">Cerrar
+                sesión</button>
+        </form>
+    </nav>
+</div>

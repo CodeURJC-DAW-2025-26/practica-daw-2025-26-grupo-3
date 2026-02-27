@@ -256,6 +256,7 @@ public class UserController {
     @PostMapping("/user/{id}/block")
     public String blockUser(Model model, HttpServletRequest request, @PathVariable Long id) {
         User userToBlock = userService.findUserById(id);
+
         if (userToBlock != null && userToBlock.getState()) {
             userService.blockUser(userToBlock);
         }
