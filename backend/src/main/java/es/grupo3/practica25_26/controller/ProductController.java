@@ -49,19 +49,20 @@ public class ProductController {
             Product product = productOptional.get();
             model.addAttribute("product", product);
 
-            boolean isOwner = false;
+            boolean canModifyProduct = false;
             if (request.getUserPrincipal() != null) {
 
                 // Get the email of the logged-in user and the seller's email to compare them
                 String loggedInEmail = request.getUserPrincipal().getName();
                 String sellerEmail = product.getSeller().getEmail();
 
-                if (loggedInEmail.equals(sellerEmail)) {
-                    isOwner = true;
+                // If the user is an admin, or a owner of the product, he can edit or remove it
+                if (loggedInEmail.equals(sellerEmail) || request.isUserInRole("ADMIN")) {
+                    canModifyProduct = true;
                 }
             }
             // Le pasamos la variable a Mustache
-            model.addAttribute("isOwner", isOwner);
+            model.addAttribute("canModifyProduct", canModifyProduct);
 
             return "product_detail";
         } else {
@@ -102,9 +103,59 @@ public class ProductController {
         return "products_pending_list";
     }
 
-    @GetMapping("/edit_product_form_admin")
-    public String editProductFormAdmin(Model model) {
-        return "edit_product_form_admin";
+    @GetMapping("/edit_product/{id}")
+    public String editProduct(Model model, @PathVariable Long id, HttpServletRequest request) {
+
+        Optional<Product> productOpt = ProductService.findById(id);
+
+        if (productOpt.isPresent() && request.getUserPrincipal() != null) {
+
+            Product product = productOpt.get();
+            String loggedInEmail = request.getUserPrincipal().getName();
+
+            // Comprobation if the user is an admin
+            boolean isAdmin = request.isUserInRole("ADMIN");
+
+            // If the user is an admin or the owner of the product
+            if (product.getSeller().getEmail().equals(loggedInEmail) || isAdmin) {
+
+                model.addAttribute("product", product);
+
+            }
+        }
+
+        return "edit_product";
+    }
+
+    @PostMapping("/edit_product/save/{id}")
+    public String saveEditedProduct(Model model, @PathVariable Long id, Product editedProduct,
+            @RequestParam(value = "removeImages", required = false) List<Long> removeImages,
+            @RequestParam(value = "productimages", required = false) List<MultipartFile> newImages,
+            HttpServletRequest request) {
+
+        Optional<Product> actualProductOpt = ProductService.findById(id);
+
+        if (actualProductOpt.isPresent() && request.getUserPrincipal() != null) {
+
+            String loggedInEmail = request.getUserPrincipal().getName();
+            boolean isAdmin = request.isUserInRole("ADMIN");
+
+            try {
+
+                // ProductService.updateProduct(id, editedProduct, removeImages, newImages,
+                // loggedInEmail, isAdmin);
+
+                return "redirect:/product_detail/" + id;
+
+            } catch (Exception e) {
+
+                System.out.println("Error al actualizar: " + e.getMessage());
+                return "redirect:/edit_product/" + id + "?error=true";
+            }
+
+        }
+
+        return null;
     }
 
     @GetMapping("/new_product_form_admin")
@@ -166,9 +217,6 @@ public class ProductController {
             if (seller.getProducts() != null) {
                 seller.getProducts().remove(product);
             }
-
-            System.out.println("Usuario logueado: " + loggedInEmail);
-            System.out.println("Dueño del producto: " + sellerEmail);
 
             // prove that seller email and logged email are equal
             if (sellerEmail.equals(loggedInEmail)) {

@@ -1,6 +1,7 @@
 package es.grupo3.practica25_26.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import es.grupo3.practica25_26.model.Error;
 import es.grupo3.practica25_26.model.Image;
+import es.grupo3.practica25_26.model.Order;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.ErrorService;
 import es.grupo3.practica25_26.service.ImageService;
@@ -47,31 +49,7 @@ public class UserController {
             MultipartFile imageFile, RedirectAttributes redirectAttributes)
             throws IOException, ServletException {
 
-        Error error = null;
-
-        if (userService.findUserByEmail(newUser.getEmail()) != null) {
-            error = new Error("El e-mail escogido está en uso.",
-                    "El correo electrónico introducido en el fomulario de registro ya pertenece a otro usuario. Por favor, utiliza otro correo electrónico para registrarte.");
-        }
-        if (error == null) {
-            error = userService.userNameCheck(newUser.getUserName());
-        }
-        if (error == null) {
-            error = userService.surnameCheck(newUser.getSurname());
-        }
-        if (error == null) {
-            error = userService.addressCheck(newUser.getAddress());
-        }
-        if (error == null) {
-            error = userService.notFilledFormCheck(newUser.getUserName(), newUser.getSurname(), newUser.getAddress(),
-                    newUser.getEmail(), newUser.getEncodedPassword());
-        }
-        if (error == null) {
-            error = userService.emailCheck(newUser.getEmail());
-        }
-        if (error == null) {
-            error = userService.passwordCheck(newUser.getEncodedPassword());
-        }
+        Error error = userService.userRegisterCheck(newUser);
 
         if (error != null) {
             session.setAttribute("user_failed_register", newUser);
@@ -105,7 +83,11 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public String profile() {
+    public String profile(Model model, HttpServletRequest request) {
+        String email = request.getUserPrincipal().getName();
+        User user = userService.findUserByEmail(email);
+        List<Order> userOrders = user.getOrders();
+        model.addAttribute("orders", userOrders);
         return "profile";
     }
 
@@ -122,31 +104,9 @@ public class UserController {
             @RequestParam String email, @RequestParam String address, @RequestParam MultipartFile imageFile)
             throws IOException {
 
-        Error error = null;
-
         String currentEmail = request.getUserPrincipal().getName();
         User currentUser = userService.findUserByEmail(currentEmail);
-
-        if (!email.equals(currentEmail) && userService.findUserByEmail(email) != null) {
-            error = new Error("El e-mail escogido está en uso.",
-                    "El correo electrónico introducido en el fomulario de registro ya pertenece a otro usuario. Por favor, utiliza otro correo electrónico.");
-        }
-
-        if (error == null) {
-            error = userService.userNameCheck(userName);
-        }
-        if (error == null) {
-            error = userService.surnameCheck(surname);
-        }
-        if (error == null) {
-            error = userService.emailCheck(email);
-        }
-        if (error == null) {
-            error = userService.addressCheck(address);
-        }
-        if (error == null) {
-            error = userService.notFilledFormCheck(userName, surname, email, address);
-        }
+        Error error = userService.userUpdateCheck(userName, surname, email, address, request);
 
         if (error != null) {
             User failedUser = new User(userName, surname, address, email, currentUser.getEncodedPassword());
@@ -171,20 +131,9 @@ public class UserController {
     public String updatePassword(Model model, HttpSession session, HttpServletRequest request,
             @RequestParam String oldPassword,
             @RequestParam String newPassword) {
-        Error error = null;
-
         String email = request.getUserPrincipal().getName();
         User currentUser = userService.findUserByEmail(email);
-
-        if (error == null) {
-            error = userService.notFilledFormCheck(newPassword, oldPassword);
-        }
-        if (error == null) {
-            error = userService.passwordCheck(newPassword);
-        }
-        if (error == null) {
-            error = userService.correctPassCheck(oldPassword, request);
-        }
+        Error error = userService.userPasswordUpdateCheck(newPassword, oldPassword, request);
 
         if (error != null) {
             session.setAttribute("user_failed_update", currentUser);
@@ -203,19 +152,7 @@ public class UserController {
             @RequestParam String currentPassword,
             @RequestParam(required = false, defaultValue = "false") boolean confirmDelete) {
 
-        Error error = null;
-
-        if (!confirmDelete) {
-            System.out.println("Error: No se confirmó el borrado");
-            error = new Error("¡Pendiente de confirmación!",
-                    "Por motivos de seguridad, debes marcar la casilla de confirmación para eliminar tu cuenta.");
-        } else {
-            error = userService.correctPassCheck(currentPassword, request);
-            if (error != null) {
-                System.out.println("Error de contraseña: " + error.getTitle());
-            }
-        }
-
+        Error error = userService.userDeleteCheck(currentPassword, confirmDelete, request);
         if (error != null) {
             return errorService.setErrorPageWithButton(model, null, error.getTitle(), error.getMessage(),
                     "Volver al perfil", "/profile");
@@ -239,16 +176,10 @@ public class UserController {
     @PostMapping("/user/{id}/unblock")
     public String unblockUser(Model model, HttpServletRequest request, @PathVariable Long id) {
         User userToUnblock = userService.findUserById(id);
-        if (userToUnblock != null && !userToUnblock.getState()) {
+        Error error = userService.userUnblockCheck(userToUnblock);
+        if (error == null) {
             userService.unblockUser(userToUnblock);
         }
-        // If we do not put redirect here, we get an error because after blocking a
-        // user, if we try to block another user without refreshing the page, the
-        // blocked user appears as unblocked in the list, and when we try to block the
-        // second user, it tries to block the first one again (because of the error in
-        // the list), which is already blocked, so it returns an error because it cannot
-        // block an already blocked user. With the redirect, we force the page to
-        // refresh and update the users' states in the list.
         return "redirect:/user_registered_list";
     }
 
@@ -256,8 +187,8 @@ public class UserController {
     @PostMapping("/user/{id}/block")
     public String blockUser(Model model, HttpServletRequest request, @PathVariable Long id) {
         User userToBlock = userService.findUserById(id);
-
-        if (userToBlock != null && userToBlock.getState()) {
+        Error error = userService.userBlockCheck(userToBlock);
+        if (error == null) {
             userService.blockUser(userToBlock);
         }
         return "redirect:/user_registered_list";

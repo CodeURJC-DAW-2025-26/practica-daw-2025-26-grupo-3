@@ -28,18 +28,14 @@ public class OrderItem {
     private Product product;
 
     private int quantity; // num of products in the order
-    private double unitPrice; // Price of one unit of the product at the time of the order was created
-    private double subtotal;
 
     public OrderItem() {
     }
 
-    public OrderItem(Order order, Product product, int quantity, double unitPrice, double subtotal) {
+    public OrderItem(Order order, Product product, int quantity) {
         this.order = order;
         this.product = product;
         this.quantity = quantity;
-        this.unitPrice = unitPrice;
-        this.subtotal = subtotal;
     }
 
     public Long getId() {
@@ -68,31 +64,6 @@ public class OrderItem {
 
     public int getQuantity() {
         return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-        this.subtotal = this.quantity * this.unitPrice; // update total price of the order, num of items * price of the
-                                                        // item
-    }
-
-    public double getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(double unitPrice) {
-        this.unitPrice = unitPrice;
-        this.subtotal = this.quantity * this.unitPrice; // update total price of the order, num of items * price of the
-                                                        // item
-
-    }
-
-    public double getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(double subtotal) {
-        this.subtotal = subtotal;
     }
 
 }

@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class ShoppingCart {
@@ -22,6 +23,9 @@ public class ShoppingCart {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     long id;
+
+    @OneToOne(mappedBy = "shoppingCart")
+    private User user;
 
     public ShoppingCart() {
 
@@ -41,6 +45,14 @@ public class ShoppingCart {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }

@@ -41,11 +41,16 @@ public class User {
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
     private List<Product> products;
 
+    // @OneToMany(mappedBy = "orderID", cascade = CascadeType.ALL, orphanRemoval =
+    // true)
+    @OneToMany
+    private List<Order> orders;
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // This makes de image to be
                                                                                   // persistent when created.
     private Image image;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private ShoppingCart shoppingCart;
 
     public ShoppingCart getShoppingCart() {
@@ -60,12 +65,20 @@ public class User {
         return surname;
     }
 
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
     public void setSurname(String surname) {
         this.surname = surname;
     }
 
     public Image getImage() {
         return image;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
     }
 
     // Constructor indicates that the state of the user is unblocked (true) by
@@ -83,6 +96,7 @@ public class User {
         this.roles = new ArrayList<>();
         this.roles.add("USER");
         this.state = true;
+        this.orders = new ArrayList<>();
     }
 
     public void setAddress(String address) {

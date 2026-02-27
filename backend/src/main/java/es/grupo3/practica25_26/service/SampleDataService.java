@@ -62,9 +62,11 @@ public class SampleDataService {
                         }
 
                         // 2. Initialize Products
-                        // We only create products if the database is empty to prevent duplicates on
-                        // restart.
-                        if (productService.count() == 0) {
+                        // Check if products exist before adding them to avoid duplicates
+                        // We use a simple check based on count, but ideally we should check for
+                        // existence of specific data
+                        if (productService.count() < 6) { // Changed condition to ensure all 6 sample products are
+                                                          // present
 
                                 // Creating product instances linked to the users created above
                                 Product p1 = new Product("Portatil Lenovo ThinkPad", 450.0, 2,

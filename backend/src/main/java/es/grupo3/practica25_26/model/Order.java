@@ -24,8 +24,14 @@ public class Order {
     private List<OrderItem> orderItems = new ArrayList<>();
 
     private String client;
+
+    public void setStateText(String stateText) {
+        this.stateText = stateText;
+    }
+
     private LocalDateTime date;
     private int state; // 0 delivered, 1 pending, 2 revise payment
+    private String stateText;
     private double totalPrice; // Total price of the order
 
     public Order() {
@@ -70,24 +76,13 @@ public class Order {
         calculateTotalPrice();
     }
 
-    public void addOrderItem(OrderItem item) {
-        orderItems.add(item);
-        item.setOrder(this);
-        calculateTotalPrice();
-    }
-
-    public void removeOrderItem(OrderItem item) {
-        orderItems.remove(item);
-        item.setOrder(null);
-        calculateTotalPrice();
-    }
-
     // Recalculate total price of the order by iterating through the order items and
     // summing their subtotals
+
     public void calculateTotalPrice() {
         double total = 0.0;
         for (OrderItem item : orderItems) {
-            total += item.getSubtotal();
+            total += item.getProduct().getPrice() * item.getQuantity();
         }
         this.totalPrice = total;
     }
@@ -106,6 +101,10 @@ public class Order {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public String getStateText() {
+        return stateText;
     }
 
 }
