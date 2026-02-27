@@ -204,27 +204,21 @@ public class ProductController {
     @PostMapping("/delete_product/{id}")
     public String deleteProduct(@PathVariable Long id, HttpServletRequest request) {
 
-        Optional<Product> productOpt = ProductService.findById(id);
+        if (request.getUserPrincipal() != null) {
 
-        if (productOpt.isPresent() && request.getUserPrincipal() != null) {
-
-            Product product = productOpt.get();
             String loggedInEmail = request.getUserPrincipal().getName();
-            User seller = product.getSeller();
-            String sellerEmail = seller.getEmail();
+            boolean isAdmin = request.isUserInRole("ADMIN");
 
-            // unlink the relationship between user and his product before deleting it
-            if (seller.getProducts() != null) {
-                seller.getProducts().remove(product);
-            }
+            //delete of the product
+            //boolean isDeleted =
+            ProductService.deleteProduct(id, loggedInEmail, isAdmin);
+            
+           
 
-            // prove that seller email and logged email are equal
-            if (sellerEmail.equals(loggedInEmail)) {
-                ProductService.deleteById(id);
-            }
+            
         }
 
-        return "redirect:/product_search";
+        return "redirect:/";
 
     }
 

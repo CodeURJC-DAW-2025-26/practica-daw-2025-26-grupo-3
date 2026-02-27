@@ -34,6 +34,12 @@ public class Product {
     private int state; // 0 New product, 1 reconditioned product, 2 Second hand product
     private String description;
 
+    @OneToMany(mappedBy = "product")
+    private List<OrderItem> orderItems = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product")
+    private List<CartItem> cartItems = new ArrayList<>();
+
     public Product() {
     }
 
@@ -149,5 +155,22 @@ public class Product {
                 return "bg-secondary text-white";
         }
     }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
+    }
+    
 
 }
