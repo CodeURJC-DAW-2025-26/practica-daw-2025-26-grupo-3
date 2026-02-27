@@ -68,11 +68,7 @@ public class OrderService {
         orderRepository.save(order);
         List<Order> orderList;
 
-        try {
-            orderList = user.getOrders();
-        } catch (NullPointerException e) {
-            orderList = new ArrayList<>();
-        }
+        orderList = user.getOrders();
 
         orderList.add(order);
         userService.saveUser(user);
