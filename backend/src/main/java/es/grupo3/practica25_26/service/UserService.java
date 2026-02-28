@@ -206,16 +206,11 @@ public class UserService {
     }
 
     public Error notFilledFormCheck(String... fields) {
-        boolean error = false;
         for (String field : fields) {
             if (field.length() == 0) {
-                error = true;
+                return new Error("¡Formulario incompleto!",
+                        "No has rellenado todos los campos obligatorios del formulario.");
             }
-        }
-
-        if (error) {
-            return new Error("¡Formulario incompleto!",
-                    "No has rellenado todos los campos obligatorios del formulario.");
         }
         return null;
     }
