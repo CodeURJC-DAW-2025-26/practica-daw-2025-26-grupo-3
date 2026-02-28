@@ -57,6 +57,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/js/**").permitAll()
                         .requestMatchers("/user-images/**").permitAll()
                         .requestMatchers("/product-images/**").permitAll()
+                        .requestMatchers("/products/more/**").permitAll()
                         // we allow everyone to access the blocked user error page, so that if a user
                         // tries to log in with a blocked account, they will be redirected to this page
                         // and informed about their account status.

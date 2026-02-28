@@ -40,115 +40,281 @@ public class SampleDataService {
          * This method runs automatically after the bean is initialized.
          * It checks if the database is empty and adds sample data if needed.
          */
+
         @PostConstruct
         public void init() {
                 try {
-                        // 1. Initialize Users (Admin and Standard)
-                        // We pass raw passwords here ("12345678"); they will be encoded in the helper
-                        // methods.
-
+                        // 1. Inicializar Usuarios
                         User adminUser = getOrCreateAdmin("Admin", "System", "Admin Street 1, Spain",
                                         "admin@admin.com", "admin1234", true);
-                        if (adminUser.getImage() == null) {
-                                // addImageToUser(adminUser, "static/images/profile.png");
-                        }
 
                         User exampleUser1 = getOrCreateUser("Marta", "Lopez", "Calle Mayor 12, Madrid",
                                         "marta@example.com", "demo1234", true);
                         User exampleUser2 = getOrCreateUser("Carlos", "Gomez", "Avenida Sol 7, Valencia",
                                         "carlos@example.com", "demo1234", true);
+
+                        if (adminUser.getImage() == null) {
+                                // addImageToUser(adminUser, "static/images/profile.png");
+                        }
+
                         if (exampleUser2.getImage() == null) {
                                 addImageToUser(exampleUser2, "static/images/commentor-item1.jpg");
                         }
 
-                        // 2. Initialize Products
                         // Check if products exist before adding them to avoid duplicates
-                        // We use a simple check based on count, but ideally we should check for
-                        // existence of specific data
-                        if (productService.count() < 6) { // Changed condition to ensure all 6 sample products are
-                                                          // present
+                        if (productService.count() < 24) {
+                                // Matrix with all example products: Name, Price, Condition (0=New, 1=Near New,
+                                // 2=Used), Description
+                                String[][] allProductsData = {
+                                                { "Portatil Lenovo ThinkPad", "450.0", "2",
+                                                                "Portatil usado en buen estado, 16GB RAM, 512GB SSD" },
+                                                { "iPhone 12", "520.0", "1",
+                                                                "Reacondicionado con bateria al 90% y garantia" },
+                                                { "Auriculares Sony WH-1000XM4", "180.0", "1",
+                                                                "Cancelacion de ruido y estuche incluido, casi nuevos" },
+                                                { "Nintendo Switch", "210.0", "1",
+                                                                "Impecable, muy poco uso. Incluye Joy-Con y dock" },
+                                                { "Teclado mecanico Keychron K2", "75.0", "0",
+                                                                "Nuevo a estrenar, precintado, interruptores brown" },
+                                                { "Monitor LG 27\" 4K", "230.0", "2",
+                                                                "Panel IPS, usado para teletrabajo, funciona perfectamente" },
+                                                { "iPad Pro 11\"", "750.0", "1",
+                                                                "Perfecto estado, 128GB, incluye cargador original" },
+                                                { "Samsung Galaxy S22", "600.0", "1",
+                                                                "Color negro, sin rasguños, como nuevo" },
+                                                { "Apple Watch Series 7", "300.0", "2",
+                                                                "Batería al 85%, ligeras marcas de uso en la esfera" },
+                                                { "Kindle Paperwhite", "90.0", "0",
+                                                                "Nuevo a estrenar, precintado en su caja original" },
+                                                { "GoPro Hero 10", "250.0", "2",
+                                                                "Usada en varios viajes de aventura, marcas estéticas pero lente intacta" },
+                                                { "MacBook Air M1", "850.0", "1",
+                                                                "Batería al 100%, 8GB RAM, 256GB SSD, cuidadísimo" },
+                                                { "Ratón Logitech MX Master 3", "70.0", "0",
+                                                                "Caja sellada sin abrir, ideal para productividad" },
+                                                { "Auriculares inalámbricos Xiaomi Redmi Buds 4 Pro", "80.0", "0",
+                                                                "Nuevos, cancelación de ruido, Bluetooth 5.3, estuche de carga incluido" },
+                                                { "Tablet Samsung Galaxy Tab S8", "650.0", "1",
+                                                                "Pantalla 11'', 128GB, S Pen incluido, poco uso" },
+                                                { "Altavoz Bluetooth JBL Flip 5", "65.0", "2",
+                                                                "Color azul, batería dura menos que de fábrica pero suena genial" },
+                                                { "PlayStation 5", "450.0", "0",
+                                                                "Nueva, con precinto de garantía, versión con lector de discos" },
+                                                { "Xbox Series X", "420.0", "1",
+                                                                "Abierta pero con poquísimo uso, caja y cables originales" },
+                                                { "Mando DualSense PS5", "45.0", "2",
+                                                                "Color blanco, stick izquierdo un poco desgastado por jugar al FIFA" },
+                                                { "Cámara Canon EOS M50", "400.0", "1",
+                                                                "Como nueva, incluye objetivo de kit 15-45mm" },
+                                                { "Lente Sony 50mm f1.8", "150.0", "0",
+                                                                "Nueva, nunca montada en cámara, comprada por error" },
+                                                { "Micrófono Blue Yeti", "90.0", "2",
+                                                                "Usado para podcast durante un año, sin soporte de mesa" },
+                                                { "Tarjeta Gráfica RTX 3060", "280.0", "2",
+                                                                "Usada solo para gaming los fines de semana, temperaturas excelentes" },
+                                                { "Disco Duro Externo 2TB WD", "50.0", "0",
+                                                                "Nuevo, empaquetado, USB 3.0" }
 
-                                // Creating product instances linked to the users created above
-                                Product p1 = new Product("Portatil Lenovo ThinkPad", 450.0, 2,
-                                                "Portatil usado en buen estado, 16GB RAM, 512GB SSD", exampleUser1);
-                                Product p2 = new Product("iPhone 12", 520.0, 1,
-                                                "Reacondicionado con bateria al 90% y garantia", exampleUser1);
-                                Product p3 = new Product("Auriculares Sony WH-1000XM4", 180.0, 1,
-                                                "Cancelacion de ruido y estuche incluido", exampleUser1);
+                                };
 
-                                Product p4 = new Product("Nintendo Switch", 210.0, 2,
-                                                "Incluye Joy-Con y dock, con caja", exampleUser2);
-                                Product p5 = new Product("Teclado mecanico Keychron K2", 75.0, 0,
-                                                "Nuevo, interruptores brown, layout ES", exampleUser2);
-                                Product p6 = new Product("Monitor LG 27\" 4K", 230.0, 2,
-                                                "Panel IPS, sin pixeles muertos", exampleUser2);
+                                List<Product> productsToSave = new ArrayList<>();
 
-                                // Save products first to generate their IDs in the database
-                                productService.saveAll(List.of(p1, p2, p3, p4, p5, p6));
+                                // loop to create the objects
+                                for (int i = 0; i < allProductsData.length; i++) {
+                                        // We alternate the vendors: even numbers for Marta, odd numbers for Carlos.
+                                        User seller = (i % 2 == 0) ? exampleUser1 : exampleUser2;
 
-                                // 3. Load and assign images from the classpath resources
-                                // Using a try-catch block to prevent crash if images are missing
+                                        Product product = new Product(
+                                                        allProductsData[i][0],
+                                                        Double.parseDouble(allProductsData[i][1]),
+                                                        Integer.parseInt(allProductsData[i][2]),
+                                                        allProductsData[i][3],
+                                                        seller);
+                                        productsToSave.add(product);
+                                }
+
+                                // Load images
                                 try {
 
-                                        // IMPORTANT: Ensure these folders exist in src/main/resources
-                                        // addImageToProduct(p1, "static/images/laptop.jpg");
-                                        // addImageToProduct(p1, "static/images/admin_panel.png");
-
                                         // Product 1
-                                        addImageToProduct(p1, "static/images/lenovothinkpad1.jpg");
-                                        addImageToProduct(p1, "static/images/lenovothinkpad2.jpg");
-                                        addImageToProduct(p1, "static/images/lenovothinkpad3.jpg");
+                                        addImageToProduct(productsToSave.get(0), "static/images/lenovothinkpad1.jpg");
+                                        addImageToProduct(productsToSave.get(0), "static/images/lenovothinkpad2.jpg");
+                                        addImageToProduct(productsToSave.get(0), "static/images/lenovothinkpad3.jpg");
 
                                         // Product 2
-                                        addImageToProduct(p2, "static/images/iphone12_1.jpg");
-                                        addImageToProduct(p2, "static/images/iphone12_2.jpg");
-                                        addImageToProduct(p2, "static/images/iphone12_3.jpg");
+                                        addImageToProduct(productsToSave.get(1), "static/images/iphone12_1.jpg");
+                                        addImageToProduct(productsToSave.get(1), "static/images/iphone12_2.jpg");
+                                        addImageToProduct(productsToSave.get(1), "static/images/iphone12_3.jpg");
 
                                         // Product 3
-                                        addImageToProduct(p3,
+                                        addImageToProduct(productsToSave.get(2),
                                                         "static/images/2393-sony-wh1000xm5bce7-auriculares-inalambricos-con-cancelacion-de-ruido-negros-soft-case-comprar2.jpg");
-                                        addImageToProduct(p3,
+                                        addImageToProduct(productsToSave.get(2),
                                                         "static/images/sony-wh1000xm5bce7-auriculares-inalambricos-con-cancelacion-de-ruido-negros-soft-case.jpg");
-                                        addImageToProduct(p3,
+                                        addImageToProduct(productsToSave.get(2),
                                                         "static/images/4839-sony-wh1000xm5bce7-auriculares-inalambricos-con-cancelacion-de-ruido-negros-soft-case-estuche.jpg");
+
                                         // Product 4
-                                        addImageToProduct(p4, "static/images/nintendoSwitch1.jpg");
-                                        addImageToProduct(p4, "static/images/nintendoSwitch2.jpg");
-                                        addImageToProduct(p4, "static/images/nintendoSwitch3.jpg");
+                                        addImageToProduct(productsToSave.get(3), "static/images/nintendoSwitch1.jpg");
+                                        addImageToProduct(productsToSave.get(3), "static/images/nintendoSwitch2.jpg");
+                                        addImageToProduct(productsToSave.get(3), "static/images/nintendoswitch3.jpg");
 
                                         // Product 5
-                                        addImageToProduct(p5,
+                                        addImageToProduct(productsToSave.get(4),
                                                         "static/images/Keychron-K2-wireless-mechanical-keyboard-for-Mac-Windows-iOS-Gateron-switch-red-with-type-C-RGB-white-backlight-aluminum-frame.jpg");
-                                        addImageToProduct(p5,
+                                        addImageToProduct(productsToSave.get(4),
                                                         "static/images/Keychron-K2-wireless-mechanical-keyboard-for-Mac-Windows-iOS-Gateron-switch-red-with-type-C-RGB-white-backlight-exclusive-color.jpg");
-                                        addImageToProduct(p5,
+                                        addImageToProduct(productsToSave.get(4),
                                                         "static/images/Keychron-K2-wireless-mechanical-keyboard-1.jpg");
 
                                         // Product 6
-                                        addImageToProduct(p6,
+                                        addImageToProduct(productsToSave.get(5),
                                                         "static/images/1918-monitor-lg-27u730a-b-27-ultrahd-4k-60hz-ips-usb-c-altavoces-ajustable.jpg");
-                                        addImageToProduct(p6,
+                                        addImageToProduct(productsToSave.get(5),
                                                         "static/images/2879-monitor-lg-27u730a-b-27-ultrahd-4k-60hz-ips-usb-c-altavoces-ajustable-comprar.jpg");
-                                        addImageToProduct(p6,
+                                        addImageToProduct(productsToSave.get(5),
                                                         "static/images/8370-monitor-lg-27u730a-b-27-ultrahd-4k-60hz-ips-usb-c-altavoces-ajustable-foto.jpg");
 
-                                        // You can uncomment these lines once you have the actual image files
-                                        // addImageToProduct(p2, "/static/images/iphone.jpg");
-                                        // addImageToProduct(p3, "/static/images/sony.jpg");
+                                        // Product 7
+                                        addImageToProduct(productsToSave.get(6), "static/images/ipad11_PRO_1.png");
+                                        addImageToProduct(productsToSave.get(6), "static/images/ipad11_PRO_2.png");
+                                        addImageToProduct(productsToSave.get(6), "static/images/ipad11_PRO_3.png");
+
+                                        // Product 8
+                                        addImageToProduct(productsToSave.get(7),
+                                                        "static/images/Samsung_galaxy_s22_1.png");
+                                        addImageToProduct(productsToSave.get(7),
+                                                        "static/images/Samsung_galaxy_s22_2.png");
+                                        addImageToProduct(productsToSave.get(7),
+                                                        "static/images/Samsung_galaxy_s22_3.png");
+
+                                        // Product 9
+                                        addImageToProduct(productsToSave.get(8),
+                                                        "static/images/Apple_Watch_Series 7_1.png");
+                                        addImageToProduct(productsToSave.get(8),
+                                                        "static/images/Apple_Watch_Series 7_2.png");
+                                        addImageToProduct(productsToSave.get(8),
+                                                        "static/images/Apple_Watch_Series 7_3.png");
+
+                                        // Product 10
+                                        addImageToProduct(productsToSave.get(9),
+                                                        "static/images/Kindle_Paperwhite_1.png");
+                                        addImageToProduct(productsToSave.get(9),
+                                                        "static/images/Kindle_Paperwhite_2.png");
+                                        addImageToProduct(productsToSave.get(9),
+                                                        "static/images/Kindle_Paperwhite_3.png");
+
+                                        // Product 11
+                                        addImageToProduct(productsToSave.get(10), "static/images/GoPro_Hero_10_1.png");
+                                        addImageToProduct(productsToSave.get(10), "static/images/GoPro_Hero_10_2.png");
+                                        addImageToProduct(productsToSave.get(10), "static/images/GoPro_Hero_10_3.png");
+
+                                        // Product 12
+                                        addImageToProduct(productsToSave.get(11), "static/images/MacBook_Air_M1_1.png");
+                                        addImageToProduct(productsToSave.get(11), "static/images/MacBook_Air_M1_2.png");
+                                        addImageToProduct(productsToSave.get(11), "static/images/MacBook_Air_M1_3.png");
+
+                                        // Product 13
+                                        addImageToProduct(productsToSave.get(12),
+                                                        "static/images/Ratón_Logitech_MX_Master_3_1.png");
+                                        addImageToProduct(productsToSave.get(12),
+                                                        "static/images/Ratón_Logitech_MX_Master_3_2.png");
+                                        addImageToProduct(productsToSave.get(12),
+                                                        "static/images/Ratón_Logitech_MX_Master_3_3.png");
+
+                                        // Product 14
+                                        addImageToProduct(productsToSave.get(13),
+                                                        "static/images/Auriculares_inalámbricos_Xiaomi_Redmi Buds_4_Pro_1.png");
+                                        addImageToProduct(productsToSave.get(13),
+                                                        "static/images/Auriculares_inalámbricos_Xiaomi_Redmi Buds_4_Pro_2.png");
+                                        addImageToProduct(productsToSave.get(13),
+                                                        "static/images/Auriculares_inalámbricos_Xiaomi_Redmi Buds_4_Pro_3.png");
+
+                                        // Product 15
+                                        addImageToProduct(productsToSave.get(14),
+                                                        "static/images/Tablet_Samsung_Galaxy_Tab_S8_1.png");
+                                        addImageToProduct(productsToSave.get(14),
+                                                        "static/images/Tablet_Samsung_Galaxy_Tab_S8_2.png");
+                                        addImageToProduct(productsToSave.get(14),
+                                                        "static/images/Tablet_Samsung_Galaxy_Tab_S8_3.png");
+
+                                        // Product 16
+                                        addImageToProduct(productsToSave.get(15),
+                                                        "static/images/Altavoz_Bluetooth_JBL_Flip_5_1.png");
+                                        addImageToProduct(productsToSave.get(15),
+                                                        "static/images/Altavoz_Bluetooth_JBL_Flip_5_2.png");
+                                        addImageToProduct(productsToSave.get(15),
+                                                        "static/images/Altavoz_Bluetooth_JBL_Flip_5_3.png");
+
+                                        // Product 17
+                                        addImageToProduct(productsToSave.get(16), "static/images/PlayStation_5_1.png");
+                                        addImageToProduct(productsToSave.get(16), "static/images/PlayStation_5_2.png");
+                                        addImageToProduct(productsToSave.get(16), "static/images/PlayStation_5_3.png");
+
+                                        // Product 18
+                                        addImageToProduct(productsToSave.get(17), "static/images/Xbox_Series_X_1.png");
+                                        addImageToProduct(productsToSave.get(17), "static/images/Xbox_Series_X_2.png");
+                                        addImageToProduct(productsToSave.get(17), "static/images/Xbox_Series_X_3.png");
+
+                                        // Product 19
+                                        addImageToProduct(productsToSave.get(18),
+                                                        "static/images/Mando_DualSense_PS5_1.png");
+                                        addImageToProduct(productsToSave.get(18),
+                                                        "static/images/Mando_DualSense_PS5_2.png");
+                                        addImageToProduct(productsToSave.get(18),
+                                                        "static/images/Mando_DualSense_PS5_3.png");
+
+                                        // Product 20
+                                        addImageToProduct(productsToSave.get(19),
+                                                        "static/images/Cámara_Canon_EOS_M50_1.png");
+                                        addImageToProduct(productsToSave.get(19),
+                                                        "static/images/Cámara_Canon_EOS_M50_2.png");
+                                        addImageToProduct(productsToSave.get(19),
+                                                        "static/images/Cámara_Canon_EOS_M50_3.png");
+
+                                        // Product 21
+                                        addImageToProduct(productsToSave.get(20),
+                                                        "static/images/Lente_Sony_50mm_f1.8_1.png");
+                                        addImageToProduct(productsToSave.get(20),
+                                                        "static/images/Lente_Sony_50mm_f1.8_2.png");
+                                        addImageToProduct(productsToSave.get(20),
+                                                        "static/images/Lente_Sony_50mm_f1.8_3.png");
+
+                                        // Product 22
+                                        addImageToProduct(productsToSave.get(21),
+                                                        "static/images/Micrófono_Blue_Yeti_1.png");
+                                        addImageToProduct(productsToSave.get(21),
+                                                        "static/images/Micrófono_Blue_Yeti_2.png");
+                                        addImageToProduct(productsToSave.get(21),
+                                                        "static/images/Micrófono_Blue_Yeti_3.png");
+
+                                        // Product 23
+                                        addImageToProduct(productsToSave.get(22),
+                                                        "static/images/Tarjeta_Gráfica_RTX_3060_1.png");
+                                        addImageToProduct(productsToSave.get(22),
+                                                        "static/images/Tarjeta_Gráfica_RTX_3060_2.png");
+                                        addImageToProduct(productsToSave.get(22),
+                                                        "static/images/Tarjeta_Gráfica_RTX_3060_3.png");
+
+                                        // Product 24
+                                        addImageToProduct(productsToSave.get(23),
+                                                        "static/images/Disco_Duro_Externo_2TB_WD_1.png");
+                                        addImageToProduct(productsToSave.get(23),
+                                                        "static/images/Disco_Duro_Externo_2TB_WD_2.png");
+                                        addImageToProduct(productsToSave.get(23),
+                                                        "static/images/Disco_Duro_Externo_2TB_WD_3.png");
 
                                 } catch (Exception e) {
-                                        System.out.println(
-                                                        "Could not load sample images (Checked exception): "
-                                                                        + e.getMessage());
+                                        System.out.println("Could not load sample images: " + e.getMessage());
                                 }
 
-                                // Update products to save the new image relationships
-                                productService.saveAll(List.of(p1, p2, p3, p4, p5, p6));
+                                // Save all the products in the ddbb
+                                productService.saveAll(productsToSave);
                         }
                 } catch (Exception e) {
                         System.out.println("Error initializing sample data: " + e.getMessage());
-                        // e.printStackTrace(); // Optional: print stack trace for debugging
                 }
+
         }
 
         /**
