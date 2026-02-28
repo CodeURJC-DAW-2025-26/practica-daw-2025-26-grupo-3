@@ -1,21 +1,20 @@
 package es.grupo3.practica25_26.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.model.Product;
-import es.grupo3.practica25_26.model.User;
+import es.grupo3.practica25_26.service.ErrorService;
 import es.grupo3.practica25_26.service.ProductService;
 import es.grupo3.practica25_26.service.UserService;
+import es.grupo3.practica25_26.model.Error;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,22 +27,25 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProductController {
 
     @Autowired
-    ProductService ProductService;
+    ProductService productService;
 
     @Autowired
     UserService userService;
 
+    @Autowired
+    ErrorService errorService;
+
     @GetMapping("/product_search")
     public String productSearch(Model model) {
 
-        model.addAttribute("products", ProductService.findAll());
+        model.addAttribute("products", productService.findAll());
         return "product_search";
     }
 
     @GetMapping("/product_detail/{id}")
     public String productDetail(Model model, @PathVariable Long id, HttpServletRequest request) {
 
-        Optional<Product> productOptional = ProductService.findById(id);
+        Optional<Product> productOptional = productService.findById(id);
 
         if (productOptional.isPresent()) {
             Product product = productOptional.get();
@@ -84,7 +86,7 @@ public class ProductController {
 
     @GetMapping("/products_published")
     public String productsPublished(Model model) {
-        model.addAttribute("products", ProductService.findAll());
+        model.addAttribute("products", productService.findAll());
         return "products_published";
     }
 
@@ -106,7 +108,7 @@ public class ProductController {
     @GetMapping("/edit_product/{id}")
     public String editProduct(Model model, @PathVariable Long id, HttpServletRequest request) {
 
-        Optional<Product> productOpt = ProductService.findById(id);
+        Optional<Product> productOpt = productService.findById(id);
 
         if (productOpt.isPresent() && request.getUserPrincipal() != null) {
 
@@ -128,28 +130,41 @@ public class ProductController {
     }
 
     @PostMapping("/edit_product/save/{id}")
-    public String saveEditedProduct(Model model, @PathVariable Long id, Product editedProduct,
+    public String saveEditedProduct(Model model, @PathVariable Long id, @ModelAttribute("product") Product productForm,
             @RequestParam(value = "removeImages", required = false) List<Long> removeImages,
             @RequestParam(value = "productimages", required = false) List<MultipartFile> newImages,
-            HttpServletRequest request) {
+            HttpServletRequest request, HttpSession session) {
 
-        Optional<Product> actualProductOpt = ProductService.findById(id);
+        Optional<Product> actualProductOpt = productService.findById(id);
 
         if (actualProductOpt.isPresent() && request.getUserPrincipal() != null) {
 
+            Product existingProduct = actualProductOpt.get();
+
+            // We validate all the attributes of the edited product
+            Error validationError = productService.productUpdateCheck(productForm, existingProduct, removeImages,
+                    newImages);
+            // if there is any error, we show it in a error page
+            if (validationError != null) {
+                return errorService.setErrorPageWithButton(
+                        model, session, validationError.getTitle(), validationError.getMessage(),
+                        "Volver a la edición", "/edit_product/" + id);
+            }
+            // If there is no error, we try to update the product
             String loggedInEmail = request.getUserPrincipal().getName();
             boolean isAdmin = request.isUserInRole("ADMIN");
 
             try {
 
-                ProductService.updateProduct(id, editedProduct, removeImages, newImages,loggedInEmail, isAdmin);
+                productService.updateProduct(id, productForm, removeImages, newImages, loggedInEmail, isAdmin);
 
                 return "redirect:/product_detail/" + id;
 
             } catch (Exception e) {
-
-                System.out.println("Error al actualizar: " + e.getMessage());
-                return "redirect:/edit_product/" + id + "?error=true";
+                return errorService.setErrorPageWithButton(
+                        model, session, "Error de base de datos",
+                        "La base de datos no acepta estos datos: " + e.getMessage(),
+                        "Volver a intentar", "/edit_product/" + id);
             }
 
         }
@@ -164,38 +179,40 @@ public class ProductController {
 
     @PostMapping("/publish_new_product")
     public String publishNewProduct(Model model, Product product,
-            @RequestParam("productimages") List<MultipartFile> Productimages, HttpServletRequest request)
-            throws IOException {
+            @RequestParam("productimages") List<MultipartFile> productImages, HttpSession session,
+            HttpServletRequest request) {
 
-        String email = request.getUserPrincipal().getName();
+        if (request.getUserPrincipal() != null) {
 
-        User seller = userService.findUserByEmail(email);
+            Error validationError = productService.productCreateCheck(product, productImages);
 
-        product.setSeller(seller);
+            // If there is any error (empty name, negative price ...)
+            if (validationError != null) {
+                return errorService.setErrorPageWithButton(
+                        model, session, validationError.getTitle(), validationError.getMessage(),
+                        "Volver al formulario", "/product-publish");
+            }
 
-        List<Image> productImages = new ArrayList<>();
+            // We try to save the product
+            try {
 
-        for (MultipartFile file : Productimages) {
+                String email = request.getUserPrincipal().getName();
 
-            if (!file.isEmpty()) {
+                // ProductService creates and saves the new product
+                productService.createNewProduct(product, productImages, email);
+            } catch (IOException e) {
 
-                Image image = new Image();
-                try {
-                    image.setImageFile(new SerialBlob(file.getBytes()));
-                } catch (Exception e) {
-                    throw new IOException("Failed to create image", e);
-                }
-
-                productImages.add(image);
+                return errorService.setErrorPageWithButton(
+                        model,
+                        session,
+                        "Error al publicar el producto",
+                        "Hubo un problema al procesar o guardar las imágenes de tu producto. Por favor, revisa que el archivo sea válido e inténtalo de nuevo.",
+                        "Volver a intentar",
+                        "/product-publish");
 
             }
 
         }
-
-        // assign the images to the product
-        product.setImages(productImages);
-
-        ProductService.save(product);
 
         return "redirect:/product_search";
     }
@@ -208,13 +225,10 @@ public class ProductController {
             String loggedInEmail = request.getUserPrincipal().getName();
             boolean isAdmin = request.isUserInRole("ADMIN");
 
-            //delete of the product
-            //boolean isDeleted =
-            ProductService.deleteProduct(id, loggedInEmail, isAdmin);
-            
-           
+            // delete of the product
+            // boolean isDeleted =
+            productService.deleteProduct(id, loggedInEmail, isAdmin);
 
-            
         }
 
         return "redirect:/";

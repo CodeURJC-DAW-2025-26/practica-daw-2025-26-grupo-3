@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -32,6 +33,8 @@ public class Product {
     private String productName;
     private double price;
     private int state; // 0 New product, 1 reconditioned product, 2 Second hand product
+
+    @Column(length = 1000) // Set max length of description to 1000 characters (The default is 255)
     private String description;
 
     @OneToMany(mappedBy = "product")
@@ -171,6 +174,5 @@ public class Product {
     public void setCartItems(List<CartItem> cartItems) {
         this.cartItems = cartItems;
     }
-    
 
 }

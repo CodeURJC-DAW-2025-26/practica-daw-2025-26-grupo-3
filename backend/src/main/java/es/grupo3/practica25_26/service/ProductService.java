@@ -17,6 +17,7 @@ import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.repository.CartItemRepository;
 import es.grupo3.practica25_26.repository.OrderItemRepository;
 import es.grupo3.practica25_26.repository.ProductRepository;
+import es.grupo3.practica25_26.model.Error;
 
 @Service
 public class ProductService {
@@ -29,6 +30,9 @@ public class ProductService {
 
     @Autowired
     private OrderItemRepository orderItemRepository;
+
+    @Autowired
+    private UserService userService;
 
     public void save(Product product) {
         productRepository.save(product);
@@ -49,6 +53,39 @@ public class ProductService {
     // optional because the product with the given id may not exist
     public Optional<Product> findById(Long id) {
         return productRepository.findById(id);
+    }
+
+    public void createNewProduct(Product product, List<MultipartFile> ProductImages, String loggedInEmail)
+            throws IOException {
+
+        // search of the seller
+        User seller = userService.findUserByEmail(loggedInEmail);
+
+        product.setSeller(seller);
+
+        List<Image> productImages = new ArrayList<>();
+
+        for (MultipartFile file : ProductImages) {
+
+            if (!file.isEmpty()) {
+
+                Image image = new Image();
+                try {
+                    image.setImageFile(new SerialBlob(file.getBytes()));
+                } catch (Exception e) {
+                    throw new IOException("Failed to create image", e);
+                }
+
+                productImages.add(image);
+
+            }
+
+        }
+
+        // assign the images to the product
+        product.setImages(productImages);
+
+        productRepository.save(product);
     }
 
     public boolean deleteProduct(Long id, String loggedInEmail, boolean isAdmin) {
@@ -121,39 +158,184 @@ public class ProductService {
 
                 }
 
-                
                 // Add the new images to the product if there are new images
                 if (newImages != null) {
-                for (MultipartFile file : newImages) {
+                    for (MultipartFile file : newImages) {
 
-                    if (!file.isEmpty()) {
+                        if (!file.isEmpty()) {
 
-                        Image image = new Image();
-                        try {
-                            image.setImageFile(new SerialBlob(file.getBytes()));
-                        } catch (Exception e) {
-                            throw new IOException("Failed to create image", e);
+                            Image image = new Image();
+                            try {
+                                image.setImageFile(new SerialBlob(file.getBytes()));
+                            } catch (Exception e) {
+                                throw new IOException("Failed to create image", e);
+                            }
+
+                            // assign the new images to the product
+                            existingProduct.getImages().add(image);
+
                         }
-                        
-                        // assign the new images to the product
-                        existingProduct.getImages().add(image);
 
                     }
+                    // save the product in ddbb
+                    productRepository.save(existingProduct);
 
                 }
-                //save the product in ddbb
-                productRepository.save(existingProduct);
-                
-            }
             }
 
         }
 
     }
 
-    /*
-     * public void deleteById(Long id) {
-     * productRepository.deleteById(id);
-     * }
-     */
+    public Error productCreateCheck(Product product, List<MultipartFile> images) {
+
+        Error error = null;
+
+        // Verification of the product name
+        error = productNameCheck(product.getProductName());
+        if (error != null)
+            return error;
+
+        // Verification of de product price
+        error = productPriceCheck(product.getPrice());
+        if (error != null)
+            return error;
+
+        // Verification of the product description
+        error = productDescriptionCheck(product.getDescription());
+        if (error != null)
+            return error;
+
+        // Verification of the product images
+        error = productImagesCheck(images);
+        if (error != null)
+            return error;
+
+        return error;
+    }
+
+    public Error productUpdateCheck(Product editedProduct, Product existingProduct,
+            List<Long> removeImages, List<MultipartFile> newImages) {
+
+        Error error = null;
+
+        // Name verification
+        error = productNameCheck(editedProduct.getProductName());
+        if (error != null)
+            return error;
+
+        // Price verification
+        error = productPriceCheck(editedProduct.getPrice());
+        if (error != null)
+            return error;
+
+        // Description verification
+        error = productDescriptionCheck(editedProduct.getDescription());
+        if (error != null)
+            return error;
+
+        error = productUpdateImagesCheck(existingProduct, removeImages, newImages);
+        if (error != null)
+            return error;
+
+        return error;
+    }
+
+    // **** FORMS FIELD VALIDATION METHODS ****
+
+    public Error productNameCheck(String productName) {
+
+        // If the product name is empty (trim deletes the blank spaces from the space
+        // bar)
+        if (productName == null || productName.trim().isEmpty()) {
+
+            return new Error("¡Nombre vacío!",
+                    "El nombre del producto no puede estar vacío.");
+
+        }
+        if (productName.length() < 3 || productName.length() > 100) {
+
+            return new Error("¡Longitud de nombre incorrecta!",
+                    "El nombre debe tener entre 3 y 100 caracteres. Has introducido " + productName.length()
+                            + " caracteres.");
+
+        }
+
+        // if there isn´t any error, error is null
+        return null;
+
+    }
+
+    public Error productPriceCheck(Double price) {
+
+        // price lower than 1 cent
+        if (price < 0.01) {
+
+            return new Error("¡Precio inválido!",
+                    "El precio mínimo de venta es de 0.01€. Has introducido " + price + "€.");
+        }
+
+        return null;
+
+    }
+
+    public Error productDescriptionCheck(String description) {
+
+        if (description == null || description.trim().isEmpty()) {
+
+            return new Error("¡Descripción vacía!",
+                    "La descripción del producto no puede estar vacía.");
+
+        }
+
+        if (description.length() < 15 || description.length() > 1000) {
+
+            return new Error("¡Longitud de descripción incorrecta!",
+                    "La descripción debe tener entre 15 y 1000 caracteres. Has introducido " + description.length()
+                            + " caracteres.");
+
+        }
+
+        return null;
+
+    }
+
+    public Error productImagesCheck(List<MultipartFile> images) {
+
+        if (images == null || images.isEmpty() || images.get(0).isEmpty()) {
+
+            return new Error("¡No existe ninguna imagen del producto!",
+                    "Debes subir al menos una imagen de tu producto.");
+
+        }
+
+        return null;
+
+    }
+
+    public Error productUpdateImagesCheck(Product existingProduct, List<Long> removeImages,
+            List<MultipartFile> newImages) {
+
+        // number of photos the product has in ddbb
+        int currentImages = existingProduct.getImages().size();
+
+        // number of photos marked to be deleted
+        int imagesToRemove = (removeImages != null) ? removeImages.size() : 0;
+
+        // are there any new photos?
+        boolean hasNewImages = false;
+        if (newImages != null && !newImages.isEmpty() && !newImages.get(0).isEmpty()) {
+            hasNewImages = true;
+        }
+
+        // We do the calculation, if the user deletes all images and doesn´t upload new
+        // ones, we return a error
+        if ((currentImages - imagesToRemove) <= 0 && !hasNewImages) {
+            return new Error("¡Te quedas sin imágenes!",
+                    "No puedes eliminar todas las fotos del producto sin subir al menos una nueva.");
+        }
+
+        return null;
+    }
+
 }
