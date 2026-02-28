@@ -1,37 +1,69 @@
 package es.grupo3.practica25_26.model;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String client;
+    private long id;
+
+    @ManyToOne
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     private String title;
-    private String description;
-    private LocalDateTime date;
+    private String body;
+    private String date;
+    private long imageId;
+
+    public long getId() {
+        return id;
+    }
+
+    public int getStars() {
+        return stars;
+    }
+
+    public long getImageId() {
+        return imageId;
+    }
+
+    private int stars;
+
+    public void setImageId(long imageId) {
+        this.imageId = imageId;
+    }
 
     public Review() {
     }
 
-    public Review(String client, String title, String description, LocalDateTime date) {
-        this.client = client;
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setStars(int stars) {
+        this.stars = stars;
+    }
+
+    public Review(User user, String title, String body, String date, int stars, long imageId) {
+        this.user = user;
         this.title = title;
-        this.description = description;
+        this.body = body;
         this.date = date;
-    }
-
-    public String getClient() {
-        return client;
-    }
-
-    public void setClient(String client) {
-        this.client = client;
+        this.stars = stars;
+        this.imageId = imageId;
     }
 
     public String getTitle() {
@@ -42,19 +74,19 @@ public class Review {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getBody() {
+        return body;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDateTime getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public void setDate(String date) {
         this.date = date;
     }
 

@@ -50,7 +50,6 @@ public class ProductController {
         if (productOptional.isPresent()) {
             Product product = productOptional.get();
             model.addAttribute("product", product);
-
             boolean canModifyProduct = false;
             if (request.getUserPrincipal() != null) {
 
@@ -63,15 +62,17 @@ public class ProductController {
                     canModifyProduct = true;
                 }
             }
-            // Le pasamos la variable a Mustache
+
             model.addAttribute("canModifyProduct", canModifyProduct);
+            model.addAttribute("id", id);
+            model.addAttribute("reviews", product.getReviews());
+            model.addAttribute("images", false);
 
             return "product_detail";
         } else {
             // If the product does not exist, we redirect to the homepage or an error page.
             return "redirect:/";
         }
-
     }
 
     @GetMapping("/product-publish")
@@ -79,20 +80,10 @@ public class ProductController {
         return "product-publish";
     }
 
-    @GetMapping("/my_products")
-    public String myPublishedProducts(Model model) {
-        return "my_products";
-    }
-
     @GetMapping("/products_published")
     public String productsPublished(Model model) {
         model.addAttribute("products", productService.findAll());
         return "products_published";
-    }
-
-    @GetMapping("/products-search-anonymous")
-    public String productsSearchAnonymous(Model model) {
-        return "products-search-anonymous";
     }
 
     @GetMapping("/product_detail_admin")
@@ -125,7 +116,6 @@ public class ProductController {
 
             }
         }
-
         return "edit_product";
     }
 
@@ -155,20 +145,15 @@ public class ProductController {
             boolean isAdmin = request.isUserInRole("ADMIN");
 
             try {
-
                 productService.updateProduct(id, productForm, removeImages, newImages, loggedInEmail, isAdmin);
-
                 return "redirect:/product_detail/" + id;
-
             } catch (Exception e) {
                 return errorService.setErrorPageWithButton(
                         model, session, "Error de base de datos",
                         "La base de datos no acepta estos datos: " + e.getMessage(),
                         "Volver a intentar", "/edit_product/" + id);
             }
-
         }
-
         return null;
     }
 
@@ -183,7 +168,6 @@ public class ProductController {
             HttpServletRequest request) {
 
         if (request.getUserPrincipal() != null) {
-
             Error validationError = productService.productCreateCheck(product, productImages);
 
             // If there is any error (empty name, negative price ...)
@@ -195,7 +179,6 @@ public class ProductController {
 
             // We try to save the product
             try {
-
                 String email = request.getUserPrincipal().getName();
 
                 // ProductService creates and saves the new product
@@ -209,11 +192,8 @@ public class ProductController {
                         "Hubo un problema al procesar o guardar las imágenes de tu producto. Por favor, revisa que el archivo sea válido e inténtalo de nuevo.",
                         "Volver a intentar",
                         "/product-publish");
-
             }
-
         }
-
         return "redirect:/product_search";
     }
 
@@ -221,18 +201,41 @@ public class ProductController {
     public String deleteProduct(@PathVariable Long id, HttpServletRequest request) {
 
         if (request.getUserPrincipal() != null) {
-
             String loggedInEmail = request.getUserPrincipal().getName();
             boolean isAdmin = request.isUserInRole("ADMIN");
 
-            // delete of the product
-            // boolean isDeleted =
             productService.deleteProduct(id, loggedInEmail, isAdmin);
-
         }
-
         return "redirect:/";
-
     }
 
+    @PostMapping("/add_review/{id}")
+    public String addReview(Model model, @PathVariable long id, @RequestParam String title,
+            @RequestParam String body,
+            @RequestParam(required = false) Integer stars, HttpServletRequest request) {
+        Optional<Product> op = productService.findById(id);
+
+        if (!op.isPresent()) {
+            return errorService.setErrorPageWithButton(model, null, "El producto no existe",
+                    "Estás intentando publicar una reseña para un producto que no existe", "Volver al producto",
+                    "/product_detail/" + id);
+        }
+
+        if (stars == null) {
+            return errorService.setErrorPageWithButton(model, null,
+                    "¡Cantidad de estrellas inválida!",
+                    "La cantidad de estrellas debe estar entre 1 y 5. No has seleccionado ninguna.",
+                    "Volver", "/product_detail/" + id);
+        }
+
+        Error error = productService.reviewCreateCheck(title, body, stars);
+        if (error != null) {
+            return errorService.setErrorPageWithButton(model, null, error.getTitle(), error.getMessage(), "Volver",
+                    "/product_detail/" + id);
+        }
+
+        Product product = op.get();
+        productService.saveReview(product, title, body, stars, request);
+        return "redirect:/product_detail/" + id;
+    }
 }

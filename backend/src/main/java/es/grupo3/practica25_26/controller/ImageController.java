@@ -37,8 +37,8 @@ public class ImageController {
                 .contentType(mediaType)
                 .body(imageFile);
     }
-    
-    //This method returns the image of the user
+
+    // This method returns the image of the user
     @GetMapping("/user-images/{id}")
     public ResponseEntity<Object> getUserImageFile(@PathVariable long id) throws SQLException {
         Resource imageFile = imageService.getImageFile(id);
@@ -53,17 +53,17 @@ public class ImageController {
                 .body(imageFile);
     }
 
-    //This method returns the image by the id of the image
+    // This method returns the image by the id of the image
     @GetMapping("/images/{id}")
     public ResponseEntity<Resource> getImageById(@PathVariable Long id) throws SQLException {
 
         Resource imageFile = imageService.getImageFile(id);
 
-       MediaType mediaType = MediaTypeFactory
+        MediaType mediaType = MediaTypeFactory
                 .getMediaType(imageFile)
                 .orElse(MediaType.IMAGE_JPEG);
 
-                return ResponseEntity.ok()
+        return ResponseEntity.ok()
                 .contentType(mediaType)
                 .body(imageFile);
     }

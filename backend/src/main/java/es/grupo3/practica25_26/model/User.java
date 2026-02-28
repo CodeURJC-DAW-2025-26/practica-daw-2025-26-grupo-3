@@ -41,6 +41,13 @@ public class User {
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
     private List<Product> products;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Review> reviews;
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
     // @OneToMany(mappedBy = "orderID", cascade = CascadeType.ALL, orphanRemoval =
     // true)
     @OneToMany
@@ -175,6 +182,10 @@ public class User {
 
     public void setShoppingCart(ShoppingCart shoppingCart) {
         this.shoppingCart = shoppingCart;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
     }
 
     // Añadir relación con productos y pedidos

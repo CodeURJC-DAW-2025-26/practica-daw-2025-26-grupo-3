@@ -27,9 +27,6 @@ public class Product {
     @JoinColumn(name = "user_id")
     private User seller;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private List<Image> images = new ArrayList<>();
-
     private String productName;
     private double price;
     private int state; // 0 New product, 1 reconditioned product, 2 Second hand product
@@ -43,6 +40,12 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<CartItem> cartItems = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private List<Image> images = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private List<Review> reviews;
+
     public Product() {
     }
 
@@ -52,6 +55,7 @@ public class Product {
         this.state = state;
         this.description = description;
         this.seller = seller;
+        reviews = new ArrayList<>();
     }
 
     public Product(User seller, List<Image> images, String productName, double price, int state, String description) {
@@ -173,6 +177,14 @@ public class Product {
 
     public void setCartItems(List<CartItem> cartItems) {
         this.cartItems = cartItems;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 
 }

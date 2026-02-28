@@ -1,6 +1,9 @@
 package es.grupo3.practica25_26.service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,10 +17,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.model.Product;
+import es.grupo3.practica25_26.model.Review;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.repository.CartItemRepository;
 import es.grupo3.practica25_26.repository.OrderItemRepository;
 import es.grupo3.practica25_26.repository.ProductRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import es.grupo3.practica25_26.model.Error;
 
 @Service
@@ -52,7 +57,7 @@ public class ProductService {
     }
 
     // optional because the product with the given id may not exist
-    public Optional<Product> findById(Long id) {
+    public Optional<Product> findById(long id) {
         return productRepository.findById(id);
     }
 
@@ -78,9 +83,7 @@ public class ProductService {
                 }
 
                 productImages.add(image);
-
             }
-
         }
 
         // assign the images to the product
@@ -176,16 +179,12 @@ public class ProductService {
                             existingProduct.getImages().add(image);
 
                         }
-
                     }
                     // save the product in ddbb
                     productRepository.save(existingProduct);
-
                 }
             }
-
         }
-
     }
 
     public Error productCreateCheck(Product product, List<MultipartFile> images) {
@@ -245,7 +244,6 @@ public class ProductService {
     // **** FORMS FIELD VALIDATION METHODS ****
 
     public Error productNameCheck(String productName) {
-
         // If the product name is empty (trim deletes the blank spaces from the space
         // bar)
         if (productName == null || productName.trim().isEmpty()) {
@@ -255,63 +253,48 @@ public class ProductService {
 
         }
         if (productName.length() < 3 || productName.length() > 100) {
-
             return new Error("¡Longitud de nombre incorrecta!",
                     "El nombre debe tener entre 3 y 100 caracteres. Has introducido " + productName.length()
                             + " caracteres.");
 
         }
-
         // if there isn´t any error, error is null
         return null;
-
     }
 
     public Error productPriceCheck(Double price) {
 
         // price lower than 1 euro
         if (price < 1) {
-
             return new Error("¡Precio inválido!",
                     "El precio mínimo de venta es de 1€. Has introducido " + price + "€.");
         }
-
         return null;
-
     }
 
     public Error productDescriptionCheck(String description) {
 
         if (description == null || description.trim().isEmpty()) {
-
             return new Error("¡Descripción vacía!",
                     "La descripción del producto no puede estar vacía.");
 
         }
 
         if (description.length() < 15 || description.length() > 1000) {
-
             return new Error("¡Longitud de descripción incorrecta!",
                     "La descripción debe tener entre 15 y 1000 caracteres. Has introducido " + description.length()
                             + " caracteres.");
-
         }
-
         return null;
-
     }
 
     public Error productImagesCheck(List<MultipartFile> images) {
-
         if (images == null || images.isEmpty() || images.get(0).isEmpty()) {
-
             return new Error("¡No existe ninguna imagen del producto!",
                     "Debes subir al menos una imagen de tu producto.");
 
         }
-
         return null;
-
     }
 
     public Error productUpdateImagesCheck(Product existingProduct, List<Long> removeImages,
@@ -335,13 +318,50 @@ public class ProductService {
             return new Error("¡Te quedas sin imágenes!",
                     "No puedes eliminar todas las fotos del producto sin subir al menos una nueva.");
         }
-
         return null;
     }
 
     public Page<Product> getProductsPage(Pageable pageable) {
-
         return productRepository.findAll(pageable);
     }
 
+    public void saveReview(Product product, String title, String body, int stars, HttpServletRequest request) {
+        String email = request.getUserPrincipal().getName();
+        User currentUser = userService.findUserByEmail(email);
+
+        LocalDateTime localDate = java.time.LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
+        Review review = new Review(currentUser, title, body, localDate.format(formatter), stars,
+                currentUser.getImage().getId());
+        product.getReviews().add(review);
+        this.save(product);
+    }
+
+    /**
+     * Validates review fields for creation. Returns Error if invalid, null if OK.
+     */
+    public Error reviewCreateCheck(String title, String body, int stars) {
+        if (title == null || title.trim().isEmpty()) {
+            return new Error("¡Título vacío!", "El título de la reseña no puede estar vacío.");
+        }
+        if (title.length() < 3 || title.length() > 100) {
+            return new Error("¡Longitud de título incorrecta!",
+                    "El título debe tener entre 3 y 100 caracteres. Has introducido " + title.length()
+                            + " caracteres.");
+        }
+        if (body == null || body.trim().isEmpty()) {
+            return new Error("¡Cuerpo vacío!", "El cuerpo de la reseña no puede estar vacío.");
+        }
+        if (body.length() < 10 || body.length() > 1000) {
+            return new Error("¡Longitud de cuerpo incorrecta!",
+                    "El cuerpo debe tener entre 10 y 1000 caracteres. Has introducido " + body.length()
+                            + " caracteres.");
+        }
+        if (stars < 1 || stars > 5) {
+            return new Error("¡Cantidad de estrellas inválida!",
+                    "La cantidad de estrellas debe estar entre 1 y 5. Has introducido " + stars + ".");
+        }
+        return null;
+    }
 }
