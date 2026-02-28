@@ -1,7 +1,6 @@
 package es.grupo3.practica25_26.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -121,30 +120,29 @@ public class ProductService {
 
                 }
 
-                
                 // Add the new images to the product if there are new images
                 if (newImages != null) {
-                for (MultipartFile file : newImages) {
+                    for (MultipartFile file : newImages) {
 
-                    if (!file.isEmpty()) {
+                        if (!file.isEmpty()) {
 
-                        Image image = new Image();
-                        try {
-                            image.setImageFile(new SerialBlob(file.getBytes()));
-                        } catch (Exception e) {
-                            throw new IOException("Failed to create image", e);
+                            Image image = new Image();
+                            try {
+                                image.setImageFile(new SerialBlob(file.getBytes()));
+                            } catch (Exception e) {
+                                throw new IOException("Failed to create image", e);
+                            }
+
+                            // assign the new images to the product
+                            existingProduct.getImages().add(image);
+
                         }
-                        
-                        // assign the new images to the product
-                        existingProduct.getImages().add(image);
 
                     }
+                    // save the product in ddbb
+                    productRepository.save(existingProduct);
 
                 }
-                //save the product in ddbb
-                productRepository.save(existingProduct);
-                
-            }
             }
 
         }

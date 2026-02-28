@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Factura de pedidos | ReMarket+</title>
+    <style>
+        /* Estilos específicos para la factura PDF de pedidos */
+        body {
+            background: #f8f9fc;
+            color: #2e3440;
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            font-size: 16px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 16px 24px 24px 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .pdf-header {
+            border-bottom: 2px solid #4e73df;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+
+        .pdf-logo {
+            height: 60px;
+            width: auto;
+            margin-right: 16px;
+        }
+
+        .pdf-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4e73df;
+        }
+
+        .text-muted {
+            color: #888;
+            font-size: 1rem;
+        }
+
+        h5.fw-bold {
+            font-size: 1.2rem;
+            color: #212529;
+            margin-bottom: 0.5rem;
+        }
+
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .order-table th {
+            background: #f3f3f3;
+            font-weight: bold;
+            padding: 4px 6px;
+            border: 1px solid #d8d8d8;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .order-table td {
+            padding: 4px 6px;
+            border: 1px solid #d8d8d8;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+
+        .order-table ul {
+            margin: 0;
+            padding-left: 18px;
+        }
+
+        .order-table li {
+            margin-bottom: 2px;
+        }
+
+        .pdf-footer {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #888;
+            text-align: center;
+        }
+
+        .text-center {
+            text-align: center !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="pdf-header">
+            <div style="flex:1">
+                <span class="pdf-title">Factura de pedidos</span>
+                <div class="text-muted">Emitida por ReMarket+</div>
+            </div>
+            <img src="/assets/Logo_Remarket+.png" alt="ReMarket+ Logo" class="pdf-logo" />
+        </div>
+
+        <div>
+            <h5 class="fw-bold">Datos del cliente</h5>
+            <div><strong>Nombre:</strong> {{user.userName}} {{user.surname}}</div>
+            <div><strong>Envío:</strong> {{user.address}}</div>
+        </div>
+
+        <div>
+            <h5 class="fw-bold">Pedidos incluidos</h5>
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th class="text-center"># Pedido</th>
+                        <th class="text-center">Fecha</th>
+                        <th class="text-center">Estado</th>
+                        <th class="text-center">Productos</th>
+                        <th class="text-center">Total (€)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#orders}}
+                    <tr>
+                        <td class="text-center">{{orderID}}</td>
+                        <td class="text-center">{{date}}</td>
+                        <td class="text-center">{{stateText}}</td>
+                        <td class="text-center">
+                            <ul style="display:inline-block; text-align:left; margin:0; padding-left:18px;">
+                                {{#orderItems}}
+                                <li><strong>{{product.productName}}</strong> {{quantity}} x {{product.price}}€</li>
+                                {{/orderItems}}
+                            </ul>
+                        </td>
+                        <td class="text-center">{{totalPrice}} €</td>
+                    </tr>
+                    {{/orders}}
+                </tbody>
+            </table>
+            {{#isAll}}
+            <P>Total a pagar: {{billTotal}}€</P>
+            {{/isAll}}
+        </div>
+        <div class="pdf-footer">
+            Factura generada automáticamente por ReMarket+<br />
+            Fecha de emisión: {{billDate}}
+        </div>
+    </div>
+</body>
+
+</html>

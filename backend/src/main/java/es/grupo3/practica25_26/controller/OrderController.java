@@ -1,12 +1,19 @@
 package es.grupo3.practica25_26.controller;
 
+import java.io.IOException;
+
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -21,25 +28,28 @@ import es.grupo3.practica25_26.service.OrderService;
 import es.grupo3.practica25_26.service.ProductService;
 import es.grupo3.practica25_26.service.ShoppingCartService;
 import es.grupo3.practica25_26.service.UserService;
+import es.grupo3.practica25_26.service.BillService;
 
 @Controller
 public class OrderController {
 
-    private final ProductService productService;
-    private final ShoppingCartService shoppingCartService;
-    private final UserService userService;
-    private final OrderService orderService;
-    private final ErrorService errorService;
+    @Autowired
+    private ProductService productService;
 
-    // Dependency injection via constructor
-    public OrderController(ProductService productService, ShoppingCartService shoppingCartService,
-            UserService userService, OrderService orderService, ErrorService errorService) {
-        this.productService = productService;
-        this.shoppingCartService = shoppingCartService;
-        this.userService = userService;
-        this.orderService = orderService;
-        this.errorService = errorService;
-    }
+    @Autowired
+    private ShoppingCartService shoppingCartService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private ErrorService errorService;
+
+    @Autowired
+    private BillService billService;
 
     // Handles adding a product to the user's shopping cart
     @PostMapping("/cart/add/{id}")
@@ -117,6 +127,60 @@ public class OrderController {
         orderService.saveOrderByUser(user);
 
         return "redirect:/profile";
+    }
+
+    @GetMapping("/bill/{id}")
+    public ResponseEntity<byte[]> exportOrderToPDF(@PathVariable long id) throws IOException {
+        Optional<Order> op = orderService.findById(id);
+
+        if (op.isPresent()) {
+            Order order = op.get();
+            DateTimeFormatter formatter = java.time.format.DateTimeFormatter
+                    .ofPattern("dd/MM/yyyy HH:mm:ss");
+
+            Map<String, Object> billData = new java.util.HashMap<>();
+            billData.put("user", order.getUser());
+            billData.put("orders", java.util.Collections.singletonList(order));
+            billData.put("billDate", java.time.LocalDateTime.now().format(formatter));
+
+            byte[] pdfContents = billService.generateBillFromTemplate(billData);
+
+            org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+            headers.setContentType(org.springframework.http.MediaType.APPLICATION_PDF);
+            headers.setContentDisposition(org.springframework.http.ContentDisposition.inline()
+                    .filename("invoice-" + id + ".pdf")
+                    .build());
+
+            return new ResponseEntity<>(pdfContents, headers, org.springframework.http.HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(org.springframework.http.HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/bill/all")
+    public ResponseEntity<byte[]> exportAllOrderToPDF(HttpServletRequest request) throws IOException {
+        String email = request.getUserPrincipal().getName();
+        User currentUser = userService.findUserByEmail(email);
+
+        DateTimeFormatter formatter = DateTimeFormatter
+                .ofPattern("dd/MM/yyyy HH:mm:ss");
+
+        Map<String, Object> billData = new java.util.HashMap<>();
+        billData.put("user", currentUser);
+        billData.put("orders", currentUser.getOrders());
+        billData.put("billDate", LocalDateTime.now().format(formatter));
+        billData.put("isAll", true);
+        billData.put("billTotal", userService.getAllOrdersPrice(currentUser));
+
+        byte[] pdfContents = billService.generateBillFromTemplate(billData);
+
+        org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+        headers.setContentType(org.springframework.http.MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(org.springframework.http.ContentDisposition.inline()
+                .filename("invoice-all.pdf")
+                .build());
+
+        return new ResponseEntity<>(pdfContents, headers, org.springframework.http.HttpStatus.OK);
     }
 
     // Handles the admin action to accept an order, marking it as Delivered (0)

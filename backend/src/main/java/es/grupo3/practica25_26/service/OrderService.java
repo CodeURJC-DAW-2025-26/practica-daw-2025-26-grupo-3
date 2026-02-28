@@ -1,5 +1,7 @@
 package es.grupo3.practica25_26.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,7 +59,9 @@ public class OrderService {
     public void saveOrderByUser(User user) {
         // Creates a new order for the user with the current date and a default state of
         // 1
-        Order order = new Order(user, java.time.LocalDateTime.now(), 1);
+        LocalDateTime localDate = java.time.LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        Order order = new Order(user, localDate.format(formatter), 1);
 
         // Retrieves items from the user's shopping cart
         List<CartItem> cartItems = user.getShoppingCart().getCartItems();

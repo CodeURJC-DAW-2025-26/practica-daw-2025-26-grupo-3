@@ -1,3 +1,18 @@
+/* Botón exportar todos en PDF estilo igual que exportar factura PDF */
+.export-all-orders-pdf {
+  background-color: #fff;
+  color: #4e73df;
+  border: 1px solid #4e73df;
+  transition: background 0.2s, color 0.2s;
+}
+
+.export-all-orders-pdf:hover,
+.export-all-orders-pdf:focus {
+  background-color: #4e73df;
+  color: #fff;
+  border: 1px solid #4e73df;
+}
+
 /* ALERTAS SUPERIORES FIJAS */
 .alert-container {
   position: fixed;

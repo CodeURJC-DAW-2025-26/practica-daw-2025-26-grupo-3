@@ -1,6 +1,7 @@
 package es.grupo3.practica25_26.service;
 
 import es.grupo3.practica25_26.model.Image;
+import es.grupo3.practica25_26.model.Order;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.model.Error;
 import es.grupo3.practica25_26.repository.UserRepository;
@@ -289,4 +290,13 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
+    public double getAllOrdersPrice(User user) {
+        List<Order> orders = user.getOrders();
+        double totalAmount = 0;
+        for (Order order : orders) {
+            order.calculateTotalPrice();
+            totalAmount += order.getTotalPrice();
+        }
+        return totalAmount;
+    }
 }

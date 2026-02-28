@@ -1,6 +1,5 @@
 package es.grupo3.practica25_26.model;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import jakarta.persistence.CascadeType;
@@ -12,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import es.grupo3.practica25_26.model.Order;
 
 @Entity
 @Table(name = "orders") // Crucial: 'order' is a reserved word in SQL, so we rename the table
@@ -34,7 +34,7 @@ public class Order {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    private LocalDateTime date;
+    private String date;
 
     // Represents the current status of the order: 0 = delivered, 1 = pending, 2 =
     // revise payment
@@ -50,7 +50,7 @@ public class Order {
     }
 
     // Constructor to initialize an order with a user, date, and state
-    public Order(User user, LocalDateTime date, int state) {
+    public Order(User user, String date, int state) {
         this.user = user;
         this.date = date;
         this.state = state;
@@ -85,11 +85,11 @@ public class Order {
         calculateTotalPrice();
     }
 
-    public LocalDateTime getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -125,6 +125,6 @@ public class Order {
         for (OrderItem item : orderItems) {
             total += item.getProduct().getPrice() * item.getQuantity();
         }
-        this.totalPrice = total;
+        this.setTotalPrice(total);
     }
 }
