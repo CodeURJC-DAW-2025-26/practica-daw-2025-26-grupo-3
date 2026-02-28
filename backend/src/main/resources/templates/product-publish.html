@@ -40,11 +40,12 @@
                         <div class="mb-3">
                             <label class="form-label fw-bold" for="productName">Nombre del Producto</label>
                             <input type="text" class="form-control" id="productName" name="productName"
-                                placeholder="Ej. MacBook Pro 2021" required>
+                                placeholder="Ej. MacBook Pro 2021" minlength=3 maxlength="100" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold" for="price">Precio (€)</label>
-                            <input type="number" class="form-control" id="price" name="price" placeholder="0.00" min="0"
+                            <!--Minimun price to sell is 1 cent-->
+                            <input type="number" class="form-control" id="price" name="price" placeholder="0.00" min="1"
                                 step="0.01" required>
                         </div>
                         <div class="mb-3">
@@ -58,7 +59,7 @@
                             <label class="form-label fw-bold" for="description">Descripción</label>
                             <textarea class="form-control" id="description" name="description" rows="4"
                                 placeholder="Describe brevemente el estado y características de tu producto"
-                                required></textarea>
+                                minlength="15" maxlength="1000" required></textarea>
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold" for="images">Imagen</label>

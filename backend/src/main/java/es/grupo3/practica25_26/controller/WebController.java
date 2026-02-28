@@ -1,9 +1,13 @@
 package es.grupo3.practica25_26.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import es.grupo3.practica25_26.model.Product;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.ErrorService;
 import es.grupo3.practica25_26.service.OrderService;
@@ -31,8 +35,24 @@ public class WebController {
     // Loads the main landing page and populates it with all available products
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("products", productService.findAll());
+        // we obtain the first 8 products
+        Page<Product> initialProducts = productService.getProductsPage(PageRequest.of(0, 8));
+
+        model.addAttribute("products", initialProducts.getContent());
+        model.addAttribute("isLast", initialProducts.isLast());
         return "index";
+    }
+
+    @GetMapping("/products/more")
+    public String loadMoreProducts(@RequestParam int page, Model model) {
+        // We request the next page, size 4
+        Page<Product> productPage = productService.getProductsPage(PageRequest.of(page, 4));
+
+        model.addAttribute("products", productPage.getContent());
+        model.addAttribute("isLast", productPage.isLast());
+
+        // returns a html fragment with the new loaded products
+        return "product";
     }
 
     // Renders the standard orders view
