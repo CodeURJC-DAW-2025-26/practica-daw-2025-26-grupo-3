@@ -268,11 +268,11 @@ public class ProductService {
 
     public Error productPriceCheck(Double price) {
 
-        // price lower than 1 cent
-        if (price < 0.01) {
+        // price lower than 1 euro
+        if (price < 1) {
 
             return new Error("¡Precio inválido!",
-                    "El precio mínimo de venta es de 0.01€. Has introducido " + price + "€.");
+                    "El precio mínimo de venta es de 1€. Has introducido " + price + "€.");
         }
 
         return null;

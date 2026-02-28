@@ -45,12 +45,14 @@
                     <form action="/edit_product/save/{{id}}" method="post" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label class="form-label fw-bold">Nombre del Producto</label>
-                            <input type="text" class="form-control" name="productName" value="{{productName}}">
+                            <input type="text" class="form-control" name="productName" value="{{productName}}" required
+                                minlength="3" maxlength="100">
                         </div>
                         <div class="row">
                             <div class="mb-3">
-                                <label class="form-label fw-bold">Precio (€)</label>
-                                <input type="number" class="form-control" name="price" value="{{price}}">
+                                <label class="form-label fw-bold" for="priceInput">Precio (€)</label>
+                                <input type="number" class="form-control" id="priceInput" name="price" value="{{price}}"
+                                    required min="1" step="0.01">
                             </div>
                         </div>
                         <div class="mb-3">
@@ -65,7 +67,7 @@
                             <label class="form-label fw-bold">Descripción</label>
                             <textarea class="form-control" rows="4"
                                 placeholder="Describe brevemente el estado y características de tu producto"
-                                name="description">{{description}}</textarea>
+                                name="description" required minlength="15" maxlength="1000">{{description}}</textarea>
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold">Imágenes actuales </label>
