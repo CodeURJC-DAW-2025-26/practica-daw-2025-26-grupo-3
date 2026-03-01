@@ -67,6 +67,8 @@ public class WebSecurityConfig {
                         // PRIVATE PAGES
                         .requestMatchers("/product_detail/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/product-publish/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/edit_review/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/delete_review/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/profile/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/shopping-cart").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/cart/**").hasAnyRole("USER", "ADMIN")
@@ -83,7 +85,6 @@ public class WebSecurityConfig {
                         .requestMatchers("/my_products/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/publish_new_product/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/bill/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/user/**").hasAnyRole("ADMIN")
                         .requestMatchers("/delete_product/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/add_review/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/edit_product/**").hasAnyRole("USER", "ADMIN")

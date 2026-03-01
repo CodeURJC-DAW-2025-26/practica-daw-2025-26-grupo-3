@@ -41,12 +41,12 @@ public class ImageService {
 
     public Resource getImageFile(long id) throws SQLException {
 
-        Image image = imageRepository.findById(id).orElseThrow();
+        Image image = imageRepository.findById(id).orElse(null);
 
-        if (image.getImageFile() != null) {
+        if (image != null && image.getImageFile() != null) {
             return new InputStreamResource(image.getImageFile().getBinaryStream());
         } else {
-            throw new RuntimeException("Image file not found");
+            return null;
         }
     }
 

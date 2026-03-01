@@ -171,14 +171,37 @@
                 {{#reviews}}
                 <div class="card mb-3 shadow-sm">
                     <div class="card-body">
-                        <div class="d-flex align-items-center mb-2">
-                            <img src="/user-images/{{imageId}}"
-                                onerror="this.src='https://ui-avatars.com/api/?name={{user.userName}}&background=random'"
-                                class="profile-avatar me-3">
-                            <div>
-                                <h6 class="mb-0 fw-bold">{{user.userName}} {{user.surname}}</h6>
-                                <small class="text-muted">{{date}}</small>
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div class="d-flex align-items-center">
+                                <img src="/user-images/{{imageId}}"
+                                    onerror="this.src='https://ui-avatars.com/api/?name={{user.userName}}&background=random'"
+                                    class="profile-avatar me-3">
+                                <div>
+                                    <h6 class="mb-0 fw-bold">{{user.userName}} {{user.surname}}</h6>
+                                    <small class="text-muted">{{date}}</small>
+                                </div>
                             </div>
+
+                            {{#canModifyReview}}
+                            <div class="d-flex gap-2">
+                                <a href="/edit_review/{{id}}" 
+                                    class="btn btn-primary btn-sm d-flex align-items-center justify-content-center px-3" 
+                                    style="background-color: #fd7e14; border-color: #fd7e14;" 
+                                    title="Editar reseña">
+                                    <i class="bi bi-pencil-square me-2"></i> Editar
+                                </a>
+                                
+                                <form action="/delete_review/{{id}}" method="POST" class="m-0">
+                                    <input type="hidden" name="_csrf" value="{{token}}" />
+                                    <input type="hidden" name="productId" value="{{product.id}}" />
+                                    
+                                    <button type="submit" class="btn btn-danger btn-sm d-flex align-items-center justify-content-center px-3" title="Eliminar reseña"
+                                        onclick="return confirm('¿Estás seguro de que deseas borrar tu reseña?');">
+                                        <i class="bi bi-trash me-2"></i> Eliminar
+                                    </button>
+                                </form>
+                            </div>
+                            {{/canModifyReview}}
                         </div>
                         <h5 class="card-title mt-2">{{title}}</h5>
 
@@ -232,7 +255,7 @@
                 });
             });
 
-            // --- RENDERIZADO DE ESTRELLAS GUARDADAS ---
+            // --- RENDERING OF SAVED STARS ---
             function renderAllReviews() {
                 const containers = document.querySelectorAll('.rating-display');
                 containers.forEach(div => {

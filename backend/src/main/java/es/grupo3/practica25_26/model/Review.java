@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Transient;
 
 @Entity
 public class Review {
@@ -14,6 +15,9 @@ public class Review {
 
     @ManyToOne
     private User user;
+
+    @Transient
+    private boolean canModifyReview;
 
     public User getUser() {
         return user;
@@ -88,6 +92,14 @@ public class Review {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public boolean isCanModifyReview() {
+        return canModifyReview;
+    }
+
+    public void setCanModifyReview(boolean canModifyReview) {
+        this.canModifyReview = canModifyReview;
     }
 
 }

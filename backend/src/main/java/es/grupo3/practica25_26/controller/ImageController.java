@@ -43,6 +43,10 @@ public class ImageController {
     public ResponseEntity<Object> getUserImageFile(@PathVariable long id) throws SQLException {
         Resource imageFile = imageService.getImageFile(id);
 
+        if (imageFile == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         MediaType mediaType = MediaTypeFactory
                 .getMediaType(imageFile)
                 .orElse(MediaType.IMAGE_JPEG);
@@ -58,6 +62,10 @@ public class ImageController {
     public ResponseEntity<Resource> getImageById(@PathVariable Long id) throws SQLException {
 
         Resource imageFile = imageService.getImageFile(id);
+
+        if (imageFile == null) {
+            return ResponseEntity.notFound().build();
+        }
 
         MediaType mediaType = MediaTypeFactory
                 .getMediaType(imageFile)
