@@ -75,6 +75,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/edit_product_form_admin/**").hasAnyRole("ADMIN")
                         .requestMatchers("/new_product_form_admin/**").hasAnyRole("ADMIN")
                         .requestMatchers("/orders_list/**").hasAnyRole("ADMIN")
+                        .requestMatchers("/orders/*/accept").hasAnyRole("ADMIN")
                         .requestMatchers("/product_detail_admin/**").hasAnyRole("ADMIN")
                         .requestMatchers("/products_pending_list/**").hasAnyRole("ADMIN")
                         .requestMatchers("/products_published/**").hasAnyRole("ADMIN")

@@ -45,14 +45,19 @@
                                 <tbody>
                                     {{#orders}}
                                     <tr>
-                                        <td class="ps-4 fw-bold text-primary">#{{id}}</td>
+                                        <td class="ps-4 fw-bold text-primary">#{{orderID}}</td>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <img src="/images/{{user.image}}"
-                                                    onerror="this.src='https://ui-avatars.com/api/?name={{user.userName}}&background=random'"
-                                                    class="rounded-circle me-2" alt="Avatar de {{user.userName}}">
+                                                {{#user.image}}
+                                                <img src="/images/{{user.image.id}}"
+                                                    class="rounded-circle me-2" alt="Avatar de {{user.userName}}" style="width: 40px; height: 40px; object-fit: cover;">
+                                                {{/user.image}}
+                                                {{^user.image}}
+                                                <img src="https://ui-avatars.com/api/?name={{user.userName}}&background=random"
+                                                    class="rounded-circle me-2" alt="Avatar de {{user.userName}}" style="width: 40px; height: 40px;">
+                                                {{/user.image}}
                                                 <div>
-                                                    <div class="fw-bold">{{user.userName}} {{user.lastName}}</div>
+                                                    <div class="fw-bold">{{user.userName}} {{user.surname}}</div>
                                                     <div class="small text-muted">{{user.email}}</div>
                                                 </div>
                                             </div>
@@ -66,7 +71,7 @@
                                         </td>
                                         <td class="text-end pe-4">
                                             <div class="d-flex justify-content-end gap-2">
-                                                <form action="/orders/{{id}}/accept" method="post" class="m-0">
+                                                <form action="/orders/{{orderID}}/accept" method="post" class="m-0">
                                                     <input type="hidden" name="_csrf" value="{{token}}" />
                                                     <button type="submit"
                                                         class="btn btn-sm btn-success d-flex align-items-center">
