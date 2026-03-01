@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,18 +20,14 @@ import es.grupo3.practica25_26.repository.OrderRepository;
 @Service
 public class OrderService {
 
-    private final UserService userService;
-    private final ShoppingCartService shoppingCartService;
-    private final OrderRepository orderRepository;
+    @Autowired
+    private UserService userService;
 
-    // Injects dependencies via constructor for better testability and to ensure
-    // immutability
-    public OrderService(UserService userService, ShoppingCartService shoppingCartService,
-            OrderRepository orderRepository) {
-        this.userService = userService;
-        this.shoppingCartService = shoppingCartService;
-        this.orderRepository = orderRepository;
-    }
+    @Autowired
+    private ShoppingCartService shoppingCartService;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     // Saves an order entity directly to the database
     public void save(Order order) {
