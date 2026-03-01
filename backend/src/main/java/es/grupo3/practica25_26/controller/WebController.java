@@ -128,4 +128,15 @@ public class WebController {
                 "Volver al inicio",
                 "/");
     }
+
+    @GetMapping("/access_denied")
+    public String accessDenied(Model model, HttpSession session) {
+        return errorService.setErrorPageWithButton(
+                model,
+                session,
+                "Acceso Denegado",
+                "No tienes permisos de administrador para acceder a esta página.",
+                "Volver al inicio",
+                "/");
+    }
 }

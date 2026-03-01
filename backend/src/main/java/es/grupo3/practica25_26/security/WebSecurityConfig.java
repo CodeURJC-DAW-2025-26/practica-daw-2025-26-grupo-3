@@ -63,6 +63,7 @@ public class WebSecurityConfig {
                         // tries to log in with a blocked account, they will be redirected to this page
                         // and informed about their account status.
                         .requestMatchers("/blocked_user_error").permitAll()
+                        .requestMatchers("/access_denied").permitAll()
                         // PRIVATE PAGES
                         .requestMatchers("/product_detail/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/product-publish/**").hasAnyRole("USER", "ADMIN")
@@ -85,6 +86,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/delete_product/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/add_review/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/edit_product/**").hasAnyRole("USER", "ADMIN"))
+                .exceptionHandling(exception -> exception
+                        .accessDeniedPage("/access_denied"))
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .loginProcessingUrl("/login/getUser")
