@@ -99,6 +99,7 @@ public class UserController {
         User user = userService.findUserByEmail(email);
         List<Order> userOrders = user.getOrders();
         model.addAttribute("orders", userOrders);
+        model.addAttribute("hasOrders", userOrders != null && !userOrders.isEmpty());
         return "profile";
     }
 
