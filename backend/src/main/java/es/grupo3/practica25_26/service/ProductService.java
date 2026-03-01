@@ -332,8 +332,15 @@ public class ProductService {
         LocalDateTime localDate = java.time.LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
+        // This prevents null exception if the user doesn´t have a profile picture
+        long imageId = 0L; // default value that indicates that the user doesnt have a profile picture
+        if (currentUser.getImage() != null) {
+            // We get the id of the image if it exists
+            imageId = currentUser.getImage().getId();
+        }
+
         Review review = new Review(currentUser, title, body, localDate.format(formatter), stars,
-                currentUser.getImage().getId());
+                imageId);
         product.getReviews().add(review);
         this.save(product);
     }
