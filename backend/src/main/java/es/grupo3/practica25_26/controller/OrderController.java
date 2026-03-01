@@ -185,6 +185,13 @@ public class OrderController {
 
         return new ResponseEntity<>(pdfContents, headers, org.springframework.http.HttpStatus.OK);
     }
+    // Fetches and displays a list of orders that are either pending or revised for
+    // admin review
+    @GetMapping("/orders_list")
+    public String ordersList(Model model) {
+        model.addAttribute("orders", orderService.findPendingAndRevisedOrdersWithUser()); // 1 state pending
+        return "orders_list";
+    }
 
     // Handles the admin action to accept an order, marking it as Delivered (0)
     @PostMapping("/orders/{id}/accept")

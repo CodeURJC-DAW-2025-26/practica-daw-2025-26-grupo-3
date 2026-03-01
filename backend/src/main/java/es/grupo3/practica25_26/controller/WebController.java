@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import es.grupo3.practica25_26.model.Product;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.ErrorService;
-import es.grupo3.practica25_26.service.OrderService;
 import es.grupo3.practica25_26.service.ProductService;
 import es.grupo3.practica25_26.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,8 +32,6 @@ public class WebController {
     @Autowired
     private ErrorService errorService;
 
-    @Autowired
-    private OrderService orderService;
 
     // Loads the main landing page and populates it with all available products
     @GetMapping("/")
@@ -130,13 +127,7 @@ public class WebController {
         return "admin_profile";
     }
 
-    // Fetches and displays a list of orders that are either pending or revised for
-    // admin review
-    @GetMapping("/orders_list")
-    public String ordersList(Model model) {
-        model.addAttribute("orders", orderService.findPendingAndRevisedOrdersWithUser());
-        return "orders_list";
-    }
+    
 
     // Retrieves and displays a list of all standard registered users, excluding
     // administrators
