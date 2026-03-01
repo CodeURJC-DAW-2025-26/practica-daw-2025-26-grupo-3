@@ -97,7 +97,8 @@
                                 <h5 class="card-title h6">{{productName}}</h5>
                                 <p class="text-primary fw-bold">{{price}}€</p>
                                 {{^user_logged}}
-                                <a href="/login" class="btn btn-sm btn-primary w-100">Iniciar sesión para ver más
+                                <a href="/product_detail/{{id}}" class="btn btn-sm btn-primary w-100">Iniciar sesión
+                                    para ver más
                                     detalles</a>
                                 {{/user_logged}}
                                 {{#user_logged}}
