@@ -86,10 +86,37 @@
                 <p class="display-6 text-primary fw-bold">{{price}}€</p>
                 <hr>
                 <p class="text-muted">{{description}}</p>
-                <form action="/cart/add/{{id}}" method="POST">
-                    <input type="hidden" name="_csrf" value="{{token}}" />
-                    <button type="submit" class="btn btn-primary btn-lg px-5 w-100">Añadir al Carrito</button>
-                </form>
+
+                <div class="my-4">
+                    <div class="my-4">
+                        <form action="/cart/add/{{id}}" method="POST">
+                            <input type="hidden" name="_csrf" value="{{token}}" />
+                            <button type="submit"
+                                class="btn btn-primary btn-lg px-5 d-flex align-items-center justify-content-center">
+                                <i class="bi bi-cart-fill me-2"></i> Añadir al Carrito
+                            </button>
+
+                        </form>
+                        {{#canModifyProduct}}
+                        <div class="d-flex gap-2 mt-4">
+                            <a href="/edit_product/{{id}}"
+                                class="btn btn-primary btn-lg d-flex align-items-center justify-content-center px-4"
+                                style="background-color: #fd7e14; border-color: #fd7e14;">
+                                <i class="bi bi-pencil-square me-2"></i> Editar
+                            </a>
+                            <!-- Formulario Eliminar producto -->
+                            <form action="/delete_product/{{id}}" method="post" style="display: inline;">
+                                <input type="hidden" name="_csrf" value="{{token}}" />
+                                <button type="submit"
+                                    onclick="return confirm('¿Estás seguro de que deseas borrar este producto?');"
+                                    class="btn btn-danger btn-lg d-flex align-items-center justify-content-center px-4">
+                                    <i class="bi bi-trash me-2"></i> Eliminar
+                                </button>
+                            </form>
+                        </div>
+                        {{/canModifyProduct}}
+                    </div>
+                </div>
             </div>
         </div>
         {{/product}}

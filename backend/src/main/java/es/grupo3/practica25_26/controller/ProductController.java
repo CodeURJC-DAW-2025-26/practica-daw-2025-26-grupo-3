@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import es.grupo3.practica25_26.model.Product;
+import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.ErrorService;
 import es.grupo3.practica25_26.service.ProductService;
 import es.grupo3.practica25_26.service.UserService;
@@ -238,4 +239,13 @@ public class ProductController {
         productService.saveReview(product, title, body, stars, request);
         return "redirect:/product_detail/" + id;
     }
+
+    @GetMapping("/my_products")
+    public String myProducts(Model model, HttpServletRequest request) {
+        String email = request.getUserPrincipal().getName();
+        User user = userService.findUserByEmail(email);
+        model.addAttribute("products", user.getProducts());
+        return "my_products";
+    }
+
 }

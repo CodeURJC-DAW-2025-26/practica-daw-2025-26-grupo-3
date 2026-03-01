@@ -34,6 +34,10 @@ public class GlobalControllerAdvice {
             if (user != null) {
                 model.addAttribute("user", user);
                 model.addAttribute("user_logged", true);
+
+                boolean isAdmin = request.isUserInRole("ADMIN");
+                model.addAttribute("isAdmin", isAdmin);
+
                 if (user.getImage() != null) {
                     model.addAttribute("id", user.getImage().getId());
                     model.addAttribute("has_image", true);

@@ -128,15 +128,6 @@
                                     <td class="fw-bold text-center">{{totalPrice}}€</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="4" class="text-end">
-                                        <a href="/bill/{{orderID}}" target="_blank"
-                                            class="btn btn-primary btn-sm d-inline-flex align-items-center">
-                                            <i class="bi bi-file-earmark-pdf me-2"></i>
-                                            Exportar factura PDF
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
                                     <td colspan="4">
                                         <div>
                                             <h6 class="fw-bold">Productos del pedido:</h6>
@@ -159,6 +150,15 @@
                                                 </tbody>
                                             </table>
                                         </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="text-end">
+                                        <a href="/bill/{{orderID}}" target="_blank"
+                                            class="btn btn-primary btn-sm d-inline-flex align-items-center">
+                                            <i class="bi bi-file-earmark-pdf me-2"></i>
+                                            Exportar factura PDF
+                                        </a>
                                     </td>
                                 </tr>
                             </tbody>

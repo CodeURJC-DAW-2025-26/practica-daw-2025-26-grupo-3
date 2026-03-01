@@ -49,11 +49,26 @@
                                 step="0.01" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Estado del artículo</label>
+
+                            <!--If the user is not an admin-->
+                            {{^isAdmin}}
+                            <span class="form-label fw-bold d-block mb-2">Estado del artículo</span>
                             <div class="btn-group w-100" role="group">
                                 <p>Segunda mano</p>
                             </div>
                             <input type="hidden" name="state" value="2">
+                            {{/isAdmin}}
+
+                            <!--If the user is an admin (only admins can upload new and reconditioned productos)-->
+                            {{#isAdmin}}
+                            <label class="form-label fw-bold">Estado del artículo</label>
+                            <select class="form-select" id="state" name="state" required>
+                                <option value="-1" disabled selected>Selecciona el estado...</option>
+                                <option value="0">Nuevo</option>
+                                <option value="1">Reacondicionado</option>
+                                <option value="2">Segunda mano</option>
+                            </select>
+                            {{/isAdmin}}
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold" for="description">Descripción</label>

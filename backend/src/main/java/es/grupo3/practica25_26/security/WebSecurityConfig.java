@@ -45,6 +45,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         // PUBLIC PAGES
                         .requestMatchers("/").permitAll()
+                        .requestMatchers("/orders").permitAll()
                         .requestMatchers("/signup").permitAll()
                         .requestMatchers("/user_register").permitAll()
                         .requestMatchers("/images/**").permitAll()

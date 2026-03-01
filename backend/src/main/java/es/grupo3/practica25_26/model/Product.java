@@ -29,7 +29,7 @@ public class Product {
 
     private String productName;
     private double price;
-    private int state; // 0 New product, 1 reconditioned product, 2 Second hand product
+    private Integer state; // 0 New product, 1 reconditioned product, 2 Second hand product
 
     @Column(length = 1000) // Set max length of description to 1000 characters (The default is 255)
     private String description;
@@ -49,7 +49,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(String productName, double price, int state, String description, User seller) {
+    public Product(String productName, double price, Integer state, String description, User seller) {
         this.productName = productName;
         this.price = price;
         this.state = state;
@@ -58,7 +58,8 @@ public class Product {
         reviews = new ArrayList<>();
     }
 
-    public Product(User seller, List<Image> images, String productName, double price, int state, String description) {
+    public Product(User seller, List<Image> images, String productName, double price, Integer state,
+            String description) {
         this.seller = seller;
         this.images = images;
         this.productName = productName;
@@ -83,7 +84,7 @@ public class Product {
         return price;
     }
 
-    public int getState() {
+    public Integer getState() {
         return state;
     }
 
@@ -103,7 +104,7 @@ public class Product {
         this.price = price;
     }
 
-    public void setState(int state) {
+    public void setState(Integer state) {
         this.state = state;
     }
 
@@ -137,6 +138,10 @@ public class Product {
     }
 
     public String getStateName() {
+        if (this.state == null) {
+            return "Estado desconocido";
+        }
+
         switch (this.state) {
             case 0:
                 return "Nuevo";
@@ -151,6 +156,10 @@ public class Product {
 
     // Method to get the CSS class for the state badge
     public String getStateClass() {
+        if (this.state == null) {
+            return "bg-secondary text-white";
+        }
+
         switch (this.state) {
             case 0: // new
                 return "bg-primary bg-opacity-10 text-primary"; // light blue

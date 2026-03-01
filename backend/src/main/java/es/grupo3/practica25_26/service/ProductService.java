@@ -196,6 +196,11 @@ public class ProductService {
         if (error != null)
             return error;
 
+        // Verification of the product state
+        error = productStateCheck(product.getState());
+        if (error != null)
+            return error;
+
         // Verification of de product price
         error = productPriceCheck(product.getPrice());
         if (error != null)
@@ -242,6 +247,15 @@ public class ProductService {
     }
 
     // **** FORMS FIELD VALIDATION METHODS ****
+
+    public Error productStateCheck(Integer state) {
+
+        if (state == null || state < 0 || state > 2) {
+            return new Error("¡Estado del producto inválido!",
+                    "Por favor, selecciona un estado válido para el producto en el desplegable.");
+        }
+        return null;
+    }
 
     public Error productNameCheck(String productName) {
         // If the product name is empty (trim deletes the blank spaces from the space
