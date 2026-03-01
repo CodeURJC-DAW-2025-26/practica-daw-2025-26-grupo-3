@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import es.grupo3.practica25_26.model.Product;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.ErrorService;
+import es.grupo3.practica25_26.service.OrderService;
 import es.grupo3.practica25_26.service.ProductService;
 import es.grupo3.practica25_26.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,6 +33,8 @@ public class WebController {
     @Autowired
     private ErrorService errorService;
 
+    @Autowired
+    private OrderService orderService;
 
     // Loads the main landing page and populates it with all available products
     @GetMapping("/")
@@ -132,8 +135,6 @@ public class WebController {
     public String adminProfile() {
         return "admin_profile";
     }
-
-    
 
     // Retrieves and displays a list of all standard registered users, excluding
     // administrators
