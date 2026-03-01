@@ -105,11 +105,13 @@
                     <div class="card border-0 shadow-sm p-4">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h4 class="fw-bold mb-0">Mis Pedidos</h4>
+                            {{#hasOrders}}
                             <a href="/bill/all" class="btn btn-primary btn-sm d-inline-flex align-items-center"
                                 id="export-all-orders-pdf">
                                 <i class="bi bi-file-earmark-pdf me-2"></i>
                                 Exportar todos en PDF
                             </a>
+                            {{/hasOrders}}
                         </div>
                         {{#orders}}
                         <table class="table align-middle">
