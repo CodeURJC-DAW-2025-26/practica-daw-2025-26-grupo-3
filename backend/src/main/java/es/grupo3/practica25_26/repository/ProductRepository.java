@@ -12,4 +12,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	@Query("select distinct p from Product p left join fetch p.images")
 	List<Product> findAllWithImages();
 
+	@Query
+	List<Product> findTop8ByState(int favourite);
+
 }

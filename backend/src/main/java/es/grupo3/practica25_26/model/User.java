@@ -32,6 +32,8 @@ public class User {
 
     private boolean state;
 
+    private int favouriteState;
+
     // Stores a list of roles (Strings) in a separate table and loads them
     // immediately with the User because the default case for @ElementCollection is
     // LAZY, but we want to have the roles available as soon as we load the user.
@@ -104,6 +106,7 @@ public class User {
         this.roles.add("USER");
         this.state = true;
         this.orders = new ArrayList<>();
+        this.favouriteState = -1; // If user has never bought anything, then will have random featured products
     }
 
     public void setAddress(String address) {
@@ -188,6 +191,12 @@ public class User {
         return reviews;
     }
 
-    // Añadir relación con productos y pedidos
+    public int getFavouriteState() {
+        return favouriteState;
+    }
+
+    public void setFavouriteState(int favouriteState) {
+        this.favouriteState = favouriteState;
+    }
 
 }
