@@ -1,5 +1,6 @@
 package es.grupo3.practica25_26.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -18,19 +19,17 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class WebController {
 
-    private final ProductService productService;
-    private final UserService userService;
-    private final ErrorService errorService;
-    private final OrderService orderService;
+    @Autowired
+    private ProductService productService;
 
-    // Injects dependencies via constructor for safer initialization
-    public WebController(ProductService productService, UserService userService,
-            ErrorService errorService, OrderService orderService) {
-        this.productService = productService;
-        this.userService = userService;
-        this.errorService = errorService;
-        this.orderService = orderService;
-    }
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private ErrorService errorService;
+
+    @Autowired
+    private OrderService orderService;
 
     // Loads the main landing page and populates it with all available products
     @GetMapping("/")
@@ -53,12 +52,6 @@ public class WebController {
 
         // returns a html fragment with the new loaded products
         return "product";
-    }
-
-    // Renders the standard orders view
-    @GetMapping("/orders")
-    public String orders() {
-        return "orders";
     }
 
     // Displays the login form, initializing the error flag to false by default
