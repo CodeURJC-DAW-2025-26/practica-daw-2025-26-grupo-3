@@ -45,7 +45,6 @@ public class GlobalControllerAdvice {
                     model.addAttribute("has_image", false);
                 }
             }
-
         } else {
             model.addAttribute("user_logged", false);
         }

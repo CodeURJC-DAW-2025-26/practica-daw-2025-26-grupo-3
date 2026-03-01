@@ -85,12 +85,15 @@
                                         <td class="ps-4">
                                             <div class="d-flex align-items-center">
                                                 {{#image}}
-                                                <img src="/images/{{id}}" class="rounded-circle me-2" alt="Avatar"
-                                                    width="40" height="40" style="object-fit: cover;">
+                                                <img src="/images/{{id}}"
+                                                    onerror="this.src='https://ui-avatars.com/api/?name={{userName}}&background=random'"
+                                                    class="rounded-circle me-2" alt="Avatar" width="40" height="40"
+                                                    style="object-fit: cover;">
                                                 {{/image}}
                                                 {{^image}}
-                                                <img src="https://placehold.co/40x40" class="rounded-circle me-2"
-                                                    alt="Default" width="40" height="40" style="object-fit: cover;">
+                                                <img src="https://ui-avatars.com/api/?name={{userName}}&background=random"
+                                                    class="rounded-circle me-2" alt="Default" width="40" height="40"
+                                                    style="object-fit: cover;">
                                                 {{/image}}
                                                 <div>
                                                     <div class="fw-bold">{{userName}} {{surname}}</div>

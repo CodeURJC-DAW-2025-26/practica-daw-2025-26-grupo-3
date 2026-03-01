@@ -54,8 +54,9 @@
                                         <td class="ps-4 fw-bold text-primary">#{{id}}</td>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <img src="/images/{{user.image}}" class="rounded-circle me-2"
-                                                    alt="Avatar de {{user.userName}}">
+                                                <img src="/images/{{user.image}}"
+                                                    onerror="this.src='https://ui-avatars.com/api/?name={{user.userName}}&background=random'"
+                                                    class="rounded-circle me-2" alt="Avatar de {{user.userName}}">
                                                 <div>
                                                     <div class="fw-bold">{{user.userName}} {{user.lastName}}</div>
                                                     <div class="small text-muted">{{user.email}}</div>

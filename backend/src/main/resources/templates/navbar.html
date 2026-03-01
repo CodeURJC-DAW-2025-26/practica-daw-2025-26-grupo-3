@@ -7,6 +7,20 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
+
+            {{^user_logged}}
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item"><a class="nav-link fw-semibold" href="/product_search">Productos</a>
+                </li>
+                <li class="nav-item"><a class="nav-link fw-semibold" href="/login">Iniciar
+                        Sesión</a></li>
+                <li class="nav-item ms-2"><a class="btn btn-primary btn-sm rounded-pill px-4"
+                        href="/signup">Registrarse</a>
+                </li>
+            </ul>
+            {{/user_logged}}
+
+            {{#user_logged}}
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item"><a class="nav-link" href="/product_search">Productos</a></li>
                 <li class="nav-item"><a class="nav-link" href="/product-publish">Publicar Producto</a></li>
@@ -20,11 +34,13 @@
                         id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"
                         title="Menú de usuario">
                         {{^user.image}}
-                        <img src="https://placehold.co/600x400?text=User" alt="Mi Perfil"
+                        <img src="https://ui-avatars.com/api/?name={{user.userName}}&background=random" alt="Mi Perfil"
                             style="height: 40px; width: 40px; border-radius: 50%; border: 2px solid #0d6efd; cursor: pointer; object-fit: cover; flex-shrink: 0;">
                         {{/user.image}}
                         {{#user.image}}
-                        <img src="/user-images/{{id}}" alt="Mi Perfil"
+                        <img src="/user-images/{{id}}"
+                            onerror="this.src='https://ui-avatars.com/api/?name={{user.userName}}&background=random'"
+                            alt="Mi Perfil"
                             style="height: 40px; width: 40px; border-radius: 50%; border: 2px solid #0d6efd; cursor: pointer; object-fit: cover; flex-shrink: 0;">
                         {{/user.image}}
                         <span class="d-none d-lg-inline">{{user.userName}}</span>
@@ -33,7 +49,9 @@
                         <li><a class="dropdown-item" href="/profile">Ver Perfil</a></li>
                         <li><a class="dropdown-item" href="/my_products">Mis Productos</a></li>
                         <li><a class="dropdown-item" href="/orders">Mis Pedidos</a></li>
-                        <li><a class="dropdown-item" href="/admin_panel">Modo admin</a></li>
+                        {{#isAdmin}}
+                        <li><a class="dropdown-item" href="/admin_panel">Panel administrador</a></li>
+                        {{/isAdmin}}
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -46,6 +64,8 @@
                     </ul>
                 </li>
             </ul>
+            {{/user_logged}}
+
         </div>
     </div>
 </nav>

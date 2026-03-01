@@ -12,12 +12,7 @@
 
 <body class="bg-light">
 
-	{{#user_logged}}
-	{{> user_navbar}}
-	{{/user_logged}}
-	{{^user_logged}}
-	{{> anonymous_navbar}}
-	{{/user_logged}}
+	{{> navbar}}
 
 	<!-- CART -->
 	<section class="py-5">

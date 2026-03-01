@@ -13,13 +13,7 @@
 
 <body class="bg-light d-flex flex-column min-vh-100">
 
-    {{#user_logged}}
-    {{>user_navbar}}
-    {{/user_logged}}
-
-    {{^user_logged}}
-    {{>anonymous_navbar}}
-    {{/user_logged}}
+    {{> navbar}}
 
     <div class="container text-center py-5 my-5 flex-grow-1">
         <h1 class="display-4 fw-bold text-danger mb-3">

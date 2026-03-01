@@ -16,13 +16,7 @@
 
 <body class="bg-light">
 
-  {{#user_logged}}
-  {{> user_navbar}}
-  {{/user_logged}}
-
-  {{^user_logged}}
-  {{> anonymous_navbar}}
-  {{/user_logged}}
+  {{> navbar}}
 
   <!--HEADER-->
   <header class="hero-section py-5 bg-light">
