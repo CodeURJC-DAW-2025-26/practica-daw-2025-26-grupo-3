@@ -1,7 +1,11 @@
 package es.grupo3.practica25_26.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +18,7 @@ import es.grupo3.practica25_26.service.ErrorService;
 import es.grupo3.practica25_26.service.OrderService;
 import es.grupo3.practica25_26.service.ProductService;
 import es.grupo3.practica25_26.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -33,12 +38,44 @@ public class WebController {
 
     // Loads the main landing page and populates it with all available products
     @GetMapping("/")
-    public String index(Model model) {
-        // we obtain the first 8 products
-        Page<Product> initialProducts = productService.getProductsPage(PageRequest.of(0, 8));
+    public String index(Model model, HttpServletRequest request) {
 
-        model.addAttribute("products", initialProducts.getContent());
-        model.addAttribute("isLast", initialProducts.isLast());
+        User currentUser = null;
+        if (request.getUserPrincipal() != null) {
+            String email = request.getUserPrincipal().getName();
+            currentUser = userService.findUserByEmail(email);
+        }
+
+        if (currentUser != null && currentUser.getFavouriteState() != -1) {
+            int userFavourite = currentUser.getFavouriteState();
+
+            List<Product> favouriteProducts = productService.findTop8ByType(userFavourite);
+            List<Product> allProducts = productService.findAll();
+
+            allProducts.removeAll(favouriteProducts);
+
+            List<Product> mergeList = new ArrayList<>();
+            mergeList.addAll(favouriteProducts);
+            mergeList.addAll(allProducts);
+
+            int pageSize = 8;
+            int totalElements = mergeList.size();
+
+            int end = Math.min(pageSize, totalElements);
+
+            List<Product> pageContent = mergeList.subList(0, end);
+
+            Page<Product> featuredPage = new PageImpl<>(pageContent, PageRequest.of(0, pageSize), totalElements);
+
+            model.addAttribute("products", featuredPage.getContent());
+            model.addAttribute("isLast", featuredPage.isLast());
+
+        } else {
+            Page<Product> initialProducts = productService.getProductsPage(PageRequest.of(0, 8));
+
+            model.addAttribute("products", initialProducts.getContent());
+            model.addAttribute("isLast", initialProducts.isLast());
+        }
         return "index";
     }
 

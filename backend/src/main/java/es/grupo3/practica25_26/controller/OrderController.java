@@ -125,10 +125,12 @@ public class OrderController {
         User user = userService.findUserByEmail(email);
 
         orderService.saveOrderByUser(user);
+        userService.calculateFavouriteState(user);
 
         return "redirect:/profile";
     }
 
+    // Converts one user order to PDF
     @GetMapping("/bill/{id}")
     public ResponseEntity<byte[]> exportOrderToPDF(@PathVariable long id) throws IOException {
         Optional<Order> op = orderService.findById(id);
@@ -157,6 +159,7 @@ public class OrderController {
         return new ResponseEntity<>(org.springframework.http.HttpStatus.NOT_FOUND);
     }
 
+    // Converts all the user's orders to PDF
     @GetMapping("/bill/all")
     public ResponseEntity<byte[]> exportAllOrderToPDF(HttpServletRequest request) throws IOException {
         String email = request.getUserPrincipal().getName();

@@ -24,4 +24,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // Query to find users by their ID in the DDBB
     Optional<User> findById(long id);
+
+    @Query(value = "SELECT favouriteState FROM User where id = ?1", nativeQuery = true)
+    int findFavouriteStateById(long id);
 }

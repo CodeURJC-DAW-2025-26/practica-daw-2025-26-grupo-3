@@ -39,7 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const loadedProductsCount = tempContainer.querySelectorAll('.product-card').length;
 
             // If we received less than 4 products, there are no more products left to load
-            if (loadedProductsCount < 4) {
+            const isLastPage = tempContainer.querySelector('#is-last-page');
+
+            if (loadedProductsCount < 4 || isLastPage) {
                 loadMoreBtn.remove();
             } else {
                 // If we got exactly 4, prepare the variables for the next click, we reconfigure the button 

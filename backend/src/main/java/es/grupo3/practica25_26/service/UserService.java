@@ -2,6 +2,7 @@ package es.grupo3.practica25_26.service;
 
 import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.model.Order;
+import es.grupo3.practica25_26.model.OrderItem;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.model.Error;
 import es.grupo3.practica25_26.repository.UserRepository;
@@ -19,6 +20,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
+
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    UserRepository userRepository;
 
     public Error userRegisterCheck(User newUser) {
         if (findUserByEmail(newUser.getEmail()) != null) {
@@ -107,12 +114,6 @@ public class UserService {
         }
         return null;
     }
-
-    @Autowired
-    private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    UserRepository userRepository;
 
     UserService(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
@@ -298,5 +299,46 @@ public class UserService {
             totalAmount += order.getTotalPrice();
         }
         return totalAmount;
+    }
+
+    public void calculateFavouriteState(User user) {
+        List<Order> orders = user.getOrders();
+        List<OrderItem> orderItems;
+        int newCounter = 0;
+        int reconditionedCounter = 0;
+        int secondHandCounter = 0;
+        int state;
+
+        // We count how many products of each type has de user buyed.
+        for (Order order : orders) {
+            orderItems = order.getOrderItems();
+            for (OrderItem item : orderItems) {
+                state = item.getProduct().getState();
+                switch (state) {
+                    case 0:
+                        newCounter++;
+                        break;
+                    case 1:
+                        reconditionedCounter++;
+                        break;
+                    case 2:
+                        secondHandCounter++;
+                        break;
+                }
+            }
+        }
+
+        // The product state which has more items counted is the user's favourite.
+        int max = Math.max(newCounter, Math.max(reconditionedCounter, secondHandCounter));
+
+        if (max == newCounter) {
+            user.setFavouriteState(0);
+        } else if (max == reconditionedCounter) {
+            user.setFavouriteState(1);
+        } else if (max == secondHandCounter) {
+            user.setFavouriteState(2);
+        }
+
+        this.saveUser(user);
     }
 }

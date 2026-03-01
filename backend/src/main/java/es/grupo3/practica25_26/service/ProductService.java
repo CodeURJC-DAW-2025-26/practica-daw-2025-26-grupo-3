@@ -56,6 +56,10 @@ public class ProductService {
         return productRepository.findAllWithImages();
     }
 
+    public List<Product> findTop8ByType(int favourite) {
+        return productRepository.findTop8ByState(favourite);
+    }
+
     // optional because the product with the given id may not exist
     public Optional<Product> findById(long id) {
         return productRepository.findById(id);
