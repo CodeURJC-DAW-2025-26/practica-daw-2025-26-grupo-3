@@ -28,7 +28,7 @@
 		<url />
 	</scm>
 	<properties>
-		<java.version>25</java.version>
+		<java.version>21</java.version>
 	</properties>
 	<dependencies>
 
@@ -80,7 +80,7 @@
 			<artifactId>openhtmltopdf-core</artifactId>
 			<version>1.0.10</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.openhtmltopdf</groupId>
 			<artifactId>openhtmltopdf-pdfbox</artifactId>
@@ -92,7 +92,6 @@
 			<artifactId>openhtmltopdf-slf4j</artifactId>
 			<version>1.0.10</version>
 		</dependency>
-
 
 
 	</dependencies>

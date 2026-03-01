@@ -393,6 +393,10 @@ public class ProductService {
         return null;
     }
 
+    public long countTotalProducts() {
+        return productRepository.count();
+    }
+
     public Review findReviewByIdAndCheckPermission(Long reviewId, String loggedInEmail, boolean isAdmin) {
         for (Product product : productRepository.findAll()) {
             for (Review review : product.getReviews()) {
