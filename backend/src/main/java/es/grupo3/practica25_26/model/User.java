@@ -50,12 +50,10 @@ public class User {
         this.reviews = reviews;
     }
 
-    // @OneToMany(mappedBy = "orderID", cascade = CascadeType.ALL, orphanRemoval =
-    // true)
-    @OneToMany
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // This makes de image to be
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // This makes the image to be
                                                                                   // persistent when created.
     private Image image;
 
