@@ -127,6 +127,30 @@ public class WebController {
         model.addAttribute("pendingOrders", orderService.countPendingOrders());
         model.addAttribute("totalAmountMoney", orderService.calculateTotalSalesAmount());
 
+        List<Object[]> topProducts = orderService.getTopSellingProducts(PageRequest.of(0, 5));
+        List<String> nombres = new ArrayList<>();
+        List<Long> ventas = new ArrayList<>();
+
+        for (Object[] row : topProducts) {
+            nombres.add(row[0].toString());
+            ventas.add(((Number) row[1]).longValue());
+        }
+
+        String nombresJs = nombres.isEmpty() ? "[]" : "['" + String.join("', '", nombres) + "']";
+        String ventasJs = ventas.toString();
+
+        model.addAttribute("topProductNames", nombresJs);
+        model.addAttribute("topProductSales", ventasJs);
+
+        // Get product state distribution data
+        List<Product> allProducts = productService.findAll();
+        long newCount = allProducts.stream().filter(p -> p.getState() == 0).count();
+        long reconditionedCount = allProducts.stream().filter(p -> p.getState() == 1).count();
+        long secondHandCount = allProducts.stream().filter(p -> p.getState() == 2).count();
+
+        String pedidosChartDataJs = "[" + newCount + ", " + reconditionedCount + ", " + secondHandCount + "]";
+        model.addAttribute("pedidosChartData", pedidosChartDataJs);
+
         return "admin_panel";
     }
 

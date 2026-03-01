@@ -2,6 +2,7 @@ package es.grupo3.practica25_26.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -23,4 +24,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("SELECT SUM(o.totalPrice) FROM Order o WHERE o.state = 0")
     Double sumAllApprovedOrders();
+
+    @Query("SELECT oi.product.productName, SUM(oi.quantity) FROM Order o JOIN o.orderItems oi GROUP BY oi.product.productName ORDER BY SUM(oi.quantity) DESC")
+    List<Object[]> findTopSellingProducts(Pageable pageable);
 }

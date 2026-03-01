@@ -72,7 +72,7 @@
 
                     <div class="col-md-6 col-lg-6">
                         <div class="card shadow-sm border-0 p-4 h-100">
-                            <h6 class="fw-bold mb-3 text-dark">Tipos de Pedidos</h6>
+                            <h6 class="fw-bold mb-3 text-dark">Distribución de Productos por Tipo</h6>
                             <div class="chart-box">
                                 <canvas id="pedidosChart"></canvas>
                             </div>
@@ -83,7 +83,111 @@
             </div>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            // Inicialización segura. Si el backend no envía nada, se quedan vacíos pero no fallan.
+            let nombresProductos = [];
+            let ventasProductos = [];
+            let datosTiposPedidos = [];
+
+            // Usamos comillas invertidas (backticks) para proteger el código de errores de sintaxis
+            try {
+                const strNombres = `{{& topProductNames }}`;
+                if (strNombres.trim() !== '') nombresProductos = eval(strNombres);
+            } catch (e) { console.warn("Esperando datos de productos..."); }
+
+            try {
+                const strVentas = `{{& topProductSales }}`;
+                if (strVentas.trim() !== '') ventasProductos = eval(strVentas);
+            } catch (e) { console.warn("Esperando datos de ventas..."); }
+
+            try {
+                const strPedidos = `{{& pedidosChartData }}`;
+                if (strPedidos.trim() !== '') datosTiposPedidos = eval(strPedidos);
+            } catch (e) { console.warn("Esperando datos de tipos de pedidos..."); }
+
+            // --------------------------------------------------------
+            // CHART 1: TOP 5 BEST-SELLING PRODUCTS (Bar Chart)
+            // --------------------------------------------------------
+
+            if (document.getElementById('productosChart') && nombresProductos.length > 0 && ventasProductos.length > 0) {
+                const ctxProductos = document.getElementById('productosChart').getContext('2d');
+                new Chart(ctxProductos, {
+                    type: 'bar',
+                    data: {
+                        labels: nombresProductos,
+                        datasets: [{
+                            label: 'Unidades Vendidas',
+                            data: ventasProductos,
+                            backgroundColor: 'rgba(13, 110, 253, 0.7)', // Bootstrap Blue
+                            borderColor: 'rgba(13, 110, 253, 1)',
+                            borderWidth: 1,
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { stepSize: 1 } // To prevent decimal numbers on the Y-axis
+                            }
+                        }
+                    }
+                });
+            }
+
+            // --------------------------------------------------------
+            // CHART 2: PRODUCT TYPES DISTRIBUTION (Bar Chart)
+            // --------------------------------------------------------
+
+            if (document.getElementById('pedidosChart') && datosTiposPedidos.length > 0) {
+                const ctxPedidos = document.getElementById('pedidosChart').getContext('2d');
+                new Chart(ctxPedidos, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Nuevos', 'Reacondicionados', 'Segunda Mano'],
+                        datasets: [{
+                            label: 'Cantidad de Productos',
+                            data: datosTiposPedidos,
+                            backgroundColor: [
+                                'rgba(25, 135, 84, 0.8)',  // Green
+                                'rgba(255, 193, 7, 0.8)',  // Yellow
+                                'rgba(220, 53, 69, 0.8)'   // Red
+                            ],
+                            borderColor: [
+                                'rgba(25, 135, 84, 1)',
+                                'rgba(255, 193, 7, 1)',
+                                'rgba(220, 53, 69, 1)'
+                            ],
+                            borderWidth: 2,
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        indexAxis: 'y',
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                ticks: { stepSize: 1 }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top'
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

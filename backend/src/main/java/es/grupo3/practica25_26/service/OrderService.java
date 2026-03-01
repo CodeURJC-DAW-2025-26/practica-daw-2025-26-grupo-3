@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -119,5 +120,9 @@ public class OrderService {
     public double calculateTotalSalesAmount() {
         Double total = orderRepository.sumAllApprovedOrders();
         return total != null ? total : 0.0;
+    }
+
+    public List<Object[]> getTopSellingProducts(Pageable pageable) {
+        return orderRepository.findTopSellingProducts(pageable);
     }
 }
