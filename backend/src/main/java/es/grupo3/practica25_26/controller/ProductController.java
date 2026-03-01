@@ -199,13 +199,23 @@ public class ProductController {
     }
 
     @PostMapping("/delete_product/{id}")
-    public String deleteProduct(@PathVariable Long id, HttpServletRequest request) {
+    public String deleteProduct(Model model, HttpSession session, @PathVariable Long id, HttpServletRequest request) {
 
         if (request.getUserPrincipal() != null) {
             String loggedInEmail = request.getUserPrincipal().getName();
             boolean isAdmin = request.isUserInRole("ADMIN");
 
-            productService.deleteProduct(id, loggedInEmail, isAdmin);
+            boolean deleted = productService.deleteProduct(id, loggedInEmail, isAdmin);
+
+            if (!deleted) {
+                return errorService.setErrorPageWithButton(
+                        model,
+                        session,
+                        "No autorizado",
+                        "No tienes permiso para eliminar este producto o el producto no existe.",
+                        "Volver a mis productos",
+                        "/my_products");
+            }
         }
         return "redirect:/";
     }
