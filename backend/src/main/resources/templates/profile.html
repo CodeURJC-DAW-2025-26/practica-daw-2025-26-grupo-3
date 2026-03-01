@@ -55,7 +55,14 @@
                 <div class="col-md-8 col-lg-9">
                     <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
                         <h2 class="h3 fw-bold text-dark">Mi Perfil</h2>
+                        {{#isAdmin}}
+                        <span class="badge bg-primary rounded-pill">Admin</span>
+                        {{/isAdmin}}
+
+                        {{^isAdmin}}
                         <span class="badge bg-secondary rounded-pill">Usuario</span>
+                        {{/isAdmin}}
+
                     </div>
 
                     <div class="card border-0 shadow-sm p-4 mb-4">
@@ -98,7 +105,14 @@
 
                             <div class="col-md-6">
                                 <label class="form-label text-muted small fw-bold text-uppercase">Rol</label>
+                                {{#isAdmin}}
+                                <p class="fs-5 mb-0 fw-bold">Admin</p>
+                                {{/isAdmin}}
+
+                                {{^isAdmin}}
                                 <p class="fs-5 mb-0 fw-bold">Usuario</p>
+                                {{/isAdmin}}
+                               
                             </div>
                         </div>
                     </div>
