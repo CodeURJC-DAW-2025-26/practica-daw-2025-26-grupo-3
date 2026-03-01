@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import es.grupo3.practica25_26.model.Product;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.ErrorService;
-import es.grupo3.practica25_26.service.OrderService;
 import es.grupo3.practica25_26.service.ProductService;
 import es.grupo3.practica25_26.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,8 +32,7 @@ public class WebController {
     @Autowired
     private ErrorService errorService;
 
-    @Autowired
-    private OrderService orderService;
+   
 
     // Loads the main landing page and populates it with all available products
     @GetMapping("/")
@@ -118,47 +116,7 @@ public class WebController {
         return "signup";
     }
 
-    // Renders the main dashboard panel for administrators
-    @GetMapping("/admin_panel")
-    public String adminPanel(Model model) {
-        // admins and users registered
-        model.addAttribute("totalUsers", userService.countTotalUsers());
-        model.addAttribute("totalProducts", productService.countTotalProducts());
-        model.addAttribute("pendingOrders", orderService.countPendingOrders());
-        model.addAttribute("totalAmountMoney", orderService.calculateTotalSalesAmount());
-
-        List<Object[]> topProducts = orderService.getTopSellingProducts(PageRequest.of(0, 5));
-        List<String> nombres = new ArrayList<>();
-        List<Long> ventas = new ArrayList<>();
-
-        for (Object[] row : topProducts) {
-            nombres.add(row[0].toString());
-            ventas.add(((Number) row[1]).longValue());
-        }
-
-        String nombresJs = nombres.isEmpty() ? "[]" : "['" + String.join("', '", nombres) + "']";
-        String ventasJs = ventas.toString();
-
-        model.addAttribute("topProductNames", nombresJs);
-        model.addAttribute("topProductSales", ventasJs);
-
-        // Get product state distribution data
-        List<Product> allProducts = productService.findAll();
-        long newCount = allProducts.stream().filter(p -> p.getState() == 0).count();
-        long reconditionedCount = allProducts.stream().filter(p -> p.getState() == 1).count();
-        long secondHandCount = allProducts.stream().filter(p -> p.getState() == 2).count();
-
-        String pedidosChartDataJs = "[" + newCount + ", " + reconditionedCount + ", " + secondHandCount + "]";
-        model.addAttribute("pedidosChartData", pedidosChartDataJs);
-
-        return "admin_panel";
-    }
-
-    // Displays the profile settings page for administrators
-    @GetMapping("/admin_profile")
-    public String adminProfile() {
-        return "admin_profile";
-    }
+    
 
     // Retrieves and displays a list of all standard registered users, excluding
     // administrators
