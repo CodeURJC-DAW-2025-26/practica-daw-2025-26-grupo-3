@@ -96,7 +96,9 @@
                                                     style="object-fit: cover;">
                                                 {{/image}}
                                                 <div>
-                                                    <div class="fw-bold">{{userName}} {{surname}}</div>
+                                                    <a href="/user/{{id}}/details" class="text-decoration-none">
+                                                        <div class="fw-bold">{{userName}} {{surname}}</div>
+                                                    </a>
                                                     <div class="small text-muted">{{email}}</div>
                                                 </div>
                                             </div>

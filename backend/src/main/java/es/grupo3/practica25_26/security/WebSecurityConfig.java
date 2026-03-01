@@ -85,7 +85,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/user/**").hasAnyRole("ADMIN")
                         .requestMatchers("/delete_product/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/add_review/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/edit_product/**").hasAnyRole("USER", "ADMIN"))
+                        .requestMatchers("/edit_product/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/user/**").hasAnyRole("ADMIN"))
                 .exceptionHandling(exception -> exception
                         .accessDeniedPage("/access_denied"))
                 .formLogin(formLogin -> formLogin

@@ -25,6 +25,7 @@ import es.grupo3.practica25_26.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 
 @Controller
 public class UserController {
@@ -193,6 +194,18 @@ public class UserController {
         }
         return "redirect:/user_registered_list";
 
+    }
+
+    @GetMapping("/user/{id}/details")
+    public String userDetails(Model model, HttpServletRequest request, @PathVariable Long id) {
+        User user = userService.findUserById(id);
+        if (user == null) {
+            return errorService.setErrorPageWithButton(model, null, "Usuario no encontrado",
+                    "No se ha encontrado el usuario con ID: " + id, "Volver a la lista de usuarios",
+                    "/user_registered_list");
+        }
+        model.addAttribute("user", user);
+        return "profile_details";
     }
 
 }

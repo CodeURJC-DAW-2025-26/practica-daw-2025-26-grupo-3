@@ -13,8 +13,10 @@ import jakarta.persistence.FetchType;
 
 import java.util.ArrayList;
 import java.util.List;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -50,7 +52,7 @@ public class User {
 
     // @OneToMany(mappedBy = "orderID", cascade = CascadeType.ALL, orphanRemoval =
     // true)
-    @OneToMany
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // This makes de image to be
