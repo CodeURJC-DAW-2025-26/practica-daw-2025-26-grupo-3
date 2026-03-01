@@ -98,7 +98,7 @@ public class ProductController {
     }
 
     @GetMapping("/edit_product/{id}")
-    public String editProduct(Model model, @PathVariable Long id, HttpServletRequest request) {
+    public String editProduct(Model model, @PathVariable Long id, HttpServletRequest request, HttpSession session) {
 
         Optional<Product> productOpt = productService.findById(id);
 
@@ -114,10 +114,19 @@ public class ProductController {
             if (product.getSeller().getEmail().equals(loggedInEmail) || isAdmin) {
 
                 model.addAttribute("product", product);
+                return "edit_product";
 
+            } else {
+                return errorService.setErrorPageWithButton(model, session, "No autorizado",
+                        "No tienes permiso para editar este producto.",
+                        "Volver a mis productos",
+                        "/my_products");
             }
         }
-        return "edit_product";
+        return errorService.setErrorPageWithButton(model, session, "Producto no encontrado",
+                "El producto que intentas editar no existe o no has iniciado sesión.",
+                "Volver al inicio",
+                "/");
     }
 
     @PostMapping("/edit_product/save/{id}")
@@ -145,6 +154,16 @@ public class ProductController {
             String loggedInEmail = request.getUserPrincipal().getName();
             boolean isAdmin = request.isUserInRole("ADMIN");
 
+            if (!existingProduct.getSeller().getEmail().equals(loggedInEmail) && !isAdmin) {
+                return errorService.setErrorPageWithButton(
+                        model,
+                        session,
+                        "No autorizado",
+                        "No tienes permiso para editar este producto.",
+                        "Volver a mis productos",
+                        "/my_products");
+            }
+
             try {
                 productService.updateProduct(id, productForm, removeImages, newImages, loggedInEmail, isAdmin);
                 return "redirect:/product_detail/" + id;
@@ -155,7 +174,11 @@ public class ProductController {
                         "Volver a intentar", "/edit_product/" + id);
             }
         }
-        return null;
+        return errorService.setErrorPageWithButton(
+                model, session, "Error",
+                "El producto no existe o no has iniciado sesión.",
+                "Volver al inicio",
+                "/");
     }
 
     @GetMapping("/new_product_form_admin")
