@@ -111,4 +111,13 @@ public class OrderService {
     public List<Order> findPendingAndRevisedOrdersWithUser() {
         return orderRepository.findPendingAndRevisedOrdersWithUser();
     }
+
+    public long countPendingOrders() {
+        return orderRepository.countPendingAndRevisedOrders();
+    }
+
+    public double calculateTotalSalesAmount() {
+        Double total = orderRepository.sumAllApprovedOrders();
+        return total != null ? total : 0.0;
+    }
 }

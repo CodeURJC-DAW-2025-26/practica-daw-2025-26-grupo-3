@@ -120,7 +120,13 @@ public class WebController {
 
     // Renders the main dashboard panel for administrators
     @GetMapping("/admin_panel")
-    public String adminPanel() {
+    public String adminPanel(Model model) {
+        // admins and users registered
+        model.addAttribute("totalUsers", userService.countTotalUsers());
+        model.addAttribute("totalProducts", productService.countTotalProducts());
+        model.addAttribute("pendingOrders", orderService.countPendingOrders());
+        model.addAttribute("totalAmountMoney", orderService.calculateTotalSalesAmount());
+
         return "admin_panel";
     }
 

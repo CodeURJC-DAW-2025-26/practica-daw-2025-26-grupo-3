@@ -18,4 +18,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT o FROM Order o JOIN FETCH o.user u LEFT JOIN FETCH u.image WHERE o.state IN (1, 2)")
     List<Order> findPendingAndRevisedOrdersWithUser();
 
+    @Query("SELECT COUNT(o) FROM Order o WHERE o.state IN (1, 2)")
+    long countPendingAndRevisedOrders();
+
+    @Query("SELECT SUM(o.totalPrice) FROM Order o WHERE o.state = 0")
+    Double sumAllApprovedOrders();
 }

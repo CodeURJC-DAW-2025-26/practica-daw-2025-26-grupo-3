@@ -341,4 +341,8 @@ public class UserService {
 
         this.saveUser(user);
     }
+
+    public long countTotalUsers() {
+        return userRepository.count();
+    }
 }
