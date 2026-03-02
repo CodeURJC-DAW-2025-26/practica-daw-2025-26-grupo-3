@@ -249,7 +249,8 @@ Diagrama mostrando las entidades, sus campos y relaciones:
 
 ![Diagrama Entidad-Relación](backend/src/main/resources/static/assets/database-diagram.png)
 
-> [Descripción opcional: Ej: "El diagrama muestra las 4 entidades principales: Usuario, Producto, Pedido y Categoría, con sus respectivos atributos y relaciones 1:N y N:M."]
+El diagrama muestra las entidades principales que estructuran la plataforma: Users (usuarios), Product (productos), Orders (pedidos) y Review (reseñas). Se observan claramente las relaciones entre ellas, como la relación 1:N donde un usuario puede ser vendedor de múltiples productos, o cómo un producto agrupa múltiples imágenes y comentarios (visibles a través de las tablas relacionales product_images y product_reviews).
+Además, el modelo incluye la lógica completa del proceso de compra mediante las entidades Shopping_Cart (carrito de la compra), Cart_Item (elementos del carrito) y las tablas asociadas a los ítems del pedido. Finalmente, se aprecian las tablas auxiliares terminadas en _seq (como product_seq o review_seq), que corresponden a las secuencias generadas automáticamente por JPA/Hibernate para autoincrementar las claves primarias (IDs), y la tabla user_roles encargada de gestionar los permisos de seguridad (USER/ADMIN).
 
 ### **Diagrama de Clases y Templates**
 
