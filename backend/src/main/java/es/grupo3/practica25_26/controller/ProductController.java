@@ -56,7 +56,7 @@ public class ProductController {
             boolean canModifyProduct = false;
             boolean isAdmin = false;
             String loggedInEmail = null;
-            
+
             if (request.getUserPrincipal() != null) {
 
                 // Get the email of the logged-in user and the seller's email to compare them
@@ -68,14 +68,15 @@ public class ProductController {
                 if (loggedInEmail.equals(sellerEmail) || isAdmin) {
                     canModifyProduct = true;
                 }
-            }  
-            //loop that shows or not the edit and delete button depending on the user
+            }
+            // loop that shows or not the edit and delete button depending on the user
             for (Review review : product.getReviews()) {
-                //if the user is an admin or the owner of the review then he can edit or delete it
+                // if the user is an admin or the owner of the review then he can edit or delete
+                // it
                 if (isAdmin || (loggedInEmail != null && review.getUser().getEmail().equals(loggedInEmail))) {
-                    review.setCanModifyReview(true); 
+                    review.setCanModifyReview(true);
                 } else {
-                    review.setCanModifyReview(false); 
+                    review.setCanModifyReview(false);
                 }
             }
 
@@ -100,16 +101,6 @@ public class ProductController {
     public String productsPublished(Model model) {
         model.addAttribute("products", productService.findAll());
         return "products_published";
-    }
-
-    @GetMapping("/product_detail_admin")
-    public String productDetailAdmin(Model model) {
-        return "product_detail_admin";
-    }
-
-    @GetMapping("/products_pending_list")
-    public String productsPendingList(Model model) {
-        return "products_pending_list";
     }
 
     @GetMapping("/edit_product/{id}")
@@ -196,11 +187,6 @@ public class ProductController {
                 "/");
     }
 
-    @GetMapping("/new_product_form_admin")
-    public String newProductFormAdmin(Model model) {
-        return "new_product_form_admin";
-    }
-
     @PostMapping("/publish_new_product")
     public String publishNewProduct(Model model, Product product,
             @RequestParam("productimages") List<MultipartFile> productImages, HttpSession session,
@@ -257,7 +243,7 @@ public class ProductController {
         }
         return "redirect:/";
     }
-    
+
     @GetMapping("/my_products")
     public String myProducts(Model model, HttpServletRequest request) {
         String email = request.getUserPrincipal().getName();
@@ -266,7 +252,7 @@ public class ProductController {
         return "my_products";
     }
 
-    /**REVIEWS **/
+    /** REVIEWS **/
 
     @PostMapping("/add_review/{id}")
     public String addReview(Model model, @PathVariable long id, @RequestParam String title,
@@ -280,8 +266,6 @@ public class ProductController {
                     "/product_detail/" + id);
         }
 
-
-
         Error error = productService.reviewCreateCheck(title, body, stars);
         if (error != null) {
             return errorService.setErrorPageWithButton(model, null, error.getTitle(), error.getMessage(), "Volver",
@@ -294,47 +278,47 @@ public class ProductController {
     }
 
     @GetMapping("/edit_review/{reviewId}")
-    public String editReview(Model model, @PathVariable Long reviewId, HttpServletRequest request, HttpSession session) {
-        
+    public String editReview(Model model, @PathVariable Long reviewId, HttpServletRequest request,
+            HttpSession session) {
+
         if (request.getUserPrincipal() == null) {
-            return "redirect:/login"; 
+            return "redirect:/login";
         }
 
         String loggedInEmail = request.getUserPrincipal().getName();
         boolean isAdmin = request.isUserInRole("ADMIN");
 
-        // We asked the service to find the review for us. 
+        // We asked the service to find the review for us.
         Review review = productService.findReviewByIdAndCheckPermission(reviewId, loggedInEmail, isAdmin);
 
         if (review != null) {
             model.addAttribute("review", review);
-            return "edit_review"; 
+            return "edit_review";
         } else {
-            return errorService.setErrorPageWithButton(model, session, "Error", 
-                    "La reseña no existe o no tienes permiso para editarla.", 
+            return errorService.setErrorPageWithButton(model, session, "Error",
+                    "La reseña no existe o no tienes permiso para editarla.",
                     "Volver al inicio", "/");
         }
     }
+
     @PostMapping("/edit_review/save/{reviewId}")
-    public String saveEditedReview(Model model, @PathVariable Long reviewId, 
-            @RequestParam String title, @RequestParam String body, 
-            @RequestParam(required = false) Integer stars, 
+    public String saveEditedReview(Model model, @PathVariable Long reviewId,
+            @RequestParam String title, @RequestParam String body,
+            @RequestParam(required = false) Integer stars,
             HttpServletRequest request, HttpSession session) {
 
         if (request.getUserPrincipal() == null) {
             return "redirect:/login";
         }
 
-       
         Error validationError = productService.reviewCreateCheck(title, body, stars);
-        
-        //We check that there are no errors
+
+        // We check that there are no errors
         if (validationError != null) {
-            return errorService.setErrorPageWithButton(model, session, validationError.getTitle(), 
+            return errorService.setErrorPageWithButton(model, session, validationError.getTitle(),
                     validationError.getMessage(), "Volver a intentar", "/edit_review/" + reviewId);
         }
 
-        
         String loggedInEmail = request.getUserPrincipal().getName();
         boolean isAdmin = request.isUserInRole("ADMIN");
         // We save the changes
@@ -343,18 +327,17 @@ public class ProductController {
         if (productId != null) {
             return "redirect:/product_detail/" + productId; // Volvemos al producto
         } else {
-            return errorService.setErrorPageWithButton(model, session, "Error", 
+            return errorService.setErrorPageWithButton(model, session, "Error",
                     "No se pudo actualizar la reseña.", "Volver al inicio", "/");
         }
     }
 
     @PostMapping("/delete_review/{id}")
-    public String deleteReview(Model model, @PathVariable long id, @RequestParam long productId, 
-                               HttpServletRequest request, HttpSession session) {
+    public String deleteReview(Model model, @PathVariable long id, @RequestParam long productId,
+            HttpServletRequest request, HttpSession session) {
 
-    
         if (request.getUserPrincipal() == null) {
-            return "redirect:/login"; 
+            return "redirect:/login";
         }
 
         String loggedInEmail = request.getUserPrincipal().getName();
@@ -365,12 +348,11 @@ public class ProductController {
 
         // If the service couldn´t delete the review
         if (!deleted) {
-            return errorService.setErrorPageWithButton(model, session, "Error al borrar", 
-                    "No tienes permiso para borrar esta reseña o ya no existe.", 
+            return errorService.setErrorPageWithButton(model, session, "Error al borrar",
+                    "No tienes permiso para borrar esta reseña o ya no existe.",
                     "Volver al producto", "/product_detail/" + productId);
         }
-        
-        
+
         return "redirect:/product_detail/" + productId;
     }
 
