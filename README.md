@@ -197,7 +197,8 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 ## 🛠 **Práctica 1: Web con HTML generado en servidor y AJAX**
 
 ### **Vídeo de Demostración**
-📹 **[Enlace al vídeo en YouTube](https://www.youtube.com/watch?v=x91MPoITQ3I)**
+📹 **[Enlace al vídeo en YouTube]([https://www.youtube.com/watch?v=x91MPoITQ3I](https://youtu.be/sM6xG_zOkyA?si=FarT2MzmAVvu6vqY)](https://www.youtube.com/watch?v=sM6xG_zOkyA))**
+https://www.youtube.com/watch?v=sM6xG_zOkyA
 > Vídeo mostrando las principales funcionalidades de la aplicación web.
 
 ### **Navegación y Capturas de Pantalla**
@@ -248,7 +249,8 @@ Diagrama mostrando las entidades, sus campos y relaciones:
 
 ![Diagrama Entidad-Relación](backend/src/main/resources/static/assets/database-diagram.png)
 
-> [Descripción opcional: Ej: "El diagrama muestra las 4 entidades principales: Usuario, Producto, Pedido y Categoría, con sus respectivos atributos y relaciones 1:N y N:M."]
+El diagrama muestra las entidades principales que estructuran la plataforma: Users (usuarios), Product (productos), Orders (pedidos) y Review (reseñas). Se observan claramente las relaciones entre ellas, como la relación 1:N donde un usuario puede ser vendedor de múltiples productos, o cómo un producto agrupa múltiples imágenes y comentarios (visibles a través de las tablas relacionales product_images y product_reviews).
+Además, el modelo incluye la lógica completa del proceso de compra mediante las entidades Shopping_Cart (carrito de la compra), Cart_Item (elementos del carrito) y las tablas asociadas a los ítems del pedido. Finalmente, se aprecian las tablas auxiliares terminadas en _seq (como product_seq o review_seq), que corresponden a las secuencias generadas automáticamente por JPA/Hibernate para autoincrementar las claves primarias (IDs), y la tabla user_roles encargada de gestionar los permisos de seguridad (USER/ADMIN).
 
 ### **Diagrama de Clases y Templates**
 
@@ -270,18 +272,13 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 Encargado de realizar todas las funcionalidades relacionadas con la creación, edición y visualización de los productos y reviews con sus respectivas comprobaciones en el frontend y backend. También he añadido diversos productos de ejemplo a la base de datos, he añadido tambien la funcionalidad de mostrar más productos del index con ajax. Ademas he arreglado diversos errores que han ocurrido durante el desarrollo de la web.
 Tambien he agregado diferentes funcionalidades para el manejo de imagenes, como por ejemplo el carrousel de imagenes del html del detalle del producto entre otras cosas.
 
-| Nº    | Commits      | Files      |
-|:------------: |:------------:| :------------:|
-|1| |Implemented all validations when a product is added or edited, deleted unnecessary html and also added a change in css to see description of products correctly
-(https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/b7cc6099a02ead745115edf924ff9cc6058849b0) | [ProductController.java] (backend/src/main/java/es/grupo3/practica25_26/controller/ProductController.java) |
-|2| [Added images class,controller,service and Repository. Now products can have images (its not completed at 100%)
-](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/edba18f6217b3e6efd41bec80ed2fb76f3d33739)  | [Image.java](backend/src/main/java/es/grupo3/practica25_26/model/Image.java)   |
-|3| [Implement product editing functionality: Added edit product form and save logic in ProductController (but not completed at 100%), created edit_product.html template, and updated product detail views for user-specific editing.
-](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/871b895f5680aa8ed22b00de18005ec599e1952f)  | [ProductController.java] (backend/src/main/java/es/grupo3/practica25_26/controller/ProductController)   |
-|4| [Added new class Product controller and more changes in new product form
-](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/0560c379d632aafb5ec0b0c876aa571115609636)  | [ProductController.java](backend/src/main/java/es/grupo3/practica25_26/controller/ProductController.java)   |
-|5| [Fully functional product details; I've also added a boostrap carousel to navigate through the different images.
-](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/7372aa2a99468bee512bb6cf4f05284df8b6b77f)  | [product_detail.html](backend/src/main/resources/templates/product_detail.html)   |
+| Nº | Commits | Files |
+| :---: | :---: | :---: |
+| 1 | [Implemented all validations when a product is added or edited, deleted unnecessary html and also added a change in css to see description of products correctly](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/b7cc6099a02ead745115edf924ff9cc6058849b0) | [ProductController.java](backend/src/main/java/es/grupo3/practica25_26/controller/ProductController.java) |
+| 2 | [Added images class,controller,service and Repository. Now products can have images (its not completed at 100%)](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/edba18f6217b3e6efd41bec80ed2fb76f3d33739) | [Image.java](backend/src/main/java/es/grupo3/practica25_26/model/Image.java) |
+| 3 | [Implement product editing functionality: Added edit product form and save logic in ProductController (but not completed at 100%), created edit_product.html template, and updated product detail views for user-specific editing.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/871b895f5680aa8ed22b00de18005ec599e1952f) | [ProductController.java](backend/src/main/java/es/grupo3/practica25_26/controller/ProductController) |
+| 4 | [Added new class Product controller and more changes in new product form](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/0560c379d632aafb5ec0b0c876aa571115609636) | [ProductController.java](backend/src/main/java/es/grupo3/practica25_26/controller/ProductController.java) |
+| 5 | [Fully functional product details; I've also added a boostrap carousel to navigate through the different images.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/7372aa2a99468bee512bb6cf4f05284df8b6b77f) | [product_detail.html](backend/src/main/resources/templates/product_detail.html) |
 
 ---
 
@@ -302,14 +299,13 @@ Implemented all user autentication logic. Also implemented orders & shopping car
 
 [Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
 
-| Nº    | Commits      | Files      |
-|:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-
+| Nº | Commits | Files |
+| :---: | :---: | :---: |
+| 1 | [Add user details page and update user list with links; refactor User model and security config](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/85842d86d52766bbb4152cbb1bf1762d4fc65951) | [profile_details](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/85842d86d52766bbb4152cbb1bf1762d4fc65951#diff-1930f09b3abf52622c4a98dfc1d3e6e76ea1cd6c25dbd9ed06a117e8cb62184a) |
+| 2 | [Refactor Order and Web Controllers: Implemented dependency injection, updated Order model to include user association, and enhanced OrderRepository with a custom query for pending and revised orders. Improved orders_list.html for better data presentation and user experience.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/5d5935e2621a0f4d77738b8e7e1b232d2bb684cf) | [OrderController](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/5d5935e2621a0f4d77738b8e7e1b232d2bb684cf#diff-aac3ea106f28a818662a2c745941c28e22a16adc32cc7d4f0a9962f534bfc622) |
+| 3 | [Implement top-selling products feature and product state distribution in admin panel](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/21b5bbc022017a04136392fe5ad477caf10a60da) | [WebController](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/21b5bbc022017a04136392fe5ad477caf10a60da#diff-3c9865c6692d087a18cbc0653ce38fd84bfe5d96d8214bc26d10aac9724d82aa) |
+| 4 | [Refactor admin panel templates: Extracted sidebar into a separate file for reusability, updated all relevant templates to use the new sidebar component, and improved logging configuration in application properties. Removed products_pending_list.html as it is no longer needed.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/69ba823a0d9a76b6cb1162c5c877ba7b3056b7bd) | [products_pending_list](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/69ba823a0d9a76b6cb1162c5c877ba7b3056b7bd#diff-8f3a10b1a5ba8c48699552a08c690be1120cd8b621297c35f2b16966ac80e380) |
+| 5 | [users state](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/14c23b4ce0cd8a9ee304dfdf9760befefa70fbb0) | [WebController](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/14c23b4ce0cd8a9ee304dfdf9760befefa70fbb0#diff-3c9865c6692d087a18cbc0653ce38fd84bfe5d96d8214bc26d10aac9724d82aa) |
 ---
 
 ## 🛠 **Práctica 2: Incorporación de una API REST a la aplicación web, despliegue con Docker y despliegue remoto**
