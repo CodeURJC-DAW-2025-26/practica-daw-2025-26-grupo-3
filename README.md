@@ -222,15 +222,25 @@ Solo si han cambiado.
 
 1. **Clonar el repositorio**
    ```bash
-   git clone https://github.com/[usuario]/[nombre-repositorio].git
-   cd [nombre-repositorio]
+   git clone https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3.git
+   cd practica-daw-2025-26-grupo-3
    ```
 
-2. **AQUÍ INDICAR LO SIGUIENTES PASOS**
+2. **Ejecutar la aplicación**
+Localiza el archivo principal del proyecto en tu IDE (IntelliJ, VS Code, etc.):
+
+src/main/java/es/grupo3/practica25_26/Practica2526Application.java
+
+3. **Acceso a la web**
+Una vez que la aplicación esté iniciada, abre tu navegador y accede a:
+
+https://localhost:8443
+
 
 #### **Credenciales de prueba**
-- **Usuario Admin**: usuario: `admin`, contraseña: `admin`
-- **Usuario Registrado**: usuario: `user`, contraseña: `user`
+- **Usuario Admin**: usuario: `admin@admin.com`, contraseña: `admin1234`
+- **Usuario Registrado**: usuario: `marta@example.com`, contraseña: `demo1234`
+- **Usuario Registrado**: usuario: `carlos@example.com`, contraseña: `demo1234`
 
 ### **Diagrama de Entidades de Base de Datos**
 
@@ -250,7 +260,27 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 
 ### **Participación de Miembros en la Práctica 1**
 
-#### **Alumno 1 - [Nombre Completo]**
+#### **Alumno 1 - Daniel Hernanz Corral**
+
+Encargado de realizar todas las funcionalidades relacionadas con la creación, edición y visualización de los productos y reviews con sus respectivas comprobaciones en el frontend y backend. También he añadido diversos productos de ejemplo a la base de datos, he añadido tambien la funcionalidad de mostrar más productos del index con ajax. Ademas he arreglado diversos errores que han ocurrido durante el desarrollo de la web.
+Tambien he agregado diferentes funcionalidades para el manejo de imagenes, como por ejemplo el carrousel de imagenes del html del detalle del producto entre otras cosas.
+
+| Nº    | Commits      | Files      |
+|:------------: |:------------:| :------------:|
+|1| |Implemented all validations when a product is added or edited, deleted unnecessary html and also added a change in css to see description of products correctly
+(https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/b7cc6099a02ead745115edf924ff9cc6058849b0) | [ProductController.java] (backend/src/main/java/es/grupo3/practica25_26/controller/ProductController.java) |
+|2| [Added images class,controller,service and Repository. Now products can have images (its not completed at 100%)
+](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/edba18f6217b3e6efd41bec80ed2fb76f3d33739)  | [Image.java](backend/src/main/java/es/grupo3/practica25_26/model/Image.java)   |
+|3| [Implement product editing functionality: Added edit product form and save logic in ProductController (but not completed at 100%), created edit_product.html template, and updated product detail views for user-specific editing.
+](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/871b895f5680aa8ed22b00de18005ec599e1952f)  | [ProductController.java] (backend/src/main/java/es/grupo3/practica25_26/controller/ProductController)   |
+|4| [Added new class Product controller and more changes in new product form
+](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/0560c379d632aafb5ec0b0c876aa571115609636)  | [ProductController.java](backend/src/main/java/es/grupo3/practica25_26/controller/ProductController.java)   |
+|5| [Fully functional product details; I've also added a boostrap carousel to navigate through the different images.
+](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/7372aa2a99468bee512bb6cf4f05284df8b6b77f)  | [product_detail.html](backend/src/main/resources/templates/product_detail.html)   |
+
+---
+
+#### **Alumno 2 - Marcos Hernández Martín**
 
 [Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
 
@@ -264,35 +294,7 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 
 ---
 
-#### **Alumno 2 - [Nombre Completo]**
-
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
-
-| Nº    | Commits      | Files      |
-|:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-
----
-
-#### **Alumno 3 - [Nombre Completo]**
-
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
-
-| Nº    | Commits      | Files      |
-|:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-
----
-
-#### **Alumno 4 - [Nombre Completo]**
+#### **Alumno 3 - Jorge Naranjo Ballesteros**
 
 [Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
 
