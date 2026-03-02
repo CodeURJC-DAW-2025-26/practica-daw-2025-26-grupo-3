@@ -299,15 +299,13 @@ Tambien he agregado diferentes funcionalidades para el manejo de imagenes, como 
 
 [Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
 
-| Nº    | Commits      | Files      |
-|:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Implement top-selling products feature and product state distribution in admin panel
-]([URL_commit_3](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/21b5bbc022017a04136392fe5ad477caf10a60da))  | [WebController](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/21b5bbc022017a04136392fe5ad477caf10a60da#diff-3c9865c6692d087a18cbc0653ce38fd84bfe5d96d8214bc26d10aac9724d82aa)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-
+| Nº | Commits | Files |
+| :---: | :---: | :---: |
+| 1 | [Descripción commit 1](URL_commit_1) | [Archivo1](URL_archivo_1) |
+| 2 | [Descripción commit 2](URL_commit_2) | [Archivo2](URL_archivo_2) |
+| 3 | [Implement top-selling products feature and product state distribution in admin panel](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/21b5bbc022017a04136392fe5ad477caf10a60da) | [WebController](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/21b5bbc022017a04136392fe5ad477caf10a60da#diff-3c9865c6692d087a18cbc0653ce38fd84bfe5d96d8214bc26d10aac9724d82aa) |
+| 4 | [Descripción commit 4](URL_commit_4) | [Archivo4](URL_archivo_4) |
+| 5 | [Descripción commit 5](URL_commit_5) | [Archivo5](URL_archivo_5) |
 ---
 
 ## 🛠 **Práctica 2: Incorporación de una API REST a la aplicación web, despliegue con Docker y despliegue remoto**
