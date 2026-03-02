@@ -266,18 +266,13 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 Encargado de realizar todas las funcionalidades relacionadas con la creación, edición y visualización de los productos y reviews con sus respectivas comprobaciones en el frontend y backend. También he añadido diversos productos de ejemplo a la base de datos, he añadido tambien la funcionalidad de mostrar más productos del index con ajax. Ademas he arreglado diversos errores que han ocurrido durante el desarrollo de la web.
 Tambien he agregado diferentes funcionalidades para el manejo de imagenes, como por ejemplo el carrousel de imagenes del html del detalle del producto entre otras cosas.
 
-| Nº    | Commits      | Files      |
-|:------------: |:------------:| :------------:|
-|1| |Implemented all validations when a product is added or edited, deleted unnecessary html and also added a change in css to see description of products correctly
-(https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/b7cc6099a02ead745115edf924ff9cc6058849b0) | [ProductController.java] (backend/src/main/java/es/grupo3/practica25_26/controller/ProductController.java) |
-|2| [Added images class,controller,service and Repository. Now products can have images (its not completed at 100%)
-](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/edba18f6217b3e6efd41bec80ed2fb76f3d33739)  | [Image.java](backend/src/main/java/es/grupo3/practica25_26/model/Image.java)   |
-|3| [Implement product editing functionality: Added edit product form and save logic in ProductController (but not completed at 100%), created edit_product.html template, and updated product detail views for user-specific editing.
-](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/871b895f5680aa8ed22b00de18005ec599e1952f)  | [ProductController.java] (backend/src/main/java/es/grupo3/practica25_26/controller/ProductController)   |
-|4| [Added new class Product controller and more changes in new product form
-](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/0560c379d632aafb5ec0b0c876aa571115609636)  | [ProductController.java](backend/src/main/java/es/grupo3/practica25_26/controller/ProductController.java)   |
-|5| [Fully functional product details; I've also added a boostrap carousel to navigate through the different images.
-](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/7372aa2a99468bee512bb6cf4f05284df8b6b77f)  | [product_detail.html](backend/src/main/resources/templates/product_detail.html)   |
+| Nº | Commits | Files |
+| :---: | :---: | :---: |
+| 1 | [Implemented all validations when a product is added or edited, deleted unnecessary html and also added a change in css to see description of products correctly](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/b7cc6099a02ead745115edf924ff9cc6058849b0) | [ProductController.java](backend/src/main/java/es/grupo3/practica25_26/controller/ProductController.java) |
+| 2 | [Added images class,controller,service and Repository. Now products can have images (its not completed at 100%)](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/edba18f6217b3e6efd41bec80ed2fb76f3d33739) | [Image.java](backend/src/main/java/es/grupo3/practica25_26/model/Image.java) |
+| 3 | [Implement product editing functionality: Added edit product form and save logic in ProductController (but not completed at 100%), created edit_product.html template, and updated product detail views for user-specific editing.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/871b895f5680aa8ed22b00de18005ec599e1952f) | [ProductController.java](backend/src/main/java/es/grupo3/practica25_26/controller/ProductController) |
+| 4 | [Added new class Product controller and more changes in new product form](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/0560c379d632aafb5ec0b0c876aa571115609636) | [ProductController.java](backend/src/main/java/es/grupo3/practica25_26/controller/ProductController.java) |
+| 5 | [Fully functional product details; I've also added a boostrap carousel to navigate through the different images.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/7372aa2a99468bee512bb6cf4f05284df8b6b77f) | [product_detail.html](backend/src/main/resources/templates/product_detail.html) |
 
 ---
 
