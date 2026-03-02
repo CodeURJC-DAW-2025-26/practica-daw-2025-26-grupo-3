@@ -254,9 +254,14 @@ Diagrama mostrando las entidades, sus campos y relaciones:
 
 Diagrama de clases de la aplicación con diferenciación por colores o secciones:
 
-![Diagrama de Clases](backend/src/main/resources/static/assets/classes-diagram.png)
+![Diagrama de Clases](backend/src/main/resources/static/assets/classes-diagram.jpg)
 
-> [Descripción opcional del diagrama y relaciones principales]
+> Turquesa: Modelo
+> Rojo: Repositorio
+> Amarillo: Servicios
+> Rosa: Controladores
+> Verde: Vistas
+> Azul: Seguridad
 
 ### **Participación de Miembros en la Práctica 1**
 
@@ -282,15 +287,14 @@ Tambien he agregado diferentes funcionalidades para el manejo de imagenes, como 
 
 #### **Alumno 2 - Marcos Hernández Martín**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
-
+Implemented all user autentication logic. Also implemented orders & shopping cart, reviews, PDF export and advanced query.
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Refactor user registration and profile handling; add CSRF protection to signup form and update image handling in navbar](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/c4c663f53cf67b2228d1c6264796871d773fdc07)  | [UserController.java] (backend/src/main/java/es/grupo3/practica25_26/controller/UserController.java)   |
+|2| [Implement shopping cart functionality: Updated OrderController to handle user-specific cart actions, added CartItemRepository, and enhanced ShoppingCartService for item management. Modified shopping-cart.html for dynamic display of cart items](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/f07f2a161147b94a71cbb8ab2fdc5955b9f71e58)  | [OrderController.java](backend/src/main/java/es/grupo3/practica25_26/controller/OrderController.java)   |
+|3| [Orders in profile implemented & fiexed index login, logout and register banners style.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/402f70a1f041c3982b8e71211e226306ed59b528)  | [OrderController.java](backend/src/main/java/es/grupo3/practica25_26/controller/OrderController.java)   |
+|4| [Product review implementation](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/7ddd59cd93ce4819c8663f0af789247ed0b169a1)  | [ProductController.java](backend/src/main/java/es/grupo3/practica25_26/controller/ProductController.java)   |
+|5| [PDF bills export](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/155aa519dc782c137e0ad0a9b341b77add7559aa)  | [OrderController.java](backend/src/main/java/es/grupo3/practica25_26/controller/OrderController.java)   |
 
 ---
 
