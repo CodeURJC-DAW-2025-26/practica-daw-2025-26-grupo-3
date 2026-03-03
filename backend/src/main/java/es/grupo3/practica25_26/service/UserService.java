@@ -54,12 +54,12 @@ public class UserService {
 
     public Error userUpdateCheck(String userName, String surname, String email, String address,
             HttpServletRequest request) {
-        String currentEmail = request.getUserPrincipal().getName();
-        if (!email.equals(currentEmail) && findUserByEmail(email) != null) {
-            return new Error("El e-mail escogido está en uso.",
-                    "El correo electrónico introducido en el fomulario de registro ya pertenece a otro usuario. Por favor, utiliza otro correo electrónico.");
-        }
-        Error error = userNameCheck(userName);
+
+        Error error = uniqueEmailCheck(email, request);
+        if (error != null)
+            return error;
+
+        error = userNameCheck(userName);
         if (error != null)
             return error;
         error = surnameCheck(surname);

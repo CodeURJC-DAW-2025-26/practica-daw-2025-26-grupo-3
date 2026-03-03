@@ -91,7 +91,12 @@
               <span class="badge rounded-pill {{stateClass}} mb-2">{{stateName}}</span>
               <h5 class="card-title h6 fw-bold">{{productName}}</h5>
               <p class="text-primary fw-bold fs-5 mb-1">{{price}}€</p>
-              <div class="small text-warning">★★★★☆ <span class="text-muted">(24)</span></div>
+              <div class="small text-warning">
+                {{#stars}}
+                {{#.}}★{{/.}}{{^.}}☆{{/.}}
+                {{/stars}}
+                <span class="text-muted">({{reviewCount}})</span>
+              </div>
             </div>
             <div class="card-footer bg-transparent border-0 pb-3">
               {{^user_logged}}

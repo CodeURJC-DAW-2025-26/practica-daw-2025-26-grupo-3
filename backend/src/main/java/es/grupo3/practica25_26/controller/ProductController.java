@@ -7,12 +7,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import es.grupo3.practica25_26.model.Product;
 import es.grupo3.practica25_26.model.Review;
 import es.grupo3.practica25_26.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import es.grupo3.practica25_26.service.ErrorService;
 import es.grupo3.practica25_26.service.ProductService;
 import es.grupo3.practica25_26.service.UserService;
 import es.grupo3.practica25_26.model.Error;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -354,6 +356,18 @@ public class ProductController {
         }
 
         return "redirect:/product_detail/" + productId;
+    }
+
+    @GetMapping("/products/more")
+    public String loadMoreProducts(@RequestParam int page, Model model) {
+        // We request the next page, size 4
+        Page<Product> productPage = productService.getProductsPage(PageRequest.of(page, 4));
+
+        model.addAttribute("products", productPage.getContent());
+        model.addAttribute("isLast", productPage.isLast());
+
+        // returns a html fragment with the new loaded products
+        return "product";
     }
 
 }

@@ -10,7 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import es.grupo3.practica25_26.model.Product;
 import es.grupo3.practica25_26.model.User;
@@ -31,8 +30,6 @@ public class WebController {
 
     @Autowired
     private ErrorService errorService;
-
-   
 
     // Loads the main landing page and populates it with all available products
     @GetMapping("/")
@@ -77,18 +74,6 @@ public class WebController {
         return "index";
     }
 
-    @GetMapping("/products/more")
-    public String loadMoreProducts(@RequestParam int page, Model model) {
-        // We request the next page, size 4
-        Page<Product> productPage = productService.getProductsPage(PageRequest.of(page, 4));
-
-        model.addAttribute("products", productPage.getContent());
-        model.addAttribute("isLast", productPage.isLast());
-
-        // returns a html fragment with the new loaded products
-        return "product";
-    }
-
     // Displays the login form, initializing the error flag to false by default
     @GetMapping("/login")
     public String login(Model model) {
@@ -114,16 +99,6 @@ public class WebController {
             session.removeAttribute("user_failed_register");
         }
         return "signup";
-    }
-
-    
-
-    // Retrieves and displays a list of all standard registered users, excluding
-    // administrators
-    @GetMapping("/user_registered_list")
-    public String userRegisteredList(Model model) {
-        model.addAttribute("users", userService.getUsersWithoutAdmins());
-        return "user_registered_list";
     }
 
     // Displays an access denied error page specifically for users who have been
