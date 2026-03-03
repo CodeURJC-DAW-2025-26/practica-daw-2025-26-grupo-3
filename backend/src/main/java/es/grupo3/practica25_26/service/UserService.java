@@ -198,15 +198,6 @@ public class UserService {
         return null;
     }
 
-    public Error uniqueEmailCheck(String email, HttpServletRequest request) {
-        String currentEmail = request.getUserPrincipal().getName();
-        if (!email.equals(currentEmail) && this.findUserByEmail(email) != null) {
-            return new Error("El e-mail escogido está en uso.",
-                    "El correo electrónico introducido en el fomulario de registro ya pertenece a otro usuario. Por favor, utiliza otro correo electrónico.");
-        }
-        return null;
-    }
-
     public Error notFilledFormCheck(String... fields) {
         for (String field : fields) {
             if (field.length() == 0) {
@@ -218,9 +209,7 @@ public class UserService {
     }
 
     // OTHER METHODS
-
     public void updateUserInfo(User currentUser, String userName, String surname, String email, String address) {
-
         currentUser.setUserName(userName);
         currentUser.setSurname(surname);
         currentUser.setEmail(email);
