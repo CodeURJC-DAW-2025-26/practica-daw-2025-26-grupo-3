@@ -75,6 +75,15 @@ public class UserService {
         return error;
     }
 
+    public Error uniqueEmailCheck(String email, HttpServletRequest request) {
+        String currentEmail = request.getUserPrincipal().getName();
+        if (!email.equals(currentEmail) && this.findUserByEmail(email) != null) {
+            return new Error("El e-mail escogido está en uso.",
+                    "El correo electrónico introducido en el fomulario de registro ya pertenece a otro usuario. Por favor, utiliza otro correo electrónico.");
+        }
+        return null;
+    }
+
     public Error userPasswordUpdateCheck(String newPassword, String oldPassword, HttpServletRequest request) {
         Error error = notFilledFormCheck(newPassword, oldPassword);
         if (error != null)
