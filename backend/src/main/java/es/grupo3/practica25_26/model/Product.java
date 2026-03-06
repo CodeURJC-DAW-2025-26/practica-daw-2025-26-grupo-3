@@ -196,4 +196,42 @@ public class Product {
         this.reviews = reviews;
     }
 
+    // Method to calculate the average rating of the product
+    public double getAverageRating() {
+
+        if (reviews == null || reviews.isEmpty()) {
+            return 0.0;
+        }
+        double sum = 0;
+        for (Review review : reviews) {
+            sum += review.getStars();
+        }
+        return sum / reviews.size(); // returns the average rating of the product
+    }
+
+    // Method to get a list of booleans representing the stars for the product
+    public List<Boolean> getStars() {
+        List<Boolean> stars = new ArrayList<>();
+        int fullStars = (int) Math.round(getAverageRating());
+        for (int i = 0; i < 5; i++) {
+            // If the index is less than the number of full stars, add true (filled star),
+            // otherwise add false (empty star)
+            if (i < fullStars) {
+                stars.add(true);
+            } else {
+                stars.add(false);
+            }
+        }
+        return stars;
+    }
+
+    public int getReviewCount() {
+
+        if (reviews == null) {
+            return 0;
+        } else {
+            return reviews.size();
+        }
+    }
+
 }

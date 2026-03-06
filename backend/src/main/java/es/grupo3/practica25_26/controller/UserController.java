@@ -261,4 +261,12 @@ public class UserController {
         return "admin_profile";
     }
 
+    // Retrieves and displays a list of all standard registered users, excluding
+    // administrators
+    @GetMapping("/user_registered_list")
+    public String userRegisteredList(Model model) {
+        model.addAttribute("users", userService.getUsersWithoutAdmins());
+        return "user_registered_list";
+    }
+
 }
