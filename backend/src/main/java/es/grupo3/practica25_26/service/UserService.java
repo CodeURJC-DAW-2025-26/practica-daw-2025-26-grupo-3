@@ -43,13 +43,13 @@ public class UserService {
         if (error != null)
             return error;
         error = notFilledFormCheck(newUser.getUserName(), newUser.getSurname(), newUser.getAddress(),
-                newUser.getEmail(), newUser.getEncodedPassword());
+                newUser.getEmail(), newUser.getPassword());
         if (error != null)
             return error;
         error = emailCheck(newUser.getEmail());
         if (error != null)
             return error;
-        error = passwordCheck(newUser.getEncodedPassword());
+        error = passwordCheck(newUser.getPassword());
         return error;
     }
 
@@ -202,7 +202,7 @@ public class UserService {
         String email = request.getUserPrincipal().getName();
         User currentUser = this.findUserByEmail(email);
 
-        if (!passwordEncoder.matches(password, currentUser.getEncodedPassword())) {
+        if (!passwordEncoder.matches(password, currentUser.getPassword())) {
             return new Error("¡Contraseña incorrecta!", "La contraseña introducida no es correcta.");
         }
         return null;

@@ -68,7 +68,7 @@ public class UserController {
                     "Volver al registro",
                     "/signup");
         } else {
-            String pass = newUser.getEncodedPassword();
+            String pass = newUser.getPassword();
             userService.addRoles(newUser, "USER");
             newUser.setPassword(passwordEncoder.encode(pass));
             userService.saveUser(newUser);
@@ -121,7 +121,7 @@ public class UserController {
         Error error = userService.userUpdateCheck(userName, surname, email, address, request);
 
         if (error != null) {
-            User failedUser = new User(userName, surname, address, email, currentUser.getEncodedPassword());
+            User failedUser = new User(userName, surname, address, email, currentUser.getPassword());
             session.setAttribute("user_failed_update", failedUser);
             return errorService.setErrorPageWithButton(model, session, error.getTitle(), error.getMessage(),
                     "Volver a edición de perfil", "/profile/edit");
