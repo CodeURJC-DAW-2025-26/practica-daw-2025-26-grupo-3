@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -218,6 +219,12 @@ public class UserService {
     }
 
     // OTHER METHODS
+
+    // These methods are used to editing user's info at edit form, on the web
+    // service of the server.
+    // Info and password are in separated methods because the forms are separated on
+    // the web service, so the
+    // user can be asked for enter the current password for changing it.
     public void updateUserInfo(User currentUser, String userName, String surname, String email, String address) {
         currentUser.setUserName(userName);
         currentUser.setSurname(surname);
@@ -227,6 +234,21 @@ public class UserService {
 
     public void updateUserPassword(User currentUser, String newPassword) {
         currentUser.setPassword(newPassword);
+    }
+
+    // This method is used to make a HTTP PUT request for updating user via API
+    // REST.
+    // We need to replace the entire object and return it, so we can't use the above
+    // mehtods.
+
+    public User replaceUser(long id, User updatedUser) {
+        if (userRepository.existsById(id)) {
+            updatedUser.setId(id);
+            this.saveUser(updatedUser);
+            return updatedUser;
+        } else {
+            throw new NoSuchElementException("User not found");
+        }
     }
 
     public User addImageToUser(long id, Image image) {
