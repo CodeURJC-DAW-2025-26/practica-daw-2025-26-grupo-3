@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     @Autowired
-    private final PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     UserRepository userRepository;
@@ -255,13 +255,13 @@ public class UserService {
         }
     }
 
-    public void deleteUserById(Long id, HttpServletRequest request) throws NullPointerException {
-        String email = request.getUserPrincipal().getName();
-        Optional<User> op = userRepository.findDistinctByEmail(email);
+    public User deleteUserById(Long id) throws NullPointerException {
+        Optional<User> op = userRepository.findById(id);
 
         if (op.isPresent()) {
             User user = op.get();
-            userRepository.deleteById(user.getId());
+            userRepository.deleteById(id);
+            return user;
         } else {
             throw new NullPointerException("User was not found");
         }
@@ -270,6 +270,10 @@ public class UserService {
     // Obtain list of users without admins
     public List<User> getUsersWithoutAdmins() {
         return userRepository.findUsersWithoutRole("ADMIN");
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     // Change user's state to unblocked (true)

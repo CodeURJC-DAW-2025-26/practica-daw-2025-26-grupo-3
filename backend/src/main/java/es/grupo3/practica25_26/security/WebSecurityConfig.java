@@ -42,6 +42,9 @@ public class WebSecurityConfig {
         http.authenticationProvider(authenticationProvider());
 
         http
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/api/**")
+                        .ignoringRequestMatchers("/images/**"))
                 .authorizeHttpRequests(authorize -> authorize
                         // PUBLIC PAGES
                         .requestMatchers("/").permitAll()
@@ -86,6 +89,9 @@ public class WebSecurityConfig {
                         .requestMatchers("/add_review/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/edit_product/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("ADMIN"))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/**").permitAll()
+                        .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception
                         .accessDeniedPage("/access_denied"))
                 .formLogin(formLogin -> formLogin
