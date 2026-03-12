@@ -1,5 +1,7 @@
 package es.grupo3.practica25_26.controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import es.grupo3.practica25_26.model.Product;
 import es.grupo3.practica25_26.model.Review;
+import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.model.Error;
 import es.grupo3.practica25_26.service.ErrorService;
 import es.grupo3.practica25_26.service.ProductService;
 import es.grupo3.practica25_26.service.ReviewService;
+import es.grupo3.practica25_26.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -27,6 +31,9 @@ public class ReviewController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private ErrorService errorService;
@@ -50,7 +57,17 @@ public class ReviewController {
         }
 
         Product product = op.get();
-        reviewService.saveReview(product, title, body, stars, request);
+
+        String email = request.getUserPrincipal().getName();
+        User currentUser = userService.findUserByEmail(email);
+
+        LocalDateTime localDate = java.time.LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
+        Review newReview = new Review(currentUser, title, body, localDate.format(formatter), stars,
+                currentUser.getImage().getId());
+        reviewService.saveReview(product, newReview);
+
         return "redirect:/product_detail/" + id;
     }
 

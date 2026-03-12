@@ -2,6 +2,7 @@ package es.grupo3.practica25_26.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -13,16 +14,12 @@ import es.grupo3.practica25_26.model.Error;
 import es.grupo3.practica25_26.model.Review;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.repository.ReviewRepository;
-import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class ReviewService {
 
     @Autowired
     private ReviewRepository reviewRepository;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private ProductService productService;
@@ -57,22 +54,15 @@ public class ReviewService {
         return null;
     }
 
-    public void saveReview(Product product, String title, String body, int stars, HttpServletRequest request) {
-        String email = request.getUserPrincipal().getName();
-        User currentUser = userService.findUserByEmail(email);
-
-        LocalDateTime localDate = java.time.LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+    public void saveReview(Product product, Review review) {
+        User currentUser = review.getUser();
 
         // This prevents null exception if the user doesn´t have a profile picture
         long imageId = 0L; // default value that indicates that the user doesnt have a profile picture
         if (currentUser.getImage() != null) {
-            // We get the id of the image if it exists
-            imageId = currentUser.getImage().getId();
+            review.setImageId(imageId); // We get the id of the image if it exists
         }
 
-        Review review = new Review(currentUser, title, body, localDate.format(formatter), stars,
-                imageId);
         product.getReviews().add(review);
         productService.save(product);
     }
@@ -97,7 +87,7 @@ public class ReviewService {
         if (op.isPresent()) {
             return op.get();
         } else {
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("Review " + id + " not found");
         }
     }
 
@@ -159,5 +149,31 @@ public class ReviewService {
             }
         }
         throw new NoSuchElementException("There is no review to delete.");
+    }
+
+    public Review deleteReviewNoAuth(long reviewId, long productId) {
+        Optional<Product> productOpt = productService.findById(productId);
+
+        if (productOpt.isPresent()) {
+            Product product = productOpt.get();
+
+            Review targetReview = null;
+            for (Review review : product.getReviews()) {
+                if (review.getId() == reviewId) {
+                    targetReview = review;
+                    break;
+                }
+            }
+
+            product.getReviews().remove(targetReview);
+            productService.save(product);
+
+            return targetReview;
+        }
+        throw new NoSuchElementException("There is no review to delete.");
+    }
+
+    public List<Review> findAllReviews() {
+        return reviewRepository.findAll();
     }
 }

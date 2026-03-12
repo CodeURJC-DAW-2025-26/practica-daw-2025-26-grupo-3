@@ -13,7 +13,7 @@ import es.grupo3.practica25_26.model.Review;
 public interface ReviewMapper {
     ReviewDTO toDTO(Review review);
 
-    List<Review> toDTOs(Collection<Review> reviews);
+    List<ReviewDTO> toDTOs(Collection<Review> reviews);
 
     Review toDomain(ReviewDTO reviewDTO);
 
