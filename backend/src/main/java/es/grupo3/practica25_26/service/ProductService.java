@@ -1,10 +1,12 @@
 package es.grupo3.practica25_26.service;
 
+import es.grupo3.practica25_26.repository.ReviewRepository;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import javax.sql.rowset.serial.SerialBlob;
@@ -28,6 +30,8 @@ import es.grupo3.practica25_26.model.Error;
 @Service
 public class ProductService {
 
+    private final ReviewRepository reviewRepository;
+
     @Autowired
     private ProductRepository productRepository;
 
@@ -39,6 +43,10 @@ public class ProductService {
 
     @Autowired
     private UserService userService;
+
+    ProductService(ReviewRepository reviewRepository) {
+        this.reviewRepository = reviewRepository;
+    }
 
     public void save(Product product) {
         productRepository.save(product);
@@ -401,37 +409,49 @@ public class ProductService {
         for (Product product : productRepository.findAll()) {
             for (Review review : product.getReviews()) {
                 if (review.getId() == reviewId) {
-                    
+
                     if (review.getUser().getEmail().equals(loggedInEmail) || isAdmin) {
                         return review;
                     }
-                    return null; 
+                    return null;
                 }
             }
         }
-        return null; 
+        return null;
     }
 
-    public Long updateReview(Long reviewId, String title, String body, Integer stars, String loggedInEmail, boolean isAdmin) {
-        
+    public Review findReviewById(long id) {
+        Optional<Review> op = reviewRepository.findById(id);
+
+        if (op.isPresent()) {
+            return op.get();
+        } else {
+            throw new NoSuchElementException();
+        }
+
+    }
+
+    public Long updateReview(Long reviewId, String title, String body, Integer stars, String loggedInEmail,
+            boolean isAdmin) {
+
         for (Product product : productRepository.findAll()) {
             for (Review review : product.getReviews()) {
-                //If we have found the review that we wanted to edit
+                // If we have found the review that we wanted to edit
                 if (review.getId() == reviewId) {
-                    
+
                     // if the user is an admin or the owner of the review
                     if (review.getUser().getEmail().equals(loggedInEmail) || isAdmin) {
                         review.setTitle(title);
                         review.setBody(body);
                         review.setStars(stars);
-                        
-                       
+
                         LocalDateTime localDate = java.time.LocalDateTime.now();
-                        DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+                        DateTimeFormatter formatter = java.time.format.DateTimeFormatter
+                                .ofPattern("dd/MM/yyyy HH:mm:ss");
                         review.setDate(localDate.format(formatter) + " (Editado)");
 
                         productRepository.save(product);
-                        return product.getId(); 
+                        return product.getId();
                     }
                 }
             }
@@ -440,13 +460,13 @@ public class ProductService {
     }
 
     public boolean deleteReview(long reviewId, long productId, String loggedInEmail, boolean isAdmin) {
-        
+
         Optional<Product> productOpt = productRepository.findById(productId);
-        
+
         if (productOpt.isPresent()) {
             Product product = productOpt.get();
-            
-            //We search for the review we want to delete
+
+            // We search for the review we want to delete
             Review targetReview = null;
             for (Review review : product.getReviews()) {
                 if (review.getId() == reviewId) {
@@ -454,20 +474,20 @@ public class ProductService {
                     break;
                 }
             }
-            
+
             // we verify if we can delete it
             if (targetReview != null) {
                 if (targetReview.getUser().getEmail().equals(loggedInEmail) || isAdmin) {
-                    
-                    // We remove the review from the list of reviews of the product and we delete it from ddbb
-                    product.getReviews().remove(targetReview); 
-                    productRepository.save(product); 
-                    
-                    return true; 
+
+                    // We remove the review from the list of reviews of the product and we delete it
+                    // from ddbb
+                    product.getReviews().remove(targetReview);
+                    productRepository.save(product);
+
+                    return true;
                 }
             }
         }
-        return false; 
+        return false;
     }
-
 }

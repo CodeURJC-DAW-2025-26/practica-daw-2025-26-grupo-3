@@ -42,10 +42,6 @@ public class UserRestController {
     @Autowired
     private UserService userService;
 
-    UserRestController(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
-
     @GetMapping("/")
     public Collection<UserBasicDTO> getAllUsers() {
         return basicMapper.toDTOs(userService.getAllUsers());
