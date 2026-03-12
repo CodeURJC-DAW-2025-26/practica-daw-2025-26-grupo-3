@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.grupo3.practica25_26.dto.ReviewDTO;
 import es.grupo3.practica25_26.mapper.ReviewMapper;
-import es.grupo3.practica25_26.service.ProductService;
+import es.grupo3.practica25_26.service.ReviewService;
 
 @RestController
 @RequestMapping("/api/v1/review")
@@ -18,10 +18,10 @@ public class ReviewRestController {
     private ReviewMapper mapper;
 
     @Autowired
-    private ProductService productService;
+    private ReviewService reviewService;
 
     @GetMapping("/{id}")
     public ReviewDTO getReviewById(@PathVariable long id) {
-        return mapper.toDTO(productService.findReviewById(id));
+        return mapper.toDTO(reviewService.findReviewById(id));
     }
 }
