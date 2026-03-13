@@ -1,8 +1,6 @@
 package es.grupo3.practica25_26.service;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,12 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.model.Product;
-import es.grupo3.practica25_26.model.Review;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.repository.CartItemRepository;
 import es.grupo3.practica25_26.repository.OrderItemRepository;
 import es.grupo3.practica25_26.repository.ProductRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import es.grupo3.practica25_26.model.Error;
 
 @Service
@@ -126,7 +122,6 @@ public class ProductService {
 
                 return true;
             }
-
         }
         return false;
     }
@@ -162,7 +157,6 @@ public class ProductService {
                             images.remove(i);
                         }
                     }
-
                 }
 
                 // Add the new images to the product if there are new images
@@ -342,133 +336,7 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
-    public void saveReview(Product product, String title, String body, int stars, HttpServletRequest request) {
-        String email = request.getUserPrincipal().getName();
-        User currentUser = userService.findUserByEmail(email);
-
-        LocalDateTime localDate = java.time.LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-
-        // This prevents null exception if the user doesn´t have a profile picture
-        long imageId = 0L; // default value that indicates that the user doesnt have a profile picture
-        if (currentUser.getImage() != null) {
-            // We get the id of the image if it exists
-            imageId = currentUser.getImage().getId();
-        }
-
-        Review review = new Review(currentUser, title, body, localDate.format(formatter), stars,
-                imageId);
-        product.getReviews().add(review);
-        this.save(product);
-    }
-
-    /**
-     * Validates review fields for creation. Returns Error if invalid, null if OK.
-     */
-    public Error reviewCreateCheck(String title, String body, Integer stars) {
-        if (title == null || title.trim().isEmpty()) {
-            return new Error("¡Título vacío!", "El título de la reseña no puede estar vacío.");
-        }
-        if (title.length() < 3 || title.length() > 100) {
-            return new Error("¡Longitud de título incorrecta!",
-                    "El título debe tener entre 3 y 100 caracteres. Has introducido " + title.length()
-                            + " caracteres.");
-        }
-        if (body == null || body.trim().isEmpty()) {
-            return new Error("¡Cuerpo vacío!", "El cuerpo de la reseña no puede estar vacío.");
-        }
-        if (body.length() < 10 || body.length() > 1000) {
-            return new Error("¡Longitud de cuerpo incorrecta!",
-                    "El cuerpo debe tener entre 10 y 1000 caracteres. Has introducido " + body.length()
-                            + " caracteres.");
-        }
-        if (stars == null) {
-            return new Error("¡Valoración vacía!", "Debes seleccionar una cantidad de estrellas.");
-        }
-        if (stars < 1 || stars > 5) {
-            return new Error("¡Cantidad de estrellas inválida!",
-                    "La cantidad de estrellas debe estar entre 1 y 5. Has introducido " + stars + ".");
-        }
-        return null;
-    }
-
     public long countTotalProducts() {
         return productRepository.count();
     }
-
-    public Review findReviewByIdAndCheckPermission(Long reviewId, String loggedInEmail, boolean isAdmin) {
-        for (Product product : productRepository.findAll()) {
-            for (Review review : product.getReviews()) {
-                if (review.getId() == reviewId) {
-
-                    if (review.getUser().getEmail().equals(loggedInEmail) || isAdmin) {
-                        return review;
-                    }
-                    return null;
-                }
-            }
-        }
-        return null;
-    }
-
-    public Long updateReview(Long reviewId, String title, String body, Integer stars, String loggedInEmail,
-            boolean isAdmin) {
-
-        for (Product product : productRepository.findAll()) {
-            for (Review review : product.getReviews()) {
-                // If we have found the review that we wanted to edit
-                if (review.getId() == reviewId) {
-
-                    // if the user is an admin or the owner of the review
-                    if (review.getUser().getEmail().equals(loggedInEmail) || isAdmin) {
-                        review.setTitle(title);
-                        review.setBody(body);
-                        review.setStars(stars);
-
-                        LocalDateTime localDate = java.time.LocalDateTime.now();
-                        DateTimeFormatter formatter = java.time.format.DateTimeFormatter
-                                .ofPattern("dd/MM/yyyy HH:mm:ss");
-                        review.setDate(localDate.format(formatter) + " (Editado)");
-
-                        productRepository.save(product);
-                        return product.getId();
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    public boolean deleteReview(long reviewId, long productId, String loggedInEmail, boolean isAdmin) {
-
-        Optional<Product> productOpt = productRepository.findById(productId);
-
-        if (productOpt.isPresent()) {
-            Product product = productOpt.get();
-
-            // We search for the review we want to delete
-            Review targetReview = null;
-            for (Review review : product.getReviews()) {
-                if (review.getId() == reviewId) {
-                    targetReview = review;
-                    break;
-                }
-            }
-
-            // we verify if we can delete it
-            if (targetReview != null) {
-                if (targetReview.getUser().getEmail().equals(loggedInEmail) || isAdmin) {
-
-                    // We remove the review from the list of reviews of the product and we delete it
-                    // from ddbb
-                    product.getReviews().remove(targetReview);
-                    productRepository.save(product);
-
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
 }

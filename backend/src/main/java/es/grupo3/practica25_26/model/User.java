@@ -131,12 +131,6 @@ public class User {
         return email;
     }
 
-    // We store the encoded password in the database, so this getter returns the
-    // encoded version.
-    public String getEncodedPassword() {
-        return password;
-    }
-
     public long getId() {
         return id;
     }

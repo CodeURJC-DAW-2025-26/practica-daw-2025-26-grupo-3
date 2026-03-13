@@ -37,7 +37,7 @@ public class RepositoryUserDetailsService implements UserDetailsService {
         // to block them, and to true when we want to unblock them. If we use the
         // constructor without the "enabled" field, all users
         return new org.springframework.security.core.userdetails.User(user.getEmail(),
-                user.getEncodedPassword(), user.getState(), true, true, true, roles);
+                user.getPassword(), user.getState(), true, true, true, roles);
 
     }
 }
