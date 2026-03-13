@@ -2,7 +2,6 @@ package es.grupo3.practica25_26.restcontroller;
 
 import java.util.Collection;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -76,11 +75,11 @@ public class ReviewRestController {
             throw new IllegalArgumentException("User email must be provided.");
         }
 
-        Optional<Product> op = productService.findById(productId);
+        Product product = productService.findById(productId);
         Product reviewProduct;
 
-        if (op.isPresent()) {
-            reviewProduct = op.get();
+        if (product != null) {
+            reviewProduct = product;
         } else {
             throw new NoSuchElementException("Product not found.");
         }

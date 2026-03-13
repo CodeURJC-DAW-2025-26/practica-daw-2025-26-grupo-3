@@ -121,11 +121,9 @@ public class ReviewService {
 
     public Review deleteReview(long reviewId, long productId, String loggedInEmail, boolean isAdmin) {
 
-        Optional<Product> productOpt = productService.findById(productId);
+        Product product = productService.findById(productId);
 
-        if (productOpt.isPresent()) {
-            Product product = productOpt.get();
-
+        if (product != null) {
             // We search for the review we want to delete
             Review targetReview = null;
             for (Review review : product.getReviews()) {
@@ -152,11 +150,9 @@ public class ReviewService {
     }
 
     public Review deleteReviewNoAuth(long reviewId, long productId) {
-        Optional<Product> productOpt = productService.findById(productId);
+        Product product = productService.findById(productId);
 
-        if (productOpt.isPresent()) {
-            Product product = productOpt.get();
-
+        if (product != null) {
             Review targetReview = null;
             for (Review review : product.getReviews()) {
                 if (review.getId() == reviewId) {

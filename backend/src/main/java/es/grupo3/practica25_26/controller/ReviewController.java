@@ -2,7 +2,6 @@ package es.grupo3.practica25_26.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,9 +41,9 @@ public class ReviewController {
     public String addReview(Model model, @PathVariable long id, @RequestParam String title,
             @RequestParam String body,
             @RequestParam(required = false) Integer stars, HttpServletRequest request) {
-        Optional<Product> op = productService.findById(id);
+        Product product = productService.findById(id);
 
-        if (!op.isPresent()) {
+        if (product == null) {
             return errorService.setErrorPageWithButton(model, null, "El producto no existe",
                     "Estás intentando publicar una reseña para un producto que no existe", "Volver al producto",
                     "/product_detail/" + id);
@@ -55,8 +54,6 @@ public class ReviewController {
             return errorService.setErrorPageWithButton(model, null, error.getTitle(), error.getMessage(), "Volver",
                     "/product_detail/" + id);
         }
-
-        Product product = op.get();
 
         String email = request.getUserPrincipal().getName();
         User currentUser = userService.findUserByEmail(email);
