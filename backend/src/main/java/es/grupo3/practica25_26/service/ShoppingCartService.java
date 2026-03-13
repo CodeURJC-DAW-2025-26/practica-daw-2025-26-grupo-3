@@ -30,7 +30,7 @@ public class ShoppingCartService {
     ProductService productService;
 
     public void saveProductToCart(long id, HttpServletRequest request) throws NullPointerException {
-        Optional<Product> opProduct = productService.findById(id);
+        Product product = productService.findById(id);
         String email = request.getUserPrincipal().getName();
         User user;
 
@@ -40,10 +40,9 @@ public class ShoppingCartService {
             throw new NullPointerException("User not found");
         }
 
-        if (!opProduct.isPresent()) {
+        if (product == null) {
             throw new NullPointerException("Product not found");
         } else {
-            Product product = opProduct.get();
             ShoppingCart cart;
 
             if (user.getShoppingCart() != null) {

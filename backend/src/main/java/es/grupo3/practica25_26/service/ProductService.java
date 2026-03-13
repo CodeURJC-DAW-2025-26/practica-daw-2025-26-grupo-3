@@ -60,9 +60,8 @@ public class ProductService {
         return productRepository.findTop8ByState(favourite);
     }
 
-    // optional because the product with the given id may not exist
-    public Optional<Product> findById(long id) {
-        return productRepository.findById(id);
+    public Product findById(long id) {
+        return productRepository.findById(id).orElse(null);
     }
 
     public void createNewProduct(Product product, List<MultipartFile> ProductImages, String loggedInEmail)
@@ -401,37 +400,38 @@ public class ProductService {
         for (Product product : productRepository.findAll()) {
             for (Review review : product.getReviews()) {
                 if (review.getId() == reviewId) {
-                    
+
                     if (review.getUser().getEmail().equals(loggedInEmail) || isAdmin) {
                         return review;
                     }
-                    return null; 
+                    return null;
                 }
             }
         }
-        return null; 
+        return null;
     }
 
-    public Long updateReview(Long reviewId, String title, String body, Integer stars, String loggedInEmail, boolean isAdmin) {
-        
+    public Long updateReview(Long reviewId, String title, String body, Integer stars, String loggedInEmail,
+            boolean isAdmin) {
+
         for (Product product : productRepository.findAll()) {
             for (Review review : product.getReviews()) {
-                //If we have found the review that we wanted to edit
+                // If we have found the review that we wanted to edit
                 if (review.getId() == reviewId) {
-                    
+
                     // if the user is an admin or the owner of the review
                     if (review.getUser().getEmail().equals(loggedInEmail) || isAdmin) {
                         review.setTitle(title);
                         review.setBody(body);
                         review.setStars(stars);
-                        
-                       
+
                         LocalDateTime localDate = java.time.LocalDateTime.now();
-                        DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+                        DateTimeFormatter formatter = java.time.format.DateTimeFormatter
+                                .ofPattern("dd/MM/yyyy HH:mm:ss");
                         review.setDate(localDate.format(formatter) + " (Editado)");
 
                         productRepository.save(product);
-                        return product.getId(); 
+                        return product.getId();
                     }
                 }
             }
@@ -440,13 +440,13 @@ public class ProductService {
     }
 
     public boolean deleteReview(long reviewId, long productId, String loggedInEmail, boolean isAdmin) {
-        
+
         Optional<Product> productOpt = productRepository.findById(productId);
-        
+
         if (productOpt.isPresent()) {
             Product product = productOpt.get();
-            
-            //We search for the review we want to delete
+
+            // We search for the review we want to delete
             Review targetReview = null;
             for (Review review : product.getReviews()) {
                 if (review.getId() == reviewId) {
@@ -454,20 +454,21 @@ public class ProductService {
                     break;
                 }
             }
-            
+
             // we verify if we can delete it
             if (targetReview != null) {
                 if (targetReview.getUser().getEmail().equals(loggedInEmail) || isAdmin) {
-                    
-                    // We remove the review from the list of reviews of the product and we delete it from ddbb
-                    product.getReviews().remove(targetReview); 
-                    productRepository.save(product); 
-                    
-                    return true; 
+
+                    // We remove the review from the list of reviews of the product and we delete it
+                    // from ddbb
+                    product.getReviews().remove(targetReview);
+                    productRepository.save(product);
+
+                    return true;
                 }
             }
         }
-        return false; 
+        return false;
     }
 
 }

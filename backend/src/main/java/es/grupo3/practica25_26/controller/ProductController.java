@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,10 +48,9 @@ public class ProductController {
     @GetMapping("/product_detail/{id}")
     public String productDetail(Model model, @PathVariable Long id, HttpServletRequest request) {
 
-        Optional<Product> productOptional = productService.findById(id);
+        Product product = productService.findById(id);
 
-        if (productOptional.isPresent()) {
-            Product product = productOptional.get();
+        if (product != null) {
             model.addAttribute("product", product);
 
             boolean canModifyProduct = false;
@@ -108,11 +106,10 @@ public class ProductController {
     @GetMapping("/edit_product/{id}")
     public String editProduct(Model model, @PathVariable Long id, HttpServletRequest request, HttpSession session) {
 
-        Optional<Product> productOpt = productService.findById(id);
+        Product product = productService.findById(id);
 
-        if (productOpt.isPresent() && request.getUserPrincipal() != null) {
+        if (product != null && request.getUserPrincipal() != null) {
 
-            Product product = productOpt.get();
             String loggedInEmail = request.getUserPrincipal().getName();
 
             // Comprobation if the user is an admin
@@ -143,11 +140,9 @@ public class ProductController {
             @RequestParam(value = "productimages", required = false) List<MultipartFile> newImages,
             HttpServletRequest request, HttpSession session) {
 
-        Optional<Product> actualProductOpt = productService.findById(id);
+        Product existingProduct = productService.findById(id);
 
-        if (actualProductOpt.isPresent() && request.getUserPrincipal() != null) {
-
-            Product existingProduct = actualProductOpt.get();
+        if (existingProduct != null && request.getUserPrincipal() != null) {
 
             // We validate all the attributes of the edited product
             Error validationError = productService.productUpdateCheck(productForm, existingProduct, removeImages,
@@ -260,9 +255,9 @@ public class ProductController {
     public String addReview(Model model, @PathVariable long id, @RequestParam String title,
             @RequestParam String body,
             @RequestParam(required = false) Integer stars, HttpServletRequest request) {
-        Optional<Product> op = productService.findById(id);
+        Product product = productService.findById(id);
 
-        if (!op.isPresent()) {
+        if (product == null) {
             return errorService.setErrorPageWithButton(model, null, "El producto no existe",
                     "Estás intentando publicar una reseña para un producto que no existe", "Volver al producto",
                     "/product_detail/" + id);
@@ -274,7 +269,6 @@ public class ProductController {
                     "/product_detail/" + id);
         }
 
-        Product product = op.get();
         productService.saveReview(product, title, body, stars, request);
         return "redirect:/product_detail/" + id;
     }

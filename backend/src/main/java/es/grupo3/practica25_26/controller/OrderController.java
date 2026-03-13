@@ -54,9 +54,9 @@ public class OrderController {
     // Handles adding a product to the user's shopping cart
     @PostMapping("/cart/add/{id}")
     public String addProductToCart(Model model, @PathVariable("id") long productId, HttpServletRequest request) {
-        Optional<Product> op = productService.findById(productId);
+        Product product = productService.findById(productId);
 
-        if (op.isPresent()) {
+        if (product != null) {
             shoppingCartService.saveProductToCart(productId, request);
         } else {
             return errorService.setErrorPageWithButton(model, null, "Producto no encontrado",
@@ -185,6 +185,7 @@ public class OrderController {
 
         return new ResponseEntity<>(pdfContents, headers, org.springframework.http.HttpStatus.OK);
     }
+
     // Fetches and displays a list of orders that are either pending or revised for
     // admin review
     @GetMapping("/orders_list")
