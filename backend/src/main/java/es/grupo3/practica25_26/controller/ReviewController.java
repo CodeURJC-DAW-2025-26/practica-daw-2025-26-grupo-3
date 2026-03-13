@@ -111,12 +111,13 @@ public class ReviewController {
         }
 
         String loggedInEmail = request.getUserPrincipal().getName();
-        boolean isAdmin = request.isUserInRole("ADMIN");
-        // We save the changes
-        Long productId = reviewService.updateReview(reviewId, title, body, stars, loggedInEmail, isAdmin);
+        User currentUser = userService.findUserByEmail(loggedInEmail);
+
+        Long productId = reviewService.updateReview( // We save the changes
+                new Review(currentUser, title, body, null, stars, currentUser.getImage().getId()), loggedInEmail);
 
         if (productId != null) {
-            return "redirect:/product_detail/" + productId; // Volvemos al producto
+            return "redirect:/product_detail/" + productId; // We return to product
         } else {
             return errorService.setErrorPageWithButton(model, session, "Error",
                     "No se pudo actualizar la reseña.", "Volver al inicio", "/");

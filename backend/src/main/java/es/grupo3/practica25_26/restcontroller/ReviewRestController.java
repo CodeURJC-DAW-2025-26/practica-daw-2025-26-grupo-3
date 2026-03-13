@@ -38,12 +38,12 @@ public class ReviewRestController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/review")
+    @GetMapping("/all/review/")
     public Collection<ReviewDTO> getAllReviews() {
         return mapper.toDTOs(reviewService.findAllReviews());
     }
 
-    @GetMapping("/review/{id}")
+    @GetMapping("/all/review/{id}")
     public ReviewDTO getReviewById(@PathVariable long id) {
         return mapper.toDTO(reviewService.findReviewById(id));
     }
@@ -53,7 +53,7 @@ public class ReviewRestController {
         return mapper.toDTO(reviewService.deleteReviewNoAuth(reviewID, productID));
     }
 
-    @PostMapping("/{productId}/review")
+    @PostMapping("/{productId}/review/")
     public ReviewDTO createReview(@PathVariable long productId, @RequestBody ReviewPostDTO reviewDTO) {
 
         Review newReview = new Review();
@@ -87,4 +87,15 @@ public class ReviewRestController {
         reviewService.saveReview(reviewProduct, newReview);
         return mapper.toDTO(newReview);
     }
+
+    /**
+     * 
+     * @PutMapping("/{productId}/review/{reviewId}")
+     * public ReviewDTO updateReview(@PathVariable long productId, @PathVariable
+     * long reviewId, @RequestBody Review updatedReview){
+     * long productId = reviewService.updateReview(updatedReview, null)
+     * }
+     * 
+     */
+
 }

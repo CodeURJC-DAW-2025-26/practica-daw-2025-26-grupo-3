@@ -91,19 +91,21 @@ public class ReviewService {
         }
     }
 
-    public Long updateReview(Long reviewId, String title, String body, Integer stars, String loggedInEmail,
-            boolean isAdmin) {
+    // This method updates a review for the web service of the app
+    // Due to previous design, this method has to return productID:
+    public Long updateReview(Review updatedReview, String loggedInEmail) {
 
         for (Product product : productService.findAll()) {
             for (Review review : product.getReviews()) {
                 // If we have found the review that we wanted to edit
-                if (review.getId() == reviewId) {
+                if (review.getId() == updatedReview.getId()) {
 
                     // if the user is an admin or the owner of the review
-                    if (review.getUser().getEmail().equals(loggedInEmail) || isAdmin) {
-                        review.setTitle(title);
-                        review.setBody(body);
-                        review.setStars(stars);
+                    if (review.getUser().getEmail().equals(loggedInEmail)
+                            || updatedReview.getUser().getRoles().indexOf("ADMIN") != -1) {
+                        review.setTitle(updatedReview.getTitle());
+                        review.setBody(updatedReview.getBody());
+                        review.setStars(updatedReview.getStars());
 
                         LocalDateTime localDate = java.time.LocalDateTime.now();
                         DateTimeFormatter formatter = java.time.format.DateTimeFormatter

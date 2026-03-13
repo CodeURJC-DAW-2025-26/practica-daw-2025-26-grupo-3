@@ -43,7 +43,6 @@ public class WebSecurityConfig {
 
         http
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/api/**")
                         .ignoringRequestMatchers("/images/**"))
                 .authorizeHttpRequests(authorize -> authorize
                         // PUBLIC PAGES
@@ -90,7 +89,6 @@ public class WebSecurityConfig {
                         .requestMatchers("/edit_product/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("ADMIN"))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/**").permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception
                         .accessDeniedPage("/access_denied"))
