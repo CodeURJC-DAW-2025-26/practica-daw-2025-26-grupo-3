@@ -49,7 +49,7 @@ public class RestSecurityConfig {
                 .securityMatcher("/api/**")
                 .exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt));
 
-        http.authenticationProvider(authenticationProvider());
+        http.authenticationProvider(restAuthenticationProvider());
 
         http.exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt));
 
@@ -76,9 +76,6 @@ public class RestSecurityConfig {
         // Stateless Session
         http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.addFilterBefore(new JwtRequestFilter(userDetailsService, jwtTokenProvider),
-                UsernamePasswordAuthenticationFilter.class);
-
         // Add JWT Token filter
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -86,7 +83,7 @@ public class RestSecurityConfig {
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
+    public DaoAuthenticationProvider restAuthenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;
