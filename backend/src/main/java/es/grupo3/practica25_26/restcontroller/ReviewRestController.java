@@ -21,6 +21,7 @@ import es.grupo3.practica25_26.model.Product;
 import es.grupo3.practica25_26.service.ProductService;
 import es.grupo3.practica25_26.service.ReviewService;
 import es.grupo3.practica25_26.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/v1/product")
@@ -49,8 +50,13 @@ public class ReviewRestController {
     }
 
     @DeleteMapping("/{productID}/review/{reviewID}")
-    public ReviewDTO deleteReviewById(@PathVariable long productID, @PathVariable long reviewID) {
-        return mapper.toDTO(reviewService.deleteReviewNoAuth(reviewID, productID));
+    public ReviewDTO deleteReviewById(@PathVariable long productID, @PathVariable long reviewID,
+            HttpServletRequest request) {
+        String currentUserEmail = request.getUserPrincipal().getName();
+        User currentUser = userService.findUserByEmail(currentUserEmail);
+
+        return mapper.toDTO(reviewService.deleteReview(reviewID, productID, currentUserEmail,
+                currentUser.getRoles().indexOf("ADMIN") != -1));
     }
 
     @PostMapping("/{productId}/review/")

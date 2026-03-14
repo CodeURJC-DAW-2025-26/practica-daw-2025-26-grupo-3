@@ -7,7 +7,9 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import es.grupo3.practica25_26.model.Product;
 import es.grupo3.practica25_26.model.Error;
@@ -136,40 +138,27 @@ public class ReviewService {
                 }
             }
 
+            if (targetReview == null) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Review " + reviewId + " not found");
+            }
+
             // we verify if we can delete it
             if (targetReview != null) {
-                if (targetReview.getUser().getEmail().equals(loggedInEmail) || isAdmin) {
-
-                    // We remove the review from the list of reviews of the product and we delete it
-                    // from ddbb
-                    product.getReviews().remove(targetReview);
-                    productService.save(product);
-
-                    return targetReview;
-                }
-            }
-        }
-        throw new NoSuchElementException("There is no review to delete.");
-    }
-
-    public Review deleteReviewNoAuth(long reviewId, long productId) {
-        Product product = productService.findById(productId);
-
-        if (product != null) {
-            Review targetReview = null;
-            for (Review review : product.getReviews()) {
-                if (review.getId() == reviewId) {
-                    targetReview = review;
-                    break;
+                if (!targetReview.getUser().getEmail().equals(loggedInEmail) || isAdmin) {
+                    throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                            "You can't delete the review " + reviewId + " because you are not the owner.");
                 }
             }
 
+            // We remove the review from the list of reviews of the product and we delete it
+            // from ddbb
             product.getReviews().remove(targetReview);
             productService.save(product);
 
             return targetReview;
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Review " + reviewId + " not found");
         }
-        throw new NoSuchElementException("There is no review to delete.");
     }
 
     public List<Review> findAllReviews() {

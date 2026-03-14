@@ -52,6 +52,7 @@ public class RestSecurityConfig {
         http.authorizeHttpRequests(authorize -> authorize
                 // PRIVATE API REST URLS
                 .requestMatchers(HttpMethod.POST, "/api/v1/user/").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/**").hasAnyRole("USER", "ADMIN")

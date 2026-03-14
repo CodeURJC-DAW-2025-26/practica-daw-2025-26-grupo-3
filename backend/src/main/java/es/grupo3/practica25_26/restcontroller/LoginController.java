@@ -1,4 +1,4 @@
-package es.grupo3.practica25_26.controller;
+package es.grupo3.practica25_26.restcontroller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,26 +16,26 @@ import es.grupo3.practica25_26.security.jwt.LoginRequest;
 import es.grupo3.practica25_26.security.jwt.UserLoginService;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/v1/auth")
 public class LoginController {
     @Autowired
-    private UserLoginService userService;
+    private UserLoginService userLoginService;
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(
             @RequestBody LoginRequest loginRequest,
             HttpServletResponse response) {
-        return userService.login(response, loginRequest);
+        return userLoginService.login(response, loginRequest);
     }
 
     @PostMapping("/refresh")
     public ResponseEntity<AuthResponse> refreshToken(
             @CookieValue(name = "RefreshToken", required = false) String refreshToken, HttpServletResponse response) {
-        return userService.refresh(response, refreshToken);
+        return userLoginService.refresh(response, refreshToken);
     }
 
     @PostMapping("/logout")
     public ResponseEntity<AuthResponse> logOut(HttpServletResponse response) {
-        return ResponseEntity.ok(new AuthResponse(Status.SUCCESS, userService.logout(response)));
+        return ResponseEntity.ok(new AuthResponse(Status.SUCCESS, userLoginService.logout(response)));
     }
 }
