@@ -61,8 +61,13 @@ public class ReviewController {
         LocalDateTime localDate = java.time.LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
+        long userImageId = -1;
+        if (currentUser.getImage() != null) {
+            userImageId = currentUser.getImage().getId();
+        }
+
         Review newReview = new Review(currentUser, title, body, localDate.format(formatter), stars,
-                currentUser.getImage().getId());
+                userImageId);
         reviewService.saveReview(product, newReview);
 
         return "redirect:/product_detail/" + id;

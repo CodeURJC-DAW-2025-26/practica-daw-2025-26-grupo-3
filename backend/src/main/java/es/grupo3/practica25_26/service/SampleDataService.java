@@ -54,7 +54,11 @@ public class SampleDataService {
                                         "carlos@example.com", "demo1234", true);
 
                         if (adminUser.getImage() == null) {
-                                // addImageToUser(adminUser, "static/images/profile.png");
+                                addImageToUser(adminUser, "static/images/commentor-item3.jpg");
+                        }
+
+                        if (exampleUser1.getImage() == null) {
+                                addImageToUser(exampleUser1, "static/images/commentor-item2.jpg");
                         }
 
                         if (exampleUser2.getImage() == null) {

@@ -29,13 +29,10 @@ public class RestSecurityConfig {
     JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    private JwtRequestFilter jwtRequestFilter;
+    UnauthorizedHandlerJwt unauthorizedHandlerJwt;
 
     @Autowired
     PasswordEncoder passwordEncoder;
-
-    @Autowired
-    UnauthorizedHandlerJwt unauthorizedHandlerJwt;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
@@ -45,13 +42,12 @@ public class RestSecurityConfig {
     @Bean
     public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
 
+        http.securityMatcher("/api/**");
+
         http
-                .securityMatcher("/api/**")
                 .exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt));
 
         http.authenticationProvider(restAuthenticationProvider());
-
-        http.exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt));
 
         http.authorizeHttpRequests(authorize -> authorize
                 // PRIVATE API REST URLS
@@ -77,7 +73,8 @@ public class RestSecurityConfig {
         http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // Add JWT Token filter
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtRequestFilter(userDetailsService, jwtTokenProvider),
+                UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

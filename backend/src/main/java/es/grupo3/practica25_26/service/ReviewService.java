@@ -58,10 +58,11 @@ public class ReviewService {
         User currentUser = review.getUser();
 
         // This prevents null exception if the user doesn´t have a profile picture
-        long imageId = 0L; // default value that indicates that the user doesnt have a profile picture
+        long imageId = -1L; // default value that indicates that the user doesnt have a profile picture
         if (currentUser.getImage() != null) {
-            review.setImageId(imageId); // We get the id of the image if it exists
+            imageId = currentUser.getImage().getId();
         }
+        review.setImageId(imageId);
 
         product.getReviews().add(review);
         productService.save(product);
