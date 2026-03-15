@@ -118,8 +118,16 @@ public class ReviewController {
         String loggedInEmail = request.getUserPrincipal().getName();
         User currentUser = userService.findUserByEmail(loggedInEmail);
 
-        Long productId = reviewService.updateReview( // We save the changes
-                new Review(currentUser, title, body, null, stars, currentUser.getImage().getId()), loggedInEmail);
+        long userImageId = -1;
+        if (currentUser.getImage() != null) {
+            userImageId = currentUser.getImage().getId();
+        }
+
+        // We need to set the reviewId so the service can find the review to update
+        Review reviewToUpdate = new Review(currentUser, title, body, null, stars, userImageId);
+        reviewToUpdate.setId(reviewId);
+
+        Long productId = reviewService.updateReview(reviewToUpdate, loggedInEmail);
 
         if (productId != null) {
             return "redirect:/product_detail/" + productId; // We return to product

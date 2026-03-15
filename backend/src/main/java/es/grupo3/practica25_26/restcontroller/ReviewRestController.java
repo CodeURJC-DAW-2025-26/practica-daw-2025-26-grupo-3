@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import es.grupo3.practica25_26.dto.ReviewPostDTO;
 import es.grupo3.practica25_26.dto.ReviewDTO;
 import es.grupo3.practica25_26.mapper.ReviewMapper;
+import es.grupo3.practica25_26.mapper.ReviewPostMapper;
 import es.grupo3.practica25_26.model.Review;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.model.Product;
@@ -29,6 +31,9 @@ public class ReviewRestController {
 
     @Autowired
     private ReviewMapper mapper;
+
+    @Autowired
+    private ReviewPostMapper postMapper;
 
     @Autowired
     private ReviewService reviewService;
@@ -60,16 +65,12 @@ public class ReviewRestController {
     }
 
     @PostMapping("/{productId}/review/")
-    public ReviewDTO createReview(@PathVariable long productId, @RequestBody ReviewPostDTO reviewDTO) {
-
-        Review newReview = new Review();
-        newReview.setTitle(reviewDTO.title());
-        newReview.setBody(reviewDTO.body());
-        newReview.setStars(reviewDTO.stars());
-        newReview.setDate(reviewDTO.date());
+    public ReviewDTO createReview(@PathVariable long productId, @RequestBody ReviewPostDTO reviewDTO,
+            HttpServletRequest request) {
+        Review newReview = postMapper.toDomain(reviewDTO);
 
         // Find existing user by email
-        String email = reviewDTO.userEmail();
+        String email = request.getUserPrincipal().getName();
         if (email != null) {
             User existingUser = userService.findUserByEmail(email);
             if (existingUser != null) {
@@ -94,14 +95,18 @@ public class ReviewRestController {
         return mapper.toDTO(newReview);
     }
 
-    /**
-     * 
-     * @PutMapping("/{productId}/review/{reviewId}")
-     * public ReviewDTO updateReview(@PathVariable long productId, @PathVariable
-     * long reviewId, @RequestBody Review updatedReview){
-     * long productId = reviewService.updateReview(updatedReview, null)
-     * }
-     * 
-     */
+    @PutMapping("/{productId}/review/{reviewId}")
+    public ReviewDTO updateReview(@PathVariable long productId, @PathVariable long reviewId,
+            @RequestBody ReviewPostDTO updatedReviewDTO, HttpServletRequest request) {
+        Review updatedReview = postMapper.toDomain(updatedReviewDTO);
 
+        String currentUserEmail = request.getUserPrincipal().getName();
+        User currentUser = userService.findUserByEmail(currentUserEmail);
+
+        updatedReview.setId(reviewId);
+        updatedReview.setUser(currentUser);
+
+        reviewService.updateReview(updatedReview, currentUserEmail);
+        return mapper.toDTO(updatedReview);
+    }
 }
