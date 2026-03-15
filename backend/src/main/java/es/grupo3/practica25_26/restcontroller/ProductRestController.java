@@ -39,5 +39,4 @@ public class ProductRestController {
         }
         return mapper.toDTO(product);
     }
-
 }

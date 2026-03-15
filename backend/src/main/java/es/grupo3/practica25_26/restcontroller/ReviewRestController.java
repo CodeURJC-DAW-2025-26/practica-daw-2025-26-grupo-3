@@ -1,9 +1,11 @@
 package es.grupo3.practica25_26.restcontroller;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +26,7 @@ import es.grupo3.practica25_26.service.ProductService;
 import es.grupo3.practica25_26.service.ReviewService;
 import es.grupo3.practica25_26.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -55,17 +58,20 @@ public class ReviewRestController {
     }
 
     @DeleteMapping("/{productID}/reviews/{reviewID}")
-    public ReviewDTO deleteReviewById(@PathVariable long productID, @PathVariable long reviewID,
+    public ResponseEntity<ReviewDTO> deleteReviewById(@PathVariable long productID, @PathVariable long reviewID,
             HttpServletRequest request) {
         String currentUserEmail = request.getUserPrincipal().getName();
         User currentUser = userService.findUserByEmail(currentUserEmail);
 
-        return mapper.toDTO(reviewService.deleteReview(reviewID, productID, currentUserEmail,
-                currentUser.getRoles().indexOf("ADMIN") != -1));
+        ResponseEntity<ReviewDTO> response = ResponseEntity
+                .ok(mapper.toDTO(reviewService.deleteReview(reviewID, productID, currentUserEmail,
+                        currentUser.getRoles().indexOf("ADMIN") != -1)));
+
+        return response;
     }
 
     @PostMapping("/{productId}/reviews/")
-    public ReviewDTO createReview(@PathVariable long productId, @RequestBody ReviewPostDTO reviewDTO,
+    public ResponseEntity<ReviewDTO> createReview(@PathVariable long productId, @RequestBody ReviewPostDTO reviewDTO,
             HttpServletRequest request) {
         Review newReview = postMapper.toDomain(reviewDTO);
 
@@ -92,11 +98,13 @@ public class ReviewRestController {
         }
 
         reviewService.saveReview(reviewProduct, newReview);
-        return mapper.toDTO(newReview);
+
+        URI location = fromCurrentRequest().path("/{reviewId}").buildAndExpand(newReview.getId()).toUri();
+        return ResponseEntity.created(location).body(mapper.toDTO(newReview));
     }
 
     @PutMapping("/{productId}/reviews/{reviewId}")
-    public ReviewDTO updateReview(@PathVariable long productId, @PathVariable long reviewId,
+    public ResponseEntity<ReviewDTO> updateReview(@PathVariable long productId, @PathVariable long reviewId,
             @RequestBody ReviewPostDTO updatedReviewDTO, HttpServletRequest request) {
         Review updatedReview = postMapper.toDomain(updatedReviewDTO);
 
@@ -107,6 +115,6 @@ public class ReviewRestController {
         updatedReview.setUser(currentUser);
 
         reviewService.updateReview(updatedReview, currentUserEmail);
-        return mapper.toDTO(updatedReview);
+        return ResponseEntity.ok(mapper.toDTO(updatedReview));
     }
 }
