@@ -27,7 +27,7 @@ import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.UserService;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/users")
 public class UserRestController {
 
     @Autowired

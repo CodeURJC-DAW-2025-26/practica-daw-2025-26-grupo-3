@@ -26,7 +26,7 @@ import es.grupo3.practica25_26.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/api/v1/product")
+@RequestMapping("/api/v1/products")
 public class ReviewRestController {
 
     @Autowired
@@ -44,17 +44,17 @@ public class ReviewRestController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/all/review/")
+    @GetMapping("/all/reviews/")
     public Collection<ReviewDTO> getAllReviews() {
         return mapper.toDTOs(reviewService.findAllReviews());
     }
 
-    @GetMapping("/all/review/{id}")
+    @GetMapping("/all/reviews/{id}")
     public ReviewDTO getReviewById(@PathVariable long id) {
         return mapper.toDTO(reviewService.findReviewById(id));
     }
 
-    @DeleteMapping("/{productID}/review/{reviewID}")
+    @DeleteMapping("/{productID}/reviews/{reviewID}")
     public ReviewDTO deleteReviewById(@PathVariable long productID, @PathVariable long reviewID,
             HttpServletRequest request) {
         String currentUserEmail = request.getUserPrincipal().getName();
@@ -64,7 +64,7 @@ public class ReviewRestController {
                 currentUser.getRoles().indexOf("ADMIN") != -1));
     }
 
-    @PostMapping("/{productId}/review/")
+    @PostMapping("/{productId}/reviews/")
     public ReviewDTO createReview(@PathVariable long productId, @RequestBody ReviewPostDTO reviewDTO,
             HttpServletRequest request) {
         Review newReview = postMapper.toDomain(reviewDTO);
@@ -95,7 +95,7 @@ public class ReviewRestController {
         return mapper.toDTO(newReview);
     }
 
-    @PutMapping("/{productId}/review/{reviewId}")
+    @PutMapping("/{productId}/reviews/{reviewId}")
     public ReviewDTO updateReview(@PathVariable long productId, @PathVariable long reviewId,
             @RequestBody ReviewPostDTO updatedReviewDTO, HttpServletRequest request) {
         Review updatedReview = postMapper.toDomain(updatedReviewDTO);

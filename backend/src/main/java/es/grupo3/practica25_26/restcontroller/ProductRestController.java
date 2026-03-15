@@ -17,7 +17,7 @@ import es.grupo3.practica25_26.model.Product;
 import es.grupo3.practica25_26.service.ProductService;
 
 @RestController
-@RequestMapping("/api/v1/product")
+@RequestMapping("/api/v1/products")
 public class ProductRestController {
 
     @Autowired
