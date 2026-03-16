@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -243,13 +242,23 @@ public class UserService {
     // We need to replace the entire object and return it, so we can't use the above
     // mehtods.
 
-    public User replaceUser(long id, User updatedUser) {
+    public User replaceUser(long id, User updatedUser, String loggedInEmail) {
+        User loggedUser = this.findUserByEmail(loggedInEmail);
         if (userRepository.existsById(id)) {
-            updatedUser.setId(id);
-            this.saveUser(updatedUser);
-            return updatedUser;
+            if (id == loggedUser.getId()) {
+                updatedUser.setId(id);
+                this.saveUser(updatedUser);
+                return updatedUser;
+            } else {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                        "You can't delete the user " + id +
+                                " because you are not the user account owner.");
+            }
+
         } else {
-            throw new NoSuchElementException("User not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "You can't update the user " + id +
+                            " because you are not the user account owner.");
         }
     }
 

@@ -80,7 +80,8 @@ public class UserRestController {
     }
 
     @PutMapping("/{id}")
-    public UserBasicDTO updateUser(@PathVariable long id, @RequestBody UserPostDTO updatedUserDTO) {
+    public UserBasicDTO updateUser(@PathVariable long id, @RequestBody UserPostDTO updatedUserDTO,
+            HttpServletRequest request) {
         User updatedUser = postMapper.toDomain(updatedUserDTO);
 
         List<String> userRoles = new ArrayList<>();
@@ -89,6 +90,6 @@ public class UserRestController {
 
         updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
 
-        return basicMapper.toDTO(userService.replaceUser(id, updatedUser));
+        return basicMapper.toDTO(userService.replaceUser(id, updatedUser, request.getUserPrincipal().getName()));
     }
 }
