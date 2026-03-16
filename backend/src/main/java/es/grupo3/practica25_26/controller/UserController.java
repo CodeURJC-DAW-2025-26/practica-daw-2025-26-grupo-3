@@ -172,7 +172,7 @@ public class UserController {
 
         String email = request.getUserPrincipal().getName();
         User currentUser = userService.findUserByEmail(email);
-        userService.deleteUserById(currentUser.getId());
+        userService.deleteUserById(currentUser.getId(), email);
 
         // We force user logout manually to avoid problems with erased user in database
         try {

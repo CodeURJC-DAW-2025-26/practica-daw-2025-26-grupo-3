@@ -14,8 +14,10 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 //import jakarta.servlet.http.HttpSession;
 
@@ -277,15 +279,22 @@ public class UserService {
         }
     }
 
-    public User deleteUserById(Long id) throws NullPointerException {
-        Optional<User> op = userRepository.findById(id);
+    public User deleteUserById(Long id, String loggedInEmail) throws NullPointerException {
+        User loggedUser = this.findUserByEmail(loggedInEmail);
 
-        if (op.isPresent()) {
-            User user = op.get();
-            userRepository.deleteById(id);
-            return user;
+        if (userRepository.existsById(id)) {
+            User targetUser = this.findUserById(id);
+            if (targetUser.getId() == loggedUser.getId()) {
+                userRepository.deleteById(id);
+                return targetUser;
+            } else {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                        "You can't delete the user " + id +
+                                " because you are not the user account owner.");
+            }
         } else {
-            throw new NullPointerException("User was not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "User " + id + " not found.");
         }
     }
 

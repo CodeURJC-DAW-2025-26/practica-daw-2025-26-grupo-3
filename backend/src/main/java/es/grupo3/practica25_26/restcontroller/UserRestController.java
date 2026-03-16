@@ -25,6 +25,7 @@ import es.grupo3.practica25_26.mapper.UserBasicMapper;
 import es.grupo3.practica25_26.mapper.UserPostMapper;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -57,8 +58,8 @@ public class UserRestController {
     }
 
     @DeleteMapping("/{id}")
-    public UserBasicDTO deleteUserById(@PathVariable long id) {
-        User user = userService.deleteUserById(id);
+    public UserBasicDTO deleteUserById(@PathVariable long id, HttpServletRequest request) {
+        User user = userService.deleteUserById(id, request.getUserPrincipal().getName());
         return basicMapper.toDTO(user);
     }
 
