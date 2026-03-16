@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 import es.grupo3.practica25_26.dto.UserBasicDTO;
@@ -24,6 +26,7 @@ import es.grupo3.practica25_26.dto.UserPostDTO;
 import es.grupo3.practica25_26.mapper.UserBasicMapper;
 import es.grupo3.practica25_26.mapper.UserPostMapper;
 import es.grupo3.practica25_26.model.User;
+import es.grupo3.practica25_26.model.Error;
 import es.grupo3.practica25_26.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -66,12 +69,19 @@ public class UserRestController {
     @PostMapping("/")
     public ResponseEntity<UserBasicDTO> createUser(@RequestBody UserPostDTO newUserDTO) {
         User newUser = postMapper.toDomain(newUserDTO);
-        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        newUser.setState(true);
 
         List<String> userRoles = new ArrayList<>();
         userRoles.add("USER");
         newUser.setRoles(userRoles);
 
+        Error error = userService.userRegisterCheck(newUser);
+        if (error != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "There are errors in your user creation request: " + error.getTitle() + " " + error.getMessage());
+        }
+
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         userService.saveUser(newUser);
 
         UserBasicDTO responseDTO = basicMapper.toDTO(newUser);
@@ -87,6 +97,12 @@ public class UserRestController {
         List<String> userRoles = new ArrayList<>();
         userRoles.add("USER");
         updatedUser.setRoles(userRoles);
+
+        Error error = userService.userUpdateApiCheck(updatedUserDTO, request);
+        if (error != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "There are errors in your user update request: " + error.getTitle() + " " + error.getMessage());
+        }
 
         updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
 

@@ -49,7 +49,7 @@ public class ReviewController {
                     "/product_detail/" + id);
         }
 
-        Error error = reviewService.reviewCreateCheck(title, body, stars);
+        Error error = reviewService.reviewCheck(title, body, stars);
         if (error != null) {
             return errorService.setErrorPageWithButton(model, null, error.getTitle(), error.getMessage(), "Volver",
                     "/product_detail/" + id);
@@ -107,7 +107,7 @@ public class ReviewController {
             return "redirect:/login";
         }
 
-        Error validationError = reviewService.reviewCreateCheck(title, body, stars);
+        Error validationError = reviewService.reviewCheck(title, body, stars);
 
         // We check that there are no errors
         if (validationError != null) {

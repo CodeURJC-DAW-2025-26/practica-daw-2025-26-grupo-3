@@ -5,6 +5,7 @@ import es.grupo3.practica25_26.model.Order;
 import es.grupo3.practica25_26.model.OrderItem;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.model.Error;
+import es.grupo3.practica25_26.dto.UserPostDTO;
 import es.grupo3.practica25_26.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -74,6 +75,32 @@ public class UserService {
         if (error != null)
             return error;
         error = notFilledFormCheck(userName, surname, email, address);
+        return error;
+    }
+
+    public Error userUpdateApiCheck(UserPostDTO userDto, HttpServletRequest request) {
+
+        Error error = uniqueEmailCheck(userDto.email(), request);
+        if (error != null)
+            return error;
+
+        error = userNameCheck(userDto.userName());
+        if (error != null)
+            return error;
+        error = surnameCheck(userDto.surname());
+        if (error != null)
+            return error;
+        error = emailCheck(userDto.email());
+        if (error != null)
+            return error;
+        error = addressCheck(userDto.address());
+        if (error != null)
+            return error;
+        error = passwordCheck(userDto.password());
+        if (error != null)
+            return error;
+        error = notFilledFormCheck(userDto.userName(), userDto.surname(), userDto.email(), userDto.address(),
+                userDto.password());
         return error;
     }
 

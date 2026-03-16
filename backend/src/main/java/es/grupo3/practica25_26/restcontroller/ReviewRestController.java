@@ -2,9 +2,9 @@ package es.grupo3.practica25_26.restcontroller;
 
 import java.net.URI;
 import java.util.Collection;
-import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import es.grupo3.practica25_26.dto.ReviewPostDTO;
 import es.grupo3.practica25_26.dto.ReviewDTO;
@@ -21,8 +22,7 @@ import es.grupo3.practica25_26.mapper.ReviewMapper;
 import es.grupo3.practica25_26.mapper.ReviewPostMapper;
 import es.grupo3.practica25_26.model.Review;
 import es.grupo3.practica25_26.model.User;
-import es.grupo3.practica25_26.model.Product;
-import es.grupo3.practica25_26.service.ProductService;
+import es.grupo3.practica25_26.model.Error;
 import es.grupo3.practica25_26.service.ReviewService;
 import es.grupo3.practica25_26.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,9 +40,6 @@ public class ReviewRestController {
 
     @Autowired
     private ReviewService reviewService;
-
-    @Autowired
-    private ProductService productService;
 
     @Autowired
     private UserService userService;
@@ -75,29 +72,7 @@ public class ReviewRestController {
             HttpServletRequest request) {
         Review newReview = postMapper.toDomain(reviewDTO);
 
-        // Find existing user by email
-        String email = request.getUserPrincipal().getName();
-        if (email != null) {
-            User existingUser = userService.findUserByEmail(email);
-            if (existingUser != null) {
-                newReview.setUser(existingUser);
-            } else {
-                throw new NoSuchElementException("User with email " + email + " not found.");
-            }
-        } else {
-            throw new IllegalArgumentException("User email must be provided.");
-        }
-
-        Product product = productService.findById(productId);
-        Product reviewProduct;
-
-        if (product != null) {
-            reviewProduct = product;
-        } else {
-            throw new NoSuchElementException("Product not found.");
-        }
-
-        reviewService.saveReview(reviewProduct, newReview);
+        reviewService.createReviewApi(newReview, productId, request);
 
         URI location = fromCurrentRequest().path("/{reviewId}").buildAndExpand(newReview.getId()).toUri();
         return ResponseEntity.created(location).body(mapper.toDTO(newReview));
@@ -110,6 +85,13 @@ public class ReviewRestController {
 
         String currentUserEmail = request.getUserPrincipal().getName();
         User currentUser = userService.findUserByEmail(currentUserEmail);
+
+        Error error = reviewService.reviewCheck(updatedReview.getTitle(), updatedReview.getBody(),
+                updatedReview.getStars());
+        if (error != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "There are errors in your review create request: " + error.getTitle() + " " + error.getMessage());
+        }
 
         updatedReview.setId(reviewId);
         updatedReview.setUser(currentUser);

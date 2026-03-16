@@ -16,6 +16,7 @@ import es.grupo3.practica25_26.model.Error;
 import es.grupo3.practica25_26.model.Review;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.repository.ReviewRepository;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class ReviewService {
@@ -26,10 +27,13 @@ public class ReviewService {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private UserService userService;
+
     /**
      * Validates review fields for creation. Returns Error if invalid, null if OK.
      */
-    public Error reviewCreateCheck(String title, String body, Integer stars) {
+    public Error reviewCheck(String title, String body, Integer stars) {
         if (title == null || title.trim().isEmpty()) {
             return new Error("¡Título vacío!", "El título de la reseña no puede estar vacío.");
         }
@@ -168,5 +172,42 @@ public class ReviewService {
 
     public List<Review> findAllReviews() {
         return reviewRepository.findAll();
+    }
+
+    public void createReviewApi(Review newReview, Long productId, HttpServletRequest request) {
+        // Find existing user by email
+        String email = request.getUserPrincipal().getName();
+        if (email != null) {
+            User existingUser = userService.findUserByEmail(email);
+            if (existingUser != null) {
+                newReview.setUser(existingUser);
+            } else {
+                throw new NoSuchElementException("User with email " + email + " not found.");
+            }
+        } else {
+            throw new IllegalArgumentException("User email must be provided.");
+        }
+
+        // We don't check date because it is assigned automatically.
+        Error error = this.reviewCheck(newReview.getTitle(), newReview.getBody(), newReview.getStars());
+        if (error != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "There are errors in your review create request: " + error.getTitle() + " " + error.getMessage());
+        }
+
+        LocalDateTime localDate = java.time.LocalDateTime.now();
+        DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        newReview.setDate(localDate.format(formatter));
+
+        Product product = productService.findById(productId);
+        Product reviewProduct;
+
+        if (product != null) {
+            reviewProduct = product;
+        } else {
+            throw new NoSuchElementException("Product not found.");
+        }
+
+        this.saveReview(reviewProduct, newReview);
     }
 }
