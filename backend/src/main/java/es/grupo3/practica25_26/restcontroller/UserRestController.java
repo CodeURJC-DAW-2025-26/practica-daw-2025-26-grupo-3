@@ -93,10 +93,9 @@ public class UserRestController {
     public UserBasicDTO updateUser(@PathVariable long id, @RequestBody UserPostDTO updatedUserDTO,
             HttpServletRequest request) {
         User updatedUser = postMapper.toDomain(updatedUserDTO);
-
-        List<String> userRoles = new ArrayList<>();
-        userRoles.add("USER");
-        updatedUser.setRoles(userRoles);
+        String loggedEmail = request.getUserPrincipal().getName();
+        User loggedUser = userService.findUserByEmail(loggedEmail);
+        updatedUser.setRoles(loggedUser.getRoles());
 
         Error error = userService.userUpdateApiCheck(updatedUserDTO, request);
         if (error != null) {

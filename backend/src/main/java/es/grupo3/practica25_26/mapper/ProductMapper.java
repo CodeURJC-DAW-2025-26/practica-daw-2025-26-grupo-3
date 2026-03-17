@@ -10,7 +10,10 @@ import org.mapstruct.ReportingPolicy;
 import es.grupo3.practica25_26.dto.ProductDTO;
 import es.grupo3.practica25_26.model.Product;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+import es.grupo3.practica25_26.dto.ReviewBasicDTO;
+import es.grupo3.practica25_26.model.Review;
+
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = { UserBasicMapper.class })
 public interface ProductMapper {
 
     // GET /api/v1/products/{id}
