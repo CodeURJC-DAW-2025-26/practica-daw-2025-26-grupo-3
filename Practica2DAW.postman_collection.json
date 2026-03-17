@@ -1,0 +1,392 @@
+{
+  "info": {
+    "_postman_id": "d897c961-9c7a-43f1-acd4-b5d6ef195b16",
+    "name": "Practica2DAW",
+    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52921088",
+    "_collection_link": "https://go.postman.co/collection/52921088-d897c961-9c7a-43f1-acd4-b5d6ef195b16?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "UserRequests",
+      "item": [
+        {
+          "name": "GetAllUsers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DeleteUserByID",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/52",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "52"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetUserByID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/152",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "152"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CreateUser",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"userName\": \"Marcos\",\r\n    \"surname\": \"Hernandez\",\r\n    \"address\": \"Mostoles\",\r\n    \"email\": \"marcos@example.com\",\r\n    \"password\": \"demo1234\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/users/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UpdateUser",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"userName\": \"Juan\",\r\n    \"surname\": \"Cuesta\",\r\n    \"address\": \"Calle Desengaño 21, Madrid\",\r\n    \"email\": \"juan@example.com\",\r\n    \"state\": true,\r\n    \"password\": \"demo1234\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}}/users/52",
+              "host": [
+                "{{base_url}}}"
+              ],
+              "path": [
+                "users",
+                "52"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "ReviewRequests",
+      "item": [
+        {
+          "name": "UpdateReview",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"aaaa\",\r\n    \"body\": \"pllllllllll\",\r\n    \"stars\": 3\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/products/1/reviews/52",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "products",
+                "1",
+                "reviews",
+                "52"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetAllReviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products/all/reviews/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "all",
+                "reviews",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetReviewById",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products/all/reviews/302",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "all",
+                "reviews",
+                "302"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DeleteReviewById",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products/1/reviews/2",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                "reviews",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CreateReview",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"kkk\",\r\n    \"body\": \"ihbggbubuhnjh\",\r\n    \"stars\": -9\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/products/1/reviews/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                "reviews",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "ProductRequests",
+      "item": [
+        {
+          "name": "GetAllProducts",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"title\": \"Excelente compra\",\r\n  \"body\": \"El producto llegó en perfectas condiciones y funciona de maravilla. Muy recomendado.\",\r\n  \"stars\": 5,\r\n  \"date\": \"12/03/2026\",\r\n  \"imageId\": 0,\r\n  \"user\": {\r\n    \"userName\": \"Marta\",\r\n    \"surname\": \"Lopez\",\r\n    \"address\": \"Calle Mayor 12, Madrid\",\r\n    \"email\": \"marta@example.com\",\r\n    \"password\": \"password123\",\r\n    \"state\": true,\r\n    \"roles\": [\r\n      \"USER\"\r\n    ],\r\n    \"favouriteState\": -1\r\n  }\r\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}}/products/",
+              "host": [
+                "{{base_url}}}"
+              ],
+              "path": [
+                "products",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetProductById",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "AuthRequests",
+      "item": [
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/auth/logout",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "demo1234",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "juan@example.com",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"admin@admin.com\",\r\n    \"password\": \"admin1234\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": ""
+    }
+  ]
+}

@@ -272,7 +272,7 @@ public class UserService {
     public User replaceUser(long id, User updatedUser, String loggedInEmail) {
         User loggedUser = this.findUserByEmail(loggedInEmail);
         if (userRepository.existsById(id)) {
-            if (id == loggedUser.getId()) {
+            if (id == loggedUser.getId() || loggedUser.getRoles().indexOf("ADMIN") != -1) {
                 updatedUser.setId(id);
                 this.saveUser(updatedUser);
                 return updatedUser;
@@ -320,7 +320,7 @@ public class UserService {
 
         if (userRepository.existsById(id)) {
             User targetUser = this.findUserById(id);
-            if (targetUser.getId() == loggedUser.getId()) {
+            if (targetUser.getId() == loggedUser.getId() || loggedUser.getRoles().indexOf("ADMIN") != -1) {
                 userRepository.deleteById(id);
                 return targetUser;
             } else {
