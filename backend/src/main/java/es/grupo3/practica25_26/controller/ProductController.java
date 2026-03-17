@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -225,18 +226,28 @@ public class ProductController {
         if (request.getUserPrincipal() != null) {
             String loggedInEmail = request.getUserPrincipal().getName();
             boolean isAdmin = request.isUserInRole("ADMIN");
+            try {
+                productService.deleteProduct(id, loggedInEmail, isAdmin);
+                return "redirect:/";
+            } catch (NoSuchElementException e) {
 
-            boolean deleted = productService.deleteProduct(id, loggedInEmail, isAdmin);
-
-            if (!deleted) {
                 return errorService.setErrorPageWithButton(
-                        model,
-                        session,
+                        model, session,
+                        "Producto no encontrado",
+                        "El producto que intentas eliminar ya no existe.",
+                        "Volver a mis productos",
+                        "/my_products");
+
+            } catch (SecurityException e) {
+                // Capturamos la falta de permisos
+                return errorService.setErrorPageWithButton(
+                        model, session,
                         "No autorizado",
-                        "No tienes permiso para eliminar este producto o el producto no existe.",
+                        "No tienes permiso para eliminar este producto.",
                         "Volver a mis productos",
                         "/my_products");
             }
+
         }
         return "redirect:/";
     }
