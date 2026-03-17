@@ -19,7 +19,7 @@ import es.grupo3.practica25_26.security.jwt.JwtTokenProvider;
 import es.grupo3.practica25_26.security.jwt.UnauthorizedHandlerJwt;
 
 @Configuration
-@Order(1)
+@Order(1) //This security first
 public class RestSecurityConfig {
 
     @Autowired
@@ -42,10 +42,10 @@ public class RestSecurityConfig {
     @Bean
     public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
 
-        http.securityMatcher("/api/**");
+        //The method configuration only applies to URLs that begin with /api
+        http.securityMatcher("/api/**"); 
 
-        http
-                .exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt));
+        http.exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt));
 
         http.authenticationProvider(restAuthenticationProvider());
 
@@ -73,7 +73,7 @@ public class RestSecurityConfig {
         // Stateless Session
         http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        // Add JWT Token filter
+        // Add JWT Token filter (intercepts the token on each request)
         http.addFilterBefore(new JwtRequestFilter(userDetailsService, jwtTokenProvider),
                 UsernamePasswordAuthenticationFilter.class);
 
