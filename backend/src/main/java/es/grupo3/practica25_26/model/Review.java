@@ -16,6 +16,9 @@ public class Review {
     @ManyToOne
     private User user;
 
+    @ManyToOne
+    private Product product;
+
     @Transient
     private boolean canModifyReview;
 
@@ -25,6 +28,14 @@ public class Review {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     private String title;
