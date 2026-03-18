@@ -1,11 +1,11 @@
 {
   "info": {
-    "_postman_id": "d897c961-9c7a-43f1-acd4-b5d6ef195b16",
+    "_postman_id": "a32f1a16-7fac-4a7b-8691-5722dd78fe8d",
     "name": "Practica2DAW",
     "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "52921088",
-    "_collection_link": "https://go.postman.co/collection/52921088-d897c961-9c7a-43f1-acd4-b5d6ef195b16?source=collection_link"
+    "_collection_link": "https://go.postman.co/collection/52921088-a32f1a16-7fac-4a7b-8691-5722dd78fe8d?source=collection_link"
   },
   "item": [
     {
@@ -261,9 +261,9 @@
               "raw": "{\r\n  \"title\": \"Excelente compra\",\r\n  \"body\": \"El producto llegó en perfectas condiciones y funciona de maravilla. Muy recomendado.\",\r\n  \"stars\": 5,\r\n  \"date\": \"12/03/2026\",\r\n  \"imageId\": 0,\r\n  \"user\": {\r\n    \"userName\": \"Marta\",\r\n    \"surname\": \"Lopez\",\r\n    \"address\": \"Calle Mayor 12, Madrid\",\r\n    \"email\": \"marta@example.com\",\r\n    \"password\": \"password123\",\r\n    \"state\": true,\r\n    \"roles\": [\r\n      \"USER\"\r\n    ],\r\n    \"favouriteState\": -1\r\n  }\r\n}"
             },
             "url": {
-              "raw": "{{base_url}}}/products/",
+              "raw": "{{base_url}}/products/",
               "host": [
-                "{{base_url}}}"
+                "{{base_url}}"
               ],
               "path": [
                 "products",
@@ -286,6 +286,51 @@
               "path": [
                 "products",
                 "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DeleteProductById",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PostProduct",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"productName\": \"Teclado Mecánico Inalámbrico\",\r\n    \"price\": 85.50,\r\n    \"state\": 1,\r\n    \"description\": \"Teclado mecánico compacto al 60% con switches rojos y retroiluminación RGB. Ideal para programar.\",\r\n    \"averageRating\": 0.0,\r\n    \"reviewCount\": 0\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/products/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                ""
               ]
             }
           },
@@ -336,7 +381,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"username\": \"admin@admin.com\",\r\n    \"password\": \"admin1234\"\r\n}",
+              "raw": "{\r\n    \"username\": \"carlos@example.com\",\r\n    \"password\": \"demo1234\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"

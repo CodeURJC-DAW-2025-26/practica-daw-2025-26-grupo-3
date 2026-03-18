@@ -53,13 +53,11 @@ public class User {
         this.reviews = reviews;
     }
 
-    // @OneToMany(mappedBy = "orderID", cascade = CascadeType.ALL, orphanRemoval =
-    // true)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // This makes the image to be
-                                                                                  // persistent when created.
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true) // This makes the image to be
+                                                               // persistent when created.
     private Image image;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
