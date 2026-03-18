@@ -3,6 +3,7 @@ package es.grupo3.practica25_26.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import javax.sql.rowset.serial.SerialBlob;
@@ -123,7 +124,7 @@ public class ProductService {
         return product;
     }
 
-    public void updateProduct(Long id, Product editedProduct, List<Long> removeImages, List<MultipartFile> newImages,
+    public Product updateProduct(Long id, Product editedProduct, List<Long> removeImages, List<MultipartFile> newImages,
             String loggedInEmail, boolean isAdmin) throws IOException {
 
         Optional<Product> productOpt = productRepository.findById(id);
@@ -174,10 +175,76 @@ public class ProductService {
 
                         }
                     }
-                    // save the product in ddbb
-                    productRepository.save(existingProduct);
+                   
                 }
+                 // save the product in ddbb
+                productRepository.save(existingProduct);
+
+                return existingProduct;
+            }else {
+                // If the user doesn't have permissions, we throw an error instead of returning anything.
+                throw new SecurityException("No tienes permiso para editar este producto.");
             }
+            
+        }else {
+            // If the product doesn´t exist, we throw an error.
+            throw new NoSuchElementException("El producto no existe.");
+        }
+    }
+
+    // Exclusive method for the REST API to upload an image to a product
+    public Product addImageToProduct(long productId, MultipartFile imageFile, String loggedInEmail, boolean isAdmin)
+            throws IOException {
+        Product product = productRepository.findById(productId).orElseThrow();
+        User seller = product.getSeller();
+
+        if (seller.getEmail().equals(loggedInEmail) || isAdmin) {
+            if (!imageFile.isEmpty()) {
+                Image image = new Image();
+                try {
+                    image.setImageFile(new SerialBlob(imageFile.getBytes()));
+                } catch (Exception e) {
+                    throw new IOException("Failed to create image", e);
+                }
+
+                product.getImages().add(image);
+                
+                return productRepository.save(product);
+            }
+            throw new IllegalArgumentException("El archivo de imagen está vacío");
+        } else {
+            throw new SecurityException("No tienes permiso para añadir imágenes a este producto");
+        }
+    }
+
+    // Exclusive method for the REST API to delete a product image
+
+    public Product removeImageFromProduct(long productId, long imageId, String loggedInEmail, boolean isAdmin) {
+        Product product = productRepository.findById(productId).orElseThrow();
+        User seller = product.getSeller();
+
+        if (seller.getEmail().equals(loggedInEmail) || isAdmin) {
+            // We search and remove the image from the product listing.
+
+            List<Image> images = product.getImages();
+            int i = images.size() - 1;
+            boolean found = false;
+
+            // While there are photos and we still found the one we wanted to remove
+            while (i >= 0 && !found) {
+
+                if (images.get(i).getId().equals(imageId)) {
+                    images.remove(i);
+                    found = true; //image found and deleted
+                }
+
+                i--; //next photo
+
+            }
+            //We save the changes of the product
+            return productRepository.save(product);
+        } else {
+            throw new SecurityException("No tienes permiso para borrar imágenes de este producto");
         }
     }
 

@@ -1,19 +1,21 @@
 
 package es.grupo3.practica25_26.restcontroller;
 
+import java.io.IOException;
 import java.net.URI;
-import java.security.Principal;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-//import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import es.grupo3.practica25_26.dto.ProductBasicDTO;
@@ -26,8 +28,7 @@ import es.grupo3.practica25_26.service.ProductService;
 import es.grupo3.practica25_26.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -88,12 +89,25 @@ public class ProductRestController {
     }
 
     // Update a product (put)
+    @PutMapping("/{id}")
+    public ProductBasicDTO updateProduct(@PathVariable long id, @RequestBody ProductBasicDTO productBasicDTO,
+        HttpServletRequest request) throws IOException{
+
+            Product editedproduct = basicProductMapper.toDomain(productBasicDTO); 
+            String loggedInEmail = request.getUserPrincipal().getName();
+            boolean isAdmin = request.isUserInRole("ADMIN");
+
+            Product updatedProduct = productService.updateProduct(id, editedproduct, null, null, loggedInEmail,isAdmin );
+
+        return basicProductMapper.toDTO(updatedProduct);
+    }
+
+
 
     // Delete a product (delete)
     @DeleteMapping("/{id}")
     public ProductBasicDTO deleteProduct(@PathVariable long id, HttpServletRequest request) {
-        request.isUserInRole("ADMIN");
-        request.getUserPrincipal().getName();
+        
         return basicProductMapper.toDTO(
                 productService.deleteProduct(id, request.getUserPrincipal().getName(), request.isUserInRole("ADMIN")));
     }

@@ -141,9 +141,14 @@ public class ProductController {
             @RequestParam(value = "productimages", required = false) List<MultipartFile> newImages,
             HttpServletRequest request, HttpSession session) {
 
+        if (request.getUserPrincipal() == null) {
+            return errorService.setErrorPageWithButton(model, session, "Error", "No has iniciado sesión.",
+                    "Volver al inicio", "/");
+        }
+
         Product existingProduct = productService.findById(id);
 
-        if (existingProduct != null && request.getUserPrincipal() != null) {
+        if (existingProduct != null) {
 
             // We validate all the attributes of the edited product
             Error validationError = productService.productUpdateCheck(productForm, existingProduct, removeImages,
@@ -158,19 +163,20 @@ public class ProductController {
             String loggedInEmail = request.getUserPrincipal().getName();
             boolean isAdmin = request.isUserInRole("ADMIN");
 
-            if (!existingProduct.getSeller().getEmail().equals(loggedInEmail) && !isAdmin) {
-                return errorService.setErrorPageWithButton(
-                        model,
-                        session,
-                        "No autorizado",
-                        "No tienes permiso para editar este producto.",
-                        "Volver a mis productos",
-                        "/my_products");
-            }
-
             try {
                 productService.updateProduct(id, productForm, removeImages, newImages, loggedInEmail, isAdmin);
                 return "redirect:/product_detail/" + id;
+
+            } catch (SecurityException e) {
+                // Error redirection by catching the service exception
+                return errorService.setErrorPageWithButton(
+                        model,
+                        session,
+                        "No autorizado", 
+                        e.getMessage(),
+                        "Volver a mis productos",
+                        "/my_products");
+
             } catch (Exception e) {
                 return errorService.setErrorPageWithButton(
                         model, session, "Error de base de datos",
@@ -180,7 +186,7 @@ public class ProductController {
         }
         return errorService.setErrorPageWithButton(
                 model, session, "Error",
-                "El producto no existe o no has iniciado sesión.",
+                "El producto no existe.",
                 "Volver al inicio",
                 "/");
     }

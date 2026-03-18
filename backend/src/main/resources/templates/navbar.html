@@ -33,17 +33,22 @@
                     <a class="nav-link dropdown-toggle user-dropdown d-flex align-items-center gap-2" href="#"
                         id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"
                         title="Menú de usuario">
-                        {{^user.image}}
-                        <img src="https://ui-avatars.com/api/?name={{user.userName}}&background=random" alt="Mi Perfil"
+
+                        {{#user}}
+                        {{^image}}
+                        <img src="https://ui-avatars.com/api/?name={{userName}}&background=random" alt="Mi Perfil"
                             style="height: 40px; width: 40px; border-radius: 50%; border: 2px solid #0d6efd; cursor: pointer; object-fit: cover; flex-shrink: 0;">
-                        {{/user.image}}
-                        {{#user.image}}
+                        {{/image}}
+
+                        {{#image}}
                         <img src="/user-images/{{id}}"
-                            onerror="this.src='https://ui-avatars.com/api/?name={{user.userName}}&background=random'"
+                            onerror="this.src='https://ui-avatars.com/api/?name={{userName}}&background=random'"
                             alt="Mi Perfil"
                             style="height: 40px; width: 40px; border-radius: 50%; border: 2px solid #0d6efd; cursor: pointer; object-fit: cover; flex-shrink: 0;">
-                        {{/user.image}}
-                        <span class="d-none d-lg-inline">{{user.userName}}</span>
+                        {{/image}}
+
+                        <span class="d-none d-lg-inline">{{userName}}</span>
+                        {{/user}}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="/profile">Ver Perfil</a></li>

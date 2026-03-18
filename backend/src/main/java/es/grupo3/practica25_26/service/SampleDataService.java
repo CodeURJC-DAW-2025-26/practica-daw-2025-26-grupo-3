@@ -44,7 +44,7 @@ public class SampleDataService {
         @PostConstruct
         public void init() {
                 try {
-                        // 1. Inicializar Usuarios
+                        // 1. Initialize users
                         User adminUser = getOrCreateAdmin("Admin", "System", "Admin Street 1, Spain",
                                         "admin@admin.com", "admin1234", true);
 
