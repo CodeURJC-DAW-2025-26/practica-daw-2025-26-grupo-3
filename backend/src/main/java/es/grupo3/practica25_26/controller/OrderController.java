@@ -1,8 +1,6 @@
 package es.grupo3.practica25_26.controller;
 
 import java.io.IOException;
-
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
@@ -12,8 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -132,8 +128,12 @@ public class OrderController {
 
     // Converts one user order to PDF
     @GetMapping("/bill/{id}")
-    public ResponseEntity<byte[]> exportOrderToPDF(@PathVariable long id) throws IOException {
-        return billService.pdfConfig(id);
+    public ResponseEntity<byte[]> exportOrderToPDF(@PathVariable long id, HttpServletRequest request)
+            throws IOException {
+        String email = request.getUserPrincipal().getName();
+        User user = userService.findUserByEmail(email);
+
+        return billService.orderPdfConfig(id, user);
     }
 
     // Converts all the user's orders to PDF
@@ -142,25 +142,7 @@ public class OrderController {
         String email = request.getUserPrincipal().getName();
         User currentUser = userService.findUserByEmail(email);
 
-        DateTimeFormatter formatter = DateTimeFormatter
-                .ofPattern("dd/MM/yyyy HH:mm:ss");
-
-        Map<String, Object> billData = new java.util.HashMap<>();
-        billData.put("user", currentUser);
-        billData.put("orders", currentUser.getOrders());
-        billData.put("billDate", LocalDateTime.now().format(formatter));
-        billData.put("isAll", true);
-        billData.put("billTotal", userService.getAllOrdersPrice(currentUser));
-
-        byte[] pdfContents = billService.generateBillFromTemplate(billData);
-
-        org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
-        headers.setContentType(org.springframework.http.MediaType.APPLICATION_PDF);
-        headers.setContentDisposition(org.springframework.http.ContentDisposition.inline()
-                .filename("invoice-all.pdf")
-                .build());
-
-        return new ResponseEntity<>(pdfContents, headers, org.springframework.http.HttpStatus.OK);
+        return billService.allOrdersPdfConfig(currentUser);
     }
 
     // Fetches and displays a list of orders that are either pending or revised for

@@ -3,18 +3,23 @@ package es.grupo3.practica25_26.service;
 import com.samskivert.mustache.Mustache;
 
 import es.grupo3.practica25_26.model.Order;
+import es.grupo3.practica25_26.model.User;
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,6 +32,9 @@ public class BillService {
 
     @Autowired
     private ResourceLoader resourceLoader;
+
+    @Autowired
+    private UserService userService;
 
     public byte[] generateBillFromTemplate(Map<String, Object> data) throws IOException {
         Resource resource = resourceLoader.getResource("classpath:templates/pdf-bill.html");
@@ -51,28 +59,65 @@ public class BillService {
         }
     }
 
-    public ResponseEntity<byte[]> pdfConfig(long orderId) throws IOException {
+    public ResponseEntity<byte[]> orderPdfConfig(long orderId, User loggedUser) throws IOException {
         Optional<Order> op = orderService.findById(orderId);
 
         if (op.isPresent()) {
             Order order = op.get();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            if (order.getUser().getId() == loggedUser.getId() || loggedUser.getRoles().indexOf("ADMIN") != -1) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
+                Map<String, Object> billData = new java.util.HashMap<>();
+                billData.put("user", order.getUser());
+                billData.put("orders", java.util.Collections.singletonList(order));
+                billData.put("billDate", java.time.LocalDateTime.now().format(formatter));
+
+                byte[] pdfContents = generateBillFromTemplate(billData);
+
+                org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+                headers.setContentType(org.springframework.http.MediaType.APPLICATION_PDF);
+                headers.setContentDisposition(org.springframework.http.ContentDisposition.inline()
+                        .filename("invoice-" + orderId + ".pdf")
+                        .build());
+
+                return new ResponseEntity<>(pdfContents, headers, org.springframework.http.HttpStatus.OK);
+            } else {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                        "You can't get the PDF bill from order " + order.getOrderID()
+                                + " because you are not the owner.");
+            }
+
+        }
+        return new ResponseEntity<>(org.springframework.http.HttpStatus.NOT_FOUND);
+    }
+
+    public ResponseEntity<byte[]> allOrdersPdfConfig(User loggedUser) throws IOException {
+        DateTimeFormatter formatter = DateTimeFormatter
+                .ofPattern("dd/MM/yyyy HH:mm:ss");
+
+        List<Order> orders = loggedUser.getOrders();
+
+        if (orders.size() > 0) {
             Map<String, Object> billData = new java.util.HashMap<>();
-            billData.put("user", order.getUser());
-            billData.put("orders", java.util.Collections.singletonList(order));
-            billData.put("billDate", java.time.LocalDateTime.now().format(formatter));
+            billData.put("user", loggedUser);
+            billData.put("orders", loggedUser.getOrders());
+            billData.put("billDate", LocalDateTime.now().format(formatter));
+            billData.put("isAll", true);
+            billData.put("billTotal", userService.getAllOrdersPrice(loggedUser));
 
-            byte[] pdfContents = generateBillFromTemplate(billData);
+            byte[] pdfContents = this.generateBillFromTemplate(billData);
 
             org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
             headers.setContentType(org.springframework.http.MediaType.APPLICATION_PDF);
             headers.setContentDisposition(org.springframework.http.ContentDisposition.inline()
-                    .filename("invoice-" + orderId + ".pdf")
+                    .filename("invoice-all.pdf")
                     .build());
 
             return new ResponseEntity<>(pdfContents, headers, org.springframework.http.HttpStatus.OK);
+        } else {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_CONTENT,
+                    "You can't get the all orders PDF bill from user " + loggedUser.getUserName()
+                            + " because user has no orders.");
         }
-        return new ResponseEntity<>(org.springframework.http.HttpStatus.NOT_FOUND);
     }
 }
