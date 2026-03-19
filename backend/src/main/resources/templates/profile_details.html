@@ -35,30 +35,30 @@
                 <div class="card border-0 shadow-sm p-4 mb-4">
 
                     <div class="text-center mb-4">
-                        {{#user.image}}
-                        <img src="/images/{{user.image.id}}"
-                            onerror="this.src='https://ui-avatars.com/api/?name={{user.userName}}&background=random'"
+                        {{#detailedUser.image}}
+                        <img src="/images/{{detailedUser.image.id}}"
+                            onerror="this.src='https://ui-avatars.com/api/?name={{detailedUser.userName}}&background=random'"
                             class="rounded-circle shadow-sm border border-4 border-white mb-3" alt="Profile Pic"
                             style="width: 150px; height: 150px; object-fit: cover;">
-                        {{/user.image}}
-                        {{^user.image}}
-                        <img src="https://ui-avatars.com/api/?name={{user.userName}}&background=random"
+                        {{/detailedUser.image}}
+                        {{^detailedUser.image}}
+                        <img src="https://ui-avatars.com/api/?name={{detailedUser.userName}}&background=random"
                             class="rounded-circle shadow-sm border border-4 border-white mb-3" alt="Default Pic"
                             style="width: 150px; height: 150px; object-fit: cover;">
-                        {{/user.image}}
+                        {{/detailedUser.image}}
 
-                        <h3 class="fw-bold mb-1">{{user.userName}} {{user.surname}}</h3>
-                        <p class="text-muted mb-3 fs-5">{{user.email}}</p>
+                        <h3 class="fw-bold mb-1">{{detailedUser.userName}} {{detailedUser.surname}}</h3>
+                        <p class="text-muted mb-3 fs-5">{{detailedUser.email}}</p>
 
                         <div class="d-inline-block">
-                            {{#user.state}}
+                            {{#detailedUser.state}}
                             <span class="badge bg-success py-2 px-3 fs-6"><i class="bi bi-check-circle me-1"></i>Cuenta
                                 Activa</span>
-                            {{/user.state}}
-                            {{^user.state}}
+                            {{/detailedUser.state}}
+                            {{^detailedUser.state}}
                             <span class="badge bg-danger py-2 px-3 fs-6"><i class="bi bi-x-circle me-1"></i>Cuenta
                                 Bloqueada</span>
-                            {{/user.state}}
+                            {{/detailedUser.state}}
                         </div>
                     </div>
 
@@ -68,11 +68,11 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-center py-3">
                             <span class="text-muted fw-bold text-uppercase small">ID de Cliente</span>
-                            <span class="text-dark fw-semibold">#USR-{{user.id}}</span>
+                            <span class="text-dark fw-semibold">#USR-{{detailedUser.id}}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center py-3">
                             <span class="text-muted fw-bold text-uppercase small">Dirección</span>
-                            <span class="text-dark text-end">{{user.address}}</span>
+                            <span class="text-dark text-end">{{detailedUser.address}}</span>
                         </li>
                     </ul>
 

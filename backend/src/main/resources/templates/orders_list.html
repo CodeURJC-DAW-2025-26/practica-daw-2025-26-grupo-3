@@ -48,18 +48,26 @@
                                         <td class="ps-4 fw-bold text-primary">#{{orderID}}</td>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                {{#user.image}}
-                                                <img src="/images/{{user.image.id}}"
-                                                    class="rounded-circle me-2" alt="Avatar de {{user.userName}}" style="width: 40px; height: 40px; object-fit: cover;">
-                                                {{/user.image}}
-                                                {{^user.image}}
-                                                <img src="https://ui-avatars.com/api/?name={{user.userName}}&background=random"
-                                                    class="rounded-circle me-2" alt="Avatar de {{user.userName}}" style="width: 40px; height: 40px;">
-                                                {{/user.image}}
+                                                {{#user}}
+
+                                                {{#image}}
+                                                <img src="/images/{{id}}" class="rounded-circle me-2"
+                                                    alt="Avatar de {{userName}}"
+                                                    style="width: 40px; height: 40px; object-fit: cover;">
+                                                {{/image}}
+
+                                                {{^image}}
+                                                <img src="https://ui-avatars.com/api/?name={{userName}}&background=random"
+                                                    class="rounded-circle me-2" alt="Avatar de {{userName}}"
+                                                    style="width: 40px; height: 40px;">
+                                                {{/image}}
+
                                                 <div>
-                                                    <div class="fw-bold">{{user.userName}} {{user.surname}}</div>
-                                                    <div class="small text-muted">{{user.email}}</div>
+                                                    <div class="fw-bold">{{userName}} {{surname}}</div>
+                                                    <div class="small text-muted">{{email}}</div>
                                                 </div>
+
+                                                {{/user}}
                                             </div>
                                         </td>
                                         <td>{{date}}</td>

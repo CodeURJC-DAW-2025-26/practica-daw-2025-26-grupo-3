@@ -215,7 +215,7 @@ public class UserController {
                     "No se ha encontrado el usuario con ID: " + id, "Volver a la lista de usuarios",
                     "/user_registered_list");
         }
-        model.addAttribute("user", user);
+        model.addAttribute("detailedUser", user);
         return "profile_details";
     }
 
