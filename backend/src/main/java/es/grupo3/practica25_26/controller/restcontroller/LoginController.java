@@ -1,4 +1,4 @@
-package es.grupo3.practica25_26.restcontroller;
+package es.grupo3.practica25_26.controller.restcontroller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

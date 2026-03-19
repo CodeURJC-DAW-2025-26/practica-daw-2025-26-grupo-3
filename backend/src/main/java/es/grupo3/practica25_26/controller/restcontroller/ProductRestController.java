@@ -1,5 +1,5 @@
 
-package es.grupo3.practica25_26.restcontroller;
+package es.grupo3.practica25_26.controller.restcontroller;
 
 import java.io.IOException;
 import java.net.URI;

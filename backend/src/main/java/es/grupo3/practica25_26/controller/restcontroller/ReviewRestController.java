@@ -1,4 +1,4 @@
-package es.grupo3.practica25_26.restcontroller;
+package es.grupo3.practica25_26.controller.restcontroller;
 
 import java.net.URI;
 import java.util.Collection;
