@@ -70,6 +70,7 @@ public class ReviewService {
         }
         review.setImageId(imageId);
 
+        review.setProduct(product);
         product.getReviews().add(review);
         productService.save(product);
     }

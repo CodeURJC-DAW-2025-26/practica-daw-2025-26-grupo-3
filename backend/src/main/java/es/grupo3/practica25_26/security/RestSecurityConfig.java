@@ -19,7 +19,7 @@ import es.grupo3.practica25_26.security.jwt.JwtTokenProvider;
 import es.grupo3.practica25_26.security.jwt.UnauthorizedHandlerJwt;
 
 @Configuration
-@Order(1) //This security first
+@Order(1) // This security first
 public class RestSecurityConfig {
 
     @Autowired
@@ -42,8 +42,8 @@ public class RestSecurityConfig {
     @Bean
     public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
 
-        //The method configuration only applies to URLs that begin with /api
-        http.securityMatcher("/api/**"); 
+        // The method configuration only applies to URLs that begin with /api
+        http.securityMatcher("/api/**");
 
         http.exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt));
 
@@ -56,6 +56,7 @@ public class RestSecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/**").hasAnyRole("USER", "ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/v1/orders/**").hasAnyRole("USER", "ADMIN")
                 // PUBLIC API REST URLS
                 .anyRequest().permitAll()
 

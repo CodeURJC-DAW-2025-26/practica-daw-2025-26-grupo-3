@@ -44,7 +44,7 @@ public class Product {
     private List<Image> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private List<Review> reviews;
+    private List<Review> reviews = new ArrayList<>();
 
     public Product() {
     }
