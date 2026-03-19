@@ -36,7 +36,7 @@ public class ImageService {
             throw new IOException("Failed to create image", e);
         }
 
-        return image;
+        return imageRepository.save(image);
     }
 
     public Resource getImageFile(long id) throws SQLException {
@@ -46,7 +46,7 @@ public class ImageService {
         if (image != null && image.getImageFile() != null) {
             return new InputStreamResource(image.getImageFile().getBinaryStream());
         } else {
-            return null;
+            throw new RuntimeException("Image file not found");
         }
     }
 
@@ -63,6 +63,29 @@ public class ImageService {
         }
 
         return null;
+    }
+
+    public Image getImage(long id) {
+        return imageRepository.findById(id).orElseThrow();
+    }
+
+    public void replaceImageFile(long id, InputStream inputStream) throws IOException {
+
+        Image image = imageRepository.findById(id).orElseThrow();
+
+        try {
+            image.setImageFile(new SerialBlob(inputStream.readAllBytes()));
+        } catch (Exception e) {
+            throw new IOException("Failed to create image", e);
+        }
+
+        imageRepository.save(image);
+    }
+
+    public Image deleteImage(long id) {
+        Image image = imageRepository.findById(id).orElseThrow();
+        imageRepository.deleteById(id);
+        return image;
     }
 
 }

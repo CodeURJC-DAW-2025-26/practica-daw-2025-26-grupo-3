@@ -11,7 +11,7 @@ public record ProductDTO(
         double averageRating,
         int reviewCount,
         UserBasicDTO seller, 
-        //List<ImageBasicDTO> images,
+        List<ImageDTO> images,
         List<ReviewBasicDTO> reviews
 ) {
     

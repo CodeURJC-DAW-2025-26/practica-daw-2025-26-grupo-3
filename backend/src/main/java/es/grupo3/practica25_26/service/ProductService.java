@@ -193,32 +193,22 @@ public class ProductService {
     }
 
     // Exclusive method for the REST API to upload an image to a product
-    public Product addImageToProduct(long productId, MultipartFile imageFile, String loggedInEmail, boolean isAdmin)
+    public Product addImageToProduct(long productId, Image image, String loggedInEmail, boolean isAdmin)
             throws IOException {
         Product product = productRepository.findById(productId).orElseThrow();
         User seller = product.getSeller();
 
         if (seller.getEmail().equals(loggedInEmail) || isAdmin) {
-            if (!imageFile.isEmpty()) {
-                Image image = new Image();
-                try {
-                    image.setImageFile(new SerialBlob(imageFile.getBytes()));
-                } catch (Exception e) {
-                    throw new IOException("Failed to create image", e);
-                }
-
-                product.getImages().add(image);
+            
+            product.getImages().add(image);
                 
                 return productRepository.save(product);
-            }
-            throw new IllegalArgumentException("El archivo de imagen está vacío");
         } else {
             throw new SecurityException("No tienes permiso para añadir imágenes a este producto");
         }
     }
 
     // Exclusive method for the REST API to delete a product image
-
     public Product removeImageFromProduct(long productId, long imageId, String loggedInEmail, boolean isAdmin) {
         Product product = productRepository.findById(productId).orElseThrow();
         User seller = product.getSeller();

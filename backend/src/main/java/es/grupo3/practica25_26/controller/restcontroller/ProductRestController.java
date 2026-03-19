@@ -12,23 +12,27 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import es.grupo3.practica25_26.dto.ImageDTO;
 import es.grupo3.practica25_26.dto.ProductBasicDTO;
 import es.grupo3.practica25_26.dto.ProductDTO;
+import es.grupo3.practica25_26.mapper.ImageMapper;
 import es.grupo3.practica25_26.mapper.ProductBasicMapper;
 import es.grupo3.practica25_26.mapper.ProductMapper;
+import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.model.Product;
 import es.grupo3.practica25_26.model.User;
+import es.grupo3.practica25_26.service.ImageService;
 import es.grupo3.practica25_26.service.ProductService;
 import es.grupo3.practica25_26.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
-
-
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -45,6 +49,12 @@ public class ProductRestController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ImageService imageService;
+
+    @Autowired
+    private ImageMapper imageMapper;
 
     // get all products
     @GetMapping("/")
@@ -91,25 +101,62 @@ public class ProductRestController {
     // Update a product (put)
     @PutMapping("/{id}")
     public ProductBasicDTO updateProduct(@PathVariable long id, @RequestBody ProductBasicDTO productBasicDTO,
-        HttpServletRequest request) throws IOException{
+            HttpServletRequest request) throws IOException {
 
-            Product editedproduct = basicProductMapper.toDomain(productBasicDTO); 
-            String loggedInEmail = request.getUserPrincipal().getName();
-            boolean isAdmin = request.isUserInRole("ADMIN");
+        Product editedproduct = basicProductMapper.toDomain(productBasicDTO);
+        String loggedInEmail = request.getUserPrincipal().getName();
+        boolean isAdmin = request.isUserInRole("ADMIN");
 
-            Product updatedProduct = productService.updateProduct(id, editedproduct, null, null, loggedInEmail,isAdmin );
+        Product updatedProduct = productService.updateProduct(id, editedproduct, null, null, loggedInEmail, isAdmin);
 
         return basicProductMapper.toDTO(updatedProduct);
     }
 
-
-
     // Delete a product (delete)
     @DeleteMapping("/{id}")
     public ProductBasicDTO deleteProduct(@PathVariable long id, HttpServletRequest request) {
-        
+
         return basicProductMapper.toDTO(
                 productService.deleteProduct(id, request.getUserPrincipal().getName(), request.isUserInRole("ADMIN")));
+    }
+
+    // Create an image for the product
+
+    @PostMapping("/{id}/images/")
+    public ResponseEntity<ImageDTO> createProductImage(@PathVariable long id, @RequestParam MultipartFile imageFile,
+            HttpServletRequest request) throws IOException {
+
+        if (imageFile.isEmpty()) {
+            throw new IllegalArgumentException("Image file cannot be empty");
+        }
+
+        String loggedInEmail = request.getUserPrincipal().getName();
+        boolean isAdmin = request.isUserInRole("ADMIN");
+
+        Image image = imageService.createImage(imageFile.getInputStream());
+        productService.addImageToProduct(id, image, loggedInEmail, isAdmin);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/images/{imageId}/media")
+                .buildAndExpand(image.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(imageMapper.toDTO(image));
+    }
+
+    // Delete an image from the product
+
+    @DeleteMapping("/{productId}/images/{imageId}")
+    public ImageDTO deleteProductImage(@PathVariable long productId, @PathVariable long imageId,
+            HttpServletRequest request) {
+
+        String loggedInEmail = request.getUserPrincipal().getName();
+        boolean isAdmin = request.isUserInRole("ADMIN");
+
+        Image image = imageService.getImage(imageId);
+        productService.removeImageFromProduct(productId, imageId, loggedInEmail, isAdmin);
+
+        return imageMapper.toDTO(image);
     }
 
 }
