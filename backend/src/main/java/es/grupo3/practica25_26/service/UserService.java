@@ -334,6 +334,42 @@ public class UserService {
         }
     }
 
+    // Add a profile image to the user (Method for API REST)
+    public User addImageToUser(long id, Image image, String loggedInEmail) {
+        User targetUser = userRepository.findById(id).orElseThrow();
+
+        // Only the specific user can delete his profile photo
+        if (targetUser.getEmail().equals(loggedInEmail)) {
+
+            // If there is an existing photo
+            if (targetUser.getImage() != null) {
+                // We crush the current photo
+                targetUser.getImage().setImageFile(image.getImageFile());
+            } else {
+                targetUser.setImage(image);
+                image.setUser(targetUser);
+            }
+            return userRepository.save(targetUser);
+        } else {
+            throw new SecurityException("No tienes permiso para modificar este perfil");
+        }
+    }
+
+    // Remove the profile image of the user
+
+    public User removeImageFromUser(long id, String loggedInEmail) {
+
+        User targetUser = userRepository.findById(id).orElseThrow();
+
+        if (targetUser.getEmail().equals(loggedInEmail)) {
+
+            targetUser.setImage(null);
+            return userRepository.save(targetUser);
+        } else {
+            throw new SecurityException("No tienes permiso para modificar este perfil");
+        }
+    }
+
     // Obtain list of users without admins
     public List<User> getUsersWithoutAdmins() {
         return userRepository.findUsersWithoutRole("ADMIN");

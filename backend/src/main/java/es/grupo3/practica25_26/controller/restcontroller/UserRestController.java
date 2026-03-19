@@ -1,5 +1,6 @@
 package es.grupo3.practica25_26.controller.restcontroller;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,16 +18,22 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.HttpStatus;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
+import es.grupo3.practica25_26.dto.ImageDTO;
 import es.grupo3.practica25_26.dto.UserBasicDTO;
 import es.grupo3.practica25_26.dto.UserPostDTO;
+import es.grupo3.practica25_26.mapper.ImageMapper;
 import es.grupo3.practica25_26.mapper.UserBasicMapper;
 import es.grupo3.practica25_26.mapper.UserPostMapper;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.model.Error;
+import es.grupo3.practica25_26.model.Image;
+import es.grupo3.practica25_26.service.ImageService;
 import es.grupo3.practica25_26.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -45,6 +52,12 @@ public class UserRestController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ImageService imageService;
+
+    @Autowired
+    private ImageMapper imageMapper;
 
     @GetMapping("/")
     public Collection<UserBasicDTO> getAllUsers() {
@@ -107,4 +120,46 @@ public class UserRestController {
 
         return basicMapper.toDTO(userService.replaceUser(id, updatedUser, request.getUserPrincipal().getName()));
     }
+
+    //Upload a profile photo
+    @PostMapping("/{id}/image")
+    public ResponseEntity<ImageDTO> uploadUserImage(@PathVariable long id, @RequestBody MultipartFile imageFile,HttpServletRequest request) throws IOException {
+
+        if (imageFile.isEmpty()) {
+            throw new IllegalArgumentException("Image file cannot be empty");
+        }
+
+        String loggedInEmail = request.getUserPrincipal().getName();
+
+        Image image = imageService.createImage(imageFile.getInputStream());
+
+        userService.addImageToUser(id, image,loggedInEmail);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/api/v1/images/{imageId}")
+                .buildAndExpand(image.getId())
+                .toUri();
+        
+        return ResponseEntity.created(location).body(imageMapper.toDTO(image));
+    }
+
+    //Delete the actual profile photo
+    @DeleteMapping("/{id}/image/")
+    public ImageDTO deleteUserImage(@PathVariable long id, HttpServletRequest request ){
+
+        String loggedInEmail = request.getUserPrincipal().getName();
+
+        User user = userService.findUserById(id);
+        Image image = user.getImage();
+
+        if (image == null) {
+            throw new IllegalArgumentException("El usuario no tiene foto de perfil para borrar");
+        }
+
+        userService.removeImageFromUser(id, loggedInEmail);
+
+        return imageMapper.toDTO(image);
+    }
+    
+    
 }

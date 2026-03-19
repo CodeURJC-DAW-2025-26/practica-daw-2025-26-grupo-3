@@ -137,6 +137,8 @@ public class SampleDataService {
                                         productsToSave.add(product);
                                 }
 
+                                productService.saveAll(productsToSave);
+
                                 // Load images
                                 try {
 
@@ -330,6 +332,7 @@ public class SampleDataService {
                 if (image.exists()) {
                         Image createdImage = imageService.createImage(image.getInputStream());
                         product.getImages().add(createdImage);
+                        productService.save(product);
                 }
         }
 

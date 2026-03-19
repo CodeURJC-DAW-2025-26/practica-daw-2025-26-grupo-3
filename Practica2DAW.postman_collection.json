@@ -1,16 +1,71 @@
 {
   "info": {
-    "_postman_id": "a32f1a16-7fac-4a7b-8691-5722dd78fe8d",
+    "_postman_id": "be9760fc-fbab-496d-a7d0-512aaeaac1fd",
     "name": "Practica2DAW",
     "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "52921088",
-    "_collection_link": "https://go.postman.co/collection/52921088-a32f1a16-7fac-4a7b-8691-5722dd78fe8d?source=collection_link"
+    "_exporter_id": "53318420",
+    "_collection_link": "https://go.postman.co/collection/53318420-be9760fc-fbab-496d-a7d0-512aaeaac1fd?source=collection_link"
   },
   "item": [
     {
       "name": "UserRequests",
       "item": [
+        {
+          "name": "UserImageRequests",
+          "item": [
+            {
+              "name": "CreateImageUser",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "imageFile",
+                      "type": "file",
+                      "uuid": "be715a79-399b-4e59-a077-02c39291d88e",
+                      "src": "/d:/Users/DANIEL/Videos/Captures/FORTNITE EVENTO FINAL COMPLETO TEMPORADA 8 CAPITULO 2 _EL FIN_ - YouTube - Google Chrome 05_12_2021 23_38_45.png"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/1/image",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "1",
+                    "image"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DeleteImageFromUser",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/users/1/image/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "1",
+                    "image",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
         {
           "name": "GetAllUsers",
           "request": {
@@ -248,6 +303,62 @@
       "name": "ProductRequests",
       "item": [
         {
+          "name": "ProductImageRequests",
+          "item": [
+            {
+              "name": "CreateImageProduct",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "imageFile",
+                      "type": "file",
+                      "uuid": "8759e371-b6a6-4564-8014-b121cb501851",
+                      "src": "/d:/Users/DANIEL/Videos/Captures/Fortnite   26_12_2021 1_23_12.png"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/products/2/images/",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "products",
+                    "2",
+                    "images",
+                    ""
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "DeleteImageFromProduct",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/products/4/images/15",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "products",
+                    "4",
+                    "images",
+                    "15"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
           "name": "GetAllProducts",
           "protocolProfileBehavior": {
             "disableBodyPruning": true
@@ -460,6 +571,78 @@
                 "orders",
                 "all",
                 "bill"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Image requests",
+      "item": [
+        {
+          "name": "GetImageFileById",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/images/1/media",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "images",
+                "1",
+                "media"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetImageById",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/images/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "images",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "UpdateImageById",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "imageFile",
+                  "type": "file",
+                  "uuid": "5f618254-8af9-45ce-a57d-251cfbc37f2f",
+                  "src": "/d:/Users/DANIEL/Videos/Base Profile/Base Profile Screenshot 2022.07.11 - 23.16.09.44.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/images/1/media",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "images",
+                "1",
+                "media"
               ]
             }
           },
