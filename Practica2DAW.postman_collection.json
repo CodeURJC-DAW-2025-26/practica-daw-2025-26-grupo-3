@@ -66,13 +66,13 @@
           "response": []
         },
         {
-          "name": "CreateUser",
+          "name": "SignupUser",
           "request": {
             "method": "POST",
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"userName\": \"Marcos\",\r\n    \"surname\": \"Hernandez\",\r\n    \"address\": \"Mostoles\",\r\n    \"email\": \"marcos@example.com\",\r\n    \"password\": \"demo1234\"\r\n}",
+              "raw": "{\r\n    \"userName\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\r\n    \"surname\": \"Hernandez\",\r\n    \"address\": \"Mostoles\",\r\n    \"email\": \"aaaaa@example.com\",\r\n    \"password\": \"demo1234\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -139,16 +139,15 @@
               }
             },
             "url": {
-              "raw": "{{base_url}}/v1/products/1/reviews/52",
+              "raw": "{{base_url}}/products/1/reviews/2",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "v1",
                 "products",
                 "1",
                 "reviews",
-                "52"
+                "2"
               ]
             }
           },
@@ -221,7 +220,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"title\": \"kkk\",\r\n    \"body\": \"ihbggbubuhnjh\",\r\n    \"stars\": -9\r\n}",
+              "raw": "{\r\n    \"title\": \"hola buenas\",\r\n    \"body\": \"que tal estas\",\r\n    \"stars\": 4\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -316,7 +315,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"productName\": \"Teclado Mecánico Inalámbrico\",\r\n    \"price\": 85.50,\r\n    \"state\": 1,\r\n    \"description\": \"Teclado mecánico compacto al 60% con switches rojos y retroiluminación RGB. Ideal para programar.\",\r\n    \"averageRating\": 0.0,\r\n    \"reviewCount\": 0\r\n}",
+              "raw": "{\r\n    \"productName\": \"\",\r\n    \"price\": 85.50,\r\n    \"state\": 1,\r\n    \"description\": \"Teclado mecánico compacto al 60% con switches rojos y retroiluminación RGB. Ideal para programar.\",\r\n    \"averageRating\": 0.0,\r\n    \"reviewCount\": 0\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -381,7 +380,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"username\": \"carlos@example.com\",\r\n    \"password\": \"demo1234\"\r\n}",
+              "raw": "{\r\n    \"username\": \"admin@admin.com\",\r\n    \"password\": \"admin1234\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -396,6 +395,71 @@
               "path": [
                 "auth",
                 "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "OrderRequests",
+      "item": [
+        {
+          "name": "GetPdfBillById",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/orders/1/bill",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "1",
+                "bill"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetAllOrdersPdf",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "demo1234",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "juan@example.com",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"carlos@example.com\",\r\n    \"password\": \"demo1234\"\r\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/orders/all/bill",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "all",
+                "bill"
               ]
             }
           },
