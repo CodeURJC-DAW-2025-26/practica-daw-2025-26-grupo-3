@@ -133,30 +133,7 @@ public class OrderController {
     // Converts one user order to PDF
     @GetMapping("/bill/{id}")
     public ResponseEntity<byte[]> exportOrderToPDF(@PathVariable long id) throws IOException {
-        Optional<Order> op = orderService.findById(id);
-
-        if (op.isPresent()) {
-            Order order = op.get();
-            DateTimeFormatter formatter = java.time.format.DateTimeFormatter
-                    .ofPattern("dd/MM/yyyy HH:mm:ss");
-
-            Map<String, Object> billData = new java.util.HashMap<>();
-            billData.put("user", order.getUser());
-            billData.put("orders", java.util.Collections.singletonList(order));
-            billData.put("billDate", java.time.LocalDateTime.now().format(formatter));
-
-            byte[] pdfContents = billService.generateBillFromTemplate(billData);
-
-            org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
-            headers.setContentType(org.springframework.http.MediaType.APPLICATION_PDF);
-            headers.setContentDisposition(org.springframework.http.ContentDisposition.inline()
-                    .filename("invoice-" + id + ".pdf")
-                    .build());
-
-            return new ResponseEntity<>(pdfContents, headers, org.springframework.http.HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(org.springframework.http.HttpStatus.NOT_FOUND);
+        return billService.pdfConfig(id);
     }
 
     // Converts all the user's orders to PDF
