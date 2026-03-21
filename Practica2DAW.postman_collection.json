@@ -1,16 +1,77 @@
 {
   "info": {
-    "_postman_id": "be9760fc-fbab-496d-a7d0-512aaeaac1fd",
+    "_postman_id": "e73cb725-6fa1-4309-88b0-2b93fd654d77",
     "name": "Practica2DAW",
     "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "53318420",
-    "_collection_link": "https://go.postman.co/collection/53318420-be9760fc-fbab-496d-a7d0-512aaeaac1fd?source=collection_link"
+    "_exporter_id": "53036149",
+    "_collection_link": "https://go.postman.co/collection/53036149-e73cb725-6fa1-4309-88b0-2b93fd654d77?source=collection_link"
   },
   "item": [
     {
       "name": "UserRequests",
       "item": [
+        {
+          "name": "AdminRequests",
+          "item": [
+            {
+              "name": "BlockUser",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"state\":false\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/2/state",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "2",
+                    "state"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "UnblockUser",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"state\":true\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/2/state",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "2",
+                    "state"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
         {
           "name": "UserImageRequests",
           "item": [
@@ -759,6 +820,77 @@
                 "images",
                 "1",
                 "media"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "ShoppingCartRequests",
+      "item": [
+        {
+          "name": "DeleteCartItem",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/carts/me/items/308",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "carts",
+                "me",
+                "items",
+                "308"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "AddProduct",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"productId\": 14\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/carts/me/items",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "carts",
+                "me",
+                "items"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ObtainCartInfo",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/carts/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "carts",
+                "me"
               ]
             }
           },

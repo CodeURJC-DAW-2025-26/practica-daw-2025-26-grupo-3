@@ -396,6 +396,42 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
+    // Method for the API REST to change the user state, blocked or unblocked
+    public User updateUserState(Long id, Boolean newState) {
+
+        User targetUser = this.findUserById(id);
+        if (targetUser == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado");
+        }
+
+        Error error = null;
+
+        // If we want to unblock the user we check if it´s possible
+        if (newState) {
+            error = this.userUnblockCheck(targetUser);
+        }
+        // If we want to block the user we check if it´s possible
+        else {
+            error = this.userBlockCheck(targetUser);
+        }
+
+        // If an error has occurred
+        if (error != null) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, error.getMessage());
+        }
+
+        // If we want to unblock an user (newState == True)
+        if (newState) {
+            this.unblockUser(targetUser);
+        }
+        // If we want to block an user (newState == False)
+        else {
+            this.blockUser(targetUser);
+        }
+
+        return targetUser;
+    }
+
     public double getAllOrdersPrice(User user) {
         List<Order> orders = user.getOrders();
         double totalAmount = 0;

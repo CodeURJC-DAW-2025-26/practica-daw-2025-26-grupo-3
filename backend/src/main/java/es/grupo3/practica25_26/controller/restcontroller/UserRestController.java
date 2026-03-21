@@ -5,6 +5,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -160,6 +161,32 @@ public class UserRestController {
         userService.removeImageFromUser(id, loggedInEmail);
 
         return imageMapper.toDTO(image);
+    }
+
+    // Endpoint to change the state of the user (Blocked or Unblocked)
+    // ONLY FOR ADMINS
+    @PutMapping("/{id}/state")
+    public UserBasicDTO changeUserState(@PathVariable long id, @RequestBody Map<String, Boolean> body,
+            HttpServletRequest request) {
+
+        // We check if the user is an admin
+        if (!request.isUserInRole("ADMIN")) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Solo los administradores pueden bloquear o desbloquear usuarios");
+        }
+
+        // We obtain the state of the user from the request (JSON)
+        Boolean newState = body.get("state");
+        if (newState == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Debes enviar un JSON con el campo 'state' (true o false)");
+        }
+
+        // This method verifies if the user state can be updated and in that case
+        // updates it
+        User updatedUser = userService.updateUserState(id, newState);
+
+        return basicMapper.toDTO(updatedUser);
     }
 
 }
