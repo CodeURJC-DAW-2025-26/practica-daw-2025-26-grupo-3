@@ -104,6 +104,20 @@ public class OrderService {
         shoppingCartService.deleteShoppingCartByUser(user);
     }
 
+    @Transactional
+    public Order saveOrderByUserAndReturn(User user) {
+        // we use the old function for the logic
+        saveOrderByUser(user);
+        // we take the last order of the user, which is the one we just created, to
+        // return it
+        List<Order> orderList = user.getOrders();
+        if (orderList != null && !orderList.isEmpty()) {
+            Order order = orderList.get(orderList.size() - 1);
+            return order;
+        }
+        return null;
+    }
+
     // Retrieves a list of orders that are either pending or revised, including
     // their associated users
     public List<Order> findPendingAndRevisedOrdersWithUser() {
