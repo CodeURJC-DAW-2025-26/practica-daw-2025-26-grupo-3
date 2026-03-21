@@ -89,12 +89,12 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
 
-            // Inicialización segura. Si el backend no envía nada, se quedan vacíos pero no fallan.
+            // Safe initialization. If the backend sends nothing, keep empty but don't fail.
             let nombresProductos = [];
             let ventasProductos = [];
             let datosTiposPedidos = [];
 
-            // Usamos comillas invertidas (backticks) para proteger el código de errores de sintaxis
+            // Use backticks to protect the code from syntax errors
             try {
                 const strNombres = `{{& topProductNames }}`;
                 if (strNombres.trim() !== '') nombresProductos = eval(strNombres);

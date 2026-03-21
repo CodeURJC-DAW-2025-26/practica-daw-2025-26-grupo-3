@@ -121,9 +121,10 @@ public class UserRestController {
         return basicMapper.toDTO(userService.replaceUser(id, updatedUser, request.getUserPrincipal().getName()));
     }
 
-    //Upload a profile photo
+    // Upload a profile photo
     @PostMapping("/{id}/image")
-    public ResponseEntity<ImageDTO> uploadUserImage(@PathVariable long id, @RequestBody MultipartFile imageFile,HttpServletRequest request) throws IOException {
+    public ResponseEntity<ImageDTO> uploadUserImage(@PathVariable long id, @RequestBody MultipartFile imageFile,
+            HttpServletRequest request) throws IOException {
 
         if (imageFile.isEmpty()) {
             throw new IllegalArgumentException("Image file cannot be empty");
@@ -133,19 +134,19 @@ public class UserRestController {
 
         Image image = imageService.createImage(imageFile.getInputStream());
 
-        userService.addImageToUser(id, image,loggedInEmail);
+        userService.addImageToUser(id, image, loggedInEmail);
 
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/v1/images/{imageId}")
                 .buildAndExpand(image.getId())
                 .toUri();
-        
+
         return ResponseEntity.created(location).body(imageMapper.toDTO(image));
     }
 
-    //Delete the actual profile photo
+    // Delete the actual profile photo
     @DeleteMapping("/{id}/image/")
-    public ImageDTO deleteUserImage(@PathVariable long id, HttpServletRequest request ){
+    public ImageDTO deleteUserImage(@PathVariable long id, HttpServletRequest request) {
 
         String loggedInEmail = request.getUserPrincipal().getName();
 
@@ -160,6 +161,5 @@ public class UserRestController {
 
         return imageMapper.toDTO(image);
     }
-    
-    
+
 }

@@ -19,7 +19,7 @@ public interface ProductBasicMapper {
     // GET /api/v1/products/
     List<ProductBasicDTO> toDTOs(Collection<Product> products);
 
-    // POST y PUT
+    // POST and PUT
     @Mapping(target = "orderItems", ignore = true)
     @Mapping(target = "cartItems", ignore = true)
     @Mapping(target = "reviews", ignore = true)

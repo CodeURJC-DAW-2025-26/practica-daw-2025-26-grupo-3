@@ -53,6 +53,10 @@ public class ProductService {
         return productRepository.findAllWithImages();
     }
 
+    public Page<Product> findAll(Pageable pageable) {
+        return productRepository.findAllWithImages(pageable);
+    }
+
     public List<Product> findTop8ByType(int favourite) {
         return productRepository.findTop8ByState(favourite);
     }
@@ -175,18 +179,19 @@ public class ProductService {
 
                         }
                     }
-                   
+
                 }
-                 // save the product in ddbb
+                // save the product in ddbb
                 productRepository.save(existingProduct);
 
                 return existingProduct;
-            }else {
-                // If the user doesn't have permissions, we throw an error instead of returning anything.
+            } else {
+                // If the user doesn't have permissions, we throw an error instead of returning
+                // anything.
                 throw new SecurityException("No tienes permiso para editar este producto.");
             }
-            
-        }else {
+
+        } else {
             // If the product doesn´t exist, we throw an error.
             throw new NoSuchElementException("El producto no existe.");
         }
@@ -199,10 +204,10 @@ public class ProductService {
         User seller = product.getSeller();
 
         if (seller.getEmail().equals(loggedInEmail) || isAdmin) {
-            
+
             product.getImages().add(image);
-                
-                return productRepository.save(product);
+
+            return productRepository.save(product);
         } else {
             throw new SecurityException("No tienes permiso para añadir imágenes a este producto");
         }
@@ -225,17 +230,45 @@ public class ProductService {
 
                 if (images.get(i).getId().equals(imageId)) {
                     images.remove(i);
-                    found = true; //image found and deleted
+                    found = true; // image found and deleted
                 }
 
-                i--; //next photo
+                i--; // next photo
 
             }
-            //We save the changes of the product
+            // We save the changes of the product
             return productRepository.save(product);
         } else {
             throw new SecurityException("No tienes permiso para borrar imágenes de este producto");
         }
+    }
+
+    // This method is for the api
+    public Error productCreateCheck(Product product) {
+
+        Error error = null;
+
+        // Verification of the product name
+        error = productNameCheck(product.getProductName());
+        if (error != null)
+            return error;
+
+        // Verification of the product state
+        error = productStateCheck(product.getState());
+        if (error != null)
+            return error;
+
+        // Verification of de product price
+        error = productPriceCheck(product.getPrice());
+        if (error != null)
+            return error;
+
+        // Verification of the product description
+        error = productDescriptionCheck(product.getDescription());
+        if (error != null)
+            return error;
+
+        return error;
     }
 
     public Error productCreateCheck(Product product, List<MultipartFile> images) {

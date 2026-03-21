@@ -95,13 +95,13 @@ public class WebSecurityConfig {
                         .successHandler(loginSuccessHandler)
                         .usernameParameter("email")
 
-                        // ---> NUEVO: Reemplazamos el .failureUrl() por esto:
+                        // ---> NEW: Replace .failureUrl() with this:
                         .failureHandler((request, response, exception) -> {
                             if (exception instanceof org.springframework.security.authentication.DisabledException) {
-                                // Si está bloqueado, lo mandamos a tu pantalla bonita
+                                // If disabled, redirect to the blocked user page
                                 response.sendRedirect("/blocked_user_error");
                             } else {
-                                // Si falló por otra cosa (mala contraseña), va a tu error normal
+                                // If it failed for another reason (bad password), go to the normal error
                                 response.sendRedirect("/loginerror");
                             }
                         }))
