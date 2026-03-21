@@ -3,10 +3,13 @@ package es.grupo3.practica25_26.controller.restcontroller;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.Collection;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +30,7 @@ import es.grupo3.practica25_26.dto.ProductDTO;
 import es.grupo3.practica25_26.mapper.ImageMapper;
 import es.grupo3.practica25_26.mapper.ProductBasicMapper;
 import es.grupo3.practica25_26.mapper.ProductMapper;
+import es.grupo3.practica25_26.model.Error;
 import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.model.Product;
 import es.grupo3.practica25_26.model.User;
@@ -58,8 +63,8 @@ public class ProductRestController {
 
     // get all products
     @GetMapping("/")
-    public Collection<ProductBasicDTO> getAllProducts() {
-        return basicProductMapper.toDTOs(productService.findAll());
+    public Page<ProductBasicDTO> getProducts(@PageableDefault(size = 8) Pageable pageable) {
+        return productService.findAll(pageable).map(basicProductMapper::toDTO);
     }
 
     // get specific product by id
@@ -86,6 +91,13 @@ public class ProductRestController {
         product.setSeller(seller);
 
         // save the product in the ddbb
+        Error error = productService.productCreateCheck(product);
+        if (error != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "There are errors in your product creation request: " + error.getTitle() + " - "
+                            + error.getMessage());
+        }
+
         productService.save(product);
 
         // create the URI for the Location header
@@ -106,6 +118,19 @@ public class ProductRestController {
         Product editedproduct = basicProductMapper.toDomain(productBasicDTO);
         String loggedInEmail = request.getUserPrincipal().getName();
         boolean isAdmin = request.isUserInRole("ADMIN");
+
+        // we obtain the original product for the validation
+        Product existingProduct = productService.findById(id);
+        if (existingProduct == null) {
+            throw new NoSuchElementException("Product not found");
+        }
+
+        Error error = productService.productUpdateCheck(editedproduct, existingProduct, null, null);
+        if (error != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "There are errors in your product update request: " + error.getTitle() + " - "
+                            + error.getMessage());
+        }
 
         Product updatedProduct = productService.updateProduct(id, editedproduct, null, null, loggedInEmail, isAdmin);
 

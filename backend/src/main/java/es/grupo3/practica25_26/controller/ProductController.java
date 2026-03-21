@@ -172,7 +172,7 @@ public class ProductController {
                 return errorService.setErrorPageWithButton(
                         model,
                         session,
-                        "No autorizado", 
+                        "No autorizado",
                         e.getMessage(),
                         "Volver a mis productos",
                         "/my_products");
@@ -245,7 +245,7 @@ public class ProductController {
                         "/my_products");
 
             } catch (SecurityException e) {
-                // Capturamos la falta de permisos
+                // Capture missing permissions
                 return errorService.setErrorPageWithButton(
                         model, session,
                         "No autorizado",
