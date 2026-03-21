@@ -1,4 +1,4 @@
-/* Botón exportar todos en PDF estilo igual que exportar factura PDF */
+/* Export all to PDF button, same style as export invoice PDF */
 .export-all-orders-pdf {
   background-color: #fff;
   color: #4e73df;
@@ -13,11 +13,11 @@
   border: 1px solid #4e73df;
 }
 
-/* ALERTAS SUPERIORES FIJAS */
+/* FIXED TOP ALERTS */
 .alert-container {
   position: fixed;
   top: 70px;
-  /* Ajusta según la altura del navbar */
+  /* Adjust to navbar height */
   left: 0;
   width: 100vw;
   z-index: 1055;
