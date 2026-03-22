@@ -60,8 +60,12 @@ public class UserRestController {
     @Autowired
     private ImageMapper imageMapper;
 
-    @GetMapping("/")
-    public Collection<UserBasicDTO> getAllUsers() {
+    @GetMapping
+    public Collection<UserBasicDTO> getAllUsers(HttpServletRequest request) {
+        if (!request.isUserInRole("ADMIN")) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Only administators can list all users.");
+        }
         return basicMapper.toDTOs(userService.getAllUsers());
     }
 
@@ -80,7 +84,7 @@ public class UserRestController {
         return basicMapper.toDTO(user);
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<UserBasicDTO> createUser(@RequestBody UserPostDTO newUserDTO) {
         User newUser = postMapper.toDomain(newUserDTO);
         newUser.setState(true);
@@ -132,9 +136,7 @@ public class UserRestController {
         }
 
         String loggedInEmail = request.getUserPrincipal().getName();
-
         Image image = imageService.createImage(imageFile.getInputStream());
-
         userService.addImageToUser(id, image, loggedInEmail);
 
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -159,7 +161,6 @@ public class UserRestController {
         }
 
         userService.removeImageFromUser(id, loggedInEmail);
-
         return imageMapper.toDTO(image);
     }
 
@@ -172,14 +173,14 @@ public class UserRestController {
         // We check if the user is an admin
         if (!request.isUserInRole("ADMIN")) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                    "Solo los administradores pueden bloquear o desbloquear usuarios");
+                    "Only administrators can accept or block users.");
         }
 
         // We obtain the state of the user from the request (JSON)
         Boolean newState = body.get("state");
         if (newState == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Debes enviar un JSON con el campo 'state' (true o false)");
+                    "You must send a JSON with the boolean field 'state' ");
         }
 
         // This method verifies if the user state can be updated and in that case

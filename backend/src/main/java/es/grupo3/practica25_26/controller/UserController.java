@@ -20,6 +20,7 @@ import es.grupo3.practica25_26.model.Error;
 import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.model.Order;
 import es.grupo3.practica25_26.model.Product;
+import es.grupo3.practica25_26.model.ShoppingCart;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.ErrorService;
 import es.grupo3.practica25_26.service.ImageService;
@@ -72,6 +73,7 @@ public class UserController {
             userService.addRoles(newUser, "USER");
             newUser.setPassword(passwordEncoder.encode(pass));
             userService.saveUser(newUser);
+            newUser.setShoppingCart(new ShoppingCart());
 
             if (!imageFile.isEmpty()) {
                 Image image = imageService.createImage(imageFile.getInputStream());

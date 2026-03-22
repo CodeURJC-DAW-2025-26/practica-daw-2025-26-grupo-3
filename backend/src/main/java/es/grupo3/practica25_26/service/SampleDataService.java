@@ -12,7 +12,11 @@ import org.springframework.security.crypto.password.PasswordEncoder; // Valid im
 
 import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.model.Product;
+import es.grupo3.practica25_26.model.Review;
 import es.grupo3.practica25_26.model.User;
+import es.grupo3.practica25_26.model.Order;
+import es.grupo3.practica25_26.model.OrderItem;
+import es.grupo3.practica25_26.model.ShoppingCart;
 import jakarta.annotation.PostConstruct;
 
 /**
@@ -32,6 +36,12 @@ public class SampleDataService {
 
         @Autowired
         private ImageService imageService;
+
+        @Autowired
+        private ReviewService reviewService;
+
+        @Autowired
+        private OrderService orderService;
 
         @Autowired
         private PasswordEncoder passwordEncoder; // Injected dependency for password hashing
@@ -310,17 +320,69 @@ public class SampleDataService {
                                         addImageToProduct(productsToSave.get(23),
                                                         "static/images/Disco_Duro_Externo_2TB_WD_3.png");
 
+                                        // Product 1 Reviews
+                                        Review review1 = new Review(exampleUser2, "Excelente producto",
+                                                        "El portátil funciona a la perfección. Es rápido y ligero, ideal para trabajar en movilidad. La batería dura bastante y la pantalla tiene muy buena resolución.",
+                                                        "15/10/2024", 5, 0);
+                                        reviewService.saveReview(productsToSave.get(0), review1);
+
+                                        Review review2 = new Review(adminUser, "Buen estado general",
+                                                        "El equipo llegó bien embalado y limpio. Tiene algunas marcas de uso en la carcasa pero nada importante. El rendimiento es el esperado para un i7 de esta generación.",
+                                                        "20/11/2024", 4, 0);
+                                        reviewService.saveReview(productsToSave.get(0), review2);
+
+                                        Review review3 = new Review(exampleUser2, "Relación calidad-precio correcta",
+                                                        "Por el precio que tiene está bastante bien. Lo uso para estudiar y cumple de sobra. Quizás se calienta un poco si le exiges mucho, pero nada grave.",
+                                                        "05/01/2025", 4, 0);
+                                        reviewService.saveReview(productsToSave.get(0), review3);
+
                                 } catch (Exception e) {
                                         System.out.println("Could not load sample images: " + e.getMessage());
                                 }
 
                                 // Save all the products in the ddbb
                                 productService.saveAll(productsToSave);
+
+                                // Initialize orders
+                                initializeOrders(exampleUser1, exampleUser2, productsToSave);
                         }
                 } catch (Exception e) {
                         System.out.println("Error initializing sample data: " + e.getMessage());
                 }
 
+        }
+
+        private void initializeOrders(User user1, User user2, List<Product> products) {
+                // User 1 Orders
+                createOrder(user1, "10/02/2025", 1, "Pendiente",
+                                List.of(products.get(1), products.get(2)),
+                                List.of(1, 1));
+
+                createOrder(user1, "15/03/2025", 1, "Pendiente",
+                                List.of(products.get(5)),
+                                List.of(1));
+
+                // User 2 Orders
+                createOrder(user2, "05/01/2025", 1, "Pendiente",
+                                List.of(products.get(0), products.get(12)),
+                                List.of(1, 1)); // 0: Laptop, 12: Mouse
+
+                createOrder(user2, "20/03/2025", 1, "Pendiente",
+                                List.of(products.get(4)),
+                                List.of(2)); // 4: Keyboard
+        }
+
+        private void createOrder(User user, String date, int state, String stateText, List<Product> products,
+                        List<Integer> quantities) {
+                Order order = new Order(user, date, state);
+                order.setStateText(stateText);
+
+                List<OrderItem> items = new ArrayList<>();
+                for (int i = 0; i < products.size(); i++) {
+                        items.add(new OrderItem(order, products.get(i), quantities.get(i)));
+                }
+                order.setOrderItems(items); // calculates total price automatically
+                orderService.save(order);
         }
 
         /**
@@ -331,6 +393,7 @@ public class SampleDataService {
                 Resource image = new ClassPathResource(classpathResource);
                 if (image.exists()) {
                         Image createdImage = imageService.createImage(image.getInputStream());
+                        createdImage.setProduct(product);
                         product.getImages().add(createdImage);
                         productService.save(product);
                 }
@@ -342,6 +405,7 @@ public class SampleDataService {
                 if (image.exists()) {
                         Image createdImage = imageService.createImage(image.getInputStream());
                         user.setImage(createdImage);
+                        createdImage.setUser(user);
                         userService.saveUser(user);
                 }
         }
@@ -359,6 +423,7 @@ public class SampleDataService {
                 User newUser = new User(name, surname, address, email, passwordEncoder.encode(password));
                 newUser.setRoles(new ArrayList<>(List.of("USER"))); // Assign default role
                 newUser.setState(state); // Set user as active
+                newUser.setShoppingCart(new ShoppingCart());
                 userService.saveUser(newUser);
                 return newUser;
         }
@@ -375,6 +440,7 @@ public class SampleDataService {
                 User newUser = new User(name, surname, address, email, passwordEncoder.encode(password));
                 newUser.setRoles(new ArrayList<>(List.of("USER", "ADMIN"))); // Assign Admin privileges
                 newUser.setState(state);
+                newUser.setShoppingCart(new ShoppingCart());
                 userService.saveUser(newUser);
                 return newUser;
         }

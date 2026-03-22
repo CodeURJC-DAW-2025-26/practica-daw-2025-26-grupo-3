@@ -7,7 +7,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
 import es.grupo3.practica25_26.dto.ShoppingCartDTO;
-import es.grupo3.practica25_26.model.Order;
 import es.grupo3.practica25_26.model.ShoppingCart;
 
 // we use uses to specify that we want to use the CartItemMapper to map the cart items of the shopping cart, and we ignore unmapped target properties because we don't want to map the user property of the shopping cart

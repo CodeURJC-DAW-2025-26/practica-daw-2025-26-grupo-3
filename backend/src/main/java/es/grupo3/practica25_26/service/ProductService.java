@@ -93,6 +93,11 @@ public class ProductService {
         // assign the images to the product
         product.setImages(productImages);
 
+        // We must set the product in the images because mappedBy="product" in Product
+        for (Image image : productImages) {
+            image.setProduct(product);
+        }
+
         productRepository.save(product);
     }
 
@@ -206,6 +211,7 @@ public class ProductService {
         if (seller.getEmail().equals(loggedInEmail) || isAdmin) {
 
             product.getImages().add(image);
+            image.setProduct(product);
 
             return productRepository.save(product);
         } else {

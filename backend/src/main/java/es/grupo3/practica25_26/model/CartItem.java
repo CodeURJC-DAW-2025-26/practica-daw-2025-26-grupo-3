@@ -1,6 +1,5 @@
 package es.grupo3.practica25_26.model;
 
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,10 +14,6 @@ public class CartItem {
 
     @ManyToOne
     Product product;
-
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
 
     int quantity;
     int listIndex;
@@ -79,13 +74,4 @@ public class CartItem {
     public void setListIndex(int listIndex) {
         this.listIndex = listIndex;
     }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
 }
