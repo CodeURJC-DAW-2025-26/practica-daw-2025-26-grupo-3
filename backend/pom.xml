@@ -132,6 +132,23 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<jmxPort>9009</jmxPort>
+				</configuration>
+				<executions>
+					<execution>
+						<id>pre-integration-test</id>
+						<goals>
+							<goal>start</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>post-integration-test</id>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>
@@ -158,6 +175,7 @@
 				<executions>
 					<execution>
 						<id>integration-test</id>
+						<phase>integration-test</phase>
 						<goals>
 							<goal>generate</goal>
 						</goals>
@@ -168,6 +186,44 @@
 					<outputFileName>api-docs.yaml</outputFileName>
 					<outputDir>${project.basedir}/../api-docs</outputDir>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>7.17.0</version>
+				<executions>
+					<execution>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<generatorName>html2</generatorName>
+							<inputSpec>${project.basedir}/../api-docs/api-docs.yaml</inputSpec>
+							<output>${project.basedir}/../api-docs/</output>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>com.coderplus.maven.plugins</groupId>
+				<artifactId>copy-rename-maven-plugin</artifactId>
+				<version>1.0.1</version>
+				<executions>
+					<execution>
+						<id>rename-file</id>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>rename</goal>
+						</goals>
+						<configuration>
+							<sourceFile>${project.basedir}/../api-docs/index.html</sourceFile>
+							<destinationFile>${project.basedir}/../api-docs/api-docs.html</destinationFile>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 
 		</plugins>
