@@ -64,11 +64,13 @@ public class ImageRestController {
     }
 
     // Replace an image
-    @Operation(summary = "Replace image file content")    @ApiResponses(value = {
+    @Operation(summary = "Replace image file content")
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Image replaced successfully"),
             @ApiResponse(responseCode = "404", description = "Image not found"),
             @ApiResponse(responseCode = "400", description = "Invalid image file")
-    })    @PutMapping("/{id}/media")
+    })
+    @PutMapping("/{id}/media")
     public ResponseEntity<Object> replaceImageFile(@PathVariable long id, @RequestParam MultipartFile imageFile)
             throws IOException {
 
