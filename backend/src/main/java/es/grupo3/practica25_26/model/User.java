@@ -56,7 +56,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true) // This makes the image to be
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true) // This makes the image to be
                                                                // persistent when created.
     private Image image;
 

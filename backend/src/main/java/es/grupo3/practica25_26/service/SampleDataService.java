@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder; // Valid im
 
 import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.model.Product;
+import es.grupo3.practica25_26.model.Review;
 import es.grupo3.practica25_26.model.User;
 import jakarta.annotation.PostConstruct;
 
@@ -32,6 +33,9 @@ public class SampleDataService {
 
         @Autowired
         private ImageService imageService;
+        
+        @Autowired
+        private ReviewService reviewService;
 
         @Autowired
         private PasswordEncoder passwordEncoder; // Injected dependency for password hashing
@@ -309,6 +313,22 @@ public class SampleDataService {
                                                         "static/images/Disco_Duro_Externo_2TB_WD_2.png");
                                         addImageToProduct(productsToSave.get(23),
                                                         "static/images/Disco_Duro_Externo_2TB_WD_3.png");
+                                        
+                                        // Product 1 Reviews
+                                        Review review1 = new Review(exampleUser2, "Excelente producto",
+                                                        "El portátil funciona a la perfección. Es rápido y ligero, ideal para trabajar en movilidad. La batería dura bastante y la pantalla tiene muy buena resolución.",
+                                                        "15/10/2024", 5, 0);
+                                        reviewService.saveReview(productsToSave.get(0), review1);
+
+                                        Review review2 = new Review(adminUser, "Buen estado general",
+                                                        "El equipo llegó bien embalado y limpio. Tiene algunas marcas de uso en la carcasa pero nada importante. El rendimiento es el esperado para un i7 de esta generación.",
+                                                        "20/11/2024", 4, 0);
+                                        reviewService.saveReview(productsToSave.get(0), review2);
+
+                                        Review review3 = new Review(exampleUser2, "Relación calidad-precio correcta",
+                                                        "Por el precio que tiene está bastante bien. Lo uso para estudiar y cumple de sobra. Quizás se calienta un poco si le exiges mucho, pero nada grave.",
+                                                        "05/01/2025", 4, 0);
+                                        reviewService.saveReview(productsToSave.get(0), review3);
 
                                 } catch (Exception e) {
                                         System.out.println("Could not load sample images: " + e.getMessage());
@@ -331,6 +351,7 @@ public class SampleDataService {
                 Resource image = new ClassPathResource(classpathResource);
                 if (image.exists()) {
                         Image createdImage = imageService.createImage(image.getInputStream());
+                        createdImage.setProduct(product);
                         product.getImages().add(createdImage);
                         productService.save(product);
                 }
@@ -342,6 +363,7 @@ public class SampleDataService {
                 if (image.exists()) {
                         Image createdImage = imageService.createImage(image.getInputStream());
                         user.setImage(createdImage);
+                        createdImage.setUser(user);
                         userService.saveUser(user);
                 }
         }
