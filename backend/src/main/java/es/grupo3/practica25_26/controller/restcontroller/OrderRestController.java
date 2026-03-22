@@ -21,6 +21,9 @@ import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.BillService;
 import es.grupo3.practica25_26.service.OrderService;
 import es.grupo3.practica25_26.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,6 +48,12 @@ public class OrderRestController {
     @Autowired
     private OrderMapper orderMapper;
 
+    @Operation(summary = "Get PDF for a specific order")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "PDF retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Order not found"),
+            @ApiResponse(responseCode = "403", description = "Forbidden (Not user's order)")
+    })
     @GetMapping("/{orderId}/bill")
     public ResponseEntity<byte[]> getOrderPdf(@PathVariable long orderId, HttpServletRequest request)
             throws IOException {
@@ -54,6 +63,10 @@ public class OrderRestController {
         return billService.orderPdfConfig(orderId, user);
     }
 
+    @Operation(summary = "Get PDF for all orders")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "PDF of all orders retrieved successfully")
+    })
     @GetMapping("/all/bill")
     public ResponseEntity<byte[]> getAllOrderPdf(HttpServletRequest request) throws IOException {
         String currentEmail = request.getUserPrincipal().getName();
@@ -61,6 +74,11 @@ public class OrderRestController {
         return billService.allOrdersPdfConfig(currentUser);
     }
 
+    @Operation(summary = "Get all orders (Admin)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "All orders retrieved successfully"),
+            @ApiResponse(responseCode = "403", description = "Forbidden (Admin only)")
+    })
     @GetMapping
     public Collection<OrderDTO> getAllOrders(HttpServletRequest request) {
         if (!request.isUserInRole("ADMIN")) {
@@ -71,6 +89,11 @@ public class OrderRestController {
         return orderMapper.toDTOs(orderService.getAllOrders());
     }
 
+    @Operation(summary = "Get current user orders")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User orders retrieved successfully"),
+            @ApiResponse(responseCode = "403", description = "Forbidden (User not found)")
+    })
     @GetMapping("/me")
     public Collection<OrderDTO> getAllUserOrders(HttpServletRequest request) {
         String loggedEmail = request.getUserPrincipal().getName();
@@ -84,6 +107,12 @@ public class OrderRestController {
         return orderMapper.toDTOs(loggedUser.getOrders());
     }
 
+    @Operation(summary = "Create order from shopping cart")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Order created successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized (User not logged in)"),
+            @ApiResponse(responseCode = "404", description = "Cart is empty or not found")
+    })
     @PostMapping
     public ResponseEntity<OrderDTO> shoppingCartToOrder(HttpServletRequest request) {
         if (request.getUserPrincipal() == null) {
@@ -106,6 +135,13 @@ public class OrderRestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(orderDTO);
     }
 
+    @Operation(summary = "Accept an order (Admin)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Order accepted successfully"),
+            @ApiResponse(responseCode = "403", description = "Forbidden (Admin only)"),
+            @ApiResponse(responseCode = "400", description = "Invalid request (Missing 'accept' field or false)"),
+            @ApiResponse(responseCode = "404", description = "Order not found")
+    })
     @PutMapping("/{orderId}")
     public ResponseEntity<OrderDTO> acceptOrder(@PathVariable long orderId, @RequestBody Map<String, Boolean> body,
             HttpServletRequest request) {

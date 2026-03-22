@@ -16,6 +16,9 @@ import es.grupo3.practica25_26.model.Product;
 import es.grupo3.practica25_26.service.OrderService;
 import es.grupo3.practica25_26.service.ProductService;
 import es.grupo3.practica25_26.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("/api/v1/admin/stats")
@@ -30,6 +33,10 @@ public class AdminRestController {
     @Autowired
     private ProductService productService;
 
+    @Operation(summary = "Get KPIs statistics")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "KPIs retrieved successfully")
+    })
     @GetMapping("/kpis")
     public ResponseEntity<KpiDTO> getKpis() {
         // we obtain the KPIs from the services
@@ -42,6 +49,10 @@ public class AdminRestController {
         return ResponseEntity.ok(new KpiDTO(totalUsers, totalProducts, pendingOrders, totalAmountMoney));
     }
 
+    @Operation(summary = "Get top selling products for graphic")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Top selling products retrieved successfully")
+    })
     @GetMapping("/top-products")
     public ResponseEntity<DataGraphicDTO> getTopProductsGraphic() {
         // obytain the info
@@ -59,6 +70,10 @@ public class AdminRestController {
 
     }
 
+    @Operation(summary = "Get product state distribution")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Product state distribution retrieved successfully")
+    })
     @GetMapping("/product-states")
     public ResponseEntity<DataGraphicDTO> getProductsStates() {
         // Get product state distribution data

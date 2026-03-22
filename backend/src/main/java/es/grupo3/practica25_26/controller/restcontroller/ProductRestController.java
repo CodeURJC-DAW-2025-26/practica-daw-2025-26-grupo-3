@@ -37,6 +37,9 @@ import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.ImageService;
 import es.grupo3.practica25_26.service.ProductService;
 import es.grupo3.practica25_26.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
@@ -62,12 +65,21 @@ public class ProductRestController {
     private ImageMapper imageMapper;
 
     // get all products
+    @Operation(summary = "Get all products")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Products retrieved successfully")
+    })
     @GetMapping("/")
     public Page<ProductBasicDTO> getProducts(@PageableDefault(size = 8) Pageable pageable) {
         return productService.findAll(pageable).map(basicProductMapper::toDTO);
     }
 
     // get specific product by id
+    @Operation(summary = "Get product by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Product found"),
+            @ApiResponse(responseCode = "404", description = "Product not found")
+    })
     @GetMapping("/{id}")
     public ProductDTO getProductById(@PathVariable long id) {
         Product product = productService.findById(id);
@@ -78,6 +90,12 @@ public class ProductRestController {
     }
 
     // Create a new product
+    @Operation(summary = "Create a new product")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Product created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid product data"),
+            @ApiResponse(responseCode = "403", description = "Forbidden (Permission denied)")
+    })
     @PostMapping("/")
     public ResponseEntity<ProductBasicDTO> createProduct(@RequestBody ProductBasicDTO productBasicDTO,
             HttpServletRequest request) {
@@ -111,6 +129,13 @@ public class ProductRestController {
     }
 
     // Update a product (put)
+    @Operation(summary = "Update a product")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Product updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Product not found"),
+            @ApiResponse(responseCode = "400", description = "Invalid product data"),
+            @ApiResponse(responseCode = "403", description = "Forbidden (Permission denied)")
+    })
     @PutMapping("/{id}")
     public ProductBasicDTO updateProduct(@PathVariable long id, @RequestBody ProductBasicDTO productBasicDTO,
             HttpServletRequest request) throws IOException {
@@ -138,6 +163,12 @@ public class ProductRestController {
     }
 
     // Delete a product (delete)
+    @Operation(summary = "Delete a product")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Product deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Product not found"),
+            @ApiResponse(responseCode = "403", description = "Forbidden (Permission denied)")
+    })
     @DeleteMapping("/{id}")
     public ProductBasicDTO deleteProduct(@PathVariable long id, HttpServletRequest request) {
 
@@ -147,6 +178,13 @@ public class ProductRestController {
 
     // Create an image for the product
 
+    @Operation(summary = "Upload product image")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Image uploaded successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid image file"),
+            @ApiResponse(responseCode = "404", description = "Product not found"),
+            @ApiResponse(responseCode = "403", description = "Forbidden (Permission denied)")
+    })
     @PostMapping("/{id}/images/")
     public ResponseEntity<ImageDTO> createProductImage(@PathVariable long id, @RequestParam MultipartFile imageFile,
             HttpServletRequest request) throws IOException {
@@ -171,6 +209,12 @@ public class ProductRestController {
 
     // Delete an image from the product
 
+    @Operation(summary = "Delete product image")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Image deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Product or image not found"),
+            @ApiResponse(responseCode = "403", description = "Forbidden (Permission denied)")
+    })
     @DeleteMapping("/{productId}/images/{imageId}")
     public ImageDTO deleteProductImage(@PathVariable long productId, @PathVariable long imageId,
             HttpServletRequest request) {

@@ -23,6 +23,9 @@ import es.grupo3.practica25_26.model.ShoppingCart;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.ShoppingCartService;
 import es.grupo3.practica25_26.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -42,6 +45,11 @@ public class ShoppingCartRestController {
     @Autowired
     private CartItemMapper cartItemMapper;
 
+    @Operation(summary = "Get my shopping cart")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Shopping cart retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Shopping cart not found")
+    })
     @GetMapping("/me")
     public ResponseEntity<ShoppingCartDTO> getMyCart(HttpServletRequest request) {
 
@@ -67,6 +75,11 @@ public class ShoppingCartRestController {
         return ResponseEntity.ok(cartDTO);
     }
 
+    @Operation(summary = "Add product to cart")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Product added to cart"),
+            @ApiResponse(responseCode = "404", description = "Product not found")
+    })
     @PostMapping("/me/items")
     public ResponseEntity<ShoppingCartDTO> addProductToCart(@RequestBody CartItemRequestDTO productRequest,
             HttpServletRequest request) {
@@ -79,6 +92,11 @@ public class ShoppingCartRestController {
         return ResponseEntity.ok(shoppingCartMapper.toDTO(user.getShoppingCart()));
     }
 
+    @Operation(summary = "Remove product from cart")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Product removed from cart"),
+            @ApiResponse(responseCode = "404", description = "Cart or item not found")
+    })
     @DeleteMapping("/me/items/{itemId}")
     public ResponseEntity<ShoppingCartDTO> removeProductFromCart(@PathVariable long itemId, HttpServletRequest request)
             throws Exception {
@@ -103,6 +121,12 @@ public class ShoppingCartRestController {
         return ResponseEntity.ok(shoppingCartMapper.toDTO(user.getShoppingCart()));
     }
 
+    @Operation(summary = "Modify item quantity in cart")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Quantity modified successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid operation or item not in cart"),
+            @ApiResponse(responseCode = "404", description = "Cart item not found")
+    })
     @PutMapping("/me/items/{cartItemId}")
     public ResponseEntity<CartItemDTO> modifyQuantity(HttpServletRequest request, @PathVariable long cartItemId,
             @RequestBody Map<String, Integer> body) throws Exception {

@@ -36,6 +36,9 @@ import es.grupo3.practica25_26.model.Error;
 import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.service.ImageService;
 import es.grupo3.practica25_26.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
@@ -60,6 +63,11 @@ public class UserRestController {
     @Autowired
     private ImageMapper imageMapper;
 
+    @Operation(summary = "Get all users (Admin)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Users retrieved successfully"),
+            @ApiResponse(responseCode = "403", description = "Forbidden (Admin only)")
+    })
     @GetMapping
     public Collection<UserBasicDTO> getAllUsers(HttpServletRequest request) {
         if (!request.isUserInRole("ADMIN")) {
@@ -69,6 +77,11 @@ public class UserRestController {
         return basicMapper.toDTOs(userService.getAllUsers());
     }
 
+    @Operation(summary = "Get user by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User found"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     @GetMapping("/{id}")
     public UserBasicDTO getUserById(@PathVariable long id) {
         User user = userService.findUserById(id);
@@ -78,12 +91,23 @@ public class UserRestController {
         return basicMapper.toDTO(user);
     }
 
+    @Operation(summary = "Delete user by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "403", description = "Forbidden (Permission denied)")
+    })
     @DeleteMapping("/{id}")
     public UserBasicDTO deleteUserById(@PathVariable long id, HttpServletRequest request) {
         User user = userService.deleteUserById(id, request.getUserPrincipal().getName());
         return basicMapper.toDTO(user);
     }
 
+    @Operation(summary = "Register new user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "User registered successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid user data or email already in use")
+    })
     @PostMapping
     public ResponseEntity<UserBasicDTO> createUser(@RequestBody UserPostDTO newUserDTO) {
         User newUser = postMapper.toDomain(newUserDTO);
@@ -107,6 +131,12 @@ public class UserRestController {
         return ResponseEntity.created(location).body(responseDTO);
     }
 
+    @Operation(summary = "Update user details")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid user data or email conflict"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     @PutMapping("/{id}")
     public UserBasicDTO updateUser(@PathVariable long id, @RequestBody UserPostDTO updatedUserDTO,
             HttpServletRequest request) {
@@ -127,6 +157,11 @@ public class UserRestController {
     }
 
     // Upload a profile photo
+    @Operation(summary = "Upload user profile image")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Image uploaded successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid image file")
+    })
     @PostMapping("/{id}/image")
     public ResponseEntity<ImageDTO> uploadUserImage(@PathVariable long id, @RequestBody MultipartFile imageFile,
             HttpServletRequest request) throws IOException {
@@ -148,6 +183,12 @@ public class UserRestController {
     }
 
     // Delete the actual profile photo
+    @Operation(summary = "Delete user profile image")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Image deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "User or image not found"),
+            @ApiResponse(responseCode = "400", description = "User has no image to delete")
+    })
     @DeleteMapping("/{id}/image/")
     public ImageDTO deleteUserImage(@PathVariable long id, HttpServletRequest request) {
 
@@ -166,6 +207,13 @@ public class UserRestController {
 
     // Endpoint to change the state of the user (Blocked or Unblocked)
     // ONLY FOR ADMINS
+    @Operation(summary = "Change user state (Admin)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User state updated successfully"),
+            @ApiResponse(responseCode = "403", description = "Forbidden (Admin only)"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "400", description = "Invalid request (Missing 'state' field)")
+    })
     @PutMapping("/{id}/state")
     public UserBasicDTO changeUserState(@PathVariable long id, @RequestBody Map<String, Boolean> body,
             HttpServletRequest request) {

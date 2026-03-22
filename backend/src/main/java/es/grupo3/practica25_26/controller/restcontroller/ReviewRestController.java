@@ -25,6 +25,9 @@ import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.model.Error;
 import es.grupo3.practica25_26.service.ReviewService;
 import es.grupo3.practica25_26.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
@@ -44,16 +47,31 @@ public class ReviewRestController {
     @Autowired
     private UserService userService;
 
+    @Operation(summary = "Get all reviews")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Reviews retrieved successfully")
+    })
     @GetMapping("/all/reviews/")
     public Collection<ReviewDTO> getAllReviews() {
         return mapper.toDTOs(reviewService.findAllReviews());
     }
 
+    @Operation(summary = "Get review by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Review found"),
+            @ApiResponse(responseCode = "404", description = "Review not found")
+    })
     @GetMapping("/all/reviews/{id}")
     public ReviewDTO getReviewById(@PathVariable long id) {
         return mapper.toDTO(reviewService.findReviewById(id));
     }
 
+    @Operation(summary = "Delete review")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Review deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Review not found"),
+            @ApiResponse(responseCode = "403", description = "Forbidden (Not owner or admin)")
+    })
     @DeleteMapping("/{productID}/reviews/{reviewID}")
     public ResponseEntity<ReviewDTO> deleteReviewById(@PathVariable long productID, @PathVariable long reviewID,
             HttpServletRequest request) {
@@ -67,6 +85,12 @@ public class ReviewRestController {
         return response;
     }
 
+    @Operation(summary = "Create review for a product")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Review created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid review data"),
+            @ApiResponse(responseCode = "404", description = "Product not found")
+    })
     @PostMapping("/{productId}/reviews/")
     public ResponseEntity<ReviewDTO> createReview(@PathVariable long productId, @RequestBody ReviewPostDTO reviewDTO,
             HttpServletRequest request) {
@@ -78,6 +102,13 @@ public class ReviewRestController {
         return ResponseEntity.created(location).body(mapper.toDTO(newReview));
     }
 
+    @Operation(summary = "Update a review")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Review updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid review data"),
+            @ApiResponse(responseCode = "404", description = "Review not found"),
+            @ApiResponse(responseCode = "403", description = "Forbidden (Not owner)")
+    })
     @PutMapping("/{productId}/reviews/{reviewId}")
     public ResponseEntity<ReviewDTO> updateReview(@PathVariable long productId, @PathVariable long reviewId,
             @RequestBody ReviewPostDTO updatedReviewDTO, HttpServletRequest request) {
