@@ -2,6 +2,7 @@ package es.grupo3.practica25_26.controller.restcontroller;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
@@ -60,6 +61,29 @@ public class OrderRestController {
         return billService.allOrdersPdfConfig(currentUser);
     }
 
+    @GetMapping
+    public Collection<OrderDTO> getAllOrders(HttpServletRequest request) {
+        if (!request.isUserInRole("ADMIN")) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Only administators can list all orders.");
+        }
+
+        return orderMapper.toDTOs(orderService.getAllOrders());
+    }
+
+    @GetMapping("/me")
+    public Collection<OrderDTO> getAllUserOrders(HttpServletRequest request) {
+        String loggedEmail = request.getUserPrincipal().getName();
+        User loggedUser = userService.findUserByEmail(loggedEmail);
+
+        if (loggedUser == null) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "User not found.");
+        }
+
+        return orderMapper.toDTOs(loggedUser.getOrders());
+    }
+
     @PostMapping
     public ResponseEntity<OrderDTO> shoppingCartToOrder(HttpServletRequest request) {
         if (request.getUserPrincipal() == null) {
@@ -74,18 +98,15 @@ public class OrderRestController {
         }
 
         Order newOrder = orderService.saveOrderByUserAndReturn(user);
-
         if (newOrder == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         OrderDTO orderDTO = orderMapper.toDTO(newOrder);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(orderDTO);
-
     }
 
-    @PutMapping("{orderId}")
+    @PutMapping("/{orderId}")
     public ResponseEntity<OrderDTO> acceptOrder(@PathVariable long orderId, @RequestBody Map<String, Boolean> body,
             HttpServletRequest request) {
 

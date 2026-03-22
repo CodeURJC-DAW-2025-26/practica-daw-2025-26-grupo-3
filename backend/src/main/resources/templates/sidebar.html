@@ -2,7 +2,15 @@
 <div class="sidebar bg-light p-3 border-end h-100">
 
     <div class="admin-profile text-center mb-4">
+        {{#user}}
+        {{#image}}
+        <img src="/user-images/{{id}}" alt="Admin" class="rounded-circle mb-2"
+            style="width: 70px; height: 70px; object-fit: cover;">
+        {{/image}}
+        {{^image}}
         <img src="https://placehold.co/70x70" alt="Admin" class="rounded-circle mb-2">
+        {{/image}}
+        {{/user}}
     </div>
 
     <nav class="nav flex-column">

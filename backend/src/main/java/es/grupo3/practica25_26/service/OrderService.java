@@ -142,4 +142,8 @@ public class OrderService {
         order.setStateText("Entregado"); // Corrected text based on state 0
         this.save(order); // Changed from saveOrder to sSave to match OrderService methods
     }
+
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
+    }
 }

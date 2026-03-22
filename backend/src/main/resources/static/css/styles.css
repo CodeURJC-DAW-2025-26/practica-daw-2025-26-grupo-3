@@ -263,11 +263,8 @@ ADMIN DASHBOARD STYLES
 
 /* Sidebar Navigation */
 .sidebar {
-  width: 240px;
-  height: 100vh;
-  position: fixed;
-  left: 0;
-  top: 0;
+  width: 100%;
+  min-height: 100vh;
   background: #182033;
   color: white;
   padding-top: 20px;

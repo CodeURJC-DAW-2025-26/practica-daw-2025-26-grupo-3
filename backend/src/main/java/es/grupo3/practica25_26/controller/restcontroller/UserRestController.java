@@ -60,8 +60,12 @@ public class UserRestController {
     @Autowired
     private ImageMapper imageMapper;
 
-    @GetMapping("/")
-    public Collection<UserBasicDTO> getAllUsers() {
+    @GetMapping
+    public Collection<UserBasicDTO> getAllUsers(HttpServletRequest request) {
+        if (!request.isUserInRole("ADMIN")) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Only administators can list all users.");
+        }
         return basicMapper.toDTOs(userService.getAllUsers());
     }
 
@@ -80,7 +84,7 @@ public class UserRestController {
         return basicMapper.toDTO(user);
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<UserBasicDTO> createUser(@RequestBody UserPostDTO newUserDTO) {
         User newUser = postMapper.toDomain(newUserDTO);
         newUser.setState(true);
