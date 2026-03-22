@@ -50,6 +50,8 @@ public class RestSecurityConfig {
         http.authenticationProvider(restAuthenticationProvider());
 
         http.authorizeHttpRequests(authorize -> authorize
+                // ADMIN ONLY API REST URLS
+                .requestMatchers(HttpMethod.GET, "/api/v1/admin/**").hasRole("ADMIN")
                 // PRIVATE API REST URLS
                 .requestMatchers(HttpMethod.POST, "/api/v1/users/").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()

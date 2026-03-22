@@ -1,11 +1,11 @@
 {
   "info": {
-    "_postman_id": "fb770ceb-b86a-4515-9cba-1784c8b239fa",
+    "_postman_id": "041fc74b-2818-4f13-b9cd-7a37295c11ff",
     "name": "Practica2DAW",
     "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "53371135",
-    "_collection_link": "https://go.postman.co/collection/53371135-fb770ceb-b86a-4515-9cba-1784c8b239fa?source=collection_link"
+    "_collection_link": "https://go.postman.co/collection/53371135-041fc74b-2818-4f13-b9cd-7a37295c11ff?source=collection_link"
   },
   "item": [
     {
@@ -847,6 +847,68 @@
               "path": [
                 "carts",
                 "me"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "AdminRequests",
+      "item": [
+        {
+          "name": "GetKpis",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/stats/kpis",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "stats",
+                "kpis"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetTopProducts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/stats/top-products",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "stats",
+                "top-products"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetProductsStates",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/stats/product-states",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "stats",
+                "product-states"
               ]
             }
           },
