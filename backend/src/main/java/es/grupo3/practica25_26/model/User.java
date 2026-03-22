@@ -192,5 +192,4 @@ public class User {
     public void setFavouriteState(int favouriteState) {
         this.favouriteState = favouriteState;
     }
-
 }

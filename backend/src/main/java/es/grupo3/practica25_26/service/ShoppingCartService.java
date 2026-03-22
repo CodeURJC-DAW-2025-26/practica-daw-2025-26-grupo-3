@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import es.grupo3.practica25_26.model.CartItem;
 import es.grupo3.practica25_26.model.Product;
@@ -110,22 +112,31 @@ public class ShoppingCartService {
         }
     }
 
-    public void quantityUpdateByItemId(ShoppingCart cart, long itemId, int operation) throws Exception {
+    public CartItem quantityUpdateByItemId(ShoppingCart cart, long itemId, int operation, User loggedUser)
+            throws Exception {
         Optional<CartItem> op = cartItemRepository.findById(itemId);
 
         if (!op.isPresent()) {
-            throw new NullPointerException("No cart item found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Requested cartItem (id: " + itemId + ") was not found or does not exist.");
         } else {
-            CartItem requierdItem = op.get();
+            CartItem requiredItem = op.get();
 
-            if (operation == 1) {
-                requierdItem.setQuantity(requierdItem.getQuantity() + 1);
-            } else if (operation == 0) {
-                requierdItem.setQuantity(requierdItem.getQuantity() - 1);
+            List<CartItem> itemsList = loggedUser.getShoppingCart().getCartItems();
+            if (itemsList.indexOf(requiredItem) == -1) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                        "You can't modify the " + itemId + " item because you are not the owner.");
             }
 
-            cartItemRepository.save(requierdItem);
+            if (operation == 1) {
+                requiredItem.setQuantity(requiredItem.getQuantity() + 1);
+            } else if (operation == 0) {
+                requiredItem.setQuantity(requiredItem.getQuantity() - 1);
+            }
+
+            cartItemRepository.save(requiredItem);
             shoppingCartRepository.save(cart);
+            return requiredItem;
         }
     }
 
@@ -144,5 +155,9 @@ public class ShoppingCartService {
         ShoppingCart deleteCart = user.getShoppingCart();
         user.setShoppingCart(null);
         shoppingCartRepository.delete(deleteCart);
+    }
+
+    public Optional<CartItem> findcartItemById(long cartItemId) {
+        return cartItemRepository.findById(cartItemId);
     }
 }

@@ -16,6 +16,7 @@ import es.grupo3.practica25_26.model.Review;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.model.Order;
 import es.grupo3.practica25_26.model.OrderItem;
+import es.grupo3.practica25_26.model.ShoppingCart;
 import jakarta.annotation.PostConstruct;
 
 /**
@@ -422,6 +423,7 @@ public class SampleDataService {
                 User newUser = new User(name, surname, address, email, passwordEncoder.encode(password));
                 newUser.setRoles(new ArrayList<>(List.of("USER"))); // Assign default role
                 newUser.setState(state); // Set user as active
+                newUser.setShoppingCart(new ShoppingCart());
                 userService.saveUser(newUser);
                 return newUser;
         }
@@ -438,6 +440,7 @@ public class SampleDataService {
                 User newUser = new User(name, surname, address, email, passwordEncoder.encode(password));
                 newUser.setRoles(new ArrayList<>(List.of("USER", "ADMIN"))); // Assign Admin privileges
                 newUser.setState(state);
+                newUser.setShoppingCart(new ShoppingCart());
                 userService.saveUser(newUser);
                 return newUser;
         }
