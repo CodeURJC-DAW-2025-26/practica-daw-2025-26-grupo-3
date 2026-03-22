@@ -395,17 +395,17 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 
 ### **Participación de Miembros en la Práctica 2**
 
-#### **Alumno 1 - [Nombre Completo]**
+#### **Alumno 1 - Jorge Naranjo Ballesteros**
 
 [Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Implement shopping cart functionality with REST API endpoints for managing cart items]([URL_commit_1](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/8deac0479f7d2d99195c851cf628fe3f793d9f6d))  | [ShoppingCartRestController.java](backend/src/main/java/es/grupo3/practica25_26/controller/restcontroller/ShoppingCartRestController.java)   |
+|2| [Add admin statistics endpoints and update Postman collection]([URL_commit_2](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/8cfd662fc49a93c6225936138acb2acb489df179))  | [AdminRestController.java](backend/src/main/java/es/grupo3/practica25_26/controller/AdminRestController.java)   |
+|3| [Implement order processing functionality with DTOs and mappers for shopping cart conversion]([URL_commit_3](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/84adeb2dc7cd41b570f84c603d75ef4c5efeeed3))  | [OrderRestController.java](backend/src/main/java/es/grupo3/practica25_26/controller/restcontroller/OrderRestController.java)   |
+|4| [Add admin statistics endpoints and update Postman collection]([URL_commit_4](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/8cfd662fc49a93c6225936138acb2acb489df179))  | [AdminRestController.java](backend/src/main/java/es/grupo3/practica25_26/controller/AdminRestController.java)   |
+|5| [Update Postman collection: modify IDs and add ShoppingCartToOrder request]([URL_commit_5](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/f8a3dc7cf1baca71d785aae4bec1cb2e94a61985))  | [Postman_collection.json](Practica2DAW.postman_collection.json)   |
 
 ---
 
@@ -424,20 +424,6 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 ---
 
 #### **Alumno 3 - [Nombre Completo]**
-
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
-
-| Nº    | Commits      | Files      |
-|:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-
----
-
-#### **Alumno 4 - [Nombre Completo]**
 
 [Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
 
