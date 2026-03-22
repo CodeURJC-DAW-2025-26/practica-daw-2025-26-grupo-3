@@ -1,0 +1,42 @@
+services:
+  mysql-db:
+    # Official MySQL image [cite: 288, 1047]
+    image: mysql:9.2
+    container_name: mysql-db
+    environment:
+      # Define password and DB name with default values [cite: 1557, 1558, 1575]
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD:-pass}
+      - MYSQL_DATABASE=${DB_NAME:-myapp_db}
+    healthcheck:
+      # Command to verify that MySQL is ready for connections [cite: 1331, 1370, 1580]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 5s
+      timeout: 5s
+      start_period: 10s
+      retries: 5
+    volumes:
+      # Named volume for persistence (necessary for OCI Artifacts) [cite: 1483, 1492, 1578]
+      - db_data:/var/lib/mysql
+
+  app:
+    # Your image published on DockerHub [cite: 414, 1207]
+    image: tu_usuario/nombre_app:latest
+    container_name: spring-app
+    depends_on:
+      mysql-db:
+        # Wait for the DB healthcheck to be successful [cite: 1346, 1362, 1477, 1572]
+        condition: service_healthy
+    ports:
+      # Port 8443 for local HTTPS access (localhost:8443)
+      - "8443:8443"
+    environment:
+      # Spring Boot configuration via environment variables [cite: 1217, 1357, 1471, 1565]
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/${DB_NAME:-myapp_db}?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD:-pass}
+      # Variable to toggle between 'create' (initialization) and 'none' modes
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=${DDL_AUTO:-none}
+
+volumes:
+  # Declaration of the volume to persist DB data [cite: 1490, 1586]
+  db_data:
