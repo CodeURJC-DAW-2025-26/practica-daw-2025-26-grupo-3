@@ -136,4 +136,10 @@ public class OrderService {
     public List<Object[]> getTopSellingProducts(Pageable pageable) {
         return orderRepository.findTopSellingProducts(pageable);
     }
+
+    public void acceptOrder(Order order) {
+        order.setState(0); // Update state to Delivered
+        order.setStateText("Entregado"); // Corrected text based on state 0
+        this.save(order); // Changed from saveOrder to sSave to match OrderService methods
+    }
 }

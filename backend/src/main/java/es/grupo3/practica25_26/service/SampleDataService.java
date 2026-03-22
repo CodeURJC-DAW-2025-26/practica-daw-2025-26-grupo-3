@@ -14,6 +14,8 @@ import es.grupo3.practica25_26.model.Image;
 import es.grupo3.practica25_26.model.Product;
 import es.grupo3.practica25_26.model.Review;
 import es.grupo3.practica25_26.model.User;
+import es.grupo3.practica25_26.model.Order;
+import es.grupo3.practica25_26.model.OrderItem;
 import jakarta.annotation.PostConstruct;
 
 /**
@@ -33,9 +35,12 @@ public class SampleDataService {
 
         @Autowired
         private ImageService imageService;
-        
+
         @Autowired
         private ReviewService reviewService;
+
+        @Autowired
+        private OrderService orderService;
 
         @Autowired
         private PasswordEncoder passwordEncoder; // Injected dependency for password hashing
@@ -313,7 +318,7 @@ public class SampleDataService {
                                                         "static/images/Disco_Duro_Externo_2TB_WD_2.png");
                                         addImageToProduct(productsToSave.get(23),
                                                         "static/images/Disco_Duro_Externo_2TB_WD_3.png");
-                                        
+
                                         // Product 1 Reviews
                                         Review review1 = new Review(exampleUser2, "Excelente producto",
                                                         "El portátil funciona a la perfección. Es rápido y ligero, ideal para trabajar en movilidad. La batería dura bastante y la pantalla tiene muy buena resolución.",
@@ -336,11 +341,47 @@ public class SampleDataService {
 
                                 // Save all the products in the ddbb
                                 productService.saveAll(productsToSave);
+
+                                // Initialize orders
+                                initializeOrders(exampleUser1, exampleUser2, productsToSave);
                         }
                 } catch (Exception e) {
                         System.out.println("Error initializing sample data: " + e.getMessage());
                 }
 
+        }
+
+        private void initializeOrders(User user1, User user2, List<Product> products) {
+                // User 1 Orders
+                createOrder(user1, "10/02/2025", 1, "Pendiente",
+                                List.of(products.get(1), products.get(2)),
+                                List.of(1, 1));
+
+                createOrder(user1, "15/03/2025", 1, "Pendiente",
+                                List.of(products.get(5)),
+                                List.of(1));
+
+                // User 2 Orders
+                createOrder(user2, "05/01/2025", 1, "Pendiente",
+                                List.of(products.get(0), products.get(12)),
+                                List.of(1, 1)); // 0: Laptop, 12: Mouse
+
+                createOrder(user2, "20/03/2025", 1, "Pendiente",
+                                List.of(products.get(4)),
+                                List.of(2)); // 4: Keyboard
+        }
+
+        private void createOrder(User user, String date, int state, String stateText, List<Product> products,
+                        List<Integer> quantities) {
+                Order order = new Order(user, date, state);
+                order.setStateText(stateText);
+
+                List<OrderItem> items = new ArrayList<>();
+                for (int i = 0; i < products.size(); i++) {
+                        items.add(new OrderItem(order, products.get(i), quantities.get(i)));
+                }
+                order.setOrderItems(items); // calculates total price automatically
+                orderService.save(order);
         }
 
         /**

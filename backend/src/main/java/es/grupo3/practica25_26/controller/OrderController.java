@@ -159,11 +159,7 @@ public class OrderController {
         Optional<Order> op = orderService.findById(id);
 
         if (op.isPresent()) {
-            Order order = op.get();
-            order.setState(0); // Update state to Delivered
-            order.setStateText("Entregado"); // Corrected text based on state 0
-            orderService.save(order); // Changed from saveOrder to sSave to match OrderService methods
-
+            orderService.acceptOrder(op.get());
             return "redirect:/orders_list"; // Changed to orders_list where this button is located
         } else {
             return errorService.setErrorPageWithButton(model, null, "Pedido no encontrado",
