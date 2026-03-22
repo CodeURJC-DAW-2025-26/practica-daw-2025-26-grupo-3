@@ -52,6 +52,8 @@ public class RestSecurityConfig {
         http.authorizeHttpRequests(authorize -> authorize
                 // ADMIN ONLY API REST URLS
                 .requestMatchers(HttpMethod.GET, "/api/v1/admin/**").hasRole("ADMIN")
+                // 📖 PERMITIR OPENAPI / SWAGGER UI (Añade esta línea)
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 // PRIVATE API REST URLS
                 .requestMatchers(HttpMethod.POST, "/api/v1/users/").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()

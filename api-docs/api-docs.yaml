@@ -1,0 +1,1151 @@
+openapi: 3.1.0
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: https://localhost:8443
+  description: Generated server url
+paths:
+  /api/v1/users/{id}:
+    get:
+      tags:
+      - user-rest-controller
+      operationId: getUserById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserBasicDTO"
+    put:
+      tags:
+      - user-rest-controller
+      operationId: updateUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserPostDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserBasicDTO"
+    delete:
+      tags:
+      - user-rest-controller
+      operationId: deleteUserById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserBasicDTO"
+  /api/v1/users/{id}/state:
+    put:
+      tags:
+      - user-rest-controller
+      operationId: changeUserState
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: boolean
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserBasicDTO"
+  /api/v1/products/{productId}/reviews/{reviewId}:
+    put:
+      tags:
+      - review-rest-controller
+      operationId: updateReview
+      parameters:
+      - name: productId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: reviewId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewPostDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReviewDTO"
+  /api/v1/products/{id}:
+    get:
+      tags:
+      - product-rest-controller
+      operationId: getProductById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductDTO"
+    put:
+      tags:
+      - product-rest-controller
+      operationId: updateProduct
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductBasicDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductBasicDTO"
+    delete:
+      tags:
+      - product-rest-controller
+      operationId: deleteProduct
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductBasicDTO"
+  /api/v1/images/{id}/media:
+    get:
+      tags:
+      - image-rest-controller
+      operationId: getImageFile
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    put:
+      tags:
+      - image-rest-controller
+      operationId: replaceImageFile
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                imageFile:
+                  type: string
+                  format: binary
+              required:
+              - imageFile
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/users/{id}/image:
+    post:
+      tags:
+      - user-rest-controller
+      operationId: uploadUserImage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                imageFile:
+                  type: string
+                  format: binary
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ImageDTO"
+  /api/v1/users/:
+    get:
+      tags:
+      - user-rest-controller
+      operationId: getAllUsers
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserBasicDTO"
+    post:
+      tags:
+      - user-rest-controller
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserPostDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserBasicDTO"
+  /api/v1/products/{productId}/reviews/:
+    post:
+      tags:
+      - review-rest-controller
+      operationId: createReview
+      parameters:
+      - name: productId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewPostDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReviewDTO"
+  /api/v1/products/{id}/images/:
+    post:
+      tags:
+      - product-rest-controller
+      operationId: createProductImage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                imageFile:
+                  type: string
+                  format: binary
+              required:
+              - imageFile
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ImageDTO"
+  /api/v1/products/:
+    get:
+      tags:
+      - product-rest-controller
+      operationId: getProducts
+      parameters:
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Pageable"
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PagedModelProductBasicDTO"
+    post:
+      tags:
+      - product-rest-controller
+      operationId: createProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductBasicDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductBasicDTO"
+  /api/v1/orders:
+    post:
+      tags:
+      - order-rest-controller
+      operationId: shoppingCartToOrder
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/OrderDTO"
+  /api/v1/carts/me/items:
+    post:
+      tags:
+      - shopping-cart-rest-controller
+      operationId: addProductToCart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CartItemRequestDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ShoppingCartDTO"
+  /api/v1/auth/refresh:
+    post:
+      tags:
+      - login-controller
+      operationId: refreshToken
+      parameters:
+      - name: RefreshToken
+        in: cookie
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+  /api/v1/auth/logout:
+    post:
+      tags:
+      - login-controller
+      operationId: logOut
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+  /api/v1/auth/login:
+    post:
+      tags:
+      - login-controller
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+  /api/v1/products/all/reviews/{id}:
+    get:
+      tags:
+      - review-rest-controller
+      operationId: getReviewById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReviewDTO"
+  /api/v1/products/all/reviews/:
+    get:
+      tags:
+      - review-rest-controller
+      operationId: getAllReviews
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ReviewDTO"
+  /api/v1/orders/{orderId}/bill:
+    get:
+      tags:
+      - order-rest-controller
+      operationId: getOrderPdf
+      parameters:
+      - name: orderId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: byte
+  /api/v1/orders/all/bill:
+    get:
+      tags:
+      - order-rest-controller
+      operationId: getAllOrderPdf
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: byte
+  /api/v1/images/{id}:
+    get:
+      tags:
+      - image-rest-controller
+      operationId: getImage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ImageDTO"
+  /api/v1/carts/me:
+    get:
+      tags:
+      - shopping-cart-rest-controller
+      operationId: getMyCart
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ShoppingCartDTO"
+  /api/v1/admin/stats/top-products:
+    get:
+      tags:
+      - admin-rest-controller
+      operationId: getTopProductsGraphic
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/DataGraphicDTO"
+  /api/v1/admin/stats/product-states:
+    get:
+      tags:
+      - admin-rest-controller
+      operationId: getProductsStates
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/DataGraphicDTO"
+  /api/v1/admin/stats/kpis:
+    get:
+      tags:
+      - admin-rest-controller
+      operationId: getKpis
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/KpiDTO"
+  /api/v1/users/{id}/image/:
+    delete:
+      tags:
+      - user-rest-controller
+      operationId: deleteUserImage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ImageDTO"
+  /api/v1/products/{productId}/images/{imageId}:
+    delete:
+      tags:
+      - product-rest-controller
+      operationId: deleteProductImage
+      parameters:
+      - name: productId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: imageId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ImageDTO"
+  /api/v1/products/{productID}/reviews/{reviewID}:
+    delete:
+      tags:
+      - review-rest-controller
+      operationId: deleteReviewById
+      parameters:
+      - name: productID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: reviewID
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReviewDTO"
+  /api/v1/carts/me/items/{itemId}:
+    delete:
+      tags:
+      - shopping-cart-rest-controller
+      operationId: removeProductFromCart
+      parameters:
+      - name: itemId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ShoppingCartDTO"
+components:
+  schemas:
+    UserPostDTO:
+      type: object
+      properties:
+        userName:
+          type: string
+        surname:
+          type: string
+        address:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+    CartItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        product:
+          $ref: "#/components/schemas/Product"
+        order: {}
+        quantity:
+          type: integer
+          format: int32
+        listIndex:
+          type: integer
+          format: int32
+        state:
+          type: string
+    Image:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        imageFile:
+          type: object
+          properties:
+            binaryStream: {}
+        product:
+          $ref: "#/components/schemas/Product"
+        user:
+          $ref: "#/components/schemas/User"
+    Order:
+      type: object
+      properties:
+        orderID:
+          type: integer
+          format: int64
+        orderItems:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderItem"
+        user:
+          $ref: "#/components/schemas/User"
+        date:
+          type: string
+        state:
+          type: integer
+          format: int32
+        stateText:
+          type: string
+        totalPrice:
+          type: number
+          format: double
+    OrderItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        order:
+          $ref: "#/components/schemas/Order"
+        product: {}
+        quantity:
+          type: integer
+          format: int32
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        seller:
+          $ref: "#/components/schemas/User"
+        productName:
+          type: string
+        price:
+          type: number
+          format: double
+        state:
+          type: integer
+          format: int32
+        description:
+          type: string
+        orderItems:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderItem"
+        cartItems:
+          type: array
+          items:
+            $ref: "#/components/schemas/CartItem"
+        images:
+          type: array
+          items:
+            $ref: "#/components/schemas/Image"
+        reviews:
+          type: array
+          items:
+            $ref: "#/components/schemas/Review"
+        stateName:
+          type: string
+        averageRating:
+          type: number
+          format: double
+        reviewCount:
+          type: integer
+          format: int32
+        stars:
+          type: array
+          items:
+            type: boolean
+        stateClass:
+          type: string
+        firstImage: {}
+    Review:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        user:
+          $ref: "#/components/schemas/User"
+        product:
+          $ref: "#/components/schemas/Product"
+        canModifyReview:
+          type: boolean
+        title:
+          type: string
+        body:
+          type: string
+        date:
+          type: string
+        imageId:
+          type: integer
+          format: int64
+        stars:
+          type: integer
+          format: int32
+    ShoppingCart:
+      type: object
+      properties:
+        cartItems:
+          type: array
+          items:
+            $ref: "#/components/schemas/CartItem"
+        id:
+          type: integer
+          format: int64
+        user:
+          $ref: "#/components/schemas/User"
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userName:
+          type: string
+        surname:
+          type: string
+        address:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        state:
+          type: boolean
+        favouriteState:
+          type: integer
+          format: int32
+        roles:
+          type: array
+          items:
+            type: string
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/Product"
+        reviews:
+          type: array
+          items:
+            $ref: "#/components/schemas/Review"
+        orders:
+          type: array
+          items:
+            $ref: "#/components/schemas/Order"
+        image:
+          $ref: "#/components/schemas/Image"
+        shoppingCart:
+          $ref: "#/components/schemas/ShoppingCart"
+    UserBasicDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userName:
+          type: string
+        surname:
+          type: string
+        address:
+          type: string
+        email:
+          type: string
+        state:
+          type: boolean
+        favouriteState:
+          type: integer
+          format: int32
+        image:
+          $ref: "#/components/schemas/Image"
+        roles:
+          type: array
+          items:
+            type: string
+    ReviewPostDTO:
+      type: object
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+        stars:
+          type: integer
+          format: int32
+    ReviewDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        user:
+          $ref: "#/components/schemas/UserBasicDTO"
+        title:
+          type: string
+        body:
+          type: string
+        date:
+          type: string
+        stars:
+          type: integer
+          format: int32
+    ProductBasicDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        productName:
+          type: string
+        price:
+          type: number
+          format: double
+        state:
+          type: integer
+          format: int32
+        description:
+          type: string
+        averageRating:
+          type: number
+          format: double
+        reviewCount:
+          type: integer
+          format: int32
+    ImageDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+    OrderDTO:
+      type: object
+      properties:
+        orderID:
+          type: integer
+          format: int64
+        orderItems:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderItemDTO"
+        totalPrice:
+          type: number
+          format: double
+    OrderItemDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        productId:
+          type: integer
+          format: int64
+        productName:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+    CartItemRequestDTO:
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int64
+    CartItemDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        productId:
+          type: integer
+          format: int64
+        productName:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+    ShoppingCartDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        cartItems:
+          type: array
+          items:
+            $ref: "#/components/schemas/CartItemDTO"
+    AuthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - SUCCESS
+          - FAILURE
+        message:
+          type: string
+        error:
+          type: string
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    ProductDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        productName:
+          type: string
+        price:
+          type: number
+          format: double
+        state:
+          type: integer
+          format: int32
+        description:
+          type: string
+        averageRating:
+          type: number
+          format: double
+        reviewCount:
+          type: integer
+          format: int32
+        seller:
+          $ref: "#/components/schemas/UserBasicDTO"
+        images:
+          type: array
+          items:
+            $ref: "#/components/schemas/ImageDTO"
+        reviews:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReviewBasicDTO"
+    ReviewBasicDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+    Pageable:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int32
+          minimum: 0
+        size:
+          type: integer
+          format: int32
+          minimum: 1
+        sort:
+          type: array
+          items:
+            type: string
+    PageMetadata:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    PagedModelProductBasicDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductBasicDTO"
+        page:
+          $ref: "#/components/schemas/PageMetadata"
+    DataGraphicDTO:
+      type: object
+      properties:
+        labels:
+          type: array
+          items:
+            type: string
+        data:
+          type: array
+          items:
+            type: integer
+            format: int64
+    KpiDTO:
+      type: object
+      properties:
+        totalUsers:
+          type: integer
+          format: int64
+        totalProducts:
+          type: integer
+          format: int64
+        pendingOrders:
+          type: integer
+          format: int64
+        totalAmountMoney:
+          type: number
+          format: double
