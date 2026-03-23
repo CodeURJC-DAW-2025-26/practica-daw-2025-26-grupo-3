@@ -201,14 +201,15 @@
 				<version>7.17.0</version>
 				<executions>
 					<execution>
+						<id>generate-html-api-docs</id>
 						<phase>integration-test</phase>
 						<goals>
 							<goal>generate</goal>
 						</goals>
 						<configuration>
 							<generatorName>html2</generatorName>
-							<inputSpec>../api-docs/api-docs.yaml</inputSpec>
-							<output>../api-docs/</output>
+							<inputSpec>${project.basedir}/../api-docs/api-docs.yaml</inputSpec>
+							<output>${project.basedir}/../api-docs/</output>
 							<skipValidateSpec>true</skipValidateSpec>
 						</configuration>
 					</execution>

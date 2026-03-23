@@ -154,9 +154,9 @@ public class ReviewService {
 
             // we verify if we can delete it
             if (targetReview != null) {
-                if (!targetReview.getUser().getEmail().equals(loggedInEmail) || isAdmin) {
+                if (!targetReview.getUser().getEmail().equals(loggedInEmail) && !isAdmin) {
                     throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                            "You can't delete the review " + reviewId + " because you are not the owner.");
+                            "You can't delete the review " + reviewId + " because you are not the owner nor an admin.");
                 }
             }
 
@@ -211,4 +211,9 @@ public class ReviewService {
 
         this.saveReview(reviewProduct, newReview);
     }
+
+    public long count() {
+        return reviewRepository.count();
+    }
+
 }

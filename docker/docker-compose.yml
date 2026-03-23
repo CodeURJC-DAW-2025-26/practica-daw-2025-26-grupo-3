@@ -1,7 +1,7 @@
 services:
   mysql-db:
     # Official MySQL image [cite: 288, 1047]
-    image: mysql:9.2
+    image: mysql:9.6
     container_name: mysql-db
     environment:
       # Define password and DB name with default values [cite: 1557, 1558, 1575]
