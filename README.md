@@ -333,92 +333,46 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 ### **Instrucciones de Ejecución con Docker**
 
 #### **Requisitos previos:**
-
 - Docker instalado (versión 20.10 o superior)
 - Docker Compose instalado (versión 2.0 o superior)
 
 #### **Pasos para ejecutar con docker-compose:**
 
 1. **Clonar el repositorio** (si no lo has hecho ya):
-
    ```bash
    git clone https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3.git
    cd practica-daw-2025-26-grupo-3
    ```
 
-2. **Entrar en la carpeta docker**:
-
-   ```bash
-   cd docker
-   ```
-
-3. **Arrancar en Modo Inicialización (Primera ejecución) o en Modo Ejecución (Arranques posteriores)**
-
-#### 3.1 **Modo Inicialización**
-
-Si la aplicación no se ha levantado anteriormente, la base de datos está completamente vacía. Es necesario crear la estructura de las tablas (esquema) y cargar los datos de ejemplo (usuarios, productos, imágenes y pedidos).
-Para arrancar en este modo, le pasamos la variable de entorno `DDL_AUTO=update` para que Hibernate genere las tablas. Una vez generadas, el servicio interno detectará que la BD está vacía y la llenará automáticamente:
-
-   ```bash
-   DDL_AUTO=update docker compose up -d
-   ```
-
-#### 3.2 **Modo Ejecución**
-
-Una vez que la base de datos ya haya sido inicializada, los datos persisten en un volumen de Docker. Si se detienen los contenedores y los vuelves a arrancar, se debe usar el modo de ejecución.
-Por defecto, la variable `DDL_AUTO` toma el valor `none`, por lo que no modificará las tablas. Además, el servicio de inicialización detectará que ya existen usuarios y omitirá la carga de datos para evitar duplicados:
-
-   ```bash
-   DDL_AUTO=none docker compose up -d
-   ```
-
-4. **Acceder a la aplicación**
-Una vez que los contenedores estén levantados y la aplicación haya arrancado, abre tu navegador web y accede a:
-
-   https://localhost:8443
-
-
-5. **Detener la aplicación**
-
-   ```bash
-   docker compose down
-   ```
-
+2. **AQUÍ LOS SIGUIENTES PASOS**:
 
 ### **Construcción de la Imagen Docker**
 
 #### **Requisitos:**
-
 - Docker instalado en el sistema
 
 #### **Pasos para construir y publicar la imagen:**
 
 1. **Navegar al directorio de Docker**:
-
    ```bash
    cd docker
    ```
 
-2. **Iniciar sesión con docker**
-
+2. **Iniciamos sesión con docker**
    ```bash
    docker login
    ```
 
-3. **Crear la imagen de la aplicación**
-
+3. **Creamos la imagen de la aplicación**
     ```bash
    ./create_image.sh (nombre del usuario de docker)/(nombre de la imagen) 
    ```
 
-4. **Publicar la imagen en dockerhub**
-
+4. **Publicamos la imagen en dockerhub**
    ```bash
    ./publish_image.sh (nombre del usuario de docker)/(nombre de la imagen) 
    ```
-
-5. **Publicar el archivo docker-compose.yml como un artefacto OCI**
-   
+5. **Publicamos el archivo docker-compose.yml como un artefacto OCI**
    ```bash
    ./publish_docker-compose.sh (nombre del usuario de docker)/(nombre del repositorio compose):(tag de la versión) 
    ```
@@ -475,7 +429,7 @@ Una vez que los contenedores estén levantados y la aplicación haya arrancado, 
 
 #### **Alumno 1 - Jorge Naranjo Ballesteros**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+El alumno ha completado la implementación del sistema de carrito de compra y gestión de pedidos, utilizando patrones DTO y Mappers para asegurar una transferencia de datos limpia entre capas. Se han desarrollado los controladores REST necesarios para gestionar el ciclo de vida del carrito (añadir, listar y eliminar productos) y la conversión de estos en pedidos finales. Además, se ha integrado un módulo de estadísticas con acceso restringido para administradores, se ha generado la documentación completa de la API y se ha automatizado el despliegue mediante la subida de la imagen y el archivo docker-compose.yml (como OCI Artifact) a DockerHub.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
@@ -493,11 +447,16 @@ El alumno se ha encargado de montar toda la parte de los DTOs de productos, incl
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Add DTOs and mappers for Product and Review entities; implement Product REST controller](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/571823eb0e52f26fbd7cfc75d608114862c4231a)  | [ProductRestController.java](backend/src/main/java/es/grupo3/practica25_26/restcontroller/ProductRestController.java)   |
-|2| [Now products are editable with the api rest (except images at this moment). Updateproduct method in ProductService has been updated, and also the addImageToProduct and removeImageFromProduct methods have been added to product Service. Fixed an important error that prevented users from seeing the page (None of the pages could be viewed; it gave an error)](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/40116e5d10074bfb4e078c82fc554e7d4f213c18)  | [ProductService.java](backend/src/main/java/es/grupo3/practica25_26/service/ProductService.java)   |
-|3| [Added get,delete,update methods to the images of the products and refactors in some service to make it clearer and meaningful.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/13891460746d784fcdc3616cddb043449ddd0d66)  | [ImageRestController.java](backend/src/main/java/es/grupo3/practica25_26/controller/restcontroller/ImageRestController.java)   |
-|4| [Added get,delete,put and post to the image of users, fixed some errors that occurred when initalizing the data base and updated the postman collection and more](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/f5ac364017bb5b608c67e6456d2834a6066a38bc)  | [UserRestController.java](backend/src/main/java/es/grupo3/practica25_26/controller/restcontroller/UserRestController.java)   |
-|5| [Added pageable functionality to display products (pages can hold 8 products). Additionally, I've added checks for API requests to create and update products.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/39f099b37e920efc53f043d06992ce1b224eb296)  | [ProductRestController.java](backend/src/main/java/es/grupo3/practica25_26/controller/restcontroller/ProductRestController.java)   |
+|1| [Add DTOs and mappers for Product and Review entities; implement Product REST controller
+](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/571823eb0e52f26fbd7cfc75d608114862c4231a)  | [ProductRestController.java](backend/src/main/java/es/grupo3/practica25_26/restcontroller/ProductRestController.java)   |
+|2| [Now products are editable with the api rest (except images at this moment). Updateproduct method in ProductService has been updated, and also the addImageToProduct and removeImageFromProduct methods have been added to product Service
+Fixed an important error that prevented users from seeing the page (None of the pages could be viewed; it gave an error)](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/40116e5d10074bfb4e078c82fc554e7d4f213c18)  | [ProductService.java](backend/src/main/java/es/grupo3/practica25_26/service/ProductService.java)   |
+|3| [Added get,delete,update methods to the images of the products and refactors in some service to make it clearer and meaningful.
+](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/13891460746d784fcdc3616cddb043449ddd0d66)  | [ImageRestController.java](backend/src/main/java/es/grupo3/practica25_26/controller/restcontroller/ImageRestController.java)   |
+|4| [Added get,delete,put and post to the image of users, fixed some errors that occurred when initalizing the data base and updated the postman collection and more
+](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/f5ac364017bb5b608c67e6456d2834a6066a38bc)  | [UserRestController.java](backend/src/main/java/es/grupo3/practica25_26/controller/restcontroller/UserRestController.java)   |
+|5| [Added pageable functionality to display products (pages can hold 8 products). Additionally, I've added checks for API requests to create and update products.
+](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/39f099b37e920efc53f043d06992ce1b224eb296)  | [ProductRestController.java](backend/src/main/java/es/grupo3/practica25_26/controller/restcontroller/ProductRestController.java)   |
 
 ---
 
