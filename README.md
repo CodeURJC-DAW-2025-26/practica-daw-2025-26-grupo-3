@@ -328,7 +328,7 @@ Implemented all user autentication logic. Also implemented orders & shopping car
 
 Diagrama actualizado incluyendo los @RestController y su relación con los @Service compartidos:
 
-![Diagrama de Clases Actualizado](backend/src/main/resources/static/assets/complete-classes-diagram.png)
+![Diagrama de Clases Actualizado](backend/src/main/resources/static/assets/practica2diagramadeclases.jpg)
 
 ### **Instrucciones de Ejecución con Docker**
 
