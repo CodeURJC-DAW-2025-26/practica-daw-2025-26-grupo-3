@@ -20,7 +20,7 @@ services:
 
   app:
     # Your image published on DockerHub [cite: 414, 1207]
-    image: danielhernanz9/practica2daw:latest #PUT YOUR USERNAME HERE Username/practica2daw:latest
+    image: marcoshm851/practica2daw:latest #PUT YOUR USERNAME HERE Username/practica2daw:latest
     container_name: spring-app
     depends_on:
       mysql-db:
@@ -36,6 +36,9 @@ services:
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD:-pass}
       # Variable to toggle between 'create' (initialization) and 'none' modes
       - SPRING_JPA_HIBERNATE_DDL_AUTO=${DDL_AUTO:-none}
+      #Enhance loading times
+      - SPRING_WEB_RESOURCES_CACHE_CACHECONTROL_NO_CACHE=true
+      - SPRING_WEB_RESOURCES_CACHE_CACHECONTROL_NO_STORE=true
 
 volumes:
   # Declaration of the volume to persist DB data [cite: 1490, 1586]
