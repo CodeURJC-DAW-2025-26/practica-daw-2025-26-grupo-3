@@ -19,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-//import jakarta.servlet.http.HttpSession;
 
 @Service
 public class UserService {
@@ -351,7 +350,8 @@ public class UserService {
             }
             return userRepository.save(targetUser);
         } else {
-            throw new SecurityException("No tienes permiso para modificar este perfil");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "No tienes permiso para modificar este perfil.");
         }
     }
 
@@ -366,7 +366,8 @@ public class UserService {
             targetUser.setImage(null);
             return userRepository.save(targetUser);
         } else {
-            throw new SecurityException("No tienes permiso para modificar este perfil");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "No tienes permiso para modificar este perfil.");
         }
     }
 

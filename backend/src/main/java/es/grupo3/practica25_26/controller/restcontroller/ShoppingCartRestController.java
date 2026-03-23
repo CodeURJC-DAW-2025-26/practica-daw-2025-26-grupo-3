@@ -59,7 +59,7 @@ public class ShoppingCartRestController {
         // Find the user by email and if it doesn't exist, throw an exception
         User user = userService.findUserByEmail(email);
         if (user == null) {
-            throw new NullPointerException("User not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
 
         // If the user doesn't have a shopping cart, return a 404 not found response
@@ -106,7 +106,7 @@ public class ShoppingCartRestController {
         // Find the user by email and if it doesn't exist, throw an exception
         User user = userService.findUserByEmail(email);
         if (user == null) {
-            throw new NullPointerException("User not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
 
         // If the user doesn't have a shopping cart, return a 404 not found response

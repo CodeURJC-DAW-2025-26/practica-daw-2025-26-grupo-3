@@ -167,7 +167,8 @@ public class UserRestController {
             HttpServletRequest request) throws IOException {
 
         if (imageFile.isEmpty()) {
-            throw new IllegalArgumentException("Image file cannot be empty");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "La imagen no puede estar vacía.");
         }
 
         String loggedInEmail = request.getUserPrincipal().getName();
@@ -198,7 +199,8 @@ public class UserRestController {
         Image image = user.getImage();
 
         if (image == null) {
-            throw new IllegalArgumentException("El usuario no tiene foto de perfil para borrar");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "El usuario no tiene foto de perfil para borrar.");
         }
 
         userService.removeImageFromUser(id, loggedInEmail);

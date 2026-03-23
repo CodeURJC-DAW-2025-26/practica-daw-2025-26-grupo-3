@@ -147,7 +147,8 @@ public class ProductRestController {
         // we obtain the original product for the validation
         Product existingProduct = productService.findById(id);
         if (existingProduct == null) {
-            throw new NoSuchElementException("Product not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "El producto que intentas actualizar no existe.");
         }
 
         Error error = productService.productUpdateCheck(editedproduct, existingProduct, null, null);
@@ -190,7 +191,8 @@ public class ProductRestController {
             HttpServletRequest request) throws IOException {
 
         if (imageFile.isEmpty()) {
-            throw new IllegalArgumentException("Image file cannot be empty");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "La imagen no puede estar vacía.");
         }
 
         String loggedInEmail = request.getUserPrincipal().getName();
