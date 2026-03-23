@@ -119,6 +119,13 @@
 			<version>${jjwt.version}</version>
 			<scope>runtime</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -200,8 +207,9 @@
 						</goals>
 						<configuration>
 							<generatorName>html2</generatorName>
-							<inputSpec>${project.basedir}/../api-docs/api-docs.yaml</inputSpec>
-							<output>${project.basedir}/../api-docs/</output>
+							<inputSpec>../api-docs/api-docs.yaml</inputSpec>
+							<output>../api-docs/</output>
+							<skipValidateSpec>true</skipValidateSpec>
 						</configuration>
 					</execution>
 				</executions>

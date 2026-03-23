@@ -9,7 +9,7 @@ services:
       - MYSQL_DATABASE=${DB_NAME:-myapp_db}
     healthcheck:
       # Command to verify that MySQL is ready for connections [cite: 1331, 1370, 1580]
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD" ]
       interval: 5s
       timeout: 5s
       start_period: 10s
@@ -20,7 +20,7 @@ services:
 
   app:
     # Your image published on DockerHub [cite: 414, 1207]
-    image: tu_usuario/nombre_app:latest
+    image: marcoshm851/practica2daw:latest
     container_name: spring-app
     depends_on:
       mysql-db:

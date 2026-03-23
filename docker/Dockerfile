@@ -5,13 +5,13 @@ FROM maven:3.9-eclipse-temurin-21 AS builder
 WORKDIR /project
 
 # Copy project dependencies
-COPY pom.xml .
+COPY backend/pom.xml .
 
 # Download project dependencies
 RUN mvn dependency:go-offline
 
 # Copy the project code
-COPY src ./src
+COPY backend/src ./src
 
 # Compile project
 RUN mvn -B package -DskipTests
