@@ -1,4 +1,4 @@
-package es.grupo3.practica25_26.controller;
+package es.grupo3.practica25_26.controller.restcontroller;
 
 import java.util.ArrayList;
 import java.util.List;

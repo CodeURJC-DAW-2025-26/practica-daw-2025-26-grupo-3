@@ -20,7 +20,7 @@ services:
 
   app:
     # Your image published on DockerHub [cite: 414, 1207]
-    image: marcoshm851/practica2daw:latest #PUT YOUR USERNAME HERE Username/practica2daw:latest
+    image: danielhernanz9/practica2daw:latest #PUT YOUR USERNAME HERE Username/practica2daw:latest
     container_name: spring-app
     depends_on:
       mysql-db:

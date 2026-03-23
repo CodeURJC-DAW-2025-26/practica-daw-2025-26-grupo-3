@@ -320,7 +320,7 @@ Implemented all user autentication logic. Also implemented orders & shopping car
 📄 **[Especificación OpenAPI (YAML)](/api-docs/api-docs.yaml)**
 
 #### **Documentación HTML**
-📖 **[Documentación API REST (HTML)](https://raw.githack.com/[usuario]/[repositorio]/main/api-docs/api-docs.html)**
+📖 **[Documentación API REST (HTML)](https://rawcdn.githack.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/46a93e139f95f4957a33a020976c8b25ac984bd8/api-docs/api-docs.html)**
 
 > La documentación de la API REST se encuentra en la carpeta `/api-docs` del repositorio. Se ha generado automáticamente con SpringDoc a partir de las anotaciones en el código Java.
 
@@ -340,8 +340,8 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 
 1. **Clonar el repositorio** (si no lo has hecho ya):
    ```bash
-   git clone https://github.com/[usuario]/[repositorio].git
-   cd [repositorio]
+   git clone https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3.git
+   cd practica-daw-2025-26-grupo-3
    ```
 
 2. **AQUÍ LOS SIGUIENTES PASOS**:
@@ -358,7 +358,25 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
    cd docker
    ```
 
-2. **AQUÍ LOS SIGUIENTES PASOS**
+2. **Iniciamos sesión con docker**
+   ```bash
+   docker login
+   ```
+
+3. **Creamos la imagen de la aplicación**
+    ```bash
+   ./create_image.sh (nombre del usuario de docker)/(nombre de la imagen) 
+   ```
+
+4. **Publicamos la imagen en dockerhub**
+   ```bash
+   ./publish_image.sh (nombre del usuario de docker)/(nombre de la imagen) 
+   ```
+5. **Publicamos el archivo docker-compose.yml como un artefacto OCI**
+   ```bash
+   ./publish_docker-compose.sh (nombre del usuario de docker)/(nombre del repositorio compose):(tag de la versión) 
+   ```
+
 
 ### **Despliegue en Máquina Virtual**
 
@@ -383,15 +401,15 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 
 ### **URL de la Aplicación Desplegada**
 
-🌐 **URL de acceso**: `https://[nombre-app].etsii.urjc.es:8443`
+🌐 **URL de acceso**: `https://appweb03.dawgis.etsii.urjc.es:8443/`
 
 #### **Credenciales de Usuarios de Ejemplo**
 
-| Rol | Usuario | Contraseña |
-|:---|:---|:---|
-| Administrador | admin | admin123 |
-| Usuario Registrado | user1 | user123 |
-| Usuario Registrado | user2 | user123 |
+| Rol | Usuario | Correo | Contraseña |
+|:---|:---|:---|:---|
+| Administrador | admin | admin@admin.com | admin1234 |
+| Usuario Registrado | marta | marta@example.com | demo1234 |
+| Usuario Registrado | carlos | carlos@example.com | demo1234 |
 
 ### **Participación de Miembros en la Práctica 2**
 
@@ -409,21 +427,26 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 
 ---
 
-#### **Alumno 2 - [Nombre Completo]**
+#### **Alumno 2 - Daniel Hernanz Corral**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+El alumno se ha encargado de montar toda la parte de los DTOs de productos, incluyendo sus Mappers y REST Controllers (dejando listos los endpoints GET, POST, PUT y DELETE). También echó un cable con el DTO de las reviews. Además, implementó la lógica para poder gestionar de forma completa (CRUD) las imágenes de los perfiles de usuario y de los productos. Por otro lado, metió la paginación en la web para que el catálogo cargue de 8 en 8 por defecto. Ayudó a la configuración de la documentación de OpenApi aparte de añadir la configuración relativa a docker. Además también ayudó al arreglo de diversos errores ocurridos durante la práctica que por ejemplo impedían la visualización de esta última.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Add DTOs and mappers for Product and Review entities; implement Product REST controller
+](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/571823eb0e52f26fbd7cfc75d608114862c4231a)  | [ProductRestController.java](backend/src/main/java/es/grupo3/practica25_26/restcontroller/ProductRestController.java)   |
+|2| [Now products are editable with the api rest (except images at this moment). Updateproduct method in ProductService has been updated, and also the addImageToProduct and removeImageFromProduct methods have been added to product Service
+Fixed an important error that prevented users from seeing the page (None of the pages could be viewed; it gave an error)](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/40116e5d10074bfb4e078c82fc554e7d4f213c18)  | [ProductService.java](backend/src/main/java/es/grupo3/practica25_26/service/ProductService.java)   |
+|3| [Added get,delete,update methods to the images of the products and refactors in some service to make it clearer and meaningful.
+](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/13891460746d784fcdc3616cddb043449ddd0d66)  | [ImageRestController.java](backend/src/main/java/es/grupo3/practica25_26/controller/restcontroller/ImageRestController.java)   |
+|4| [Added get,delete,put and post to the image of users, fixed some errors that occurred when initalizing the data base and updated the postman collection and more
+](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/f5ac364017bb5b608c67e6456d2834a6066a38bc)  | [UserRestController.java](backend/src/main/java/es/grupo3/practica25_26/controller/restcontroller/UserRestController.java)   |
+|5| [Added pageable functionality to display products (pages can hold 8 products). Additionally, I've added checks for API requests to create and update products.
+](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/39f099b37e920efc53f043d06992ce1b224eb296)  | [ProductRestController.java](backend/src/main/java/es/grupo3/practica25_26/controller/restcontroller/ProductRestController.java)   |
 
 ---
 
-#### **Alumno 3 - [Nombre Completo]**
+#### **Alumno 3 - Marcos Hernandez Martín**
 
 [Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
 
