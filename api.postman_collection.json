@@ -1,16 +1,77 @@
 {
   "info": {
-    "_postman_id": "2e8e9a64-68f9-4036-a13b-c2d84e3dbfa7",
+    "_postman_id": "e73cb725-6fa1-4309-88b0-2b93fd654d77",
     "name": "Practica2DAW",
     "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "52921088",
-    "_collection_link": "https://go.postman.co/collection/52921088-2e8e9a64-68f9-4036-a13b-c2d84e3dbfa7?source=collection_link"
+    "_exporter_id": "53036149",
+    "_collection_link": "https://go.postman.co/collection/53036149-e73cb725-6fa1-4309-88b0-2b93fd654d77?source=collection_link"
   },
   "item": [
     {
       "name": "UserRequests",
       "item": [
+        {
+          "name": "AdminRequests",
+          "item": [
+            {
+              "name": "BlockUser",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"state\":false\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/2/state",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "2",
+                    "state"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "UnblockUser",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"state\":true\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/users/2/state",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "2",
+                    "state"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
         {
           "name": "UserImageRequests",
           "item": [
@@ -67,35 +128,36 @@
           ]
         },
         {
-          "name": "DeleteUserByID",
+          "name": "GetAllUsers",
           "request": {
-            "method": "DELETE",
+            "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{base_url}}/users/2",
+              "raw": "{{base_url}}/users/",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "users",
-                "2"
+                ""
               ]
             }
           },
           "response": []
         },
         {
-          "name": "GetAllUsers",
+          "name": "DeleteUserByID",
           "request": {
-            "method": "GET",
+            "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{base_url}}/users",
+              "raw": "{{base_url}}/users/52",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "users"
+                "users",
+                "52"
               ]
             }
           },
@@ -107,13 +169,13 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{base_url}}/users/1",
+              "raw": "{{base_url}}/users/152",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "users",
-                "1"
+                "152"
               ]
             }
           },
@@ -160,41 +222,13 @@
               }
             },
             "url": {
-              "raw": "{{base_url}}}/users/1",
+              "raw": "{{base_url}}}/users/52",
               "host": [
                 "{{base_url}}}"
               ],
               "path": [
                 "users",
-                "1"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "UpdateUserState",
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"state\": true\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/users/2/state",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "users",
-                "2",
-                "state"
+                "52"
               ]
             }
           },
@@ -342,8 +376,8 @@
                     {
                       "key": "imageFile",
                       "type": "file",
-                      "uuid": "8759e371-b6a6-4564-8014-b121cb501851",
-                      "src": "/d:/Users/DANIEL/Videos/Captures/Fortnite   26_12_2021 1_23_12.png"
+                      "uuid": "3666a34d-e21d-4523-bcc3-fc19cddb2d52",
+                      "src": "/d:/Users/DANIEL/Videos/Fortnite/Fortnite Screenshot 2025.01.10 - 18.32.37.26.Victoria.png"
                     }
                   ]
                 },
@@ -474,7 +508,7 @@
           ]
         },
         {
-          "name": "GetAllProducts",
+          "name": "GetProducts",
           "protocolProfileBehavior": {
             "disableBodyPruning": true
           },
@@ -535,7 +569,7 @@
           "response": []
         },
         {
-          "name": "PostProduct",
+          "name": "CreateProduct",
           "request": {
             "method": "POST",
             "header": [],
@@ -633,7 +667,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"username\": \"marta@example.com\",\r\n    \"password\": \"demo1234\"\r\n}",
+              "raw": "{\r\n    \"username\": \"admin@admin.com\",\r\n    \"password\": \"admin1234\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -717,90 +751,11 @@
             }
           },
           "response": []
-        },
-        {
-          "name": "ShoppingCartToOrder",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/orders",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "orders"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "AcceptOrder",
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"accept\": true\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/orders/1",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "orders",
-                "1"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "GetAllOrders",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/orders",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "orders"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "GetUserOrders",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/orders/me",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "orders",
-                "me"
-              ]
-            }
-          },
-          "response": []
         }
       ]
     },
     {
-      "name": "ImageRequests",
+      "name": "Image requests",
       "item": [
         {
           "name": "GetImageFileById",
@@ -880,7 +835,7 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{base_url}}/carts/me/items/1",
+              "raw": "{{base_url}}/carts/me/items/308",
               "host": [
                 "{{base_url}}"
               ],
@@ -888,7 +843,7 @@
                 "carts",
                 "me",
                 "items",
-                "1"
+                "308"
               ]
             }
           },
@@ -901,7 +856,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"productId\": 1\r\n}",
+              "raw": "{\r\n    \"productId\": 14\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -935,97 +890,6 @@
               "path": [
                 "carts",
                 "me"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "ModifyItemQuantity",
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"operation\": 1\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/carts/me/items/1",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "carts",
-                "me",
-                "items",
-                "1"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "AdminRequests",
-      "item": [
-        {
-          "name": "GetKpis",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/admin/stats/kpis",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "admin",
-                "stats",
-                "kpis"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "GetTopProducts",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/admin/stats/top-products",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "admin",
-                "stats",
-                "top-products"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "GetProductsStates",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/admin/stats/product-states",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "admin",
-                "stats",
-                "product-states"
               ]
             }
           },
