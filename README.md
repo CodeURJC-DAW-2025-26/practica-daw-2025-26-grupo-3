@@ -387,17 +387,31 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
 
 #### **Pasos para desplegar:**
 
-1. **Conectar a la máquina virtual**:
+1. **Preparamos el acceso desde nuestro PC**: 
+   Damos los permisos correctos al archivo de la clave
    ```bash
-   ssh -i [ruta/a/clave.key] [usuario]@[IP-o-dominio-VM]
+   chmod 600 ssh-keys/appWeb03.key
    ```
-   
-   Ejemplo:
+2. **Conectamos a la Máquina Virtual**:
    ```bash
-   ssh -i ssh-keys/app.key vmuser@10.100.139.XXX
+   ssh -i ssh-keys/appWeb03.key vmuser@10.100.139.97
    ```
-
-2. **AQUÍ LOS SIGUIENTES PASOS**:
+3. **Despleagamos con Docker Compose por primera vez**:
+   Usamos este comando la primera vez con DDL_AUTO=update para que se creen las tablas en la base de datos (modo inicialización)
+   ```bash
+      sudo DB_PASSWORD=Grupo3DAW DB_NAME=practicadaw DDL_AUTO=update \
+      docker compose -f oci://docker.io/marcoshm851/practica2daw-compose:latest up -d
+   ```
+4. **Paramos la aplicación sin borrar los datos**:
+   ```bash
+   sudo docker compose -f oci://docker.io/marcoshm851/practica2daw-compose:latest down
+   ```
+5. **Reiniciamos e iniciamos en modo ejecución**:
+   Usamos este comando con DDL_AUTO=none para que ya no se creen las tablas en la base de datos (modo ejecución)
+   ```bash
+      sudo DB_PASSWORD=Grupo3DAW DB_NAME=practicadaw \
+      docker compose -f oci://docker.io/marcoshm851/practica2daw-compose:latest up -d
+   ```
 
 ### **URL de la Aplicación Desplegada**
 
