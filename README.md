@@ -466,11 +466,11 @@ Fixed an important error that prevented users from seeing the page (None of the 
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Add API REST security](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/50deccf6adf35106a5f6ae01651a8242a8b5ed3e)  | [Archivo1](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/50deccf6adf35106a5f6ae01651a8242a8b5ed3e#diff-34049c3bc6deee4bbf269544338e0450399140da63fec684096d1ae0ce70b4bb)   |
+|2| [Add ReviewDTO, ReviewMapper, and ReviewRestController for review API REST management](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/f3047608ab9bb2b5217fcab97398d1dc7d950df1)  | [Archivo2](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/f3047608ab9bb2b5217fcab97398d1dc7d950df1#diff-28654c678cb3e968027d5147d71c8dbc4588f099065311fb008f092bcda9d1e7)   |
+|3| [Added API REST support for creating and updating users](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/412b245e7c05c1ced7417cf8314b9de4d6d5f5a3)  | [Archivo3](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/412b245e7c05c1ced7417cf8314b9de4d6d5f5a3#diff-c3dacf4557393f5984ba05f9080e1fb47ce39f5577dcec228b9a1381e7934fa1)   |
+|4| [Implemented API REST support for get & delete users](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/03f042b199bdf2d0101fa610fea65c4936c383b3)  | [Archivo4](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/03f042b199bdf2d0101fa610fea65c4936c383b3#diff-34049c3bc6deee4bbf269544338e0450399140da63fec684096d1ae0ce70b4bb)   |
+|5| [Improved shopping cart functionality: added ShoppingCartController, implemented quantity modification via api rest, and updated user registration to initialize shopping cart.](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/145e2e3b88a521c78c0f12339771b15368f7c081)  | [Archivo5](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/145e2e3b88a521c78c0f12339771b15368f7c081#diff-aac3ea106f28a818662a2c745941c28e22a16adc32cc7d4f0a9962f534bfc622)   |
 
 ---
 
