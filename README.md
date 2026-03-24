@@ -345,7 +345,44 @@ Diagrama actualizado incluyendo los @RestController y su relación con los @Serv
    cd practica-daw-2025-26-grupo-3
    ```
 
-2. **AQUÍ LOS SIGUIENTES PASOS**:
+2. **Entrar en la carpeta docker**:
+
+   ```bash
+   cd docker
+   ```
+
+3. **Arrancar en Modo Inicialización (Primera ejecución) o en Modo Ejecución (Arranques posteriores)**
+
+#### 3.1 **Modo Inicialización**
+
+Si la aplicación no se ha levantado anteriormente, la base de datos está completamente vacía. Es necesario crear la estructura de las tablas (esquema) y cargar los datos de ejemplo (usuarios, productos, imágenes y pedidos).
+Para arrancar en este modo, le pasamos la variable de entorno `DDL_AUTO=update` para que Hibernate genere las tablas. Una vez generadas, el servicio interno detectará que la BD está vacía y la llenará automáticamente:
+
+   ```bash
+   DDL_AUTO=update docker compose up -d
+   ```
+
+#### 3.2 **Modo Ejecución**
+
+Una vez que la base de datos ya haya sido inicializada, los datos persisten en un volumen de Docker. Si se detienen los contenedores y los vuelves a arrancar, se debe usar el modo de ejecución.
+Por defecto, la variable `DDL_AUTO` toma el valor `none`, por lo que no modificará las tablas. Además, el servicio de inicialización detectará que ya existen usuarios y omitirá la carga de datos para evitar duplicados:
+
+   ```bash
+   DDL_AUTO=none docker compose up -d
+   ```
+
+4. **Acceder a la aplicación**
+Una vez que los contenedores estén levantados y la aplicación haya arrancado, abre tu navegador web y accede a:
+
+   https://localhost:8443
+
+
+5. **Detener la aplicación**
+
+   ```bash
+   docker compose down
+   ```
+
 
 ### **Construcción de la Imagen Docker**
 
