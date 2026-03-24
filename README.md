@@ -197,8 +197,10 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 ## 🛠 **Práctica 1: Web con HTML generado en servidor y AJAX**
 
 ### **Vídeo de Demostración**
-📹 **[Enlace al vídeo en YouTube]([https://youtu.be/Pz15AhF0JZM)()**
+📹 **[Enlace al vídeo en YouTube](https://youtu.be/Pz15AhF0JZM)**
+
 https://youtu.be/Pz15AhF0JZM
+
 > Vídeo mostrando las principales funcionalidades de la aplicación web.
 
 ### **Navegación y Capturas de Pantalla**
