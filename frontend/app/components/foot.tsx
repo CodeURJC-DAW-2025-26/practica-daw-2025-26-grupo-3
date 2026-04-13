@@ -15,17 +15,17 @@ export function Foot() {
                         </h6>
                         <ul className="list-unstyled">
                             <li>
-                                <a href="/product_search" className="text-muted text-decoration-none">
+                                <a href="/new/product_search" className="text-muted text-decoration-none">
                                     <i className="bi bi-bag" /> Productos
                                 </a>
                             </li>
                             <li>
-                                <a href="/login" className="text-muted text-decoration-none">
+                                <a href="/new/login" className="text-muted text-decoration-none">
                                     <i className="bi bi-box-arrow-in-right" /> Iniciar sesión
                                 </a>
                             </li>
                             <li>
-                                <a href="/signup" className="text-muted text-decoration-none">
+                                <a href="/new/signup" className="text-muted text-decoration-none">
                                     <i className="bi bi-person-plus" /> Registrarse
                                 </a>
                             </li>

@@ -1,4 +1,4 @@
-export function loader() {
+export function clientLoader() {
     return { name: "React Router" };
 }
 
@@ -47,16 +47,16 @@ export default function Index() {
                                 Productos nuevos, reacondicionados y usados con la mejor garantía del mercado.
                             </p>
                             <div className="mt-4 d-flex gap-3 flex-wrap">
-                                <a href="/login" className="btn btn-primary btn-lg px-5 shadow">
+                                <a href="/new/login" className="btn btn-primary btn-lg px-5 shadow">
                                     Iniciar sesión
                                 </a>
-                                <a href="/signup" className="btn btn-outline-primary btn-lg px-5">
+                                <a href="/new/signup" className="btn btn-outline-primary btn-lg px-5">
                                     Registrarse
                                 </a>
                             </div>
                         </div>
                         <div className="col-lg-6 d-none d-lg-block">
-                            <img src="/assets/Logo_Remarket.png" className="img-fluid hero-image" alt="ReMarket+" />
+                            <img src="/new/assets/Logo_Remarket.png" className="img-fluid hero-image" alt="ReMarket+" />
                         </div>
                     </div>
                 </div>
@@ -104,7 +104,7 @@ export default function Index() {
                     </div>
 
                     <div className="text-center mt-5">
-                        <a href="/product_search" className="btn btn-outline-primary btn-lg px-5 rounded-pill">
+                        <a href="/new/product_search" className="btn btn-outline-primary btn-lg px-5 rounded-pill">
                             Ver todos los productos →
                         </a>
                     </div>

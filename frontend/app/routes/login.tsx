@@ -4,9 +4,9 @@ export default function Login() {
             <div className="row min-vh-100 align-items-center justify-content-center">
                 <div className="col-md-5">
                     <div className="text-center mb-4">
-                        <a href="/" className="d-inline-block">
+                        <a href="/new" className="d-inline-block">
                             <img
-                                src="/assets/Logo_Remarket.png"
+                                src="/new/assets/Logo_Remarket.png"
                                 alt="ReMarket+ Logo"
                                 className="img-fluid"
                                 style={{ maxWidth: 120 }}
@@ -46,7 +46,7 @@ export default function Login() {
                         </form>
 
                         <div className="mt-4">
-                            <a href="/" className="btn btn-danger w-100 py-2 fw-bold shadow-sm" title="Volver a la tienda">
+                            <a href="/new" className="btn btn-danger w-100 py-2 fw-bold shadow-sm" title="Volver a la tienda">
                                 Volver a la tienda
                             </a>
                         </div>
@@ -54,7 +54,7 @@ export default function Login() {
                         <div className="text-center mt-4 pt-2 border-top">
                             <p className="small text-muted mb-0">
                                 ¿No tienes cuenta?{" "}
-                                <a href="/signup" className="fw-bold text-primary text-decoration-none">
+                                <a href="/new/signup" className="fw-bold text-primary text-decoration-none">
                                     Regístrate gratis
                                 </a>
                             </p>

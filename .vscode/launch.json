@@ -14,6 +14,17 @@
             "mainClass": "es.grupo3.practica25_26.Practica2526Application",
             "projectName": "practica25_26",
             "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=53192 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=practica25_26"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-Application<ejemplo-practica2>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "es.codeurjc.daw.library.Application",
+            "projectName": "ejemplo-practica2",
+            "args": "",
             "envFile": "${workspaceFolder}/.env"
         }
     ]

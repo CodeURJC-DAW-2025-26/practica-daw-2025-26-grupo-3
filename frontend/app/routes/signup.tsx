@@ -7,7 +7,7 @@ export default function Signup() {
                         <div className="col-md-4 logo-side d-none d-md-flex">
                             <div className="text-center p-4">
                                 <img
-                                    src="/assets/Logo_Remarket.png"
+                                    src="/new/assets/Logo_Remarket.png"
                                     alt="ReMarket+ Logo"
                                     className="img-fluid"
                                     style={{ maxWidth: 180 }}
@@ -101,7 +101,7 @@ export default function Signup() {
                                     <p className="mandatory mb-0">(*) Campo obligatorio</p>
                                     <p className="small text-muted mb-0">
                                         ¿Ya tienes cuenta?{" "}
-                                        <a href="/login" className="fw-bold text-decoration-none text-primary">
+                                        <a href="/new/login" className="fw-bold text-decoration-none text-primary">
                                             Inicia sesión
                                         </a>
                                     </p>
@@ -115,7 +115,7 @@ export default function Signup() {
                             </form>
 
                             <div className="mt-4">
-                                <a href="/" className="btn btn-danger w-100 py-2 fw-bold shadow-sm" title="Volver a la tienda">
+                                <a href="/new" className="btn btn-danger w-100 py-2 fw-bold shadow-sm" title="Volver a la tienda">
                                     Volver a la tienda
                                 </a>
                             </div>

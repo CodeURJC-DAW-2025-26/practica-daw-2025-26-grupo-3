@@ -2,7 +2,7 @@ import { Foot } from "../components/foot";
 import { Outlet } from "react-router";
 import { Navbar } from "../components/navbar";
 
-export function loader() {
+export function clientLoader() {
   return { name: "React Router" };
 }
 

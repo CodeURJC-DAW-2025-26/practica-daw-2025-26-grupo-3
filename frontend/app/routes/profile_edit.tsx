@@ -138,7 +138,7 @@ export default function ProfileEdit() {
                         </div>
 
                         <div className="d-grid gap-2">
-                            <a href="/profile" className="btn btn-secondary btn-lg">
+                            <a href="/new/profile" className="btn btn-secondary btn-lg">
                                 Cancelar
                             </a>
                         </div>

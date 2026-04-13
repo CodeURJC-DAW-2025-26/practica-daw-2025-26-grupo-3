@@ -61,6 +61,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/v3/api-docs.yml").permitAll()
                         .requestMatchers("/swagger-ui.html").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers("/new/**").permitAll()
                         // we allow everyone to access the blocked user error page, so that if a user
                         // tries to log in with a blocked account, they will be redirected to this page
                         // and informed about their account status.
