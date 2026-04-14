@@ -14,7 +14,7 @@ export function Navbar() {
         setLoading(true);
 
         try {
-            await loadLoggedUser();
+            currentUser && await loadLoggedUser();
         }
         catch (err) {
             console.error(err);
@@ -29,17 +29,19 @@ export function Navbar() {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom sticky-top shadow-sm">
             <div className="container">
-                {loading && <p>Cargando...</p>}
-                <Link className="navbar-brand fw-bold text-primary d-flex align-items-center" to="/">
+                <div className="navbar-brand-wrap">
+                    {loading && <span className="navbar-loading-spinner" role="status" aria-label="Cargando" />}
+                    <Link className="navbar-brand fw-bold text-primary d-flex align-items-center" to="/">
 
 
-                    <img
-                        src={`${baseUrl}assets/Logo_Remarket.png`}
-                        alt="ReMarket+ Logo"
-                        style={{ height: 50, width: "auto" }}
-                    />
+                        <img
+                            src={`${baseUrl}assets/Logo_Remarket.png`}
+                            alt="ReMarket+ Logo"
+                            style={{ height: 50, width: "auto" }}
+                        />
 
-                </Link>
+                    </Link>
+                </div>
                 <button
                     className="navbar-toggler"
                     type="button"
@@ -126,7 +128,10 @@ export function Navbar() {
                                         </Link>
                                     </li>
                                     <li>
-                                        <button className="dropdown-item" type="button" onClick={logout}>
+                                        <hr className="dropdown-divider my-2" />
+                                    </li>
+                                    <li>
+                                        <button className="dropdown-item dropdown-item-logout" type="button" onClick={logout}>
                                             Cerrar sesión
                                         </button>
                                     </li>
