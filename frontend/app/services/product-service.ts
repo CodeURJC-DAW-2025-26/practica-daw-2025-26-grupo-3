@@ -6,7 +6,8 @@ const API_IMAGES_URL = "/api/v1/images";
 
 export async function getProducts(): Promise<ProductBasicDTO[]> {
     const res = await fetch(`${API_URL}/`);
-    return await res.json();
+    const json = await res.json();
+    return json.content || [];
 }
 
 export async function getBasicProduct(id: number): Promise<ProductBasicDTO> {
