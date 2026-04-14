@@ -1,5 +1,45 @@
+import { useActionState } from "react";
+import { useNavigate } from "react-router";
+import { useUserState } from "~/stores/user-store";
+
 export default function Signup() {
     const baseUrl = import.meta.env.BASE_URL;
+    const { login, signup, error } = useUserState();
+    const navigate = useNavigate();
+
+    const [{ errMessage }, formAction, loading] = useActionState(
+        handleSignup,
+        { errMessage: null }
+    );
+
+    async function handleSignup(prevState: { errMessage: string | null }, formData: FormData) {
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string
+        let frontError: string | null = null;
+
+        try {
+            await signup({
+                userName: formData.get("userName") as string,
+                surname: formData.get("surname") as string,
+                address: formData.get("address") as string,
+                email: email,
+                password: password
+            });
+            await login(email, password);
+        }
+        catch (err) {
+            frontError = err instanceof Error
+                ? err.message.split('"')[1].split(":")[1].trim()
+                : "Algunos de los datos enviados no son correctos. Intentalo de nuevo";
+            console.log("Error recibido: " + frontError);
+        }
+
+        if (!frontError) {
+            navigate("/");
+        }
+
+        return { errMessage: frontError }
+    }
 
     return (
         <div className="container-fluid signup-container">
@@ -23,7 +63,22 @@ export default function Signup() {
                                 <p className="text-dark small mt-3">Únete a nuestra comunidad</p>
                             </div>
 
-                            <form encType="multipart/form-data">
+
+                            {errMessage && (
+                                <div style={{
+                                    backgroundColor: '#fee2e2',
+                                    color: '#b91c1c',
+                                    padding: '12px 16px',
+                                    borderRadius: '8px',
+                                    border: '1px solid #fca5a5',
+                                    marginBottom: '20px',
+                                    fontSize: '0.95rem'
+                                }}>
+                                    <strong>¡Atención!</strong> {errMessage}
+                                </div>
+                            )}
+
+                            <form action={formAction}>
                                 <input type="hidden" name="_csrf" value="" />
                                 <div className="row g-3">
                                     <div className="col-md-6">
@@ -110,8 +165,16 @@ export default function Signup() {
                                 </div>
 
                                 <div className="mt-4">
-                                    <button type="submit" className="btn btn-primary w-100 py-2 fw-bold shadow-sm">
-                                        Registrarme
+                                    <button
+                                        type="submit"
+                                        className={`btn btn-primary w-100 py-2 fw-bold shadow-sm d-flex align-items-center justify-content-center signup-submit-btn ${loading ? "signup-submit-btn-loading" : ""}`}
+                                        disabled={loading}
+                                    >
+                                        {loading ? (
+                                            <span className="signup-loading-spinner" role="status" aria-label="Registrando" />
+                                        ) : (
+                                            <span>Registrarme</span>
+                                        )}
                                     </button>
                                 </div>
                             </form>

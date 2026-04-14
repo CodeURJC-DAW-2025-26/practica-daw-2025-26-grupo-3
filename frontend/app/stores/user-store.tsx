@@ -1,6 +1,7 @@
-import type { UserDTO } from "~/dtos/user-dto";
+import type { UserDTO } from "~/dtos/UserDTO";
 import { create } from "zustand";
-import { HttpError, login, logout, reqIsLogged } from "~/services/login-service";
+import { HttpError, login, logout, reqIsLogged, signup } from "~/services/user-service";
+import type { userBasicDTO } from "~/dtos/userBasicDTO";
 
 export interface UserState {
     currentUser: UserDTO | null,
@@ -8,6 +9,7 @@ export interface UserState {
     loadLoggedUser: () => Promise<void>,
     login: (email: string, pass: string) => void,
     logout: () => void
+    signup: (data: userBasicDTO) => void,
 }
 
 export const useUserState = create<UserState>((set, get) => ({
@@ -35,11 +37,9 @@ export const useUserState = create<UserState>((set, get) => ({
             await get().loadLoggedUser();
         }
         catch (error) {
-            const message = "Bad credentials. Incorrect email or password";
-            set({ error: message });
+            set({ error: "Bad credentials. Incorrect email or password" });
         }
     },
-
     logout: async () => {
         set({ currentUser: null, error: null });
 
@@ -47,9 +47,18 @@ export const useUserState = create<UserState>((set, get) => ({
             await logout();
         }
         catch (error) {
-            console.log(error);
             set({ error: "Error has ocurred when tried to logout" })
         }
-    }
-
+    },
+    signup: async (newUserData: userBasicDTO) => {
+        set({ currentUser: null, error: null });
+        try {
+            await signup(newUserData);
+        }
+        catch (err) {
+            const errorMessage = err instanceof Error ? err.message : "Error desconocido al registrarse"
+            set({ error: errorMessage });
+            throw err;
+        }
+    },
 }));

@@ -1,4 +1,5 @@
-import type { UserDTO } from "~/dtos/user-dto";
+import type { UserDTO } from "~/dtos/UserDTO";
+import type { userBasicDTO } from "~/dtos/userBasicDTO";
 
 const base_auth_url = "/api/v1/auth";
 const base_user_url = "/api/v1/users";
@@ -31,7 +32,6 @@ export async function login(email: string, pass: string) {
 
     if (!response.ok) {
         const errorData = await response.text();
-        console.error("Error response body:", errorData);
         throw new HttpError(response.status, errorData);
     }
 
@@ -51,6 +51,20 @@ export async function logout(): Promise<void> {
     if (!response.ok) {
         throw new Error();
     }
+}
 
-    console.log(response);
+export async function signup(newUserData: userBasicDTO) {
+    const url = `${base_user_url}`;
+    const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newUserData)
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json(); //Error json sent by backend
+        throw new Error(errorData.trace || "Campos incorrectos");
+    }
+
+    return await response.json();
 }
