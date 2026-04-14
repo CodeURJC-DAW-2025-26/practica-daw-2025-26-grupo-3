@@ -46,188 +46,190 @@ import jakarta.servlet.http.HttpServletRequest;
 @RequestMapping("/api/v1/products")
 public class ProductRestController {
 
-    @Autowired
-    private ProductBasicMapper basicProductMapper;
+        @Autowired
+        private ProductBasicMapper basicProductMapper;
 
-    @Autowired
-    private ProductMapper productMapper;
+        @Autowired
+        private ProductMapper productMapper;
 
-    @Autowired
-    private ProductService productService;
+        @Autowired
+        private ProductService productService;
 
-    @Autowired
-    private UserService userService;
+        @Autowired
+        private UserService userService;
 
-    @Autowired
-    private ImageService imageService;
+        @Autowired
+        private ImageService imageService;
 
-    @Autowired
-    private ImageMapper imageMapper;
+        @Autowired
+        private ImageMapper imageMapper;
 
-    // get all products
-    @Operation(summary = "Get all products")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Products retrieved successfully")
-    })
-    @GetMapping("/")
-    public Page<ProductBasicDTO> getProducts(@PageableDefault(size = 8) Pageable pageable) {
-        return productService.findAll(pageable).map(basicProductMapper::toDTO);
-    }
-
-    // get specific product by id
-    @Operation(summary = "Get product by ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Product found"),
-            @ApiResponse(responseCode = "404", description = "Product not found")
-    })
-    @GetMapping("/{id}")
-    public ProductDTO getProductById(@PathVariable long id) {
-        Product product = productService.findById(id);
-        if (product == null) {
-            throw new NoSuchElementException("Product not found");
-        }
-        return productMapper.toDTO(product);
-    }
-
-    // Create a new product
-    @Operation(summary = "Create a new product")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Product created successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid product data"),
-            @ApiResponse(responseCode = "403", description = "Forbidden (Permission denied)")
-    })
-    @PostMapping("/")
-    public ResponseEntity<ProductBasicDTO> createProduct(@RequestBody ProductBasicDTO productBasicDTO,
-            HttpServletRequest request) {
-
-        Product product = basicProductMapper.toDomain(productBasicDTO);
-
-        // We get the current user from the request and set it as the seller of the
-        // product
-        String currentUseremail = request.getUserPrincipal().getName();
-        User seller = userService.findUserByEmail(currentUseremail);
-        product.setSeller(seller);
-
-        // save the product in the ddbb
-        Error error = productService.productCreateCheck(product);
-        if (error != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "There are errors in your product creation request: " + error.getTitle() + " - "
-                            + error.getMessage());
+        // get all products
+        @Operation(summary = "Get all products")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Products retrieved successfully")
+        })
+        @GetMapping("/")
+        public Page<ProductBasicDTO> getProducts(@PageableDefault(size = 8) Pageable pageable) {
+                return productService.findAll(pageable).map(basicProductMapper::toDTO);
         }
 
-        productService.save(product);
-
-        // create the URI for the Location header
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(product.getId())
-                .toUri();
-
-        // return the product transformed to the DTO
-        return ResponseEntity.created(location).body(basicProductMapper.toDTO(product));
-    }
-
-    // Update a product (put)
-    @Operation(summary = "Update a product")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Product updated successfully"),
-            @ApiResponse(responseCode = "404", description = "Product not found"),
-            @ApiResponse(responseCode = "400", description = "Invalid product data"),
-            @ApiResponse(responseCode = "403", description = "Forbidden (Permission denied)")
-    })
-    @PutMapping("/{id}")
-    public ProductBasicDTO updateProduct(@PathVariable long id, @RequestBody ProductBasicDTO productBasicDTO,
-            HttpServletRequest request) throws IOException {
-
-        Product editedproduct = basicProductMapper.toDomain(productBasicDTO);
-        String loggedInEmail = request.getUserPrincipal().getName();
-        boolean isAdmin = request.isUserInRole("ADMIN");
-
-        // we obtain the original product for the validation
-        Product existingProduct = productService.findById(id);
-        if (existingProduct == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    "El producto que intentas actualizar no existe.");
+        // get specific product by id
+        @Operation(summary = "Get product by ID")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Product found"),
+                        @ApiResponse(responseCode = "404", description = "Product not found")
+        })
+        @GetMapping("/{id}")
+        public ProductDTO getProductById(@PathVariable long id) {
+                Product product = productService.findById(id);
+                if (product == null) {
+                        throw new NoSuchElementException("Product not found");
+                }
+                return productMapper.toDTO(product);
         }
 
-        Error error = productService.productUpdateCheck(editedproduct, existingProduct, null, null);
-        if (error != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "There are errors in your product update request: " + error.getTitle() + " - "
-                            + error.getMessage());
+        // Create a new product
+        @Operation(summary = "Create a new product")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "201", description = "Product created successfully"),
+                        @ApiResponse(responseCode = "400", description = "Invalid product data"),
+                        @ApiResponse(responseCode = "403", description = "Forbidden (Permission denied)")
+        })
+        @PostMapping("/")
+        public ResponseEntity<ProductBasicDTO> createProduct(@RequestBody ProductBasicDTO productBasicDTO,
+                        HttpServletRequest request) {
+
+                Product product = basicProductMapper.toDomain(productBasicDTO);
+
+                // We get the current user from the request and set it as the seller of the
+                // product
+                String currentUseremail = request.getUserPrincipal().getName();
+                User seller = userService.findUserByEmail(currentUseremail);
+                product.setSeller(seller);
+
+                // save the product in the ddbb
+                Error error = productService.productCreateCheck(product);
+                if (error != null) {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                        "There are errors in your product creation request: " + error.getTitle() + " - "
+                                                        + error.getMessage());
+                }
+
+                productService.save(product);
+
+                // create the URI for the Location header
+                URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                                .path("/{id}")
+                                .buildAndExpand(product.getId())
+                                .toUri();
+
+                // return the product transformed to the DTO
+                return ResponseEntity.created(location).body(basicProductMapper.toDTO(product));
         }
 
-        Product updatedProduct = productService.updateProduct(id, editedproduct, null, null, loggedInEmail, isAdmin);
+        // Update a product (put)
+        @Operation(summary = "Update a product")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Product updated successfully"),
+                        @ApiResponse(responseCode = "404", description = "Product not found"),
+                        @ApiResponse(responseCode = "400", description = "Invalid product data"),
+                        @ApiResponse(responseCode = "403", description = "Forbidden (Permission denied)")
+        })
+        @PutMapping("/{id}")
+        public ProductBasicDTO updateProduct(@PathVariable long id, @RequestBody ProductBasicDTO productBasicDTO,
+                        HttpServletRequest request) throws IOException {
 
-        return basicProductMapper.toDTO(updatedProduct);
-    }
+                Product editedproduct = basicProductMapper.toDomain(productBasicDTO);
+                String loggedInEmail = request.getUserPrincipal().getName();
+                boolean isAdmin = request.isUserInRole("ADMIN");
 
-    // Delete a product (delete)
-    @Operation(summary = "Delete a product")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Product deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Product not found"),
-            @ApiResponse(responseCode = "403", description = "Forbidden (Permission denied)")
-    })
-    @DeleteMapping("/{id}")
-    public ProductBasicDTO deleteProduct(@PathVariable long id, HttpServletRequest request) {
+                // we obtain the original product for the validation
+                Product existingProduct = productService.findById(id);
+                if (existingProduct == null) {
+                        throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                        "El producto que intentas actualizar no existe.");
+                }
 
-        return basicProductMapper.toDTO(
-                productService.deleteProduct(id, request.getUserPrincipal().getName(), request.isUserInRole("ADMIN")));
-    }
+                Error error = productService.productUpdateCheck(editedproduct, existingProduct, null, null);
+                if (error != null) {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                        "There are errors in your product update request: " + error.getTitle() + " - "
+                                                        + error.getMessage());
+                }
 
-    // Create an image for the product
+                Product updatedProduct = productService.updateProduct(id, editedproduct, null, null, loggedInEmail,
+                                isAdmin);
 
-    @Operation(summary = "Upload product image")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Image uploaded successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid image file"),
-            @ApiResponse(responseCode = "404", description = "Product not found"),
-            @ApiResponse(responseCode = "403", description = "Forbidden (Permission denied)")
-    })
-    @PostMapping("/{id}/images/")
-    public ResponseEntity<ImageDTO> createProductImage(@PathVariable long id, @RequestParam MultipartFile imageFile,
-            HttpServletRequest request) throws IOException {
-
-        if (imageFile.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "La imagen no puede estar vacía.");
+                return basicProductMapper.toDTO(updatedProduct);
         }
 
-        String loggedInEmail = request.getUserPrincipal().getName();
-        boolean isAdmin = request.isUserInRole("ADMIN");
+        // Delete a product (delete)
+        @Operation(summary = "Delete a product")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Product deleted successfully"),
+                        @ApiResponse(responseCode = "404", description = "Product not found"),
+                        @ApiResponse(responseCode = "403", description = "Forbidden (Permission denied)")
+        })
+        @DeleteMapping("/{id}")
+        public ProductBasicDTO deleteProduct(@PathVariable long id, HttpServletRequest request) {
 
-        Image image = imageService.createImage(imageFile.getInputStream());
-        productService.addImageToProduct(id, image, loggedInEmail, isAdmin);
+                return basicProductMapper.toDTO(
+                                productService.deleteProduct(id, request.getUserPrincipal().getName(),
+                                                request.isUserInRole("ADMIN")));
+        }
 
-        URI location = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/images/{imageId}/media")
-                .buildAndExpand(image.getId())
-                .toUri();
+        // Create an image for the product
 
-        return ResponseEntity.created(location).body(imageMapper.toDTO(image));
-    }
+        @Operation(summary = "Upload product image")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "201", description = "Image uploaded successfully"),
+                        @ApiResponse(responseCode = "400", description = "Invalid image file"),
+                        @ApiResponse(responseCode = "404", description = "Product not found"),
+                        @ApiResponse(responseCode = "403", description = "Forbidden (Permission denied)")
+        })
+        @PostMapping("/{id}/images/")
+        public ResponseEntity<ImageDTO> createProductImage(@PathVariable long id, @RequestParam MultipartFile imageFile,
+                        HttpServletRequest request) throws IOException {
 
-    // Delete an image from the product
+                if (imageFile.isEmpty()) {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                        "La imagen no puede estar vacía.");
+                }
 
-    @Operation(summary = "Delete product image")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Image deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Product or image not found"),
-            @ApiResponse(responseCode = "403", description = "Forbidden (Permission denied)")
-    })
-    @DeleteMapping("/{productId}/images/{imageId}")
-    public ImageDTO deleteProductImage(@PathVariable long productId, @PathVariable long imageId,
-            HttpServletRequest request) {
+                String loggedInEmail = request.getUserPrincipal().getName();
+                boolean isAdmin = request.isUserInRole("ADMIN");
 
-        String loggedInEmail = request.getUserPrincipal().getName();
-        boolean isAdmin = request.isUserInRole("ADMIN");
+                Image image = imageService.createImage(imageFile.getInputStream());
+                productService.addImageToProduct(id, image, loggedInEmail, isAdmin);
 
-        Image image = imageService.getImage(imageId);
-        productService.removeImageFromProduct(productId, imageId, loggedInEmail, isAdmin);
+                URI location = ServletUriComponentsBuilder.fromCurrentContextPath()
+                                .path("/images/{imageId}/media")
+                                .buildAndExpand(image.getId())
+                                .toUri();
 
-        return imageMapper.toDTO(image);
-    }
+                return ResponseEntity.created(location).body(imageMapper.toDTO(image));
+        }
+
+        // Delete an image from the product
+
+        @Operation(summary = "Delete product image")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Image deleted successfully"),
+                        @ApiResponse(responseCode = "404", description = "Product or image not found"),
+                        @ApiResponse(responseCode = "403", description = "Forbidden (Permission denied)")
+        })
+        @DeleteMapping("/{productId}/images/{imageId}")
+        public ImageDTO deleteProductImage(@PathVariable long productId, @PathVariable long imageId,
+                        HttpServletRequest request) {
+
+                String loggedInEmail = request.getUserPrincipal().getName();
+                boolean isAdmin = request.isUserInRole("ADMIN");
+
+                Image image = imageService.getImage(imageId);
+                productService.removeImageFromProduct(productId, imageId, loggedInEmail, isAdmin);
+
+                return imageMapper.toDTO(image);
+        }
 
 }
