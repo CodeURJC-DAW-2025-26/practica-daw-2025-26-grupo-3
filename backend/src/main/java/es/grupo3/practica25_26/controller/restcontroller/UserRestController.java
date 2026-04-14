@@ -45,199 +45,210 @@ import jakarta.servlet.http.HttpServletRequest;
 @RequestMapping("/api/v1/users")
 public class UserRestController {
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+        @Autowired
+        private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private UserBasicMapper basicMapper;
+        @Autowired
+        private UserBasicMapper basicMapper;
 
-    @Autowired
-    private UserPostMapper postMapper;
+        @Autowired
+        private UserPostMapper postMapper;
 
-    @Autowired
-    private UserService userService;
+        @Autowired
+        private UserService userService;
 
-    @Autowired
-    private ImageService imageService;
+        @Autowired
+        private ImageService imageService;
 
-    @Autowired
-    private ImageMapper imageMapper;
+        @Autowired
+        private ImageMapper imageMapper;
 
-    @Operation(summary = "Get all users (Admin)")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Users retrieved successfully"),
-            @ApiResponse(responseCode = "403", description = "Forbidden (Admin only)")
-    })
-    @GetMapping
-    public Collection<UserBasicDTO> getAllUsers(HttpServletRequest request) {
-        if (!request.isUserInRole("ADMIN")) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                    "Only administators can list all users.");
-        }
-        return basicMapper.toDTOs(userService.getAllUsers());
-    }
-
-    @Operation(summary = "Get user by ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User found"),
-            @ApiResponse(responseCode = "404", description = "User not found")
-    })
-    @GetMapping("/{id}")
-    public UserBasicDTO getUserById(@PathVariable long id) {
-        User user = userService.findUserById(id);
-        if (user == null) {
-            throw new NoSuchElementException("User not found");
-        }
-        return basicMapper.toDTO(user);
-    }
-
-    @Operation(summary = "Delete user by ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "403", description = "Forbidden (Permission denied)")
-    })
-    @DeleteMapping("/{id}")
-    public UserBasicDTO deleteUserById(@PathVariable long id, HttpServletRequest request) {
-        User user = userService.deleteUserById(id, request.getUserPrincipal().getName());
-        return basicMapper.toDTO(user);
-    }
-
-    @Operation(summary = "Register new user")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "User registered successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid user data or email already in use")
-    })
-    @PostMapping
-    public ResponseEntity<UserBasicDTO> createUser(@RequestBody UserPostDTO newUserDTO) {
-        User newUser = postMapper.toDomain(newUserDTO);
-        newUser.setState(true);
-
-        List<String> userRoles = new ArrayList<>();
-        userRoles.add("USER");
-        newUser.setRoles(userRoles);
-
-        Error error = userService.userRegisterCheck(newUser);
-        if (error != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "There are errors in your user creation request: " + error.getTitle() + " " + error.getMessage());
+        @Operation(summary = "Get all users (Admin)")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Users retrieved successfully"),
+                        @ApiResponse(responseCode = "403", description = "Forbidden (Admin only)")
+        })
+        @GetMapping
+        public Collection<UserBasicDTO> getAllUsers(HttpServletRequest request) {
+                if (!request.isUserInRole("ADMIN")) {
+                        throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                                        "Only administators can list all users.");
+                }
+                return basicMapper.toDTOs(userService.getAllUsers());
         }
 
-        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        userService.saveUser(newUser);
+        @GetMapping("/logged")
+        public UserBasicDTO getLoggedUser(HttpServletRequest request) {
+                String currentUserEmail = request.getUserPrincipal().getName();
+                User currentUser = userService.findUserByEmail(currentUserEmail);
 
-        UserBasicDTO responseDTO = basicMapper.toDTO(newUser);
-        URI location = fromCurrentRequest().path("/{id}").buildAndExpand(newUser.getId()).toUri();
-        return ResponseEntity.created(location).body(responseDTO);
-    }
-
-    @Operation(summary = "Update user details")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User updated successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid user data or email conflict"),
-            @ApiResponse(responseCode = "404", description = "User not found")
-    })
-    @PutMapping("/{id}")
-    public UserBasicDTO updateUser(@PathVariable long id, @RequestBody UserPostDTO updatedUserDTO,
-            HttpServletRequest request) {
-        User updatedUser = postMapper.toDomain(updatedUserDTO);
-        String loggedEmail = request.getUserPrincipal().getName();
-        User loggedUser = userService.findUserByEmail(loggedEmail);
-        updatedUser.setRoles(loggedUser.getRoles());
-
-        Error error = userService.userUpdateApiCheck(updatedUserDTO, request);
-        if (error != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "There are errors in your user update request: " + error.getTitle() + " " + error.getMessage());
+                return basicMapper.toDTO(currentUser);
         }
 
-        updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-
-        return basicMapper.toDTO(userService.replaceUser(id, updatedUser, request.getUserPrincipal().getName()));
-    }
-
-    // Upload a profile photo
-    @Operation(summary = "Upload user profile image")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Image uploaded successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid image file")
-    })
-    @PostMapping("/{id}/image")
-    public ResponseEntity<ImageDTO> uploadUserImage(@PathVariable long id, @RequestBody MultipartFile imageFile,
-            HttpServletRequest request) throws IOException {
-
-        if (imageFile.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "La imagen no puede estar vacía.");
+        @Operation(summary = "Get user by ID")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "User found"),
+                        @ApiResponse(responseCode = "404", description = "User not found")
+        })
+        @GetMapping("/{id}")
+        public UserBasicDTO getUserById(@PathVariable long id) {
+                User user = userService.findUserById(id);
+                if (user == null) {
+                        throw new NoSuchElementException("User not found");
+                }
+                return basicMapper.toDTO(user);
         }
 
-        String loggedInEmail = request.getUserPrincipal().getName();
-        Image image = imageService.createImage(imageFile.getInputStream());
-        userService.addImageToUser(id, image, loggedInEmail);
-
-        URI location = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/v1/images/{imageId}")
-                .buildAndExpand(image.getId())
-                .toUri();
-
-        return ResponseEntity.created(location).body(imageMapper.toDTO(image));
-    }
-
-    // Delete the actual profile photo
-    @Operation(summary = "Delete user profile image")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Image deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "User or image not found"),
-            @ApiResponse(responseCode = "400", description = "User has no image to delete")
-    })
-    @DeleteMapping("/{id}/image/")
-    public ImageDTO deleteUserImage(@PathVariable long id, HttpServletRequest request) {
-
-        String loggedInEmail = request.getUserPrincipal().getName();
-
-        User user = userService.findUserById(id);
-        Image image = user.getImage();
-
-        if (image == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    "El usuario no tiene foto de perfil para borrar.");
+        @Operation(summary = "Delete user by ID")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "User deleted successfully"),
+                        @ApiResponse(responseCode = "404", description = "User not found"),
+                        @ApiResponse(responseCode = "403", description = "Forbidden (Permission denied)")
+        })
+        @DeleteMapping("/{id}")
+        public UserBasicDTO deleteUserById(@PathVariable long id, HttpServletRequest request) {
+                User user = userService.deleteUserById(id, request.getUserPrincipal().getName());
+                return basicMapper.toDTO(user);
         }
 
-        userService.removeImageFromUser(id, loggedInEmail);
-        return imageMapper.toDTO(image);
-    }
+        @Operation(summary = "Register new user")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "201", description = "User registered successfully"),
+                        @ApiResponse(responseCode = "400", description = "Invalid user data or email already in use")
+        })
+        @PostMapping
+        public ResponseEntity<UserBasicDTO> createUser(@RequestBody UserPostDTO newUserDTO) {
+                User newUser = postMapper.toDomain(newUserDTO);
+                newUser.setState(true);
 
-    // Endpoint to change the state of the user (Blocked or Unblocked)
-    // ONLY FOR ADMINS
-    @Operation(summary = "Change user state (Admin)")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User state updated successfully"),
-            @ApiResponse(responseCode = "403", description = "Forbidden (Admin only)"),
-            @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "400", description = "Invalid request (Missing 'state' field)")
-    })
-    @PutMapping("/{id}/state")
-    public UserBasicDTO changeUserState(@PathVariable long id, @RequestBody Map<String, Boolean> body,
-            HttpServletRequest request) {
+                List<String> userRoles = new ArrayList<>();
+                userRoles.add("USER");
+                newUser.setRoles(userRoles);
 
-        // We check if the user is an admin
-        if (!request.isUserInRole("ADMIN")) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                    "Only administrators can accept or block users.");
+                Error error = userService.userRegisterCheck(newUser);
+                if (error != null) {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                        "There are errors in your user creation request: " + error.getTitle() + " "
+                                                        + error.getMessage());
+                }
+
+                newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+                userService.saveUser(newUser);
+
+                UserBasicDTO responseDTO = basicMapper.toDTO(newUser);
+                URI location = fromCurrentRequest().path("/{id}").buildAndExpand(newUser.getId()).toUri();
+                return ResponseEntity.created(location).body(responseDTO);
         }
 
-        // We obtain the state of the user from the request (JSON)
-        Boolean newState = body.get("state");
-        if (newState == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "You must send a JSON with the boolean field 'state' ");
+        @Operation(summary = "Update user details")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "User updated successfully"),
+                        @ApiResponse(responseCode = "400", description = "Invalid user data or email conflict"),
+                        @ApiResponse(responseCode = "404", description = "User not found")
+        })
+        @PutMapping("/{id}")
+        public UserBasicDTO updateUser(@PathVariable long id, @RequestBody UserPostDTO updatedUserDTO,
+                        HttpServletRequest request) {
+                User updatedUser = postMapper.toDomain(updatedUserDTO);
+                String loggedEmail = request.getUserPrincipal().getName();
+                User loggedUser = userService.findUserByEmail(loggedEmail);
+                updatedUser.setRoles(loggedUser.getRoles());
+
+                Error error = userService.userUpdateApiCheck(updatedUserDTO, request);
+                if (error != null) {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                        "There are errors in your user update request: " + error.getTitle() + " "
+                                                        + error.getMessage());
+                }
+
+                updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+
+                return basicMapper
+                                .toDTO(userService.replaceUser(id, updatedUser, request.getUserPrincipal().getName()));
         }
 
-        // This method verifies if the user state can be updated and in that case
-        // updates it
-        User updatedUser = userService.updateUserState(id, newState);
+        // Upload a profile photo
+        @Operation(summary = "Upload user profile image")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "201", description = "Image uploaded successfully"),
+                        @ApiResponse(responseCode = "400", description = "Invalid image file")
+        })
+        @PostMapping("/{id}/image")
+        public ResponseEntity<ImageDTO> uploadUserImage(@PathVariable long id, @RequestBody MultipartFile imageFile,
+                        HttpServletRequest request) throws IOException {
 
-        return basicMapper.toDTO(updatedUser);
-    }
+                if (imageFile.isEmpty()) {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                        "La imagen no puede estar vacía.");
+                }
+
+                String loggedInEmail = request.getUserPrincipal().getName();
+                Image image = imageService.createImage(imageFile.getInputStream());
+                userService.addImageToUser(id, image, loggedInEmail);
+
+                URI location = ServletUriComponentsBuilder.fromCurrentContextPath()
+                                .path("/api/v1/images/{imageId}")
+                                .buildAndExpand(image.getId())
+                                .toUri();
+
+                return ResponseEntity.created(location).body(imageMapper.toDTO(image));
+        }
+
+        // Delete the actual profile photo
+        @Operation(summary = "Delete user profile image")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Image deleted successfully"),
+                        @ApiResponse(responseCode = "404", description = "User or image not found"),
+                        @ApiResponse(responseCode = "400", description = "User has no image to delete")
+        })
+        @DeleteMapping("/{id}/image/")
+        public ImageDTO deleteUserImage(@PathVariable long id, HttpServletRequest request) {
+
+                String loggedInEmail = request.getUserPrincipal().getName();
+
+                User user = userService.findUserById(id);
+                Image image = user.getImage();
+
+                if (image == null) {
+                        throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                        "El usuario no tiene foto de perfil para borrar.");
+                }
+
+                userService.removeImageFromUser(id, loggedInEmail);
+                return imageMapper.toDTO(image);
+        }
+
+        // Endpoint to change the state of the user (Blocked or Unblocked)
+        // ONLY FOR ADMINS
+        @Operation(summary = "Change user state (Admin)")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "User state updated successfully"),
+                        @ApiResponse(responseCode = "403", description = "Forbidden (Admin only)"),
+                        @ApiResponse(responseCode = "404", description = "User not found"),
+                        @ApiResponse(responseCode = "400", description = "Invalid request (Missing 'state' field)")
+        })
+        @PutMapping("/{id}/state")
+        public UserBasicDTO changeUserState(@PathVariable long id, @RequestBody Map<String, Boolean> body,
+                        HttpServletRequest request) {
+
+                // We check if the user is an admin
+                if (!request.isUserInRole("ADMIN")) {
+                        throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                                        "Only administrators can accept or block users.");
+                }
+
+                // We obtain the state of the user from the request (JSON)
+                Boolean newState = body.get("state");
+                if (newState == null) {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                        "You must send a JSON with the boolean field 'state' ");
+                }
+
+                // This method verifies if the user state can be updated and in that case
+                // updates it
+                User updatedUser = userService.updateUserState(id, newState);
+
+                return basicMapper.toDTO(updatedUser);
+        }
 
 }

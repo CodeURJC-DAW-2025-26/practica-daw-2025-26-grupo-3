@@ -20,6 +20,8 @@ const mockUser: User = {
 };
 
 export default function ProfileEdit() {
+    const baseUrl = import.meta.env.BASE_URL;
+
     const avatarUrl = mockUser.hasImage
         ? `/user-images/${mockUser.id}`
         : `https://ui-avatars.com/api/?name=${encodeURIComponent(mockUser.userName)}&background=random`;
@@ -138,7 +140,7 @@ export default function ProfileEdit() {
                         </div>
 
                         <div className="d-grid gap-2">
-                            <a href="/new/profile" className="btn btn-secondary btn-lg">
+                            <a href={`${baseUrl}profile`} className="btn btn-secondary btn-lg">
                                 Cancelar
                             </a>
                         </div>

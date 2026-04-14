@@ -82,6 +82,8 @@ const mockOrders: Order[] = [
 ];
 
 export default function Profile() {
+    const baseUrl = import.meta.env.BASE_URL;
+
     const avatarUrl = mockUser.hasImage
         ? `/user-images/${mockUser.id}`
         : `https://ui-avatars.com/api/?name=${encodeURIComponent(mockUser.userName)}&background=random`;
@@ -111,13 +113,13 @@ export default function Profile() {
                             <hr />
                             <div className="d-grid gap-2">
                                 <a
-                                    href="/new/my_products"
+                                    href={`${baseUrl}my_products`}
                                     className="btn btn-sm btn-primary rounded d-flex align-items-center justify-content-center py-2"
                                 >
                                     Mis Productos
                                 </a>
                                 <a
-                                    href="/new/product-publish"
+                                    href={`${baseUrl}product-publish`}
                                     className="btn btn-sm btn-success rounded d-flex align-items-center justify-content-center py-2"
                                 >
                                     Publicar Producto
@@ -143,7 +145,7 @@ export default function Profile() {
                         <div className="card border-0 shadow-sm p-4 mb-4">
                             <div className="d-flex justify-content-between align-items-center mb-4">
                                 <h5 className="fw-bold mb-0 text-dark">Información Personal</h5>
-                                <a href="/new/profile/edit" className="btn btn-sm btn-outline-dark rounded-pill px-3">
+                                <a href={`${baseUrl}profile/edit`} className="btn btn-sm btn-outline-dark rounded-pill px-3">
                                     Editar
                                 </a>
                             </div>
@@ -189,7 +191,7 @@ export default function Profile() {
                             <div className="d-flex justify-content-between align-items-center mb-4">
                                 <h4 className="fw-bold mb-0">Mis Pedidos</h4>
                                 {hasOrders && (
-                                    <a href="/new/bill/all" className="btn btn-primary btn-sm d-inline-flex align-items-center" id="export-all-orders-pdf">
+                                    <a href={`${baseUrl}bill/all`} className="btn btn-primary btn-sm d-inline-flex align-items-center" id="export-all-orders-pdf">
                                         <i className="bi bi-file-earmark-pdf me-2" />
                                         Exportar todos en PDF
                                     </a>
@@ -292,7 +294,7 @@ export default function Profile() {
                         </div>
 
                         <div className="mt-4 text-center">
-                            <a href="/new" className="btn btn-danger py-2 fw-bold shadow-sm" title="Volver a la tienda">
+                            <a href={baseUrl} className="btn btn-danger py-2 fw-bold shadow-sm" title="Volver a la tienda">
                                 Volver a la tienda
                             </a>
                         </div>

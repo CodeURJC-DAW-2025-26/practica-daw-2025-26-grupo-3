@@ -1,10 +1,12 @@
 export function Navbar() {
+    const baseUrl = import.meta.env.BASE_URL;
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom sticky-top shadow-sm">
             <div className="container">
-                <a className="navbar-brand fw-bold text-primary d-flex align-items-center" href="/new">
+                <a className="navbar-brand fw-bold text-primary d-flex align-items-center" href={baseUrl}>
                     <img
-                        src="/new/assets/Logo_Remarket.png"
+                        src={`${baseUrl}assets/Logo_Remarket.png`}
                         alt="ReMarket+ Logo"
                         style={{ height: 50, width: "auto" }}
                     />
@@ -23,17 +25,17 @@ export function Navbar() {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav ms-auto align-items-lg-center gap-lg-2">
                         <li className="nav-item">
-                            <a className="nav-link fw-semibold" href="/new/product_search">
+                            <a className="nav-link fw-semibold" href={`${baseUrl}product_search`}>
                                 Productos
                             </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link fw-semibold" href="/new/product-publish">
+                            <a className="nav-link fw-semibold" href={`${baseUrl}product-publish`}>
                                 Publicar producto
                             </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link fw-semibold" href="/new/shopping-cart" aria-label="Carrito">
+                            <a className="nav-link fw-semibold" href={`${baseUrl}shopping-cart`} aria-label="Carrito">
                                 <i className="bi bi-cart4" />
                             </a>
                         </li>
@@ -64,17 +66,17 @@ export function Navbar() {
                             </a>
                             <ul className="dropdown-menu dropdown-menu-end">
                                 <li>
-                                    <a className="dropdown-item" href="/new/profile">
+                                    <a className="dropdown-item" href={`${baseUrl}profile`}>
                                         Ver perfil
                                     </a>
                                 </li>
                                 <li>
-                                    <a className="dropdown-item" href="/new/my_products">
+                                    <a className="dropdown-item" href={`${baseUrl}my_products`}>
                                         Mis productos
                                     </a>
                                 </li>
                                 <li>
-                                    <a className="dropdown-item" href="/new/admin_panel">
+                                    <a className="dropdown-item" href={`${baseUrl}admin_panel`}>
                                         Panel administrador
                                     </a>
                                 </li>
