@@ -1,10 +1,11 @@
 export interface UserDTO {
     id: number,
-    username: string,
+    userName: string,
     surname: string,
     email: string,
     address: string,
     password: string,
-    image: number,
+    imageId: number | null,
+    favouriteState: number,
     roles: string[]
 }

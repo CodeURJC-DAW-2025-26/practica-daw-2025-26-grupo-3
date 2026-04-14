@@ -11,7 +11,7 @@ public class ReactFrontendController {
         return "forward:/new/index.html";
     }
 
-    @GetMapping("/**/{path:[^\\.]*}")
+    @GetMapping({ "/new/{path:^(?!assets$)[^\\.]*}", "/new/{path:^(?!assets$)[^\\.]*}/**" })
     public String reactRoute() {
         return "forward:/new/index.html";
     }

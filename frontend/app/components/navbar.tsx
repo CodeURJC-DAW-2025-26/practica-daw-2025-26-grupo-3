@@ -1,16 +1,45 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router";
+import { useUserState } from "~/stores/user-store";
+
 export function Navbar() {
     const baseUrl = import.meta.env.BASE_URL;
+    const base_image_url = "/api/v1/images";
+
+    const { currentUser, loadLoggedUser, logout } = useUserState();
+
+    const [loading, setLoading] = useState(false);
+
+    async function loadUser() {
+        setLoading(true);
+
+        try {
+            await loadLoggedUser();
+        }
+        catch (err) {
+            console.error(err);
+        }
+        finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => { loadUser() }, []);
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom sticky-top shadow-sm">
             <div className="container">
-                <a className="navbar-brand fw-bold text-primary d-flex align-items-center" href={baseUrl}>
+                {loading && <p>Cargando...</p>}
+                <Link className="navbar-brand fw-bold text-primary d-flex align-items-center" to="/">
+
+
                     <img
                         src={`${baseUrl}assets/Logo_Remarket.png`}
                         alt="ReMarket+ Logo"
                         style={{ height: 50, width: "auto" }}
                     />
-                </a>
+
+                </Link>
                 <button
                     className="navbar-toggler"
                     type="button"
@@ -25,63 +54,98 @@ export function Navbar() {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav ms-auto align-items-lg-center gap-lg-2">
                         <li className="nav-item">
-                            <a className="nav-link fw-semibold" href={`${baseUrl}product_search`}>
+                            <Link className="nav-link fw-semibold" to="/product_search">
                                 Productos
-                            </a>
+                            </Link>
                         </li>
-                        <li className="nav-item">
-                            <a className="nav-link fw-semibold" href={`${baseUrl}product-publish`}>
-                                Publicar producto
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link fw-semibold" href={`${baseUrl}shopping-cart`} aria-label="Carrito">
-                                <i className="bi bi-cart4" />
-                            </a>
-                        </li>
-                        <li className="nav-item dropdown ms-lg-3">
-                            <a
-                                className="nav-link dropdown-toggle user-dropdown d-flex align-items-center gap-2"
-                                href="#"
-                                id="userDropdown"
-                                role="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                                title="Menú de usuario"
-                            >
-                                <img
-                                    src="https://ui-avatars.com/api/?name=Usuario+demo&background=random"
-                                    alt="Mi perfil"
-                                    style={{
-                                        height: 40,
-                                        width: 40,
-                                        borderRadius: "50%",
-                                        border: "2px solid #0d6efd",
-                                        cursor: "pointer",
-                                        objectFit: "cover",
-                                        flexShrink: 0,
-                                    }}
-                                />
-                                <span className="d-none d-lg-inline">Usuario demo</span>
-                            </a>
-                            <ul className="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <a className="dropdown-item" href={`${baseUrl}profile`}>
-                                        Ver perfil
-                                    </a>
+                        {currentUser && (
+                            <>
+                                <li className="nav-item">
+                                    <Link className="nav-link fw-semibold" to="/product-publish">
+                                        Publicar Producto
+                                    </Link>
                                 </li>
-                                <li>
-                                    <a className="dropdown-item" href={`${baseUrl}my_products`}>
-                                        Mis productos
-                                    </a>
+                                <li className="nav-item">
+                                    <Link className="nav-link fw-semibold" to="/shopping-cart" aria-label="Carrito">
+                                        <i className="bi bi-cart4" />
+                                    </Link>
                                 </li>
-                                <li>
-                                    <a className="dropdown-item" href={`${baseUrl}admin_panel`}>
-                                        Panel administrador
-                                    </a>
+                            </>
+                        )}
+                        {currentUser ? (
+                            <li className="nav-item dropdown ms-lg-3">
+                                <a
+                                    className="nav-link dropdown-toggle user-dropdown d-flex align-items-center gap-2"
+                                    href="#"
+                                    id="userDropdown"
+                                    role="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                    title="Menú de usuario"
+                                >
+                                    {currentUser.imageId ? (
+                                        <img
+                                            src={`${base_image_url}/${currentUser.imageId}/media`}
+                                            alt="Mi perfil"
+                                            style={{
+                                                height: 40,
+                                                width: 40,
+                                                borderRadius: "50%",
+                                                border: "2px solid #0d6efd",
+                                                cursor: "pointer",
+                                                objectFit: "cover",
+                                                flexShrink: 0,
+                                            }}
+                                        />
+                                    ) : (
+                                        <img
+                                            src={`https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.userName)}&background=random`}
+                                            alt="Mi perfil"
+                                            style={{
+                                                height: 40,
+                                                width: 40,
+                                                borderRadius: "50%",
+                                                border: "2px solid #0d6efd",
+                                                cursor: "pointer",
+                                                objectFit: "cover",
+                                                flexShrink: 0,
+                                            }}
+                                        />
+                                    )}
+                                    <span className="d-none d-lg-inline">{currentUser.userName}</span>
+                                </a>
+                                <ul className="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <Link className="dropdown-item" to="/profile">
+                                            Ver perfil
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link className="dropdown-item" to="/my_products">
+                                            Mis productos
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <button className="dropdown-item" type="button" onClick={logout}>
+                                            Cerrar sesión
+                                        </button>
+                                    </li>
+                                </ul>
+                            </li>
+                        ) : (
+                            <>
+                                <li className="nav-item">
+                                    <Link className="nav-link fw-semibold" to="/login">
+                                        Iniciar sesión
+                                    </Link>
                                 </li>
-                            </ul>
-                        </li>
+                                <li className="nav-item ms-2">
+                                    <Link className="btn btn-primary btn-sm rounded-pill px-4" to="/signup">
+                                        Registrarse
+                                    </Link>
+                                </li>
+                            </>
+                        )}
                     </ul>
                 </div>
             </div>

@@ -1,7 +1,9 @@
 import { useUserState } from "~/stores/user-store";
 import type { SubmitEvent } from "react";
+import { useNavigate } from "react-router";
 
 export default function Login() {
+    const navigate = useNavigate();
 
     const { login } = useUserState();
     const baseUrl = import.meta.env.BASE_URL;
@@ -15,6 +17,8 @@ export default function Login() {
         login(email, pass);
 
         event.target.reset();
+
+        navigate("/");
     }
 
     return (
