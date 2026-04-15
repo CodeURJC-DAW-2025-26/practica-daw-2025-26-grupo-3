@@ -68,3 +68,16 @@ export async function signup(newUserData: userBasicDTO) {
 
     return await response.json();
 }
+
+export async function uploadUserImage(image: File, userId: number) {
+    const formData = new FormData();
+    formData.append("file", image);
+
+    const url = `${base_user_url}/${userId}/image`;
+    const response = await fetch(url, {
+        method: "POST",
+        body: formData
+    });
+
+    return response;
+}

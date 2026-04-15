@@ -8,13 +8,13 @@ export function Navbar() {
 
     const { currentUser, loadLoggedUser, logout } = useUserState();
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     async function loadUser() {
         setLoading(true);
 
         try {
-            currentUser && await loadLoggedUser();
+            await loadLoggedUser();
         }
         catch (err) {
             console.error(err);
@@ -26,14 +26,24 @@ export function Navbar() {
 
     useEffect(() => { loadUser() }, []);
 
+    if (loading) {
+        return (
+            <div className="index-loading-screen" aria-live="polite" aria-busy="true">
+                <span className="index-loading-spinner" role="status" aria-label="Cargando" />
+            </div>
+        );
+    }
+
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom sticky-top shadow-sm">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom sticky-top shadow-sm position-relative">
+            {loading && (
+                <div className="navbar-loading-overlay" aria-live="polite" aria-busy="true">
+                    <span className="navbar-loading-spinner" role="status" aria-label="Cargando" />
+                </div>
+            )}
             <div className="container">
                 <div className="navbar-brand-wrap">
-                    {loading && <span className="navbar-loading-spinner" role="status" aria-label="Cargando" />}
                     <Link className="navbar-brand fw-bold text-primary d-flex align-items-center" to="/">
-
-
                         <img
                             src={`${baseUrl}assets/Logo_Remarket.png`}
                             alt="ReMarket+ Logo"
@@ -55,11 +65,13 @@ export function Navbar() {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav ms-auto align-items-lg-center gap-lg-2">
-                        <li className="nav-item">
-                            <Link className="nav-link fw-semibold" to="/product_search">
-                                Productos
-                            </Link>
-                        </li>
+                        {!loading && (
+                            <li className="nav-item">
+                                <Link className="nav-link fw-semibold" to="/product_search">
+                                    Productos
+                                </Link>
+                            </li>
+                        )}
                         {currentUser && (
                             <>
                                 <li className="nav-item">
@@ -137,7 +149,7 @@ export function Navbar() {
                                     </li>
                                 </ul>
                             </li>
-                        ) : (
+                        ) : !loading ? (
                             <>
                                 <li className="nav-item">
                                     <Link className="nav-link fw-semibold" to="/login">
@@ -150,7 +162,7 @@ export function Navbar() {
                                     </Link>
                                 </li>
                             </>
-                        )}
+                        ) : null}
                     </ul>
                 </div>
             </div>

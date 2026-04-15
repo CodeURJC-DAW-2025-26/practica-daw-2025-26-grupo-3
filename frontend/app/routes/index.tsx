@@ -1,8 +1,40 @@
 import { Outlet } from "react-router";
 import { Container, Row, Col, Alert, Badge, Button } from "react-bootstrap";
+import { useUserState } from "~/stores/user-store";
+import { useEffect, useState } from "react";
 
 export default function Index() {
     const baseUrl = import.meta.env.BASE_URL;
+
+    const { loadLoggedUser, currentUser } = useUserState();
+
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        async function loadUser() {
+            setLoading(true);
+
+            try {
+                await loadLoggedUser();
+            }
+            catch (error) {
+                console.error(error);
+            }
+            finally {
+                setLoading(false);
+            }
+        }
+
+        loadUser();
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="index-loading-screen" aria-live="polite" aria-busy="true">
+                <span className="index-loading-spinner" role="status" aria-label="Cargando" />
+            </div>
+        );
+    }
 
     return (
         <>
@@ -23,12 +55,26 @@ export default function Index() {
                                 Productos nuevos, reacondicionados y usados con la mejor garantía del mercado.
                             </p>
                             <div className="mt-4 d-flex gap-3 flex-wrap">
-                                <Button href={`${baseUrl}login`} variant="primary" size="lg" className="px-5 shadow">
-                                    Iniciar sesión
-                                </Button>
-                                <Button href={`${baseUrl}signup`} variant="outline-primary" size="lg" className="px-5">
-                                    Registrarse
-                                </Button>
+                                {currentUser ?
+                                    <Button href={`${baseUrl}product_search`} variant="primary" size="lg" className="px-5 shadow">
+                                        Explorar Ahora
+                                    </Button>
+                                    :
+                                    <Button href={`${baseUrl}login`} variant="primary" size="lg" className="px-5 shadow">
+                                        Iniciar sesión
+                                    </Button>
+                                }
+                                {currentUser ?
+                                    <Button href={`${baseUrl}signup`} variant="outline-primary" size="lg" className="px-5">
+                                        Vender productos
+                                    </Button>
+                                    :
+                                    <Button href={`${baseUrl}signup`} variant="outline-primary" size="lg" className="px-5">
+                                        Registrarse
+                                    </Button>
+                                }
+
+
                             </div>
                         </Col>
                         <Col lg={6} className="d-none d-lg-block">

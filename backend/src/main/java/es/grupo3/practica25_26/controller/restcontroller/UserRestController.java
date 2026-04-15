@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -174,7 +175,8 @@ public class UserRestController {
                         @ApiResponse(responseCode = "400", description = "Invalid image file")
         })
         @PostMapping("/{id}/image")
-        public ResponseEntity<ImageDTO> uploadUserImage(@PathVariable long id, @RequestBody MultipartFile imageFile,
+        public ResponseEntity<ImageDTO> uploadUserImage(@PathVariable long id,
+                        @RequestParam("file") MultipartFile imageFile,
                         HttpServletRequest request) throws IOException {
 
                 if (imageFile.isEmpty()) {
@@ -194,7 +196,7 @@ public class UserRestController {
                 return ResponseEntity.created(location).body(imageMapper.toDTO(image));
         }
 
-        // Delete the actual profile photo
+        // Delete the current profile photo
         @Operation(summary = "Delete user profile image")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Image deleted successfully"),

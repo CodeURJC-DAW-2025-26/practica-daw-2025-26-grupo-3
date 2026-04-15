@@ -7,7 +7,7 @@ export interface UserState {
     currentUser: UserDTO | null,
     error: string | null,
     loadLoggedUser: () => Promise<void>,
-    login: (email: string, pass: string) => void,
+    login: (email: string, pass: string) => Promise<UserDTO | null>,
     logout: () => void
     signup: (data: userBasicDTO) => void,
 }
@@ -35,9 +35,11 @@ export const useUserState = create<UserState>((set, get) => ({
         try {
             await login(email, pass);
             await get().loadLoggedUser();
+            return get().currentUser;
         }
         catch (error) {
             set({ error: "Bad credentials. Incorrect email or password" });
+            throw error;
         }
     },
     logout: async () => {
