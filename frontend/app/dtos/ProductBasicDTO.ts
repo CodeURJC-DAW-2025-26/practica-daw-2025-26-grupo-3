@@ -6,5 +6,6 @@ export interface ProductBasicDTO {
     description: string;
     averageRating: number;
     reviewCount: number;
+    imageId?: number;
 }
 

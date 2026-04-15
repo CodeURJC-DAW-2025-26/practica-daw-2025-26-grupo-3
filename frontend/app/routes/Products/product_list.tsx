@@ -66,7 +66,7 @@ export default function ProductList({ loaderData }: { loaderData?: ProductBasicD
                                     <Card.Img
                                         variant="top"
                                         className="product-img"
-                                        src={`https://placehold.co/300x250/667eea/ffffff?text=${encodeURIComponent(product.productName)}`}
+                                        src={product.imageId ? `/api/v1/images/${product.imageId}/media` : `https://placehold.co/300x250/667eea/ffffff?text=${encodeURIComponent(product.productName)}`}
                                         alt={product.productName}
                                     />
 

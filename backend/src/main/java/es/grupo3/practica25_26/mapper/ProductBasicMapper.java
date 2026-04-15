@@ -14,6 +14,7 @@ import es.grupo3.practica25_26.model.Product;
 public interface ProductBasicMapper {
 
     // GET /api/v1/products/{id}
+    @Mapping(source = "firstImage.id", target = "imageId")
     ProductBasicDTO toDTO(Product product);
 
     // GET /api/v1/products/
