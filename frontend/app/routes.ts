@@ -11,8 +11,8 @@ export default [
         route("my_products", "routes/Products/my_products.tsx"),
         route("product_detail/:id", "routes/Products/product_detail.tsx")
     ]),
-    route("login", "routes/login.tsx"),
-    route("signup", "routes/signup.tsx"),
-    route("profile", "routes/profile.tsx"),
-    route("profile/edit", "routes/profile_edit.tsx")
+    route("login", "routes/Users/login.tsx"),
+    route("signup", "routes/Users/signup.tsx"),
+    route("profile", "routes/Users/profile.tsx"),
+    route("profile/edit", "routes/Users/profile_edit.tsx")
 ] satisfies RouteConfig;

@@ -1,5 +1,5 @@
-import { Foot } from "../components/foot";
-import { ProfileNavbar } from "../components/profile_navbar";
+import { Foot } from "../../components/foot";
+import { ProfileNavbar } from "../../components/profile_navbar";
 
 type User = {
     id: number;

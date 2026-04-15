@@ -16,7 +16,7 @@ export const useUserState = create<UserState>((set, get) => ({
     currentUser: null,
     error: null,
     loadLoggedUser: async () => {
-        set({ currentUser: null, error: null });
+        set({ error: null });
 
         try {
             const user = await reqIsLogged();
@@ -24,7 +24,7 @@ export const useUserState = create<UserState>((set, get) => ({
         }
         catch (error) {
             if (error instanceof HttpError && error.status === 401) {
-                set({ currentUser: null, error: null });
+                set({ error: null });
                 return;
             }
         }
