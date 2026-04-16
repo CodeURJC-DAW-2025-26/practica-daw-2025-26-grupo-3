@@ -2,6 +2,7 @@ import { Outlet } from "react-router";
 import { Container, Row, Col, Alert, Badge, Button } from "react-bootstrap";
 import { useUserState } from "~/stores/user-store";
 import { useEffect, useState } from "react";
+import { Spinner } from "~/components/spinner";
 
 export default function Index() {
     const baseUrl = import.meta.env.BASE_URL;
@@ -30,9 +31,7 @@ export default function Index() {
 
     if (loading) {
         return (
-            <div className="index-loading-screen" aria-live="polite" aria-busy="true">
-                <span className="index-loading-spinner" role="status" aria-label="Cargando" />
-            </div>
+            <Spinner />
         );
     }
 

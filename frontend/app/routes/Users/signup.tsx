@@ -2,7 +2,6 @@ import { useActionState } from "react";
 import { useNavigate } from "react-router";
 import { useUserState } from "~/stores/user-store";
 import { uploadUserImage } from "~/services/user-service";
-import type { UserDTO } from "~/dtos/UserDTO";
 
 export default function Signup() {
     const baseUrl = import.meta.env.BASE_URL;
@@ -29,7 +28,7 @@ export default function Signup() {
             });
             const updatedUser = await login(email, password);
 
-            const image: File = formData.get("imageFile") as File
+            const image: File = formData.get("imageFile") as File;
 
             if (image) {
                 await uploadUserImage(image, updatedUser!.id!);
@@ -37,7 +36,7 @@ export default function Signup() {
         }
         catch (err) {
             frontError = err instanceof Error
-                ? err.message.split('"')[1].split(":")[1]?.trim()
+                ? err.message?.split('"')[1].split(":")[1]?.trim()
                 : "Algunos de los datos enviados no son correctos. Intentalo de nuevo";
             console.log("Error recibido: " + frontError);
         }
