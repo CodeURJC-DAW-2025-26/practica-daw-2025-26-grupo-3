@@ -4,10 +4,6 @@ import { Navbar } from "../components/navbar";
 import { useUserState } from "~/stores/user-store";
 import { useEffect, useState } from "react";
 
-export function clientLoader() {
-  return { name: "React Router" };
-}
-
 export default function Home() {
   const { loadLoggedUser } = useUserState();
   const [loading, setLoading] = useState(false);
