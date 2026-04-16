@@ -28,6 +28,7 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 
 import es.grupo3.practica25_26.dto.ImageDTO;
 import es.grupo3.practica25_26.dto.UserBasicDTO;
+import es.grupo3.practica25_26.dto.UserCreateDTO;
 import es.grupo3.practica25_26.dto.UserPostDTO;
 import es.grupo3.practica25_26.mapper.ImageMapper;
 import es.grupo3.practica25_26.mapper.UserBasicMapper;
@@ -118,8 +119,13 @@ public class UserRestController {
                         @ApiResponse(responseCode = "400", description = "Invalid user data or email already in use")
         })
         @PostMapping
-        public ResponseEntity<UserBasicDTO> createUser(@RequestBody UserPostDTO newUserDTO) {
-                User newUser = postMapper.toDomain(newUserDTO);
+        public ResponseEntity<UserBasicDTO> createUser(@RequestBody UserCreateDTO newUserDTO) {
+                User newUser = new User();
+                newUser.setUserName(newUserDTO.userName());
+                newUser.setSurname(newUserDTO.surname());
+                newUser.setAddress(newUserDTO.address());
+                newUser.setEmail(newUserDTO.email());
+                newUser.setPassword(newUserDTO.password());
                 newUser.setState(true);
 
                 List<String> userRoles = new ArrayList<>();
@@ -150,10 +156,15 @@ public class UserRestController {
         @PutMapping("/{id}")
         public UserBasicDTO updateUser(@PathVariable long id, @RequestBody UserPostDTO updatedUserDTO,
                         HttpServletRequest request) {
-                User updatedUser = postMapper.toDomain(updatedUserDTO);
-                String loggedEmail = request.getUserPrincipal().getName();
-                User loggedUser = userService.findUserByEmail(loggedEmail);
-                updatedUser.setRoles(loggedUser.getRoles());
+                User updatedUser = userService.findUserById(id);
+                if (updatedUser == null) {
+                        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+                }
+
+                updatedUser.setUserName(updatedUserDTO.userName());
+                updatedUser.setSurname(updatedUserDTO.surname());
+                updatedUser.setAddress(updatedUserDTO.address());
+                updatedUser.setEmail(updatedUserDTO.email());
 
                 Error error = userService.userUpdateApiCheck(updatedUserDTO, request);
                 if (error != null) {
@@ -161,8 +172,6 @@ public class UserRestController {
                                         "There are errors in your user update request: " + error.getTitle() + " "
                                                         + error.getMessage());
                 }
-
-                updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
 
                 return basicMapper
                                 .toDTO(userService.replaceUser(id, updatedUser, request.getUserPrincipal().getName()));

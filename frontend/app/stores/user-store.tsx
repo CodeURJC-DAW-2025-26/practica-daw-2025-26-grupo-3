@@ -1,7 +1,8 @@
 import type { UserDTO } from "~/dtos/UserDTO";
 import { create } from "zustand";
-import { HttpError, login, logout, reqIsLogged, signup } from "~/services/user-service";
-import type { userBasicDTO } from "~/dtos/userBasicDTO";
+import { HttpError, login, logout, reqIsLogged, signup, updateUser } from "~/services/user-service";
+import type { UserBasicDTO } from "~/dtos/UserBasicDTO";
+import type { UserCreateDTO } from "~/dtos/UserCreateDTO";
 
 export interface UserState {
     currentUser: UserDTO | null,
@@ -9,7 +10,8 @@ export interface UserState {
     loadLoggedUser: () => Promise<void>,
     login: (email: string, pass: string) => Promise<UserDTO | null>,
     logout: () => void
-    signup: (data: userBasicDTO) => void,
+    signup: (data: UserCreateDTO) => void,
+    editUser: (data: UserBasicDTO, id: number) => void,
 }
 
 export const useUserState = create<UserState>((set, get) => ({
@@ -38,8 +40,19 @@ export const useUserState = create<UserState>((set, get) => ({
             return get().currentUser;
         }
         catch (error) {
-            set({ error: "Bad credentials. Incorrect email or password" });
+            set({ error: "Credenciales incorrectas" });
             throw error;
+        }
+    },
+    editUser: async (data: UserBasicDTO, id: number) => {
+        set({ error: null });
+        try {
+            await updateUser(data, id);
+        }
+        catch (err) {
+            const errorMessage = err instanceof Error ? err.message : "Se ha producido un error editando el usuario";
+            set({ error: errorMessage });
+            throw err;
         }
     },
     logout: async () => {
@@ -52,7 +65,7 @@ export const useUserState = create<UserState>((set, get) => ({
             set({ error: "Error has ocurred when tried to logout" })
         }
     },
-    signup: async (newUserData: userBasicDTO) => {
+    signup: async (newUserData: UserCreateDTO) => {
         set({ currentUser: null, error: null });
         try {
             await signup(newUserData);

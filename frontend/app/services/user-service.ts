@@ -1,5 +1,6 @@
 import type { UserDTO } from "~/dtos/UserDTO";
-import type { userBasicDTO } from "~/dtos/userBasicDTO";
+import type { UserCreateDTO } from "~/dtos/UserCreateDTO";
+import type { UserBasicDTO } from "~/dtos/UserBasicDTO";
 
 const base_auth_url = "/api/v1/auth";
 const base_user_url = "/api/v1/users";
@@ -53,7 +54,7 @@ export async function logout(): Promise<void> {
     }
 }
 
-export async function signup(newUserData: userBasicDTO) {
+export async function signup(newUserData: UserCreateDTO) {
     const url = `${base_user_url}`;
     const response = await fetch(url, {
         method: "POST",
@@ -80,4 +81,27 @@ export async function uploadUserImage(image: File, userId: number) {
     });
 
     return response;
+}
+
+export async function updateUser(newUserData: UserBasicDTO, userId: number) {
+    const url = `${base_user_url}/${userId}`;
+
+    const response = await fetch(url, {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newUserData),
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+
+        throw new Error(
+            errorData.trace
+                ? errorData.trace
+                : (errorData.message || "Se necesita autenticación")
+        );
+    }
+
+    return await response.json();
 }

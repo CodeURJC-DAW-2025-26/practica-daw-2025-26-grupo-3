@@ -19,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-
 @Service
 public class UserService {
 
@@ -95,11 +94,7 @@ public class UserService {
         error = addressCheck(userDto.address());
         if (error != null)
             return error;
-        error = passwordCheck(userDto.password());
-        if (error != null)
-            return error;
-        error = notFilledFormCheck(userDto.userName(), userDto.surname(), userDto.email(), userDto.address(),
-                userDto.password());
+        error = notFilledFormCheck(userDto.userName(), userDto.surname(), userDto.email(), userDto.address());
         return error;
     }
 
