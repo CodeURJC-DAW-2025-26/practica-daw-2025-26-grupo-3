@@ -2,7 +2,7 @@
 import { Container, Row, Col, Alert, Badge, Button } from "react-bootstrap";
 import { useUserState } from "~/stores/user-store";
 import { useEffect, useState } from "react";
-import { getProducts } from "~/services/product-service";
+import { getProducts, getProductsPage } from "~/services/product-service";
 import ProductList from "~/components/product_list";
 import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
 import { Spinner } from "~/components/spinner";
@@ -16,30 +16,51 @@ export default function Index() {
 
     const [products, setProducts] = useState<ProductBasicDTO[]>([]);
 
+    // We start at the page 0, and at the start we have more pages to show
+    const [page, setPage] = useState(0);
+    const [hasMore, setHasMore] = useState(true);
+
     useEffect(() => {
         async function loadInitialData() {
-            setLoading(true);
+            if (page === 0) setLoading(true);
+
             try {
-                // 1. We load the user
-                await loadLoggedUser();
+                // 1. We load the user (only the first time, this prevents from loading the user when we press loadMore)
+                if (page === 0) {
+                    await loadLoggedUser();
+                }
 
                 // 2. We load the products
-                const data = await getProducts();
+                const data = await getProductsPage(page);
+
+                // we obtain the array
+                const loadedProducts = data.content || (Array.isArray(data) ? data : []);
 
                 // 3. We save the products in the state of react
-                setProducts(data || []);
+                //we use prev to accumulate the products
+
+                setProducts(prev =>
+                    page === 0 ? loadedProducts : [...prev, ...loadedProducts]
+                );
+
+                //We update if there are more pages (to hide the button)
+                if (data.last !== undefined) {
+                    setHasMore(!data.last);
+                } else {
+                    setHasMore(loadedProducts.length === 4);
+                }
 
             }
             catch (error) {
                 console.error("Error cargando productos destacados:", error);
             }
             finally {
-                setLoading(false);
+                if (page === 0) setLoading(false);
             }
         }
 
         loadInitialData();
-    }, []);
+    }, [page]);
 
     if (loading) {
         return (
@@ -109,9 +130,17 @@ export default function Index() {
             <section className="bg-white pb-5">
                 <Container>
                     <div className="text-center pt-4 mb-2">
-                        <Button id="load-more-btn" variant="primary" className="rounded-pill px-4 py-2 shadow-sm">
-                            <i className="bi bi-arrow-down-circle me-2" /> Mostrar más destacados
-                        </Button>
+
+                        {hasMore && (
+                            <Button
+                                id="load-more-btn"
+                                variant="primary"
+                                className="rounded-pill px-4 py-2 shadow-sm"
+                                onClick={() => setPage(prev => prev + 1)} //we go to the next page
+                            >
+                                <i className="bi bi-arrow-down-circle me-2" /> Mostrar más destacados
+                            </Button>
+                        )}
                     </div>
 
                     <div className="text-center mt-5">

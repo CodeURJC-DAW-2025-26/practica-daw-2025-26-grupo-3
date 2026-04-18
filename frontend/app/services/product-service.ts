@@ -16,6 +16,15 @@ export async function getAllProducts(): Promise<ProductBasicDTO[]> {
     return Array.isArray(json) ? json : (json.content || []);
 }
 
+export async function getProductsPage(page: number): Promise<any> {
+    // We request a specific page (each page contains 4 more products)
+    const res = await fetch(`${API_URL}/?page=${page}&size=4`);
+    const data = await res.json();
+
+    // We return the complete object
+    return data;
+}
+
 export async function getBasicProduct(id: number): Promise<ProductBasicDTO> {
     const res = await fetch(`${API_URL}/${id}`);
     if (!res.ok) {
