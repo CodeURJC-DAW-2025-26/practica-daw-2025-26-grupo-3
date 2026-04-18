@@ -5,11 +5,13 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useNavigation,
 } from "react-router";
 
 import type { Route } from "./+types/root";
 import { Head } from "./components/head";
 import "./app.css";
+import { Spinner } from "./components/spinner";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -31,7 +33,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  const navigation = useNavigation();
+  const loading = navigation.state === "loading";
+
+  return (
+    <>
+      {loading && (
+        <div className="fixed bottom-6 right-6 z-50 bg-white p-3 rounded-full shadow-lg border border-gray-200">
+          <Spinner />
+        </div>
+      )}
+      <Outlet />
+    </>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

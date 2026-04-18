@@ -1,46 +1,15 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { useUserState } from "~/stores/user-store";
 
 export function Navbar() {
     const baseUrl = import.meta.env.BASE_URL;
+
+    const { logout, currentUser } = useUserState();
     const base_image_url = "/api/v1/images";
 
-    const { currentUser, loadLoggedUser, logout } = useUserState();
-
-    const [loading, setLoading] = useState(true);
-
-    async function loadUser() {
-        setLoading(true);
-
-        try {
-            await loadLoggedUser();
-        }
-        catch (err) {
-            console.error(err);
-        }
-        finally {
-            setLoading(false);
-        }
-    }
-
-    useEffect(() => { loadUser() }, []);
-
-    if (loading) {
-        return (
-            <div className="index-loading-screen" aria-live="polite" aria-busy="true">
-                <span className="index-loading-spinner" role="status" aria-label="Cargando" />
-            </div>
-        );
-    }
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom sticky-top shadow-sm position-relative">
-            {loading && (
-                <div className="navbar-loading-overlay" aria-live="polite" aria-busy="true">
-                    <span className="navbar-loading-spinner" role="status" aria-label="Cargando" />
-                </div>
-            )}
             <div className="container">
                 <div className="navbar-brand-wrap">
                     <Link className="navbar-brand fw-bold text-primary d-flex align-items-center" to="/">
@@ -65,13 +34,11 @@ export function Navbar() {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav ms-auto align-items-lg-center gap-lg-2">
-                        {!loading && (
-                            <li className="nav-item">
-                                <Link className="nav-link fw-semibold" to="/product_search">
-                                    Productos
-                                </Link>
-                            </li>
-                        )}
+                        <li className="nav-item">
+                            <Link className="nav-link fw-semibold" to="/product_search">
+                                Productos
+                            </Link>
+                        </li>
                         {currentUser && (
                             <>
                                 <li className="nav-item">
@@ -86,7 +53,7 @@ export function Navbar() {
                                 </li>
                             </>
                         )}
-                        {currentUser ? (
+                        {currentUser && (
                             <li className="nav-item dropdown ms-lg-3">
                                 <a
                                     className="nav-link dropdown-toggle user-dropdown d-flex align-items-center gap-2"
@@ -149,7 +116,8 @@ export function Navbar() {
                                     </li>
                                 </ul>
                             </li>
-                        ) : !loading ? (
+                        )}
+                        {!currentUser && (
                             <>
                                 <li className="nav-item">
                                     <Link className="nav-link fw-semibold" to="/login">
@@ -162,7 +130,7 @@ export function Navbar() {
                                     </Link>
                                 </li>
                             </>
-                        ) : null}
+                        )}
                     </ul>
                 </div>
             </div>

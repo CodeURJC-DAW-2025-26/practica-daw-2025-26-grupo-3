@@ -32,7 +32,6 @@ import es.grupo3.practica25_26.dto.UserCreateDTO;
 import es.grupo3.practica25_26.dto.UserPostDTO;
 import es.grupo3.practica25_26.mapper.ImageMapper;
 import es.grupo3.practica25_26.mapper.UserBasicMapper;
-import es.grupo3.practica25_26.mapper.UserPostMapper;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.model.Error;
 import es.grupo3.practica25_26.model.Image;
@@ -52,9 +51,6 @@ public class UserRestController {
 
         @Autowired
         private UserBasicMapper basicMapper;
-
-        @Autowired
-        private UserPostMapper postMapper;
 
         @Autowired
         private UserService userService;

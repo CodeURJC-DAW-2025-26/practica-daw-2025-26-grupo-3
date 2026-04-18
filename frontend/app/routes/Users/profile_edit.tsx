@@ -1,65 +1,34 @@
-import { useUserState } from "~/stores/user-store";
 import { Foot } from "../../components/foot";
-import { ProfileNavbar } from "../../components/profile_navbar";
+import { ProfileNavbar } from "../../components/Profile/profile_navbar";
 import { useActionState, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { Spinner } from "~/components/spinner";
 import { AuthError } from "~/components/auth-error";
 import { updateUser, uploadUserImage } from "~/services/user-service";
+import { PasswordChangeForm } from "~/components/ProfilEdit/PasswordChangeForm";
+import { requireUserLoader } from "../auth-loaders";
+import type { Route } from "../+types";
+import type { UserDTO } from "~/dtos/UserDTO";
 
-export default function ProfileEdit() {
+export async function clientLoader() {
+    return await requireUserLoader();
+}
+
+export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
     const baseUrl = import.meta.env.BASE_URL;
 
-    //Necessary Hooks
-    const { loadLoggedUser, currentUser } = useUserState();
-    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
-    const displayName = currentUser?.userName ?? "Usuario";
     const [{ errMessage }, formAction, editFormLoading] = useActionState(
         handleEditForm,
         { errMessage: null }
     );
 
-    //Current user loading logic 
-    const base_image_url = "/api/v1/images";
-
-    async function loadUser() {
-        setLoading(true);
-
-        try {
-            await loadLoggedUser();
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    useEffect(() => {
-        loadUser();
-    }, []);
-
-    if (loading) {
-        return (
-            <Spinner />
-        );
-    }
-
-    if (!currentUser) {
-        return (
-            <>
-                <ProfileNavbar />
-                <AuthError />
-                <Foot />
-            </>
-        );
-    }
+    const baseImageUrl = "/api/v1/images";
+    const currentUser = loaderData as unknown as UserDTO | null;
 
     //Edit form logic
 
     async function handleEditForm(prevState: { errMessage: string | null }, formData: FormData) {
-        const user = currentUser;
-        if (!user) {
+        if (!currentUser) {
             return { errMessage: "Debes iniciar sesion para editar tu perfil." };
         }
 
@@ -71,15 +40,13 @@ export default function ProfileEdit() {
                 surname: formData.get("surname") as string,
                 address: formData.get("address") as string,
                 email: formData.get("email") as string,
-            }, user.id);
+            }, currentUser.id);
 
             const image = formData.get("imageFile") as File | null;
 
             if (image && image.size > 0) {
-                await uploadUserImage(image, user.id);
+                await uploadUserImage(image, currentUser.id);
             }
-
-            await loadLoggedUser();
         }
         catch (err) {
             editError = err instanceof Error
@@ -95,32 +62,40 @@ export default function ProfileEdit() {
         return { errMessage: editError };
     }
 
+    if (!currentUser) {
+        return (<>
+            <ProfileNavbar />
+            <AuthError />
+            <Foot />
+        </>);
+    }
+
     return (
         <>
             <ProfileNavbar />
 
-            <div className="container my-5">
-                <div className="row justify-content-center">
-                    <div className="col-md-8">
-                        <div className="card border-0 shadow-sm p-4 mb-4">
-                            <div className="d-flex justify-content-between align-items-center mb-4">
+            <div className="container my-3 mb-3">
+                <div className="row g-3 align-items-start">
+                    <div className="col-lg-8">
+                        <div className="card border-0 shadow-sm p-3 h-100">
+                            <div className="d-flex justify-content-between align-items-center mb-3">
                                 <h5 className="fw-bold mb-0 text-dark">Información Personal</h5>
                             </div>
 
                             <form action={formAction}>
-                                <div className="row g-3">
-                                    <div className="col-12 text-center mb-3">
+                                <div className="row g-2">
+                                    <div className="col-12 text-center mb-2">
                                         <img
-                                            src={currentUser.imageId ? `${base_image_url}/${currentUser.imageId}/media` : `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=random`}
+                                            src={currentUser.imageId ? `${baseImageUrl}/${currentUser.imageId}/media` : `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.userName)}&background=random`}
                                             onError={(event) => {
-                                                event.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=random`;
+                                                event.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.userName)}&background=random`;
                                             }}
                                             className="rounded-circle shadow-sm"
                                             alt="Foto de perfil"
-                                            style={{ width: 150, height: 150, objectFit: "cover" }}
+                                            style={{ width: 120, height: 120, objectFit: "cover" }}
                                         />
 
-                                        <div className="mt-3">
+                                        <div className="mt-2">
                                             <label className="form-label text-muted small fw-bold text-uppercase d-block">Cambiar Foto</label>
                                             <input type="file" className="form-control form-control-sm w-50 mx-auto" name="imageFile" accept="image/*" />
                                         </div>
@@ -166,8 +141,13 @@ export default function ProfileEdit() {
                                             required
                                         />
                                     </div>
-                                    <div className="col-12 text-end mt-4">
-                                        <button type="submit" className="btn btn-primary" disabled={editFormLoading}>
+
+                                    <div className="col-12 text-end mt-3">
+                                        <button
+                                            type="submit"
+                                            className="btn btn-primary d-inline-flex align-items-center justify-content-center gap-2"
+                                            disabled={editFormLoading}
+                                        >
                                             {editFormLoading ? (
                                                 <span className="signup-loading-spinner" role="status" aria-label="Actualizando" />
                                             ) : (
@@ -175,53 +155,22 @@ export default function ProfileEdit() {
                                             )}
                                         </button>
                                     </div>
-
                                 </div>
                             </form>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <div className="container mb-5">
-                <div className="row justify-content-center">
-                    <div className="col-md-8">
-                        <div className="card border-0 shadow-sm p-4 mb-4">
-                            <div className="d-flex justify-content-between align-items-center mb-4">
-                                <h5 className="fw-bold mb-0 text-dark">Cambiar Contraseña</h5>
-                            </div>
-
-                            <form>
-                                <div className="row g-3">
-                                    <div className="col-md-6">
-                                        <label className="form-label text-muted small fw-bold text-uppercase">Contraseña Actual</label>
-                                        <input type="password" className="form-control bg-light border-0" name="oldPassword" minLength={8} maxLength={20} required />
-                                    </div>
-
-                                    <div className="col-md-6">
-                                        <label className="form-label text-muted small fw-bold text-uppercase">Nueva Contraseña</label>
-                                        <input type="password" className="form-control bg-light border-0" name="newPassword" minLength={8} maxLength={20} required />
-                                    </div>
-
-                                    <div className="col-12 text-end mt-4">
-                                        <button type="button" className="btn btn-primary">
-                                            Cambiar Contraseña
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-
-                        <div className="d-grid gap-2">
-                            <a href={`${baseUrl}profile`} className="btn btn-secondary btn-lg">
-                                Cancelar
+                    <div className="col-lg-4">
+                        <PasswordChangeForm />
+                        <div className="d-grid mt-3">
+                            <a href={`${baseUrl}profile`} className="btn btn-secondary w-100">
+                                Cancelar y volver al perfil
                             </a>
                         </div>
                     </div>
+
                 </div>
             </div>
-
-
             <Foot />
         </>
     );

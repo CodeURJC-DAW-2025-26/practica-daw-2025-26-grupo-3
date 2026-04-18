@@ -81,22 +81,22 @@ CUSTOM UTILITY CLASSES
 }
 
 /* Navbar darker theme */
-.navbar.navbar-light.bg-light {
+.navbar.navbar-dark.bg-dark {
   background-color: #1F2A44 !important;
 }
 
-.navbar.navbar-light .navbar-brand,
-.navbar.navbar-light .nav-link {
+.navbar.navbar-dark .navbar-brand,
+.navbar.navbar-dark .nav-link {
   color: rgba(255, 255, 255, 0.9) !important;
   transition: all 0.3s ease;
 }
 
-.navbar.navbar-light .nav-link {
+.navbar.navbar-dark .nav-link {
   position: relative;
 }
 
 
-.navbar.navbar-light .nav-link::after {
+.navbar.navbar-dark .nav-link::after {
   content: '';
   position: absolute;
   width: 0;
@@ -108,12 +108,12 @@ CUSTOM UTILITY CLASSES
   transition: width 0.3s ease;
 }
 
-.navbar.navbar-light .nav-link:hover::after {
+.navbar.navbar-dark .nav-link:hover::after {
   width: 80%;
 }
 
 /* Remove custom underline effect from dropdown toggle, but keep Bootstrap arrow */
-.navbar.navbar-light .nav-link.dropdown-toggle::after {
+.navbar.navbar-dark .nav-link.dropdown-toggle::after {
   content: "" !important;
   position: static !important;
   width: auto !important;
@@ -127,40 +127,40 @@ CUSTOM UTILITY CLASSES
   background-color: transparent !important;
 }
 
-.navbar.navbar-light .nav-link:hover,
-.navbar.navbar-light .nav-link:focus {
+.navbar.navbar-dark .nav-link:hover,
+.navbar.navbar-dark .nav-link:focus {
   color: #ffffff !important;
   transform: translateY(-2px);
 }
 
 /* User dropdown specific styles */
-.navbar.navbar-light .dropdown-toggle.user-dropdown {
+.navbar.navbar-dark .dropdown-toggle.user-dropdown {
   transform: none !important;
 }
 
-.navbar.navbar-light .dropdown-toggle.user-dropdown:hover {
+.navbar.navbar-dark .dropdown-toggle.user-dropdown:hover {
   transform: none !important;
   opacity: 0.85;
 }
 
-.navbar.navbar-light .dropdown-toggle.user-dropdown::after {
+.navbar.navbar-dark .dropdown-toggle.user-dropdown::after {
   color: rgba(255, 255, 255, 0.9);
 }
 
-.navbar.navbar-light .btn-primary {
+.navbar.navbar-dark .btn-primary {
   transition: all 0.3s ease;
 }
 
-.navbar.navbar-light .btn-primary:hover {
+.navbar.navbar-dark .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(78, 115, 223, 0.4);
 }
 
-.navbar.navbar-light .navbar-toggler {
+.navbar.navbar-dark .navbar-toggler {
   border-color: rgba(255, 255, 255, 0.4);
 }
 
-.navbar.navbar-light .navbar-toggler-icon {
+.navbar.navbar-dark .navbar-toggler-icon {
   filter: invert(1);
 }
 

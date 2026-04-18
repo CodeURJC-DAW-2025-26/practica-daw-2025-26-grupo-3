@@ -78,8 +78,16 @@ export default function Login() {
                             </div>
 
                             <div className="mt-4">
-                                <button type="submit" className="btn btn-primary w-100 py-2 fw-bold shadow-sm" disabled={submitting}>
-                                    {submitting ? "Entrando..." : "Entrar"}
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary w-100 py-2 fw-bold shadow-sm d-inline-flex align-items-center justify-content-center"
+                                    disabled={submitting}
+                                >
+                                    {submitting ? (
+                                        <span className="signup-loading-spinner" role="status" aria-label="Entrando" />
+                                    ) : (
+                                        "Entrar"
+                                    )}
                                 </button>
                             </div>
                         </form>
