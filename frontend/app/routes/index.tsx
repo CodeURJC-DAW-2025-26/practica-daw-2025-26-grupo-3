@@ -1,7 +1,10 @@
-import { Outlet } from "react-router";
+
 import { Container, Row, Col, Alert, Badge, Button } from "react-bootstrap";
 import { useUserState } from "~/stores/user-store";
 import { useEffect, useState } from "react";
+import { getProducts } from "~/services/product-service";
+import ProductList from "~/routes/Products/product_list";
+import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
 import { Spinner } from "~/components/spinner";
 
 export default function Index() {
@@ -11,22 +14,31 @@ export default function Index() {
 
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        async function loadUser() {
-            setLoading(true);
+    const [products, setProducts] = useState<ProductBasicDTO[]>([]);
 
+    useEffect(() => {
+        async function loadInitialData() {
+            setLoading(true);
             try {
+                // 1. We load the user
                 await loadLoggedUser();
+
+                // 2. We load the products
+                const data = await getProducts();
+
+                // 3. We save the products in the state of react
+                setProducts(data || []);
+
             }
             catch (error) {
-                console.error(error);
+                console.error("Error cargando productos destacados:", error);
             }
             finally {
                 setLoading(false);
             }
         }
 
-        loadUser();
+        loadInitialData();
     }, []);
 
     if (loading) {
@@ -82,8 +94,17 @@ export default function Index() {
                     </Row>
                 </Container>
             </header>
+            <div className="bg-white pt-5">
+                <div className="text-center">
+                    <Badge bg="primary" className="bg-opacity-10 text-primary mb-2 px-3 py-2 fs-1">
+                        ⭐ Destacados
+                    </Badge>
+                    <h2 className="fw-bold display-8 mb-2">Recomendaciones</h2>
+                    <p className="text-muted">Creemos que estos productos te encantarán</p>
+                </div>
 
-            <Outlet />
+                <ProductList products={products} />
+            </div>
 
             <section className="bg-white pb-5">
                 <Container>
