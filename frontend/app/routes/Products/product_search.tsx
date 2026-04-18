@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { getAllProducts } from "~/services/product-service";
-import ProductList from "~/routes/Products/product_list";
+import ProductList from "~/components/product_list";
 import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
 import { useUserState } from "~/stores/user-store";
 

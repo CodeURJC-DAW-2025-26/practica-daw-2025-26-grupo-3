@@ -3,7 +3,7 @@ import { Container, Row, Col, Alert, Badge, Button } from "react-bootstrap";
 import { useUserState } from "~/stores/user-store";
 import { useEffect, useState } from "react";
 import { getProducts } from "~/services/product-service";
-import ProductList from "~/routes/Products/product_list";
+import ProductList from "~/components/product_list";
 import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
 import { Spinner } from "~/components/spinner";
 
