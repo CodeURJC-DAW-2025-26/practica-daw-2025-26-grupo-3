@@ -1,5 +1,6 @@
 
 import { Container, Row, Col, Alert, Badge, Button } from "react-bootstrap";
+import { Link } from "react-router";
 import { useUserState } from "~/stores/user-store";
 import { useEffect, useState } from "react";
 import { getProducts, getProductsPage } from "~/services/product-service";
@@ -8,8 +9,6 @@ import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
 import { Spinner } from "~/components/spinner";
 
 export default function Index() {
-    const baseUrl = import.meta.env.BASE_URL;
-
     const { loadLoggedUser, currentUser } = useUserState();
 
     const [loading, setLoading] = useState(true);
@@ -88,20 +87,20 @@ export default function Index() {
                             </p>
                             <div className="mt-4 d-flex gap-3 flex-wrap">
                                 {currentUser ?
-                                    <Button href={`${baseUrl}product_search`} variant="primary" size="lg" className="px-5 shadow">
+                                    <Button as={Link} to="/product_search" variant="primary" size="lg" className="px-5 shadow">
                                         Explorar Ahora
                                     </Button>
                                     :
-                                    <Button href={`${baseUrl}login`} variant="primary" size="lg" className="px-5 shadow">
+                                    <Button as={Link} to="/login" variant="primary" size="lg" className="px-5 shadow">
                                         Iniciar sesión
                                     </Button>
                                 }
                                 {currentUser ?
-                                    <Button href={`${baseUrl}signup`} variant="outline-primary" size="lg" className="px-5">
+                                    <Button as={Link} to="/signup" variant="outline-primary" size="lg" className="px-5">
                                         Vender productos
                                     </Button>
                                     :
-                                    <Button href={`${baseUrl}signup`} variant="outline-primary" size="lg" className="px-5">
+                                    <Button as={Link} to="/signup" variant="outline-primary" size="lg" className="px-5">
                                         Registrarse
                                     </Button>
                                 }
@@ -110,7 +109,7 @@ export default function Index() {
                             </div>
                         </Col>
                         <Col lg={6} className="d-none d-lg-block">
-                            <img src={`${baseUrl}assets/Logo_Remarket.png`} className="img-fluid hero-image" alt="ReMarket+" />
+                            <img src="/assets/Logo_Remarket.png" className="img-fluid hero-image" alt="ReMarket+" />
                         </Col>
                     </Row>
                 </Container>
@@ -144,7 +143,7 @@ export default function Index() {
                     </div>
 
                     <div className="text-center mt-5">
-                        <Button href={`${baseUrl}product_search`} variant="outline-primary" size="lg" className="px-5 rounded-pill">
+                        <Button as={Link} to="/product_search" variant="outline-primary" size="lg" className="px-5 rounded-pill">
                             Ver todos los productos →
                         </Button>
                     </div>

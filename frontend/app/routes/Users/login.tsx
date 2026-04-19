@@ -1,13 +1,12 @@
 import { useUserState } from "~/stores/user-store";
 import type { SubmitEvent } from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export default function Login() {
     const navigate = useNavigate();
 
     const { login, error } = useUserState();
-    const baseUrl = import.meta.env.BASE_URL;
     const [submitting, setSubmitting] = useState(false);
 
     async function loginFormHandler(event: SubmitEvent) {
@@ -38,14 +37,14 @@ export default function Login() {
             <div className="row min-vh-100 align-items-center justify-content-center">
                 <div className="col-md-5">
                     <div className="text-center mb-4">
-                        <a href={baseUrl} className="d-inline-block">
+                        <Link to="/" className="d-inline-block">
                             <img
-                                src={`${baseUrl}assets/Logo_Remarket.png`}
+                                src="/assets/Logo_Remarket.png"
                                 alt="ReMarket+ Logo"
                                 className="img-fluid"
                                 style={{ maxWidth: 120 }}
                             />
-                        </a>
+                        </Link>
                     </div>
 
                     <div className="card border-0 shadow-sm p-4 p-md-5">
@@ -93,17 +92,17 @@ export default function Login() {
                         </form>
 
                         <div className="mt-4">
-                            <a href={baseUrl} className="btn btn-danger w-100 py-2 fw-bold shadow-sm" title="Volver a la tienda">
+                            <Link to="/" className="btn btn-danger w-100 py-2 fw-bold shadow-sm" title="Volver a la tienda">
                                 Volver a la tienda
-                            </a>
+                            </Link>
                         </div>
 
                         <div className="text-center mt-4 pt-2 border-top">
                             <p className="small text-muted mb-0">
                                 ¿No tienes cuenta?{" "}
-                                <a href={`${baseUrl}signup`} className="fw-bold text-primary text-decoration-none">
+                                <Link to="/signup" className="fw-bold text-primary text-decoration-none">
                                     Regístrate gratis
-                                </a>
+                                </Link>
                             </p>
                         </div>
                     </div>

@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 export default function MyProducts() {
     const token = "mock-csrf-token-123";
     const products = [
@@ -16,9 +18,9 @@ export default function MyProducts() {
                             <h1 className="fw-bold">Mis Productos Publicados</h1>
                             <p className="text-muted mb-0">Gestiona todos los productos que has puesto a la venta</p>
                         </div>
-                        <a href="/product-publish" className="btn btn-primary">
+                        <Link to="/product-publish" className="btn btn-primary">
                             <i className="bi bi-plus-circle"></i> Publicar Nuevo Producto
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </section>
@@ -45,10 +47,10 @@ export default function MyProducts() {
                                         </div>
                                         <div className="card-footer bg-transparent border-0 pb-3">
                                             <div className="d-grid gap-2">
-                                                <a href={`/product_detail/${product.id}`}
+                                                <Link to={`/product_detail/${product.id}`}
                                                     className="btn btn-sm btn-primary d-flex align-items-center justify-content-center">
                                                     <i className="bi bi-eye-fill me-2"></i> Ver Detalle
-                                                </a>
+                                                </Link>
                                                 <a href={`/edit_product/${product.id}`}
                                                     className="btn btn-sm btn-edit-custom text-white d-flex align-items-center justify-content-center">
                                                     <i className="bi bi-pencil-square me-2"></i> Editar

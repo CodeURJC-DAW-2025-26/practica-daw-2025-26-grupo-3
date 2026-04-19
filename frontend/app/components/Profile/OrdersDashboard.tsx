@@ -61,13 +61,12 @@ const mockOrders: Order[] = [
 const hasOrders = mockOrders.length > 0;
 
 export function OrdersDashboard() {
-    const baseUrl = import.meta.env.BASE_URL;
     return (
         <div className="card border-0 shadow-sm p-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <h4 className="fw-bold mb-0">Mis Pedidos</h4>
                 {hasOrders && (
-                    <a href={`${baseUrl}bill/all`} className="btn btn-primary btn-sm d-inline-flex align-items-center" id="export-all-orders-pdf">
+                    <a href="/bill/all" className="btn btn-primary btn-sm d-inline-flex align-items-center" id="export-all-orders-pdf">
                         <i className="bi bi-file-earmark-pdf me-2" />
                         Exportar todos en PDF
                     </a>

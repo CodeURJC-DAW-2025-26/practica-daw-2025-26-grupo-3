@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 export default function ProductPublish() {
     const isAdmin = false; // Mock data (cambia a true para ver la vista de admin)
     const token = "mock-csrf-token-123";
@@ -69,9 +71,9 @@ export default function ProductPublish() {
                             <input type="hidden" name="_csrf" value={token} />
                         </form>
                         <div className="mt-4 text-center">
-                            <a href="/" className="btn btn-danger py-2 fw-bold shadow-sm" title="Volver a la tienda">
+                            <Link to="/" className="btn btn-danger py-2 fw-bold shadow-sm" title="Volver a la tienda">
                                 Volver a la tienda
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>

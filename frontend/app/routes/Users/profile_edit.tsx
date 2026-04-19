@@ -1,7 +1,7 @@
 import { Foot } from "../../components/foot";
 import { ProfileNavbar } from "../../components/Profile/profile_navbar";
 import { useActionState, useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { AuthError } from "~/components/auth-error";
 import { updateUser, uploadUserImage } from "~/services/user-service";
 import { PasswordChangeForm } from "~/components/ProfilEdit/PasswordChangeForm";
@@ -14,8 +14,6 @@ export async function clientLoader() {
 }
 
 export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
-    const baseUrl = import.meta.env.BASE_URL;
-
     const navigate = useNavigate();
     const [{ errMessage }, formAction, editFormLoading] = useActionState(
         handleEditForm,
@@ -169,9 +167,9 @@ export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
                     <div className="col-lg-4">
                         <PasswordChangeForm userId={currentUser.id} />
                         <div className="d-grid mt-3">
-                            <a href={`${baseUrl}profile`} className="btn btn-secondary w-100">
+                            <Link to="/profile" className="btn btn-secondary w-100">
                                 Cancelar y volver al perfil
-                            </a>
+                            </Link>
                         </div>
                     </div>
 

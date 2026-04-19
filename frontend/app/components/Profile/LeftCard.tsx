@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import type { UserDTO } from "~/dtos/UserDTO";
 import { useUserState } from "~/stores/user-store";
 
@@ -9,8 +9,6 @@ export interface LeftCardProps {
 }
 
 export function LeftCard({ baseImageUrl, userName, imageId }: LeftCardProps) {
-    const baseUrl = import.meta.env.BASE_URL;
-
     const { logout } = useUserState();
     const navigate = useNavigate();
 
@@ -35,18 +33,18 @@ export function LeftCard({ baseImageUrl, userName, imageId }: LeftCardProps) {
             <h5 className="fw-bold mb-0">{userName}</h5>
             <hr />
             <div className="d-grid gap-2">
-                <a
-                    href={`${baseUrl}my_products`}
+                <Link
+                    to="/my_products"
                     className="btn btn-sm btn-primary rounded d-flex align-items-center justify-content-center py-2"
                 >
                     Mis Productos
-                </a>
-                <a
-                    href={`${baseUrl}product-publish`}
+                </Link>
+                <Link
+                    to="/product-publish"
                     className="btn btn-sm btn-success rounded d-flex align-items-center justify-content-center py-2"
                 >
                     Publicar Producto
-                </a>
+                </Link>
                 <button
                     type="button"
                     className="btn btn-sm btn-danger rounded d-flex align-items-center justify-content-center py-2 w-100"

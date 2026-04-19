@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 export default function ShoppingCart() {
     // Mock data for the shopping cart
     const token = "mock-csrf-token-123";
@@ -40,9 +42,9 @@ export default function ShoppingCart() {
                         <h1 className="h3 fw-bold text-dark mb-1">Mi carrito</h1>
                         <p className="text-muted mb-0">Resumen de productos del pedido actual.</p>
                     </div>
-                    <a href="/product_search" className="btn btn-primary">
+                    <Link to="/product_search" className="btn btn-primary">
                         <i className="bi bi-arrow-left"></i> Seguir comprando
-                    </a>
+                    </Link>
                 </div>
 
                 <div className="row g-4">

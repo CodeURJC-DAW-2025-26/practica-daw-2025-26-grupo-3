@@ -2,8 +2,6 @@ import { Link } from "react-router";
 import { useUserState } from "~/stores/user-store";
 
 export function Navbar() {
-    const baseUrl = import.meta.env.BASE_URL;
-
     const { logout, currentUser } = useUserState();
     const base_image_url = "/api/v1/images";
 
@@ -14,7 +12,7 @@ export function Navbar() {
                 <div className="navbar-brand-wrap">
                     <Link className="navbar-brand fw-bold text-primary d-flex align-items-center" to="/">
                         <img
-                            src={`${baseUrl}assets/Logo_Remarket.png`}
+                            src="/assets/Logo_Remarket.png"
                             alt="ReMarket+ Logo"
                             style={{ height: 50, width: "auto" }}
                         />

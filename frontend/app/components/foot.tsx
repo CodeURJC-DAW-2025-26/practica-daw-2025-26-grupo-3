@@ -1,6 +1,6 @@
-export function Foot() {
-    const baseUrl = import.meta.env.BASE_URL;
+import { Link } from "react-router";
 
+export function Foot() {
     return (
         <footer className="footer-custom border-top bg-light py-5">
             <div className="container">
@@ -17,19 +17,19 @@ export function Foot() {
                         </h6>
                         <ul className="list-unstyled">
                             <li>
-                                <a href={`${baseUrl}product_search`} className="text-muted text-decoration-none">
+                                <Link to="/product_search" className="text-muted text-decoration-none">
                                     <i className="bi bi-bag" /> Productos
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href={`${baseUrl}login`} className="text-muted text-decoration-none">
+                                <Link to="/login" className="text-muted text-decoration-none">
                                     <i className="bi bi-box-arrow-in-right" /> Iniciar sesión
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href={`${baseUrl}signup`} className="text-muted text-decoration-none">
+                                <Link to="/signup" className="text-muted text-decoration-none">
                                     <i className="bi bi-person-plus" /> Registrarse
-                                </a>
+                                </Link>
                             </li>
                             <li>
                                 <a href="#top" className="text-muted text-decoration-none">

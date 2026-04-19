@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { Link } from "react-router";
 import { Foot } from "../../components/foot";
 import { ProfileNavbar } from "../../components/Profile/profile_navbar";
 import { useUserState } from "~/stores/user-store";
@@ -17,8 +17,6 @@ export async function clientLoader() {
 }
 
 export default function Profile({ loaderData }: Route.ComponentProps) {
-    const baseUrl = import.meta.env.BASE_URL;
-
     const baseImageUrl = "/api/v1/images";
     const currentUser = loaderData as unknown as UserDTO | null;
     const isAdmin = currentUser?.roles.includes("ADMIN");
@@ -32,9 +30,9 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                         <div className="col-md-4 col-lg-3 mb-4">
                             <LeftCard baseImageUrl={baseImageUrl} userName={currentUser.userName} imageId={currentUser.imageId} />
                             <div className="mt-4 text-center">
-                                <a href={baseUrl} className="btn btn-danger py-2 fw-bold shadow-sm" title="Volver a la tienda">
+                                <Link to="/" className="btn btn-danger py-2 fw-bold shadow-sm" title="Volver a la tienda">
                                     Volver a la tienda
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     )}
