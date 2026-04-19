@@ -1,9 +1,10 @@
 import type { UserDTO } from "~/dtos/UserDTO";
 import { create } from "zustand";
-import { changePassword, HttpError, login, logout, reqIsLogged, signup, updateUser } from "~/services/user-service";
+import { changePassword, deleteUser, HttpError, login, logout, reqIsLogged, signup, updateUser } from "~/services/user-service";
 import type { UserBasicDTO } from "~/dtos/UserBasicDTO";
 import type { UserCreateDTO } from "~/dtos/UserCreateDTO";
 import type { UserPassDTO } from "~/dtos/UserPassDTO";
+import type { UserPassBasicDTO } from "~/dtos/UserPassBasicDTO";
 
 export interface UserState {
     currentUser: UserDTO | null,
@@ -13,7 +14,8 @@ export interface UserState {
     logout: () => void
     signup: (data: UserCreateDTO) => void,
     editUser: (data: UserBasicDTO, id: number) => void,
-    editPass: (data: UserPassDTO, id: number) => void
+    editPass: (data: UserPassDTO, id: number) => void,
+    deleteUser: (passsword: UserPassBasicDTO, id: number) => void
 }
 
 export const useUserState = create<UserState>((set, get) => ({
@@ -87,5 +89,18 @@ export const useUserState = create<UserState>((set, get) => ({
             set({ error: errorMessage });
             throw err;
         }
+    },
+    deleteUser: async (password: UserPassBasicDTO, id: number) => {
+        set({ error: null });
+        try {
+            await deleteUser(password, id);
+        }
+        catch (err) {
+            const errorMessage = err instanceof Error ? err.message : "Error desconcido al eliminar la cuenta";
+            set({ error: errorMessage });
+            throw err;
+        }
+
+        set({ currentUser: null });
     }
 }));

@@ -55,7 +55,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                                 <>
                                     <PersonalInfo baseImageUrl={baseImageUrl} currentUser={currentUser} isAdmin={isAdmin} />
                                     <OrdersDashboard />
-                                    <DeleteAccountForm />
+                                    <DeleteAccountForm userId={currentUser.id} />
                                 </>
                             )}
 

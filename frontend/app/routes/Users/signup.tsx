@@ -36,7 +36,7 @@ export default function Signup() {
         }
         catch (err) {
             frontError = err instanceof Error
-                ? err.message?.split('"')[1].split(":")[1]?.trim()
+                ? err.message?.split(":")[1]?.trim()
                 : "Algunos de los datos enviados no son correctos. Intentalo de nuevo";
             console.log("Error recibido: " + frontError);
         }
@@ -81,7 +81,7 @@ export default function Signup() {
                                     marginBottom: '20px',
                                     fontSize: '0.95rem'
                                 }}>
-                                    <strong>¡Atención!</strong> {errMessage}
+                                    {errMessage}
                                 </div>
                             )}
 

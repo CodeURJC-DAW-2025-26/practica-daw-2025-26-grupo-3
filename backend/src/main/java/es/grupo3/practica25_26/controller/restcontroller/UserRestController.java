@@ -29,6 +29,7 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 import es.grupo3.practica25_26.dto.ImageDTO;
 import es.grupo3.practica25_26.dto.UserBasicDTO;
 import es.grupo3.practica25_26.dto.UserCreateDTO;
+import es.grupo3.practica25_26.dto.UserPassBasicDTO;
 import es.grupo3.practica25_26.dto.UserPassDTO;
 import es.grupo3.practica25_26.dto.UserPostDTO;
 import es.grupo3.practica25_26.mapper.ImageMapper;
@@ -105,9 +106,23 @@ public class UserRestController {
                         @ApiResponse(responseCode = "403", description = "Forbidden (Permission denied)")
         })
         @DeleteMapping("/{id}")
-        public UserBasicDTO deleteUserById(@PathVariable long id, HttpServletRequest request) {
-                User user = userService.deleteUserById(id, request.getUserPrincipal().getName());
-                return basicMapper.toDTO(user);
+        public UserBasicDTO deleteUserById(@PathVariable long id, @RequestBody UserPassBasicDTO currentPass,
+                        HttpServletRequest request) {
+                String email = request.getUserPrincipal().getName();
+                User currentUser = userService.findUserByEmail(email);
+                String password = currentPass.password();
+
+                if (password == null || password.length() == 0) {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                        "Es necesario introducir la contraseña de la cuenta antes de borrarla.");
+                }
+                if (!passwordEncoder.matches(password, currentUser.getPassword())) {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                        "La contraseña introducida es incorrecta.");
+                }
+
+                User deletedUser = userService.deleteUserById(id, email);
+                return basicMapper.toDTO(deletedUser);
         }
 
         @Operation(summary = "Register new user")

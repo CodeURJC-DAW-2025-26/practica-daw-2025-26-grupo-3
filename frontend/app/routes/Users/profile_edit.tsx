@@ -52,7 +52,6 @@ export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
             editError = err instanceof Error
                 ? err.message.split(":")[1]?.trim()
                 : "Algunos de los datos enviados no son correctos. Intentalo de nuevo";
-            console.log("Error recibido: " + editError);
         }
 
         if (!editError) {

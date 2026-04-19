@@ -2,6 +2,7 @@ import type { UserDTO } from "~/dtos/UserDTO";
 import type { UserCreateDTO } from "~/dtos/UserCreateDTO";
 import type { UserBasicDTO } from "~/dtos/UserBasicDTO";
 import type { UserPassDTO } from "~/dtos/UserPassDTO";
+import type { UserPassBasicDTO } from "~/dtos/UserPassBasicDTO";
 
 const base_auth_url = "/api/v1/auth";
 const base_user_url = "/api/v1/users";
@@ -65,7 +66,7 @@ export async function signup(newUserData: UserCreateDTO) {
 
     if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || "Campos incorrectos");
+        throw new Error(errorData.message);
     }
 
     return await response.json();
@@ -97,7 +98,7 @@ export async function updateUser(newUserData: UserBasicDTO, userId: number) {
     if (!response.ok) {
         const errorData = await response.json();
 
-        throw new Error(errorData.message || "Se necesita autenticación");
+        throw new Error(errorData.message);
     }
 
     return await response.json();
@@ -115,8 +116,24 @@ export async function changePassword(newPassData: UserPassDTO, userId: number) {
 
     if (!response.ok) {
         const errorData = await response.json();
+        throw new Error(errorData.message);
+    }
 
-        throw new Error(errorData.message || "Se necesita autenticación");
+    return await response.json();
+}
+
+export async function deleteUser(password: UserPassBasicDTO, userId: number) {
+    const url = `${base_user_url}/${userId}`;
+    const response = await fetch(url, {
+        method: "DELETE",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(password),
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.trace)
     }
 
     return await response.json();
