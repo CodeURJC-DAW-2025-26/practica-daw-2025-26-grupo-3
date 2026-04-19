@@ -29,6 +29,7 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 import es.grupo3.practica25_26.dto.ImageDTO;
 import es.grupo3.practica25_26.dto.UserBasicDTO;
 import es.grupo3.practica25_26.dto.UserCreateDTO;
+import es.grupo3.practica25_26.dto.UserPassDTO;
 import es.grupo3.practica25_26.dto.UserPostDTO;
 import es.grupo3.practica25_26.mapper.ImageMapper;
 import es.grupo3.practica25_26.mapper.UserBasicMapper;
@@ -171,6 +172,33 @@ public class UserRestController {
 
                 return basicMapper
                                 .toDTO(userService.replaceUser(id, updatedUser, request.getUserPrincipal().getName()));
+        }
+
+        // Change user password
+        @PutMapping("/{id}/pass")
+        public ResponseEntity<Map<String, String>> changePassword(@PathVariable long id,
+                        @RequestBody UserPassDTO userPass,
+                        HttpServletRequest request) {
+                String email = request.getUserPrincipal().getName();
+                User currentUser = userService.findUserByEmail(email);
+
+                if (currentUser.getId() != id) {
+                        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+                                        "You are not the owner of the account with id " + id
+                                                        + " so you can't change the password");
+                }
+
+                Error error = userService.userPasswordUpdateCheck(userPass.newPass(), userPass.currentPass(), request);
+
+                if (error != null) {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                        "There are errors in your password update request: " + error.getTitle() + " "
+                                                        + error.getMessage());
+                }
+
+                currentUser.setPassword(passwordEncoder.encode(userPass.newPass()));
+                userService.saveUser(currentUser);
+                return ResponseEntity.ok(Map.of("message", "Password changed succesfully"));
         }
 
         // Upload a profile photo

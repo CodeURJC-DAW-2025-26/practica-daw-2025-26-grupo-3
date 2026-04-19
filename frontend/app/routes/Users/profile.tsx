@@ -31,6 +31,11 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                     {currentUser && (
                         <div className="col-md-4 col-lg-3 mb-4">
                             <LeftCard baseImageUrl={baseImageUrl} userName={currentUser.userName} imageId={currentUser.imageId} />
+                            <div className="mt-4 text-center">
+                                <a href={baseUrl} className="btn btn-danger py-2 fw-bold shadow-sm" title="Volver a la tienda">
+                                    Volver a la tienda
+                                </a>
+                            </div>
                         </div>
                     )}
 
@@ -54,11 +59,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                                 </>
                             )}
 
-                        <div className="mt-4 text-center">
-                            <a href={baseUrl} className="btn btn-danger py-2 fw-bold shadow-sm" title="Volver a la tienda">
-                                Volver a la tienda
-                            </a>
-                        </div>
+
                     </div>
                 </div>
             </div>

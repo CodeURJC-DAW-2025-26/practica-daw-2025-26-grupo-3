@@ -214,7 +214,7 @@ public class UserService {
     public Error passwordCheck(String password) {
         if (password.length() < 8 || password.length() > 30) {
             return new Error("¡Contraseña inválida!",
-                    "La contraseña debe contener entre 8 y 30 caracteres. Has introducido: " + password.length()
+                    "La contraseña debe contener entre 8 y 30 caracteres. Has introducido " + password.length()
                             + " caracteres.");
         }
         return null;

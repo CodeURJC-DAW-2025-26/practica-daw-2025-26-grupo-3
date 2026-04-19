@@ -1,8 +1,9 @@
 import type { UserDTO } from "~/dtos/UserDTO";
 import { create } from "zustand";
-import { HttpError, login, logout, reqIsLogged, signup, updateUser } from "~/services/user-service";
+import { changePassword, HttpError, login, logout, reqIsLogged, signup, updateUser } from "~/services/user-service";
 import type { UserBasicDTO } from "~/dtos/UserBasicDTO";
 import type { UserCreateDTO } from "~/dtos/UserCreateDTO";
+import type { UserPassDTO } from "~/dtos/UserPassDTO";
 
 export interface UserState {
     currentUser: UserDTO | null,
@@ -12,6 +13,7 @@ export interface UserState {
     logout: () => void
     signup: (data: UserCreateDTO) => void,
     editUser: (data: UserBasicDTO, id: number) => void,
+    editPass: (data: UserPassDTO, id: number) => void
 }
 
 export const useUserState = create<UserState>((set, get) => ({
@@ -71,9 +73,19 @@ export const useUserState = create<UserState>((set, get) => ({
             await signup(newUserData);
         }
         catch (err) {
-            const errorMessage = err instanceof Error ? err.message : "Error desconocido al registrarse"
+            const errorMessage = err instanceof Error ? err.message : "Error desconocido al registrarse";
             set({ error: errorMessage });
             throw err;
         }
     },
+    editPass: async (newPassData: UserPassDTO, id: number) => {
+        set({ error: null });
+        try {
+            await changePassword(newPassData, id);
+        } catch (err) {
+            const errorMessage = err instanceof Error ? err.message : "Error desconocido al registrarse";
+            set({ error: errorMessage });
+            throw err;
+        }
+    }
 }));

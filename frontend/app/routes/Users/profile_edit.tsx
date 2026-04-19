@@ -50,7 +50,7 @@ export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
         }
         catch (err) {
             editError = err instanceof Error
-                ? err.message
+                ? err.message.split(":")[1]?.trim()
                 : "Algunos de los datos enviados no son correctos. Intentalo de nuevo";
             console.log("Error recibido: " + editError);
         }
@@ -155,13 +155,20 @@ export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
                                             )}
                                         </button>
                                     </div>
+                                    {errMessage && (
+                                        <div className="col-12">
+                                            <div className="alert alert-danger" role="alert">
+                                                {errMessage}
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </form>
                         </div>
                     </div>
 
                     <div className="col-lg-4">
-                        <PasswordChangeForm />
+                        <PasswordChangeForm userId={currentUser.id} />
                         <div className="d-grid mt-3">
                             <a href={`${baseUrl}profile`} className="btn btn-secondary w-100">
                                 Cancelar y volver al perfil

@@ -1,6 +1,7 @@
 import type { UserDTO } from "~/dtos/UserDTO";
 import type { UserCreateDTO } from "~/dtos/UserCreateDTO";
 import type { UserBasicDTO } from "~/dtos/UserBasicDTO";
+import type { UserPassDTO } from "~/dtos/UserPassDTO";
 
 const base_auth_url = "/api/v1/auth";
 const base_user_url = "/api/v1/users";
@@ -63,8 +64,8 @@ export async function signup(newUserData: UserCreateDTO) {
     });
 
     if (!response.ok) {
-        const errorData = await response.json(); //Error json sent by backend
-        throw new Error(errorData.trace || "Campos incorrectos");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Campos incorrectos");
     }
 
     return await response.json();
@@ -96,11 +97,26 @@ export async function updateUser(newUserData: UserBasicDTO, userId: number) {
     if (!response.ok) {
         const errorData = await response.json();
 
-        throw new Error(
-            errorData.trace
-                ? errorData.trace
-                : (errorData.message || "Se necesita autenticación")
-        );
+        throw new Error(errorData.message || "Se necesita autenticación");
+    }
+
+    return await response.json();
+}
+
+export async function changePassword(newPassData: UserPassDTO, userId: number) {
+    const url = `${base_user_url}/${userId}/pass`;
+
+    const response = await fetch(url, {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newPassData),
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+
+        throw new Error(errorData.message || "Se necesita autenticación");
     }
 
     return await response.json();
