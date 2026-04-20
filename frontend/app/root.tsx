@@ -13,6 +13,10 @@ import { Head } from "./components/head";
 import "./app.css";
 import { Spinner } from "./components/spinner";
 
+export function HydrateFallback() {
+  return <Spinner />;
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
