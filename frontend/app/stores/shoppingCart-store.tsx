@@ -1,7 +1,8 @@
 import type { CartDTO } from "~/dtos/CartDTO";
 import { create } from "zustand";
-import { deleteCartItem, getCartInfo, updateQuantity } from "~/services/cart-service";
+import { cartToOrder, deleteCartItem, getCartInfo, getOrdersInfo, updateQuantity } from "~/services/cart-service";
 import type { CartItemDTO } from "~/dtos/CartItemDTO";
+import type { OrderDTO } from "~/dtos/OrderDTO";
 
 export interface CartState {
     totalPrice: number;
@@ -10,10 +11,13 @@ export interface CartState {
     items: CartItemDTO[] | null;
     itemPrices: Record<number, number>;
     itemQuantities: Record<number, number>;
+    orders: OrderDTO[] | null;
     getCart: () => void;
     setLineItem: (productId: number, price: number, quantity: number) => void;
     deleteItem: (id: number) => void;
-    changeItemQty: (id: number, op: number, productId: number) => void
+    changeItemQty: (id: number, op: number, productId: number) => void;
+    convertToOrder: () => void,
+    getOrders: () => void,
 }
 
 export const useCartState = create<CartState>((set, get) => ({
@@ -23,6 +27,7 @@ export const useCartState = create<CartState>((set, get) => ({
     items: [],
     itemPrices: {},
     itemQuantities: {},
+    orders: [],
     getCart: async () => {
         try {
             const userCart = await getCartInfo();
@@ -105,6 +110,24 @@ export const useCartState = create<CartState>((set, get) => ({
                 totalPrice: newTotalPrice,
                 totalQuantity: newTotalQuantity
             });
+        }
+        catch (err) {
+            throw err;
+        }
+    },
+    convertToOrder: async () => {
+        try {
+            await cartToOrder();
+            set({ cart: null });
+        }
+        catch (err) {
+            throw err;
+        }
+    },
+    getOrders: async () => {
+        try {
+            const userOrders = await getOrdersInfo();
+            set({ orders: userOrders });
         }
         catch (err) {
             throw err;

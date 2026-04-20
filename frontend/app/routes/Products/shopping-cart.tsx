@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Item, type ItemProps } from "~/components/ShoppingCart/Item";
 import { Spinner } from "~/components/spinner";
 import { useUserState } from "~/stores/user-store";
@@ -14,10 +14,12 @@ export async function clientLoader() {
 
 export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
 
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true); //Route component loading
+    const [convertLoading, setConvertLoading] = useState(false);
     let [error, setError] = useState<string | null>(null);
     const { currentUser } = useUserState();
-    const { cart, items, totalPrice, totalQuantity, getCart } = useCartState();
+    const { items, totalPrice, totalQuantity, getCart, convertToOrder } = useCartState();
+    const navigate = useNavigate();
 
     async function loadCart() {
         setLoading(true);
@@ -30,6 +32,24 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
         }
         finally {
             setLoading(false);
+        }
+    }
+
+    async function handleCartToOrder() {
+        setConvertLoading(true);
+        try {
+            await convertToOrder();
+        }
+        catch (err) {
+            error = "Error al realizar la compra. Inténtalo de nuevo más tarde."
+            setError(error);
+        }
+        finally {
+            setConvertLoading(false);
+        }
+
+        if (!error) {
+            navigate("/profile");
         }
     }
 
@@ -120,9 +140,18 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
                                     <span className="fw-bold">Total a pagar: </span>
                                     <span className="fw-bold">{totalPrice} €</span>
                                 </div>
-                                <a className="btn btn-primary w-100 mb-2" href="/cart/save_order">
-                                    Finalizar compra
-                                </a>
+                                <button
+                                    type="button"
+                                    className={`btn btn-primary w-100 mb-2 d-flex align-items-center justify-content-center signup-submit-btn ${convertLoading ? "signup-submit-btn-loading" : ""}`}
+                                    onClick={handleCartToOrder}
+                                    disabled={convertLoading}
+                                >
+                                    {convertLoading ? (
+                                        <span className="signup-loading-spinner" role="status" aria-label="Finalizando compra" />
+                                    ) : (
+                                        <span>Finalizar compra</span>
+                                    )}
+                                </button>
                             </div>
                         </div>
 

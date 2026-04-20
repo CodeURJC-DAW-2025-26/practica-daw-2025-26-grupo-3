@@ -1,8 +1,6 @@
-import { useState } from "react";
 import { Link } from "react-router";
 import { Foot } from "../../components/foot";
 import { ProfileNavbar } from "../../components/Profile/profile_navbar";
-import { useUserState } from "~/stores/user-store";
 import { AuthError } from "~/components/auth-error";
 import { OrdersDashboard } from "~/components/Profile/OrdersDashboard";
 import { DeleteAccountForm } from "../../components/Profile/DeleteAccountForm";

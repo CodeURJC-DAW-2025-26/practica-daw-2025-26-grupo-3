@@ -1,66 +1,40 @@
-type OrderItem = {
-    id: number;
-    quantity: number;
-    product: {
-        productName: string;
-        price: number;
-    };
-};
-
-type Order = {
-    orderID: number;
-    date: string;
-    stateText: string;
-    totalPrice: number;
-    orderItems: OrderItem[];
-};
-
-const mockOrders: Order[] = [
-    {
-        orderID: 1042,
-        date: "13/04/2026 12:45",
-        stateText: "Enviado",
-        totalPrice: 89.99,
-        orderItems: [
-            {
-                id: 1,
-                quantity: 1,
-                product: {
-                    productName: "Nintendo Switch de segunda mano",
-                    price: 69.99,
-                },
-            },
-            {
-                id: 2,
-                quantity: 2,
-                product: {
-                    productName: "Mando compatible",
-                    price: 10,
-                },
-            },
-        ],
-    },
-    {
-        orderID: 1036,
-        date: "10/04/2026 09:20",
-        stateText: "Entregado",
-        totalPrice: 35.5,
-        orderItems: [
-            {
-                id: 3,
-                quantity: 1,
-                product: {
-                    productName: "Altavoz Bluetooth",
-                    price: 35.5,
-                },
-            },
-        ],
-    },
-];
-
-const hasOrders = mockOrders.length > 0;
+import { useEffect, useState } from "react";
+import { useCartState } from "~/stores/shoppingCart-store";
 
 export function OrdersDashboard() {
+
+    const { orders, getOrders } = useCartState();
+    const [error, setError] = useState<string | null>(null);
+    const hasOrders = orders!.length > 0;
+
+    async function loadOrders() {
+        let errMessage: string | null = null;
+        try {
+            await getOrders()
+        }
+        catch (err) {
+            errMessage = err instanceof Error
+                ? err.message
+                : "Se ha producido un error al cargar tus pedidos. Inténtalo de nuevo más tarde."
+            setError(errMessage);
+        }
+    }
+
+    function getOrderStateText(state: number): string {
+        switch (state) {
+            case 0:
+                return "Entregado";
+            case 1:
+                return "Pendiente de entrega";
+            case 2:
+                return "Pendiente de pago";
+            default:
+                return "Desconocido";
+        }
+    }
+
+    useEffect(() => { loadOrders() }, []);
+
     return (
         <div className="card border-0 shadow-sm p-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
@@ -74,7 +48,7 @@ export function OrdersDashboard() {
             </div>
 
             {hasOrders ? (
-                mockOrders.map((order) => (
+                orders!.map((order) => (
                     <table className="table align-middle" key={order.orderID}>
                         <thead className="table-light small">
                             <tr>
@@ -88,7 +62,7 @@ export function OrdersDashboard() {
                             <tr>
                                 <td className="text-center">#{order.orderID}</td>
                                 <td>{order.date}</td>
-                                <td>{order.stateText}</td>
+                                <td>{getOrderStateText(order.state)}</td>
                                 <td className="fw-bold text-center">{order.totalPrice.toFixed(2)} EUR</td>
                             </tr>
                             <tr>
