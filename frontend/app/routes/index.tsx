@@ -3,7 +3,7 @@ import { Container, Row, Col, Alert, Badge, Button } from "react-bootstrap";
 import { Link, useFetcher, useLoaderData } from "react-router";
 import { useUserState } from "~/stores/user-store";
 import { useEffect, useState } from "react";
-import { getProducts, getProductsPage } from "~/services/product-service";
+import { getProductsPage } from "~/services/product-service";
 import ProductList from "~/components/product_list";
 import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
 
@@ -16,12 +16,15 @@ export async function clientLoader({ request }: { request: Request }) {
         const pageParam = url.searchParams.get("page");
         const page = pageParam ? parseInt(pageParam, 10) : 0;
 
+        // If we are at the page 0, the size of this is 8, in another case is 4
+        const size = page === 0 ? 8 : 4;
+
         // we get the products of the page
-        const data = await getProductsPage(page);
+        const data = await getProductsPage(page, size);
         const loadedProducts = data.content || (Array.isArray(data) ? data : []);
 
         // we check if there are more pages
-        const hasMore = data.last !== undefined ? !data.last : loadedProducts.length === 4;
+        const hasMore = data.last !== undefined ? !data.last : loadedProducts.length === size;
 
         return { newProducts: loadedProducts, hasMore, page };
     } catch (error) {
@@ -39,7 +42,7 @@ export default function Index() {
 
     const [products, setProducts] = useState<ProductBasicDTO[]>(initialData.newProducts);
     // We start at the page 0, and at the start we have more pages to show
-    const [page, setPage] = useState(initialData.page);
+    const [page, setPage] = useState(2);
     const [hasMore, setHasMore] = useState(initialData.hasMore);
 
 
@@ -50,17 +53,17 @@ export default function Index() {
     }, []);
 
     useEffect(() => {
-        if (fetcher.data && fetcher.data.page > page) {
+        if (fetcher.data && fetcher.data.page === page) {
             // we add the products to the list that we have
             setProducts(prev => [...prev, ...fetcher.data!.newProducts]);
-            setPage(fetcher.data.page);
+            setPage(prev => prev + 1);
             setHasMore(fetcher.data.hasMore);
         }
     }, [fetcher.data]);
 
     const handleLoadMore = () => {
         // we get the next page with the fetcher
-        fetcher.load(`/?page=${page + 1}`);
+        fetcher.load(`/?page=${page}`);
     };
 
     const isLoadingMore = fetcher.state === "loading";
