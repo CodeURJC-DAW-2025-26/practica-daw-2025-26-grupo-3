@@ -14,7 +14,7 @@ export function AuthError() {
                             fontSize: "0.95rem",
                         }}
                     >
-                        <strong>Debes iniciar sesion para editar tu perfil.</strong>
+                        <strong>Debes iniciar sesion para acceder a esta página.</strong>
                     </div>
 
                 </div>

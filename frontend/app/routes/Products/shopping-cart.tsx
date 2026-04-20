@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { Item, type ItemProps } from "~/components/ShoppingCart/Item";
 import { Spinner } from "~/components/spinner";
-import type { CartDTO } from "~/dtos/CartDTo";
-import type { CartItemDTO } from "~/dtos/CartItemDTO";
-import { getCartInfo } from "~/services/cart-service";
 import { useUserState } from "~/stores/user-store";
 import type { Route } from "../+types";
 import { requireUserLoader } from "../auth-loaders";
+import { useCartState } from "~/stores/shoppingCart-store";
+import { AuthError } from "~/components/auth-error";
 
 export async function clientLoader() {
     return await requireUserLoader();
@@ -16,26 +15,17 @@ export async function clientLoader() {
 export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
 
     const [loading, setLoading] = useState(true);
-    const [cart, setCart] = useState<CartDTO | null>(null);
-    const [cartItems, setCartItems] = useState<CartItemDTO[] | null>([]);
-    const [productNum, setProductNum] = useState<number>(0);
-    const [total, setTotal] = useState<number>(0);
     let [error, setError] = useState<string | null>(null);
     const { currentUser } = useUserState();
+    const { cart, items, totalPrice, totalQuantity, getCart } = useCartState();
 
     async function loadCart() {
         setLoading(true);
         try {
-            const cartData = await getCartInfo();
-            setCart(cartData);
-            setCartItems(cartData.cartItems);
-            setProductNum(1);
-            setTotal(1);
+            await getCart();
         }
         catch (err) {
-            error = err instanceof Error ?
-                err.message.split("'")[1]
-                : "Error cargando los productos del carrito. Inténtalo de nuevo más tarde.";
+            error = "Error cargando los productos del carrito. Inténtalo de nuevo más tarde.";
             setError(error);
         }
         finally {
@@ -47,6 +37,10 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
 
     if (loading) {
         return (<Spinner />)
+    }
+
+    if (!currentUser) {
+        return (<AuthError />)
     }
 
     return (
@@ -78,9 +72,26 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {cartItems!.length > 0 ? (
-                                                cartItems!.map((item) => (
-                                                    <Item quantity={0} key={item.id} id={0} productId={item.productId} productName={item.productName} />
+                                            {error !== null ? (
+                                                <tr>
+                                                    <td colSpan={5} className="p-4">
+                                                        <div
+                                                            style={{
+                                                                backgroundColor: "#fee2e2",
+                                                                color: "#b91c1c",
+                                                                padding: "12px 16px",
+                                                                borderRadius: "8px",
+                                                                border: "1px solid #fca5a5",
+                                                                fontSize: "0.95rem",
+                                                            }}
+                                                        >
+                                                            <strong>{error}</strong>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ) : items!.length > 0 ? (
+                                                items!.map((item) => (
+                                                    <Item quantity={item.quantity} key={item.id} id={item.id} productId={item.productId} productName={item.productName} />
                                                 ))
                                             ) : (
                                                 <tr>
@@ -102,12 +113,12 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
                                 <h2 className="h5 fw-bold mb-3">Resumen del pedido</h2>
                                 <div className="d-flex justify-content-between mb-2">
                                     <span className="text-muted">Cantidad de productos del pedido:</span>
-                                    <span>{productNum}</span>
+                                    <span>{totalQuantity}</span>
                                 </div>
                                 <hr />
                                 <div className="d-flex justify-content-between mb-4">
                                     <span className="fw-bold">Total a pagar: </span>
-                                    <span className="fw-bold">{total} €</span>
+                                    <span className="fw-bold">{totalPrice} €</span>
                                 </div>
                                 <a className="btn btn-primary w-100 mb-2" href="/cart/save_order">
                                     Finalizar compra

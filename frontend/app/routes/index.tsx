@@ -7,8 +7,6 @@ import { getProductsPage } from "~/services/product-service";
 import ProductList from "~/components/product_list";
 import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
 
-
-
 export async function clientLoader({ request }: { request: Request }) {
     try {
         // We read if the URL has a parameter ?page=X (if there isn't one, it's 0)
@@ -45,8 +43,6 @@ export default function Index() {
     const [page, setPage] = useState(2);
     const [hasMore, setHasMore] = useState(initialData.hasMore);
 
-
-
     //We load the user
     useEffect(() => {
         loadLoggedUser();
@@ -67,7 +63,6 @@ export default function Index() {
     };
 
     const isLoadingMore = fetcher.state === "loading";
-
 
     return (
         <>
@@ -106,7 +101,6 @@ export default function Index() {
                                         Registrarse
                                     </Button>
                                 }
-
 
                             </div>
                         </Col>
