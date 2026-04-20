@@ -1,38 +1,53 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import { Item, type ItemProps } from "~/components/ShoppingCart/Item";
+import { Spinner } from "~/components/spinner";
+import type { CartDTO } from "~/dtos/CartDTo";
+import type { CartItemDTO } from "~/dtos/CartItemDTO";
+import { getCartInfo } from "~/services/cart-service";
+import { useUserState } from "~/stores/user-store";
+import type { Route } from "../+types";
+import { requireUserLoader } from "../auth-loaders";
 
-export default function ShoppingCart() {
-    // Mock data for the shopping cart
-    const token = "mock-csrf-token-123";
-    const cart = {
-        cartItems: [
-            {
-                id: 1,
-                product: {
-                    id: 101,
-                    productName: "MacBook Pro 2021",
-                    price: 1200,
-                    seller: { userName: "JuanPerez" }
-                },
-                state: "Segunda mano",
-                quantity: 1
-            },
-            {
-                id: 2,
-                product: {
-                    id: 105,
-                    productName: "Monitor Dell 27\"",
-                    price: 250,
-                    seller: { userName: "TechStore" }
-                },
-                state: "Como nuevo",
-                quantity: 2
-            }
-        ]
-    };
+export async function clientLoader() {
+    return await requireUserLoader();
+}
 
-    const productNum = cart.cartItems.reduce((acc, item) => acc + item.quantity, 0);
-    const total = cart.cartItems.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
-    const address = "Calle Falsa 123, Madrid";
+export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
+
+    const [loading, setLoading] = useState(true);
+    const [cart, setCart] = useState<CartDTO | null>(null);
+    const [cartItems, setCartItems] = useState<CartItemDTO[] | null>([]);
+    const [productNum, setProductNum] = useState<number>(0);
+    const [total, setTotal] = useState<number>(0);
+    let [error, setError] = useState<string | null>(null);
+    const { currentUser } = useUserState();
+
+    async function loadCart() {
+        setLoading(true);
+        try {
+            const cartData = await getCartInfo();
+            setCart(cartData);
+            setCartItems(cartData.cartItems);
+            setProductNum(1);
+            setTotal(1);
+        }
+        catch (err) {
+            error = err instanceof Error ?
+                err.message.split("'")[1]
+                : "Error cargando los productos del carrito. Inténtalo de nuevo más tarde.";
+            setError(error);
+        }
+        finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => { loadCart() }, []);
+
+    if (loading) {
+        return (<Spinner />)
+    }
 
     return (
         <section className="py-5 bg-light min-vh-100">
@@ -63,75 +78,9 @@ export default function ShoppingCart() {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {cart.cartItems && cart.cartItems.length > 0 ? (
-                                                cart.cartItems.map((item) => (
-                                                    <tr key={item.id}>
-                                                        <td className="ps-4">
-                                                            <div className="d-flex align-items-center">
-                                                                <img
-                                                                    src={`/product-images/${item.product.id}`}
-                                                                    alt={item.product.productName}
-                                                                    className="rounded-3 me-3"
-                                                                    style={{ width: "72px", height: "72px", objectFit: "cover" }}
-                                                                />
-                                                                <div>
-                                                                    <div className="fw-bold">{item.product.productName}</div>
-                                                                    <div className="small text-muted">
-                                                                        Vendedor: {item.product.seller.userName}
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <p className="mb-0" style={{ fontSize: "0.75rem", color: "#333" }}>
-                                                                {item.state}
-                                                            </p>
-                                                        </td>
-                                                        <td>{item.product.price} €</td>
-                                                        <td>
-                                                            <div className="d-flex align-items-center" style={{ maxWidth: "120px" }}>
-                                                                <form action={`/cart/modify_quantity/0/${item.id}`} method="post" style={{ display: "contents" }}>
-                                                                    <input type="hidden" name="_csrf" value={token} />
-                                                                    <button
-                                                                        className="btn btn-outline-secondary btn-sm"
-                                                                        type="submit"
-                                                                        style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
-                                                                        disabled={item.quantity <= 1}
-                                                                    >
-                                                                        -
-                                                                    </button>
-                                                                </form>
-
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control text-center border-secondary border-start-0 border-end-0 rounded-0 p-1"
-                                                                    value={item.quantity}
-                                                                    aria-label="Cantidad"
-                                                                    readOnly
-                                                                    style={{ width: "40px", height: "31px" }}
-                                                                />
-
-                                                                <form action={`/cart/modify_quantity/1/${item.id}`} method="post" style={{ display: "contents" }}>
-                                                                    <input type="hidden" name="_csrf" value={token} />
-                                                                    <button
-                                                                        className="btn btn-outline-secondary btn-sm"
-                                                                        type="submit"
-                                                                        style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
-                                                                    >
-                                                                        +
-                                                                    </button>
-                                                                </form>
-                                                            </div>
-                                                        </td>
-                                                        <td className="text-end pe-4">
-                                                            <form action={`/cart/delete/${item.id}`} method="post" style={{ display: "contents" }}>
-                                                                <input type="hidden" name="_csrf" value={token} />
-                                                                <button className="btn btn-sm btn-outline-danger" title="Quitar">
-                                                                    <i className="bi bi-trash"></i>
-                                                                </button>
-                                                            </form>
-                                                        </td>
-                                                    </tr>
+                                            {cartItems!.length > 0 ? (
+                                                cartItems!.map((item) => (
+                                                    <Item quantity={0} key={item.id} id={0} productId={item.productId} productName={item.productName} />
                                                 ))
                                             ) : (
                                                 <tr>
@@ -169,7 +118,7 @@ export default function ShoppingCart() {
                         <div className="card shadow-sm border-0 mt-4">
                             <div className="card-body">
                                 <h3 className="h6 fw-bold mb-3">Dirección de entrega</h3>
-                                <p className="text-muted mb-2">{address}</p>
+                                <p className="text-muted mb-2">{currentUser!.address}</p>
                             </div>
                         </div>
                     </div>

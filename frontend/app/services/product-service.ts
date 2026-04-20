@@ -1,4 +1,5 @@
 import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
+import type { ProductDetailDTO } from "~/dtos/ProductDetailDTO";
 
 
 const API_URL = "/api/v1/products";
@@ -25,7 +26,7 @@ export async function getProductsPage(page: number): Promise<any> {
     return data;
 }
 
-export async function getBasicProduct(id: number): Promise<ProductBasicDTO> {
+export async function getBasicProduct(id: number): Promise<ProductDetailDTO> {
     const res = await fetch(`${API_URL}/${id}`);
     if (!res.ok) {
         throw new Error("Product not found");
