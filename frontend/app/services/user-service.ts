@@ -3,18 +3,12 @@ import type { UserCreateDTO } from "~/dtos/UserCreateDTO";
 import type { UserBasicDTO } from "~/dtos/UserBasicDTO";
 import type { UserPassDTO } from "~/dtos/UserPassDTO";
 import type { UserPassBasicDTO } from "~/dtos/UserPassBasicDTO";
+import { HttpError } from "./HttpError";
+
+export { HttpError };
 
 const base_auth_url = "/api/v1/auth";
 const base_user_url = "/api/v1/users";
-
-export class HttpError extends Error {
-    status: number;
-
-    constructor(status: number, message?: string) {
-        super(message ?? `HTTP ${status}`)
-        this.status = status;
-    }
-}
 
 export async function reqIsLogged(): Promise<UserDTO> {
     const res = await fetch(`${base_user_url}/logged`);
@@ -42,7 +36,6 @@ export async function login(email: string, pass: string) {
     if (data?.status === "FAILURE") {
         throw new HttpError(401, data?.message ?? "Bad credentials");
     }
-    console.log("Login response:", data);
     return data;
 }
 

@@ -5,7 +5,6 @@ export function Navbar() {
     const { logout, currentUser } = useUserState();
     const base_image_url = "/api/v1/images";
 
-
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom sticky-top shadow-sm position-relative">
             <div className="container">
@@ -16,7 +15,6 @@ export function Navbar() {
                             alt="ReMarket+ Logo"
                             style={{ height: 50, width: "auto" }}
                         />
-
                     </Link>
                 </div>
                 <button
