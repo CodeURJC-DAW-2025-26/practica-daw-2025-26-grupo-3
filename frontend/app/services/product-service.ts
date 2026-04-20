@@ -4,6 +4,11 @@ import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
 const API_URL = "/api/v1/products";
 const API_IMAGES_URL = "/api/v1/images";
 
+export async function getProducts(): Promise<ProductBasicDTO[]> {
+    const res = await fetch(`${API_URL}/`);
+    const json = await res.json();
+    return Array.isArray(json) ? json : (json.content || []);
+}
 
 export async function getAllProducts(): Promise<ProductBasicDTO[]> {
     const res = await fetch(`${API_URL}/?size=50`);
