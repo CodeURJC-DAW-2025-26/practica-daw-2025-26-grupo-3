@@ -1,71 +1,73 @@
 
 import { Container, Row, Col, Alert, Badge, Button } from "react-bootstrap";
-import { Link } from "react-router";
+import { Link, useFetcher, useLoaderData } from "react-router";
 import { useUserState } from "~/stores/user-store";
 import { useEffect, useState } from "react";
-import { getProducts, getProductsPage } from "~/services/product-service";
+import { getProductsPage } from "~/services/product-service";
 import ProductList from "~/components/product_list";
 import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
-import { Spinner } from "~/components/spinner";
+
+
+
+export async function clientLoader({ request }: { request: Request }) {
+    try {
+        // We read if the URL has a parameter ?page=X (if there isn't one, it's 0)
+        const url = new URL(request.url);
+        const pageParam = url.searchParams.get("page");
+        const page = pageParam ? parseInt(pageParam, 10) : 0;
+
+        // If we are at the page 0, the size of this is 8, in another case is 4
+        const size = page === 0 ? 8 : 4;
+
+        // we get the products of the page
+        const data = await getProductsPage(page, size);
+        const loadedProducts = data.content || (Array.isArray(data) ? data : []);
+
+        // we check if there are more pages
+        const hasMore = data.last !== undefined ? !data.last : loadedProducts.length === size;
+
+        return { newProducts: loadedProducts, hasMore, page };
+    } catch (error) {
+        console.error("Error en clientLoader:", error);
+        return { newProducts: [], hasMore: false, page: 0 };
+    }
+}
 
 export default function Index() {
     const { loadLoggedUser, currentUser } = useUserState();
 
-    const [loading, setLoading] = useState(true);
 
-    const [products, setProducts] = useState<ProductBasicDTO[]>([]);
+    const initialData = useLoaderData<typeof clientLoader>();
+    const fetcher = useFetcher<typeof clientLoader>();
 
+    const [products, setProducts] = useState<ProductBasicDTO[]>(initialData.newProducts);
     // We start at the page 0, and at the start we have more pages to show
-    const [page, setPage] = useState(0);
-    const [hasMore, setHasMore] = useState(true);
+    const [page, setPage] = useState(2);
+    const [hasMore, setHasMore] = useState(initialData.hasMore);
+
+
+
+    //We load the user
+    useEffect(() => {
+        loadLoggedUser();
+    }, []);
 
     useEffect(() => {
-        async function loadInitialData() {
-            if (page === 0) setLoading(true);
-
-            try {
-                // 1. We load the user (only the first time, this prevents from loading the user when we press loadMore)
-                if (page === 0) {
-                    await loadLoggedUser();
-                }
-
-                // 2. We load the products
-                const data = await getProductsPage(page);
-
-                // we obtain the array
-                const loadedProducts = data.content || (Array.isArray(data) ? data : []);
-
-                // 3. We save the products in the state of react
-                //we use prev to accumulate the products
-
-                setProducts(prev =>
-                    page === 0 ? loadedProducts : [...prev, ...loadedProducts]
-                );
-
-                //We update if there are more pages (to hide the button)
-                if (data.last !== undefined) {
-                    setHasMore(!data.last);
-                } else {
-                    setHasMore(loadedProducts.length === 4);
-                }
-
-            }
-            catch (error) {
-                console.error("Error cargando productos destacados:", error);
-            }
-            finally {
-                if (page === 0) setLoading(false);
-            }
+        if (fetcher.data && fetcher.data.page === page) {
+            // we add the products to the list that we have
+            setProducts(prev => [...prev, ...fetcher.data!.newProducts]);
+            setPage(prev => prev + 1);
+            setHasMore(fetcher.data.hasMore);
         }
+    }, [fetcher.data]);
 
-        loadInitialData();
-    }, [page]);
+    const handleLoadMore = () => {
+        // we get the next page with the fetcher
+        fetcher.load(`/?page=${page}`);
+    };
 
-    if (loading) {
-        return (
-            <Spinner />
-        );
-    }
+    const isLoadingMore = fetcher.state === "loading";
+
 
     return (
         <>
@@ -87,20 +89,20 @@ export default function Index() {
                             </p>
                             <div className="mt-4 d-flex gap-3 flex-wrap">
                                 {currentUser ?
-                                    <Button as={Link} to="/product_search" variant="primary" size="lg" className="px-5 shadow">
+                                    <Button as={Link as any} to="/product_search" variant="primary" size="lg" className="px-5 shadow">
                                         Explorar Ahora
                                     </Button>
                                     :
-                                    <Button as={Link} to="/login" variant="primary" size="lg" className="px-5 shadow">
+                                    <Button as={Link as any} to="/login" variant="primary" size="lg" className="px-5 shadow">
                                         Iniciar sesión
                                     </Button>
                                 }
                                 {currentUser ?
-                                    <Button as={Link} to="/signup" variant="outline-primary" size="lg" className="px-5">
+                                    <Button as={Link as any} to="/signup" variant="outline-primary" size="lg" className="px-5">
                                         Vender productos
                                     </Button>
                                     :
-                                    <Button as={Link} to="/signup" variant="outline-primary" size="lg" className="px-5">
+                                    <Button as={Link as any} to="/signup" variant="outline-primary" size="lg" className="px-5">
                                         Registrarse
                                     </Button>
                                 }
@@ -135,15 +137,25 @@ export default function Index() {
                                 id="load-more-btn"
                                 variant="primary"
                                 className="rounded-pill px-4 py-2 shadow-sm"
-                                onClick={() => setPage(prev => prev + 1)} //we go to the next page
+                                onClick={handleLoadMore}
+                                disabled={isLoadingMore}
                             >
-                                <i className="bi bi-arrow-down-circle me-2" /> Mostrar más destacados
+                                {isLoadingMore ? (
+                                    <>
+                                        <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                        Cargando...
+                                    </>
+                                ) : (
+                                    <>
+                                        <i className="bi bi-arrow-down-circle me-2" /> Mostrar más destacados
+                                    </>
+                                )}
                             </Button>
                         )}
                     </div>
 
                     <div className="text-center mt-5">
-                        <Button as={Link} to="/product_search" variant="outline-primary" size="lg" className="px-5 rounded-pill">
+                        <Button as={Link as any} to="/product_search" variant="outline-primary" size="lg" className="px-5 rounded-pill">
                             Ver todos los productos →
                         </Button>
                     </div>

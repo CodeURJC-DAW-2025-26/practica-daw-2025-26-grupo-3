@@ -5,11 +5,6 @@ import type { ProductDetailDTO } from "~/dtos/ProductDetailDTO";
 const API_URL = "/api/v1/products";
 const API_IMAGES_URL = "/api/v1/images";
 
-export async function getProducts(): Promise<ProductBasicDTO[]> {
-    const res = await fetch(`${API_URL}/`);
-    const json = await res.json();
-    return Array.isArray(json) ? json : (json.content || []);
-}
 
 export async function getAllProducts(): Promise<ProductBasicDTO[]> {
     const res = await fetch(`${API_URL}/?size=50`);
@@ -17,9 +12,9 @@ export async function getAllProducts(): Promise<ProductBasicDTO[]> {
     return Array.isArray(json) ? json : (json.content || []);
 }
 
-export async function getProductsPage(page: number): Promise<any> {
+export async function getProductsPage(page: number, size: number = 4): Promise<any> {
     // We request a specific page (each page contains 4 more products)
-    const res = await fetch(`${API_URL}/?page=${page}&size=4`);
+    const res = await fetch(`${API_URL}/?page=${page}&size=${size}`);
     const data = await res.json();
 
     // We return the complete object
