@@ -1,4 +1,5 @@
 import type { CartDTO } from "~/dtos/CartDTO";
+import { HttpError } from "./HttpError";
 
 const base_url_cart = "/api/v1/carts";
 const base_url_order = "/api/v1/orders";
@@ -10,8 +11,14 @@ export async function getCartInfo(): Promise<CartDTO> {
     });
 
     if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message);
+        let errorMessage = `HTTP ${response.status}`;
+        try {
+            const errorData = await response.json();
+            errorMessage = errorData.message ?? errorMessage;
+        } catch {
+            // Keep default message when response body is not JSON.
+        }
+        throw new HttpError(response.status, errorMessage);
     }
 
     return await response.json();

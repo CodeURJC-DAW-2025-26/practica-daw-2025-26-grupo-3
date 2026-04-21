@@ -20,6 +20,7 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
     const { currentUser } = useUserState();
     const { items, totalPrice, totalQuantity, getCart, convertToOrder } = useCartState();
     const navigate = useNavigate();
+    const hasItems = (items?.length ?? 0) > 0;
 
     async function loadCart() {
         setLoading(true);
@@ -109,7 +110,7 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
                                                         </div>
                                                     </td>
                                                 </tr>
-                                            ) : items!.length > 0 ? (
+                                            ) : hasItems ? (
                                                 items!.map((item) => (
                                                     <Item quantity={item.quantity} key={item.id} id={item.id} productId={item.productId} productName={item.productName} />
                                                 ))

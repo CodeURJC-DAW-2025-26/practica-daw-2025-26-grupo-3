@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { cartToOrder, deleteCartItem, getCartInfo, getOrdersInfo, updateQuantity } from "~/services/cart-service";
 import type { CartItemDTO } from "~/dtos/CartItemDTO";
 import type { OrderDTO } from "~/dtos/OrderDTO";
+import { HttpError } from "~/services/HttpError";
 
 export interface CartState {
     totalPrice: number;
@@ -34,6 +35,17 @@ export const useCartState = create<CartState>((set, get) => ({
             set({ cart: userCart, items: userCart.cartItems });
         }
         catch (err) {
+            if (err instanceof HttpError && err.status === 404) {
+                set({
+                    cart: null,
+                    items: [],
+                    itemPrices: {},
+                    itemQuantities: {},
+                    totalPrice: 0,
+                    totalQuantity: 0,
+                });
+                return;
+            }
             throw err;
         }
     },
