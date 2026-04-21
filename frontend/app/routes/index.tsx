@@ -1,13 +1,19 @@
 
 import { Container, Row, Col, Alert, Badge, Button } from "react-bootstrap";
-import { Link, useFetcher, useLoaderData } from "react-router";
+import { Link, useFetcher, useLoaderData, redirect } from "react-router";
 import { useUserState } from "~/stores/user-store";
 import { useEffect, useState } from "react";
 import { getProductsPage } from "~/services/product-service";
-import ProductList from "~/components/product_list";
+import ProductList from "~/components/Product/product_list";
 import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
+import { requireUserLoader } from "./auth-loaders";
 
 export async function clientLoader({ request }: { request: Request }) {
+    const user = await requireUserLoader();
+    if (!user) {
+        throw redirect("/login");
+    }
+
     try {
         // We read if the URL has a parameter ?page=X (if there isn't one, it's 0)
         const url = new URL(request.url);
