@@ -1,22 +1,51 @@
+import { Link } from "react-router";
 import { useEffect, useState } from "react";
 import { useCartState } from "~/stores/shoppingCart-store";
+import { getAllPDF, getPdfById } from "~/services/cart-service";
 
 export function OrdersDashboard() {
 
     const { orders, getOrders } = useCartState();
     const [error, setError] = useState<string | null>(null);
+    const [loadingPdf, setLoadingPdf] = useState(false);
     const hasOrders = orders!.length > 0;
+    const base_url = "/api/v1/orders/";
 
     async function loadOrders() {
         let errMessage: string | null = null;
         try {
-            await getOrders()
+            await getOrders();
         }
         catch (err) {
             errMessage = err instanceof Error
                 ? err.message
                 : "Se ha producido un error al cargar tus pedidos. Inténtalo de nuevo más tarde."
             setError(errMessage);
+        }
+    }
+
+    async function handleAllOrderPdfButton(id: number | null) {
+        let errMessage: string | null = null;
+        let pdfFile: Blob | null = null
+        setLoadingPdf(true);
+
+        try {
+            pdfFile = !id
+                ? pdfFile = await getAllPDF()
+                : pdfFile = await getPdfById(id!);
+
+            const url = URL.createObjectURL(pdfFile);
+
+            window.open(url, '_blank');
+        }
+        catch (err) {
+            errMessage = err instanceof Error
+                ? err.message
+                : "Se ha producido un error al cargar tu factura PDF. Inténtalo de nuevo más tarde."
+            setError(errMessage);
+        }
+        finally {
+            setLoadingPdf(false);
         }
     }
 
@@ -40,10 +69,15 @@ export function OrdersDashboard() {
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <h4 className="fw-bold mb-0">Mis Pedidos</h4>
                 {hasOrders && (
-                    <a href="/bill/all" className="btn btn-primary btn-sm d-inline-flex align-items-center" id="export-all-orders-pdf">
+                    <button
+                        type="button"
+                        className="btn btn-primary btn-sm d-inline-flex align-items-center"
+                        id="export-all-orders-pdf"
+                        onClick={() => { handleAllOrderPdfButton(null) }}
+                    >
                         <i className="bi bi-file-earmark-pdf me-2" />
                         Exportar todos en PDF
-                    </a>
+                    </button>
                 )}
             </div>
 
@@ -92,15 +126,15 @@ export function OrdersDashboard() {
                             </tr>
                             <tr>
                                 <td colSpan={4} className="text-end">
-                                    <a
-                                        href={`/bill/${order.orderID}`}
-                                        target="_blank"
-                                        rel="noreferrer"
+                                    <button
+                                        type="button"
                                         className="btn btn-primary btn-sm d-inline-flex align-items-center"
+                                        id="export-all-orders-pdf"
+                                        onClick={() => { handleAllOrderPdfButton(order.orderID) }}
                                     >
                                         <i className="bi bi-file-earmark-pdf me-2" />
-                                        Exportar factura PDF
-                                    </a>
+                                        Exportar factura en PDF
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>

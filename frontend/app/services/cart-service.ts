@@ -78,3 +78,31 @@ export async function getOrdersInfo() {
 
     return await response.json();
 }
+
+export async function getAllPDF() {
+    const url = `${base_url_order}/all/bill`;
+    const response = await fetch(url, {
+        credentials: "include"
+    });
+
+    if (!response.ok) {
+        const errroData = await response.json();
+        throw new Error(errroData.mesage);
+    }
+
+    return await response.blob();   //We return a blob file instead a json object.
+}
+
+export async function getPdfById(id: number) {
+    const url = `${base_url_order}/${id}/bill`;
+    const response = await fetch(url, {
+        credentials: "include"
+    });
+
+    if (!response.ok) {
+        const errroData = await response.json();
+        throw new Error(errroData.mesage);
+    }
+
+    return await response.blob();
+}
