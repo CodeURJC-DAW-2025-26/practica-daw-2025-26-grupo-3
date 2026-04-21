@@ -9,7 +9,7 @@ import org.mapstruct.ReportingPolicy;
 import es.grupo3.practica25_26.dto.ReviewDTO;
 import es.grupo3.practica25_26.model.Review;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = { UserBasicMapper.class })
 public interface ReviewMapper {
     ReviewDTO toDTO(Review review);
 

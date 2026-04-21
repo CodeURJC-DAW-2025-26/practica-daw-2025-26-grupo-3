@@ -1,6 +1,8 @@
 package es.grupo3.practica25_26.controller.restcontroller;
 
+import es.grupo3.practica25_26.service.ProductService;
 import java.net.URI;
+import java.util.List;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import es.grupo3.practica25_26.mapper.ReviewPostMapper;
 import es.grupo3.practica25_26.model.Review;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.model.Error;
+import es.grupo3.practica25_26.model.Product;
 import es.grupo3.practica25_26.service.ReviewService;
 import es.grupo3.practica25_26.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,99 +38,114 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 @RequestMapping("/api/v1/products")
 public class ReviewRestController {
 
-    @Autowired
-    private ReviewMapper mapper;
+        private final ProductService productService;
 
-    @Autowired
-    private ReviewPostMapper postMapper;
+        @Autowired
+        private ReviewMapper mapper;
 
-    @Autowired
-    private ReviewService reviewService;
+        @Autowired
+        private ReviewPostMapper postMapper;
 
-    @Autowired
-    private UserService userService;
+        @Autowired
+        private ReviewService reviewService;
 
-    @Operation(summary = "Get all reviews")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Reviews retrieved successfully")
-    })
-    @GetMapping("/all/reviews/")
-    public Collection<ReviewDTO> getAllReviews() {
-        return mapper.toDTOs(reviewService.findAllReviews());
-    }
+        @Autowired
+        private UserService userService;
 
-    @Operation(summary = "Get review by ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Review found"),
-            @ApiResponse(responseCode = "404", description = "Review not found")
-    })
-    @GetMapping("/all/reviews/{id}")
-    public ReviewDTO getReviewById(@PathVariable long id) {
-        return mapper.toDTO(reviewService.findReviewById(id));
-    }
-
-    @Operation(summary = "Delete review")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Review deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Review not found"),
-            @ApiResponse(responseCode = "403", description = "Forbidden (Not owner or admin)")
-    })
-    @DeleteMapping("/{productID}/reviews/{reviewID}")
-    public ResponseEntity<ReviewDTO> deleteReviewById(@PathVariable long productID, @PathVariable long reviewID,
-            HttpServletRequest request) {
-        String currentUserEmail = request.getUserPrincipal().getName();
-        User currentUser = userService.findUserByEmail(currentUserEmail);
-
-        ResponseEntity<ReviewDTO> response = ResponseEntity
-                .ok(mapper.toDTO(reviewService.deleteReview(reviewID, productID, currentUserEmail,
-                        currentUser.getRoles().indexOf("ADMIN") != -1)));
-
-        return response;
-    }
-
-    @Operation(summary = "Create review for a product")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Review created successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid review data"),
-            @ApiResponse(responseCode = "404", description = "Product not found")
-    })
-    @PostMapping("/{productId}/reviews/")
-    public ResponseEntity<ReviewDTO> createReview(@PathVariable long productId, @RequestBody ReviewPostDTO reviewDTO,
-            HttpServletRequest request) {
-        Review newReview = postMapper.toDomain(reviewDTO);
-
-        reviewService.createReviewApi(newReview, productId, request);
-
-        URI location = fromCurrentRequest().path("/{reviewId}").buildAndExpand(newReview.getId()).toUri();
-        return ResponseEntity.created(location).body(mapper.toDTO(newReview));
-    }
-
-    @Operation(summary = "Update a review")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Review updated successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid review data"),
-            @ApiResponse(responseCode = "404", description = "Review not found"),
-            @ApiResponse(responseCode = "403", description = "Forbidden (Not owner)")
-    })
-    @PutMapping("/{productId}/reviews/{reviewId}")
-    public ResponseEntity<ReviewDTO> updateReview(@PathVariable long productId, @PathVariable long reviewId,
-            @RequestBody ReviewPostDTO updatedReviewDTO, HttpServletRequest request) {
-        Review updatedReview = postMapper.toDomain(updatedReviewDTO);
-
-        String currentUserEmail = request.getUserPrincipal().getName();
-        User currentUser = userService.findUserByEmail(currentUserEmail);
-
-        Error error = reviewService.reviewCheck(updatedReview.getTitle(), updatedReview.getBody(),
-                updatedReview.getStars());
-        if (error != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "There are errors in your review create request: " + error.getTitle() + " " + error.getMessage());
+        ReviewRestController(ProductService productService) {
+                this.productService = productService;
         }
 
-        updatedReview.setId(reviewId);
-        updatedReview.setUser(currentUser);
+        @Operation(summary = "Get all reviews")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Reviews retrieved successfully")
+        })
+        @GetMapping("/all/reviews/")
+        public Collection<ReviewDTO> getAllReviews() {
+                return mapper.toDTOs(reviewService.findAllReviews());
+        }
 
-        reviewService.updateReview(updatedReview, currentUserEmail);
-        return ResponseEntity.ok(mapper.toDTO(updatedReview));
-    }
+        @Operation(summary = "Get review by ID")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Review found"),
+                        @ApiResponse(responseCode = "404", description = "Review not found")
+        })
+        @GetMapping("/all/reviews/{id}")
+        public ReviewDTO getReviewById(@PathVariable long id) {
+                return mapper.toDTO(reviewService.findReviewById(id));
+        }
+
+        @GetMapping("/{productId}/reviews")
+        public Collection<ReviewDTO> getReviewsByProductId(@PathVariable long productId) {
+                Product product = productService.findById(productId);
+                List<Review> reviewList = product.getReviews();
+                return mapper.toDTOs(reviewList);
+        }
+
+        @Operation(summary = "Delete review")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Review deleted successfully"),
+                        @ApiResponse(responseCode = "404", description = "Review not found"),
+                        @ApiResponse(responseCode = "403", description = "Forbidden (Not owner or admin)")
+        })
+        @DeleteMapping("/{productID}/reviews/{reviewID}")
+        public ResponseEntity<ReviewDTO> deleteReviewById(@PathVariable long productID, @PathVariable long reviewID,
+                        HttpServletRequest request) {
+                String currentUserEmail = request.getUserPrincipal().getName();
+                User currentUser = userService.findUserByEmail(currentUserEmail);
+
+                ResponseEntity<ReviewDTO> response = ResponseEntity
+                                .ok(mapper.toDTO(reviewService.deleteReview(reviewID, productID, currentUserEmail,
+                                                currentUser.getRoles().indexOf("ADMIN") != -1)));
+
+                return response;
+        }
+
+        @Operation(summary = "Create review for a product")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "201", description = "Review created successfully"),
+                        @ApiResponse(responseCode = "400", description = "Invalid review data"),
+                        @ApiResponse(responseCode = "404", description = "Product not found")
+        })
+        @PostMapping("/{productId}/reviews/")
+        public ResponseEntity<ReviewDTO> createReview(@PathVariable long productId,
+                        @RequestBody ReviewPostDTO reviewDTO,
+                        HttpServletRequest request) {
+                Review newReview = postMapper.toDomain(reviewDTO);
+
+                reviewService.createReviewApi(newReview, productId, request);
+
+                URI location = fromCurrentRequest().path("/{reviewId}").buildAndExpand(newReview.getId()).toUri();
+                return ResponseEntity.created(location).body(mapper.toDTO(newReview));
+        }
+
+        @Operation(summary = "Update a review")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Review updated successfully"),
+                        @ApiResponse(responseCode = "400", description = "Invalid review data"),
+                        @ApiResponse(responseCode = "404", description = "Review not found"),
+                        @ApiResponse(responseCode = "403", description = "Forbidden (Not owner)")
+        })
+        @PutMapping("/{productId}/reviews/{reviewId}")
+        public ResponseEntity<ReviewDTO> updateReview(@PathVariable long productId, @PathVariable long reviewId,
+                        @RequestBody ReviewPostDTO updatedReviewDTO, HttpServletRequest request) {
+                Review updatedReview = postMapper.toDomain(updatedReviewDTO);
+
+                String currentUserEmail = request.getUserPrincipal().getName();
+                User currentUser = userService.findUserByEmail(currentUserEmail);
+
+                Error error = reviewService.reviewCheck(updatedReview.getTitle(), updatedReview.getBody(),
+                                updatedReview.getStars());
+                if (error != null) {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                        "There are errors in your review create request: " + error.getTitle() + " "
+                                                        + error.getMessage());
+                }
+
+                updatedReview.setId(reviewId);
+                updatedReview.setUser(currentUser);
+
+                reviewService.updateReview(updatedReview, currentUserEmail);
+                return ResponseEntity.ok(mapper.toDTO(updatedReview));
+        }
 }
