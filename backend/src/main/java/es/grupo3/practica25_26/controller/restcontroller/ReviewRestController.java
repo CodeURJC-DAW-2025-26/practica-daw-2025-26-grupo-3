@@ -107,7 +107,7 @@ public class ReviewRestController {
                         @ApiResponse(responseCode = "400", description = "Invalid review data"),
                         @ApiResponse(responseCode = "404", description = "Product not found")
         })
-        @PostMapping("/{productId}/reviews/")
+        @PostMapping("/{productId}/reviews")
         public ResponseEntity<ReviewDTO> createReview(@PathVariable long productId,
                         @RequestBody ReviewPostDTO reviewDTO,
                         HttpServletRequest request) {

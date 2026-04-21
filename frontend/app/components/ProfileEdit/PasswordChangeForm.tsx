@@ -34,8 +34,6 @@ export function PasswordChangeForm({ userId }: PasswordChangeFormProps) {
         { errMessage: null, succMessage: null }
     );
 
-    const navigate = useNavigate();
-
     return (
         <div className="card border-0 shadow-sm p-4">
             <div className="d-flex justify-content-between align-items-center mb-4">

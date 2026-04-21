@@ -1,10 +1,12 @@
 import { create } from "zustand";
 import type { ReviewDTO } from "~/dtos/ReviewDTO";
-import { getReviewByProduct } from "~/services/review-service";
+import type { ReviewPostDTO } from "~/dtos/ReviewPostDTO";
+import { createProductReview, getReviewByProduct } from "~/services/review-service";
 
 export interface ReviewState {
-    reviews: ReviewDTO[] | null,
-    getProductReviews: (id: number) => void
+    reviews: ReviewDTO[],
+    getProductReviews: (id: number) => void,
+    createReview: (id: number, data: ReviewPostDTO) => void
 }
 
 export const useReviewState = create<ReviewState>((set, get) => ({
@@ -17,5 +19,14 @@ export const useReviewState = create<ReviewState>((set, get) => ({
         catch (err) {
             throw err;
         }
+    },
+    createReview: async (id: number, data: ReviewPostDTO) => {
+        try {
+            const newReview = await createProductReview(id, data);
+            set({ reviews: [...get().reviews, newReview] })
+        } catch (err) {
+            throw err;
+        }
+
     }
 }));

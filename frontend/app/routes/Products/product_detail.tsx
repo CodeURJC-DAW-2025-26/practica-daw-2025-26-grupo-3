@@ -19,6 +19,7 @@ import Card from "react-bootstrap/Card";
 import Image from "react-bootstrap/Image";
 import { useCartState } from "~/stores/shoppingCart-store";
 import { ReviewList } from "~/components/Product/ReviewList";
+import { ReviewForm } from "~/components/Product/ReviewForm";
 
 export async function clientLoader() {
     return await requireUserLoader();
@@ -222,56 +223,53 @@ export default function ProductDetail({ loaderData }: Route.ComponentProps) {
                     <p className="text-muted">{product.description}</p>
 
                     <div className="my-4">
-                        <div className="my-4">
-
-                            <Button
-                                onClick={() => {
-                                    if (productIdNumber !== null) {
-                                        handleAddCart(productIdNumber);
-                                    }
-                                }}
-                                variant="primary"
-                                className="px-4 d-inline-flex align-items-center shadow-sm font-weight-bold"
-                                style={{ padding: "0.6rem 1.5rem", fontSize: "1.1rem" }}
-                                disabled={cartLoading}
-                            >
-                                {cartLoading ? (
-                                    <Spinner animation="border" size="sm" role="status" aria-hidden="true" />
-                                ) : (
-                                    <>
-                                        <i className="bi bi-cart-fill me-2" style={{ fontSize: "1.3rem" }}></i>
-                                        Añadir al Carrito
-                                    </>
-                                )}
-                            </Button>
-
-                            {cartError !== null && (
-                                <ErrorCard message={cartError} className="mt-3" />
+                        <Button
+                            onClick={() => {
+                                if (productIdNumber !== null) {
+                                    handleAddCart(productIdNumber);
+                                }
+                            }}
+                            variant="primary"
+                            className="w-100 d-flex align-items-center justify-content-center shadow-sm font-weight-bold"
+                            style={{ padding: "0.6rem 1.5rem", fontSize: "1.1rem" }}
+                            disabled={cartLoading}
+                        >
+                            {cartLoading ? (
+                                <Spinner animation="border" size="sm" role="status" aria-hidden="true" />
+                            ) : (
+                                <>
+                                    <i className="bi bi-cart-fill me-2" style={{ fontSize: "1.3rem" }}></i>
+                                    Añadir al Carrito
+                                </>
                             )}
+                        </Button>
 
-                            {canModifyProduct && (
-                                <div className="d-flex gap-2">
-                                    <Button
-                                        as={Link as any}
-                                        to={`/edit_product/${product.id}`}
-                                        className="d-inline-flex align-items-center shadow-sm font-weight-bold"
-                                        style={{ backgroundColor: "#fd7e14", borderColor: "#fd7e14", color: "white", padding: "0.5rem 1.5rem", fontSize: "1rem" }}
-                                    >
-                                        <i className="bi bi-pencil-square me-2" style={{ fontSize: "1.2rem" }}></i> Editar
-                                    </Button>
+                        {cartError !== null && (
+                            <ErrorCard message={cartError} className="mt-3" />
+                        )}
 
-                                    <Button onClick={() => handleDeleteProduct(product.id)}
-                                        type="submit"
-                                        variant="danger"
-                                        className="d-inline-flex align-items-center shadow-sm font-weight-bold"
-                                        style={{ padding: "0.5rem 1.5rem", fontSize: "1rem" }}
-                                    >
-                                        <i className="bi bi-trash me-2" style={{ fontSize: "1.2rem" }}></i> Eliminar
-                                    </Button>
+                        {canModifyProduct && (
+                            <div className="d-flex gap-3 mt-3">
+                                <Button
+                                    as={Link as any}
+                                    to={`/edit_product/${product.id}`}
+                                    className="flex-grow-1 d-flex align-items-center justify-content-center shadow-sm font-weight-bold"
+                                    style={{ backgroundColor: "#fd7e14", borderColor: "#fd7e14", color: "white", padding: "0.5rem 1.5rem", fontSize: "1rem" }}
+                                >
+                                    <i className="bi bi-pencil-square me-2" style={{ fontSize: "1.2rem" }}></i> Editar
+                                </Button>
 
-                                </div>
-                            )}
-                        </div>
+                                <Button onClick={() => handleDeleteProduct(product.id)}
+                                    type="submit"
+                                    variant="danger"
+                                    className="flex-grow-1 d-flex align-items-center justify-content-center shadow-sm font-weight-bold"
+                                    style={{ padding: "0.5rem 1.5rem", fontSize: "1rem" }}
+                                >
+                                    <i className="bi bi-trash me-2" style={{ fontSize: "1.2rem" }}></i> Eliminar
+                                </Button>
+
+                            </div>
+                        )}
                     </div>
                 </Col>
             </Row>
@@ -279,59 +277,7 @@ export default function ProductDetail({ loaderData }: Route.ComponentProps) {
             <hr className="my-5" />
 
             {currentUser && (
-                <Row className="justify-content-center mb-5">
-                    <Col lg={6}>
-                        <Card className="p-4 shadow-sm">
-                            <Form>
-                                <h4 className="mb-4 text-center">Añadir reseña</h4>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Título</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        required
-                                        minLength={3}
-                                        maxLength={100}
-                                        placeholder="Título de la reseña"
-                                        value={reviewTitle}
-                                        onChange={e => setReviewTitle(e.target.value)}
-                                    />
-                                </Form.Group>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Cuerpo del mensaje</Form.Label>
-                                    <Form.Control
-                                        as="textarea"
-                                        rows={3}
-                                        required
-                                        minLength={10}
-                                        maxLength={1000}
-                                        placeholder="Escribe tu reseña"
-                                        value={reviewBody}
-                                        onChange={e => setReviewBody(e.target.value)}
-                                    />
-                                </Form.Group>
-                                <div className="mb-3 text-center">
-                                    <Form.Label className="d-block">Valoración</Form.Label>
-                                    <div>
-                                        {[1, 2, 3, 4, 5].map(star => (
-                                            <span
-                                                key={star}
-                                                style={{ color: "#ffc107", fontSize: "2.5rem", cursor: "pointer" }}
-                                                onMouseEnter={() => setHoverRating(star)}
-                                                onMouseLeave={() => setHoverRating(0)}
-                                                onClick={() => setRating(star)}
-                                            >
-                                                <i className={`bi star-icon ${star <= (hoverRating || rating) ? "bi-star-fill" : "bi-star"}`}></i>
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
-                                <Button type="submit" variant="primary" disabled={rating === 0} className="w-100">
-                                    Publicar reseña
-                                </Button>
-                            </Form>
-                        </Card>
-                    </Col>
-                </Row>
+                <ReviewForm productId={productIdNumber!} />
             )}
 
             {productIdNumber !== null && <ReviewList productId={productIdNumber} />}

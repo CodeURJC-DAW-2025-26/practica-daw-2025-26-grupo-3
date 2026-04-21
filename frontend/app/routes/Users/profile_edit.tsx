@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import { Link, useNavigate } from "react-router";
 import { ErrorCard } from "~/components/error-card";
 import { updateUser, uploadUserImage } from "~/services/user-service";
-import { PasswordChangeForm } from "~/components/ProfilEdit/PasswordChangeForm";
+import { PasswordChangeForm } from "~/components/ProfileEdit/PasswordChangeForm";
 import { requireUserLoader } from "../auth-loaders";
 import type { Route } from "../+types";
 import type { UserDTO } from "~/dtos/UserDTO";

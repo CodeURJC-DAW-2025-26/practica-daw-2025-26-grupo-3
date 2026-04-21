@@ -21,7 +21,7 @@ export function ReviewList({ productId }: ReviewListProps) {
         }
     }
 
-    useEffect(() => { loadProductReviews(productId) });
+    useEffect(() => { loadProductReviews(productId) }, []);
 
     if (error) {
         <ErrorCard message={error} />
