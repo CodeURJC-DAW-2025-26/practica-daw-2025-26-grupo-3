@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from "react-router";
 import { getBasicProduct, removeProduct } from "~/services/product-service";
 import type { ProductDetailDTO } from "~/dtos/ProductDetailDTO";
 import { useUserState } from "~/stores/user-store";
-import { AuthError } from "~/components/auth-error";
+import { ErrorCard } from "~/components/error-card";
 import { requireUserLoader } from "../auth-loaders";
 import type { Route } from "../+types";
 
@@ -17,6 +17,7 @@ import Form from "react-bootstrap/Form";
 import Spinner from "react-bootstrap/Spinner";
 import Card from "react-bootstrap/Card";
 import Image from "react-bootstrap/Image";
+import { useCartState } from "~/stores/shoppingCart-store";
 
 export async function clientLoader() {
     return await requireUserLoader();
@@ -26,9 +27,13 @@ export default function ProductDetail({ loaderData }: Route.ComponentProps) {
     const { id } = useParams();
     const navigate = useNavigate();
     const [product, setProduct] = useState<ProductDetailDTO | null>(null);
+
     const [loading, setLoading] = useState(true);
+    const [cartLoading, setCartLoading] = useState(false);
+    const [cartError, setCartError] = useState<string | null>(null);
 
     const { currentUser, loadLoggedUser } = useUserState();
+    const { addItem } = useCartState();
 
     const [reviewTitle, setReviewTitle] = useState("");
     const [reviewBody, setReviewBody] = useState("");
@@ -36,6 +41,26 @@ export default function ProductDetail({ loaderData }: Route.ComponentProps) {
     const [hoverRating, setHoverRating] = useState(0);
 
     const reviews: any[] = [];
+
+    async function handleAddCart(id: number) {
+        let errorMessage: string | null = null;
+        setCartError(null);
+        setCartLoading(true);
+        try {
+            await addItem(id);
+        }
+        catch (err) {
+            errorMessage = "Se ha producido un error al añadir el producto a tu carrito. Inténtalo de nuevo más tarde.";
+            setCartError(errorMessage);
+        }
+        finally {
+            setCartLoading(false);
+        }
+
+        if (!errorMessage) {
+            navigate("/shopping-cart")
+        }
+    }
 
     useEffect(() => {
         loadLoggedUser();
@@ -58,7 +83,7 @@ export default function ProductDetail({ loaderData }: Route.ComponentProps) {
     if (!currentUser) {
         return (
             <Container className="my-5 d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
-                <AuthError />
+                <ErrorCard message="Debes iniciar sesion para acceder a esta página." />
             </Container>
         );
     }
@@ -103,11 +128,6 @@ export default function ProductDetail({ loaderData }: Route.ComponentProps) {
             break;
     }
 
-    function handleAddToCart(event: React.FormEvent<HTMLFormElement>): void {
-        event.preventDefault();
-
-    }
-
     async function handleDeleteProduct(productId: number): Promise<void> {
         const isConfirmed = window.confirm("¿Estás seguro de que quieres eliminar este producto? Esta acción no se puede deshacer.");
 
@@ -123,11 +143,6 @@ export default function ProductDetail({ loaderData }: Route.ComponentProps) {
                 alert("Hubo un problema al intentar eliminar el producto.");
             }
         }
-    }
-
-    function handleReviewSubmit(event: React.FormEvent<HTMLFormElement>): void {
-        event.preventDefault();
-
     }
 
     return (
@@ -188,16 +203,34 @@ export default function ProductDetail({ loaderData }: Route.ComponentProps) {
 
                     <div className="my-4">
                         <div className="my-4">
-                            <Form onSubmit={handleAddToCart} className="d-block mb-3">
-                                <Button
-                                    type="submit"
-                                    variant="primary"
-                                    className="px-4 d-inline-flex align-items-center shadow-sm font-weight-bold"
-                                    style={{ padding: "0.6rem 1.5rem", fontSize: "1.1rem" }}
-                                >
-                                    <i className="bi bi-cart-fill me-2" style={{ fontSize: "1.3rem" }}></i> Añadir al Carrito
-                                </Button>
-                            </Form>
+
+                            <Button
+                                onClick={() => {
+                                    if (id) {
+                                        const numericId = parseInt(id, 10);
+                                        if (!isNaN(numericId)) {
+                                            handleAddCart(numericId);
+                                        }
+                                    }
+                                }}
+                                variant="primary"
+                                className="px-4 d-inline-flex align-items-center shadow-sm font-weight-bold"
+                                style={{ padding: "0.6rem 1.5rem", fontSize: "1.1rem" }}
+                                disabled={cartLoading}
+                            >
+                                {cartLoading ? (
+                                    <Spinner animation="border" size="sm" role="status" aria-hidden="true" />
+                                ) : (
+                                    <>
+                                        <i className="bi bi-cart-fill me-2" style={{ fontSize: "1.3rem" }}></i>
+                                        Añadir al Carrito
+                                    </>
+                                )}
+                            </Button>
+
+                            {cartError !== null && (
+                                <ErrorCard message={cartError} className="mt-3" />
+                            )}
 
                             {canModifyProduct && (
                                 <div className="d-flex gap-2">
@@ -232,7 +265,7 @@ export default function ProductDetail({ loaderData }: Route.ComponentProps) {
                 <Row className="justify-content-center mb-5">
                     <Col lg={6}>
                         <Card className="p-4 shadow-sm">
-                            <Form onSubmit={handleReviewSubmit}>
+                            <Form>
                                 <h4 className="mb-4 text-center">Añadir reseña</h4>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Título</Form.Label>

@@ -6,7 +6,7 @@ import { useUserState } from "~/stores/user-store";
 import type { Route } from "../+types";
 import { requireUserLoader } from "../auth-loaders";
 import { useCartState } from "~/stores/shoppingCart-store";
-import { AuthError } from "~/components/auth-error";
+import { ErrorCard } from "~/components/error-card";
 
 export async function clientLoader() {
     return await requireUserLoader();
@@ -61,7 +61,7 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
     }
 
     if (!currentUser) {
-        return (<AuthError />)
+        return (<ErrorCard message="Debes iniciar sesion para acceder a esta página." className="container my-5" />)
     }
 
     return (
@@ -96,18 +96,7 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
                                             {error !== null ? (
                                                 <tr>
                                                     <td colSpan={5} className="p-4">
-                                                        <div
-                                                            style={{
-                                                                backgroundColor: "#fee2e2",
-                                                                color: "#b91c1c",
-                                                                padding: "12px 16px",
-                                                                borderRadius: "8px",
-                                                                border: "1px solid #fca5a5",
-                                                                fontSize: "0.95rem",
-                                                            }}
-                                                        >
-                                                            <strong>{error}</strong>
-                                                        </div>
+                                                        <ErrorCard message={error} />
                                                     </td>
                                                 </tr>
                                             ) : hasItems ? (

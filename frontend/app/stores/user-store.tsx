@@ -1,7 +1,7 @@
 import type { UserDTO } from "~/dtos/UserDTO";
 import { create } from "zustand";
 import { changePassword, deleteUser, HttpError, login, logout, reqIsLogged, signup, updateUser } from "~/services/user-service";
-import type { UserBasicDTO } from "~/dtos/UserBasicDTO";
+import type { UserPostDTO } from "~/dtos/UserPostDTO";
 import type { UserCreateDTO } from "~/dtos/UserCreateDTO";
 import type { UserPassDTO } from "~/dtos/UserPassDTO";
 import type { UserPassBasicDTO } from "~/dtos/UserPassBasicDTO";
@@ -13,7 +13,7 @@ export interface UserState {
     login: (email: string, pass: string) => Promise<UserDTO | null>,
     logout: () => void
     signup: (data: UserCreateDTO) => void,
-    editUser: (data: UserBasicDTO, id: number) => void,
+    editUser: (data: UserPostDTO, id: number) => void,
     editPass: (data: UserPassDTO, id: number) => void,
     deleteUser: (passsword: UserPassBasicDTO, id: number) => void
 }
@@ -48,7 +48,7 @@ export const useUserState = create<UserState>((set, get) => ({
             throw error;
         }
     },
-    editUser: async (data: UserBasicDTO, id: number) => {
+    editUser: async (data: UserPostDTO, id: number) => {
         set({ error: null });
         try {
             await updateUser(data, id);

@@ -1,6 +1,6 @@
 import type { CartDTO } from "~/dtos/CartDTO";
 import { create } from "zustand";
-import { cartToOrder, deleteCartItem, getCartInfo, getOrdersInfo, updateQuantity } from "~/services/cart-service";
+import { addToCart, cartToOrder, deleteCartItem, getCartInfo, getOrdersInfo, updateQuantity } from "~/services/cart-service";
 import type { CartItemDTO } from "~/dtos/CartItemDTO";
 import type { OrderDTO } from "~/dtos/OrderDTO";
 import { HttpError } from "~/services/HttpError";
@@ -14,11 +14,12 @@ export interface CartState {
     itemQuantities: Record<number, number>;
     orders: OrderDTO[] | null;
     getCart: () => void;
-    setLineItem: (productId: number, price: number, quantity: number) => void;
+    setLineItem: (itemId: number, price: number, quantity: number) => void;
     deleteItem: (id: number) => void;
-    changeItemQty: (id: number, op: number, productId: number) => void;
+    changeItemQty: (id: number, op: number) => void;
     convertToOrder: () => void,
     getOrders: () => void,
+    addItem: (id: number) => void;
 }
 
 export const useCartState = create<CartState>((set, get) => ({
@@ -49,9 +50,9 @@ export const useCartState = create<CartState>((set, get) => ({
             throw err;
         }
     },
-    setLineItem: (productId: number, price: number, quantity: number) => {
-        const newPrices = { ...get().itemPrices, [productId]: price };
-        const newQuantities = { ...get().itemQuantities, [productId]: quantity };
+    setLineItem: (itemId: number, price: number, quantity: number) => {
+        const newPrices = { ...get().itemPrices, [itemId]: price };
+        const newQuantities = { ...get().itemQuantities, [itemId]: quantity };
 
         const newTotal = Object.entries(newPrices).reduce(
             (sum, [id, p]) => sum + p * (newQuantities[Number(id)] ?? 0),
@@ -70,18 +71,11 @@ export const useCartState = create<CartState>((set, get) => ({
         try {
             await deleteCartItem(id);
 
-            const itemToRemove = get().items?.find(item => item.id === id);     //Deleted item search
-            const productIdToReduce = itemToRemove?.productId;
-
             const newPrices = { ...get().itemPrices };
             const newQuantities = { ...get().itemQuantities };
 
-            //find method returns undefined if doesn't find the removed item.
-            //We check that the item was found, and delete dictionaries in case is undefined.
-            if (productIdToReduce !== undefined) {
-                delete newPrices[productIdToReduce];
-                delete newQuantities[productIdToReduce]
-            }
+            delete newPrices[id];
+            delete newQuantities[id];
 
             const newTotalPrice = Object.entries(newPrices).reduce(
                 (sum, [id, p]) => sum + p * (newQuantities[Number(id)] ?? 0),
@@ -101,13 +95,13 @@ export const useCartState = create<CartState>((set, get) => ({
             throw err;
         }
     },
-    changeItemQty: async (id: number, op: number, productId: number) => {
+    changeItemQty: async (id: number, op: number) => {
         try {
             await updateQuantity(id, op);
 
-            const currentQty = get().itemQuantities[productId] ?? 1;
+            const currentQty = get().itemQuantities[id] ?? 1;
             const nextQty = op === 1 ? currentQty + 1 : Math.max(1, currentQty - 1);
-            const newQuantities = { ...get().itemQuantities, [productId]: nextQty };
+            const newQuantities = { ...get().itemQuantities, [id]: nextQty };
             const newTotalPrice = Object.entries(get().itemPrices).reduce(
                 (sum, [id, p]) => sum + p * (newQuantities[Number(id)] ?? 0),
                 0
@@ -140,6 +134,15 @@ export const useCartState = create<CartState>((set, get) => ({
         try {
             const userOrders = await getOrdersInfo();
             set({ orders: userOrders });
+        }
+        catch (err) {
+            throw err;
+        }
+    },
+    addItem: async (id: number) => {
+        try {
+            await addToCart(id);
+            await get().getCart();  //Update cart state in frontend
         }
         catch (err) {
             throw err;

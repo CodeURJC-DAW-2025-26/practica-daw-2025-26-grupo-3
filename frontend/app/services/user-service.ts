@@ -1,6 +1,6 @@
 import type { UserDTO } from "~/dtos/UserDTO";
 import type { UserCreateDTO } from "~/dtos/UserCreateDTO";
-import type { UserBasicDTO } from "~/dtos/UserBasicDTO";
+import type { UserPostDTO } from "~/dtos/UserPostDTO";
 import type { UserPassDTO } from "~/dtos/UserPassDTO";
 import type { UserPassBasicDTO } from "~/dtos/UserPassBasicDTO";
 import { HttpError } from "./HttpError";
@@ -78,7 +78,7 @@ export async function uploadUserImage(image: File, userId: number) {
     return response;
 }
 
-export async function updateUser(newUserData: UserBasicDTO, userId: number) {
+export async function updateUser(newUserData: UserPostDTO, userId: number) {
     const url = `${base_user_url}/${userId}`;
 
     const response = await fetch(url, {

@@ -32,7 +32,7 @@ export function Item({ id, productId, productName, quantity }: ItemProps) {
                 case 1: setState("Reacondicionado"); break;
                 case 2: setState("Segunda mano"); break
             }
-            setLineItem(productId, productData.price, quantity)
+            setLineItem(id, productData.price, quantity)
         }
         catch (err) {
             errMessage = err instanceof Error
@@ -54,7 +54,7 @@ export function Item({ id, productId, productName, quantity }: ItemProps) {
         }
     }
 
-    async function handleChangeQuantity(id: number, op: number, productId: number) {
+    async function handleChangeQuantity(id: number, op: number) {
         let qtyErrMessage: string | null = null;
         const previousQuantity = itemQuantity;
         const nextQuantity = op === 1 ? previousQuantity + 1 : Math.max(1, previousQuantity - 1);
@@ -65,7 +65,7 @@ export function Item({ id, productId, productName, quantity }: ItemProps) {
 
         try {
             setItemQuantity(nextQuantity);
-            await changeItemQty(id, op, productId);
+            await changeItemQty(id, op);
         } catch (err) {
             setItemQuantity(previousQuantity);
             qtyErrMessage = err instanceof Error
@@ -105,7 +105,7 @@ export function Item({ id, productId, productName, quantity }: ItemProps) {
             <div className="d-flex align-items-center" style={{ maxWidth: "120px" }}>
                 <button
                     className="btn btn-outline-secondary btn-sm"
-                    onClick={() => { handleChangeQuantity(id, 0, productId) }}
+                    onClick={() => { handleChangeQuantity(id, 0) }}
                     style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
                     disabled={itemQuantity <= 1}
                 >
@@ -123,7 +123,7 @@ export function Item({ id, productId, productName, quantity }: ItemProps) {
 
                 <button
                     className="btn btn-outline-secondary btn-sm"
-                    onClick={() => { handleChangeQuantity(id, 1, productId) }}
+                    onClick={() => { handleChangeQuantity(id, 1) }}
                     style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
                 >
                     +

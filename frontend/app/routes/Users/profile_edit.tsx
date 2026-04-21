@@ -1,13 +1,14 @@
 import { Foot } from "../../components/foot";
 import { ProfileNavbar } from "../../components/Profile/profile_navbar";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState } from "react";
 import { Link, useNavigate } from "react-router";
-import { AuthError } from "~/components/auth-error";
+import { ErrorCard } from "~/components/error-card";
 import { updateUser, uploadUserImage } from "~/services/user-service";
 import { PasswordChangeForm } from "~/components/ProfilEdit/PasswordChangeForm";
 import { requireUserLoader } from "../auth-loaders";
 import type { Route } from "../+types";
 import type { UserDTO } from "~/dtos/UserDTO";
+import { useUserState } from "~/stores/user-store";
 
 export async function clientLoader() {
     return await requireUserLoader();
@@ -15,6 +16,7 @@ export async function clientLoader() {
 
 export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
     const navigate = useNavigate();
+    const { loadLoggedUser } = useUserState();
     const [{ errMessage }, formAction, editFormLoading] = useActionState(
         handleEditForm,
         { errMessage: null }
@@ -45,6 +47,8 @@ export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
             if (image && image.size > 0) {
                 await uploadUserImage(image, currentUser.id);
             }
+
+            await loadLoggedUser();
         }
         catch (err) {
             editError = err instanceof Error
@@ -62,7 +66,7 @@ export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
     if (!currentUser) {
         return (<>
             <ProfileNavbar />
-            <AuthError />
+            <ErrorCard message="Debes iniciar sesion para acceder a esta página." className="container my-5" />
             <Foot />
         </>);
     }

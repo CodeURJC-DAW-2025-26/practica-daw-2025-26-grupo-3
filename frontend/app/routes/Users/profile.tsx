@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { Foot } from "../../components/foot";
 import { ProfileNavbar } from "../../components/Profile/profile_navbar";
-import { AuthError } from "~/components/auth-error";
+import { ErrorCard } from "~/components/error-card";
 import { OrdersDashboard } from "~/components/Profile/OrdersDashboard";
 import { DeleteAccountForm } from "../../components/Profile/DeleteAccountForm";
 import { requireUserLoader } from "../auth-loaders";
@@ -11,7 +11,7 @@ import { LeftCard } from "~/components/Profile/LeftCard";
 import { PersonalInfo } from "~/components/Profile/PersonalInfo";
 
 export async function clientLoader() {
-    return await requireUserLoader();
+    return await requireUserLoader(true);
 }
 
 export default function Profile({ loaderData }: Route.ComponentProps) {
@@ -46,7 +46,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                         </div>
 
                         {!currentUser ?
-                            <AuthError />
+                            <ErrorCard message="Debes iniciar sesion para acceder a esta página." />
                             : (
                                 <>
                                     <PersonalInfo baseImageUrl={baseImageUrl} currentUser={currentUser} isAdmin={isAdmin} />

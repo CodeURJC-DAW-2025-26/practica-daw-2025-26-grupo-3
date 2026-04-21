@@ -1,9 +1,9 @@
 import { useUserState } from "~/stores/user-store";
 
-export async function requireUserLoader() {
+export async function requireUserLoader(forceRefresh = false) {
     const store = useUserState.getState();      //Store access without hooks
 
-    if (!store.currentUser) {
+    if (forceRefresh || !store.currentUser) {
         await store.loadLoggedUser();           //Load currentUser if it's not done
     }
 

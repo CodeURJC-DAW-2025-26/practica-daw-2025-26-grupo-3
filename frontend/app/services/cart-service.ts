@@ -86,6 +86,25 @@ export async function getOrdersInfo() {
     return await response.json();
 }
 
+export async function addToCart(id: number) {
+    const url = `${base_url_cart}/me/items`;
+    const response = await fetch(url, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId: id })
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+    }
+
+    return await response.json();
+}
+
+//PDF BILL API CALLS
+
 export async function getAllPDF() {
     const url = `${base_url_order}/all/bill`;
     const response = await fetch(url, {
