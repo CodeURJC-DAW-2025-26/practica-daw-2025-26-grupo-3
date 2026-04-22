@@ -1,5 +1,6 @@
 import type { UserDTO } from "~/dtos/UserDTO";
 import { Link } from "react-router";
+import { Card, Row, Col } from "react-bootstrap";
 
 export interface PersonalInfoProps {
     baseImageUrl: string;
@@ -9,7 +10,7 @@ export interface PersonalInfoProps {
 
 export function PersonalInfo({ baseImageUrl, currentUser, isAdmin }: PersonalInfoProps) {
     return (
-        <div className="card border-0 shadow-sm p-4 mb-4">
+        <Card className="border-0 shadow-sm p-4 mb-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <h5 className="fw-bold mb-0 text-dark">Informacion Personal</h5>
                 <Link to="/profile/edit" className="btn btn-sm btn-outline-dark rounded-pill px-3">
@@ -17,8 +18,8 @@ export function PersonalInfo({ baseImageUrl, currentUser, isAdmin }: PersonalInf
                 </Link>
             </div>
 
-            <div className="row g-3">
-                <div className="col-12 text-center mb-3">
+            <Row className="g-3">
+                <Col xs={12} className="text-center mb-3">
                     <img
                         src={`${baseImageUrl}/${currentUser.imageId}/media`}
                         onError={(event) => {
@@ -28,30 +29,30 @@ export function PersonalInfo({ baseImageUrl, currentUser, isAdmin }: PersonalInf
                         alt="Foto de perfil"
                         style={{ width: 150, height: 150, objectFit: "cover" }}
                     />
-                </div>
+                </Col>
 
-                <div className="col-md-6">
+                <Col md={6}>
                     <label className="form-label text-muted small fw-bold text-uppercase">Nombre Completo</label>
                     <p className="fs-5 mb-0">
                         {currentUser.userName} {currentUser.surname}
                     </p>
-                </div>
+                </Col>
 
-                <div className="col-md-6">
+                <Col md={6}>
                     <label className="form-label text-muted small fw-bold text-uppercase">Correo Electronico</label>
                     <p className="fs-5 mb-0">{currentUser.email}</p>
-                </div>
+                </Col>
 
-                <div className="col-md-6">
+                <Col md={6}>
                     <label className="form-label text-muted small fw-bold text-uppercase">Direccion</label>
                     <p className="fs-5 mb-0">{currentUser.address}</p>
-                </div>
+                </Col>
 
-                <div className="col-md-6">
+                <Col md={6}>
                     <label className="form-label text-muted small fw-bold text-uppercase">Rol</label>
                     <p className="fs-5 mb-0 fw-bold">{isAdmin ? "Admin" : "Usuario"}</p>
-                </div>
-            </div>
-        </div>
+                </Col>
+            </Row>
+        </Card>
     );
 }

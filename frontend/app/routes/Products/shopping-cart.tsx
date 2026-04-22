@@ -7,6 +7,7 @@ import type { Route } from "../+types";
 import { requireUserLoader } from "../auth-loaders";
 import { useCartState } from "~/stores/shoppingCart-store";
 import { ErrorCard } from "~/components/error-card";
+import { Container, Row, Col, Card, Table, Button } from "react-bootstrap";
 
 export async function clientLoader() {
     return await requireUserLoader();
@@ -66,7 +67,7 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
 
     return (
         <section className="py-5 bg-light min-vh-100">
-            <div className="container">
+            <Container>
                 <div className="d-flex flex-wrap justify-content-between align-items-center mb-4">
                     <div>
                         <h1 className="h3 fw-bold text-dark mb-1">Mi carrito</h1>
@@ -77,49 +78,47 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
                     </Link>
                 </div>
 
-                <div className="row g-4">
-                    <div className="col-lg-8">
-                        <div className="card shadow-sm border-0">
-                            <div className="card-body p-0">
-                                <div className="table-responsive">
-                                    <table className="table align-middle mb-0">
-                                        <thead className="bg-light">
+                <Row className="g-4">
+                    <Col lg={8}>
+                        <Card className="shadow-sm border-0">
+                            <Card.Body className="p-0">
+                                <Table responsive className="align-middle mb-0">
+                                    <thead className="bg-light">
+                                        <tr>
+                                            <th className="ps-4 py-3">Producto</th>
+                                            <th className="py-3">Estado</th>
+                                            <th className="py-3">Precio</th>
+                                            <th className="py-3">Cantidad</th>
+                                            <th className="py-3 text-end pe-4">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {error !== null ? (
                                             <tr>
-                                                <th className="ps-4 py-3">Producto</th>
-                                                <th className="py-3">Estado</th>
-                                                <th className="py-3">Precio</th>
-                                                <th className="py-3">Cantidad</th>
-                                                <th className="py-3 text-end pe-4">Acciones</th>
+                                                <td colSpan={5} className="p-4">
+                                                    <ErrorCard message={error} />
+                                                </td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            {error !== null ? (
-                                                <tr>
-                                                    <td colSpan={5} className="p-4">
-                                                        <ErrorCard message={error} />
-                                                    </td>
-                                                </tr>
-                                            ) : hasItems ? (
-                                                items!.map((item) => (
-                                                    <Item quantity={item.quantity} key={item.id} id={item.id} productId={item.productId} productName={item.productName} />
-                                                ))
-                                            ) : (
-                                                <tr>
-                                                    <td colSpan={5} className="text-center py-4">
-                                                        No tienes productos en el carrito
-                                                    </td>
-                                                </tr>
-                                            )}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                        ) : hasItems ? (
+                                            items!.map((item) => (
+                                                <Item quantity={item.quantity} key={item.id} id={item.id} productId={item.productId} productName={item.productName} />
+                                            ))
+                                        ) : (
+                                            <tr>
+                                                <td colSpan={5} className="text-center py-4">
+                                                    No tienes productos en el carrito
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </Table>
+                            </Card.Body>
+                        </Card>
+                    </Col>
 
-                    <div className="col-lg-4">
-                        <div className="card shadow-sm border-0">
-                            <div className="card-body">
+                    <Col lg={4}>
+                        <Card className="shadow-sm border-0">
+                            <Card.Body>
                                 <h2 className="h5 fw-bold mb-3">Resumen del pedido</h2>
                                 <div className="d-flex justify-content-between mb-2">
                                     <span className="text-muted">Cantidad de productos del pedido:</span>
@@ -130,9 +129,10 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
                                     <span className="fw-bold">Total a pagar: </span>
                                     <span className="fw-bold">{totalPrice} €</span>
                                 </div>
-                                <button
+                                <Button
+                                    variant="primary"
                                     type="button"
-                                    className={`btn btn-primary w-100 mb-2 d-flex align-items-center justify-content-center signup-submit-btn ${convertLoading ? "signup-submit-btn-loading" : ""}`}
+                                    className={`w-100 mb-2 d-flex align-items-center justify-content-center signup-submit-btn ${convertLoading ? "signup-submit-btn-loading" : ""}`}
                                     onClick={handleCartToOrder}
                                     disabled={convertLoading}
                                 >
@@ -141,19 +141,19 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
                                     ) : (
                                         <span>Finalizar compra</span>
                                     )}
-                                </button>
-                            </div>
-                        </div>
+                                </Button>
+                            </Card.Body>
+                        </Card>
 
-                        <div className="card shadow-sm border-0 mt-4">
-                            <div className="card-body">
+                        <Card className="shadow-sm border-0 mt-4">
+                            <Card.Body>
                                 <h3 className="h6 fw-bold mb-3">Dirección de entrega</h3>
                                 <p className="text-muted mb-2">{currentUser!.address}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
         </section>
     );
 }

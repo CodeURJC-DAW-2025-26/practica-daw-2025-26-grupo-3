@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { ProductDetailDTO } from "~/dtos/ProductDetailDTO";
 import { getBasicProduct } from "~/services/product-service";
 import { useCartState } from "~/stores/shoppingCart-store";
+import { Button, Form } from "react-bootstrap";
 
 export interface ItemProps {
     id: number;
@@ -103,37 +104,39 @@ export function Item({ id, productId, productName, quantity }: ItemProps) {
         <td>{product?.price} €</td>
         <td>
             <div className="d-flex align-items-center" style={{ maxWidth: "120px" }}>
-                <button
-                    className="btn btn-outline-secondary btn-sm"
+                <Button
+                    variant="outline-secondary"
+                    size="sm"
                     onClick={() => { handleChangeQuantity(id, 0) }}
                     style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
                     disabled={itemQuantity <= 1}
                 >
                     -
-                </button>
+                </Button>
 
-                <input
+                <Form.Control
                     type="text"
-                    className="form-control text-center border-secondary border-start-0 border-end-0 rounded-0 p-1"
+                    className="text-center border-secondary border-start-0 border-end-0 rounded-0 p-1"
                     value={itemQuantity}
                     aria-label="Cantidad"
                     readOnly
                     style={{ width: "40px", height: "31px" }}
                 />
 
-                <button
-                    className="btn btn-outline-secondary btn-sm"
+                <Button
+                    variant="outline-secondary"
+                    size="sm"
                     onClick={() => { handleChangeQuantity(id, 1) }}
                     style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
                 >
                     +
-                </button>
+                </Button>
             </div>
         </td>
         <td className="text-end pe-4">
-            <button className="btn btn-sm btn-outline-danger" title="Quitar" onClick={() => handleDeleteItem(id)}>
+            <Button variant="outline-danger" size="sm" title="Quitar" onClick={() => handleDeleteItem(id)}>
                 <i className="bi bi-trash"></i>
-            </button>
+            </Button>
         </td>
     </tr>
 }

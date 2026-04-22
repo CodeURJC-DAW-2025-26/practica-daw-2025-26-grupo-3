@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { Container, Row, Col, Card, Form, Button, Badge } from "react-bootstrap";
 
 export default function MyProducts() {
     const token = "mock-csrf-token-123";
@@ -12,7 +13,7 @@ export default function MyProducts() {
         <>
             {/* HEADER */}
             <section className="py-5 bg-light">
-                <div className="container">
+                <Container>
                     <div className="d-flex justify-content-between align-items-center">
                         <div>
                             <h1 className="fw-bold">Mis Productos Publicados</h1>
@@ -22,30 +23,30 @@ export default function MyProducts() {
                             <i className="bi bi-plus-circle"></i> Publicar Nuevo Producto
                         </Link>
                     </div>
-                </div>
+                </Container>
             </section>
 
             {/* PRODUCTS SECTION */}
             <section className="py-5">
-                <div className="container">
-                    <div className="row g-4">
+                <Container>
+                    <Row className="g-4">
                         {products && products.length > 0 ? (
                             products.map((product) => (
-                                <div className="col-md-3" key={product.id}>
-                                    <div className="card h-100 border-0 shadow-sm product-card">
+                                <Col md={3} key={product.id}>
+                                    <Card className="h-100 border-0 shadow-sm product-card">
                                         <div className="position-relative">
                                             {product.hasImage ? (
-                                                <img src={`/product-images/${product.id}`} className="card-img-top product-img" alt={product.productName} />
+                                                <Card.Img variant="top" src={`/product-images/${product.id}`} className="product-img" alt={product.productName} />
                                             ) : (
-                                                <img src={`https://placehold.co/300x250/667eea/ffffff?text=${encodeURIComponent(product.productName)}`} className="card-img-top product-img" alt="Producto" />
+                                                <Card.Img variant="top" src={`https://placehold.co/300x250/667eea/ffffff?text=${encodeURIComponent(product.productName)}`} className="product-img" alt="Producto" />
                                             )}
                                         </div>
-                                        <div className="card-body">
-                                            <span className={`badge rounded-pill ${product.stateClass} mb-2`}>{product.stateName}</span>
-                                            <h5 className="card-title h6 fw-bold">{product.productName}</h5>
-                                            <p className="text-primary fw-bold mb-0">{product.price}€</p>
-                                        </div>
-                                        <div className="card-footer bg-transparent border-0 pb-3">
+                                        <Card.Body>
+                                            <Badge pill className={`${product.stateClass} mb-2`}>{product.stateName}</Badge>
+                                            <Card.Title className="h6 fw-bold">{product.productName}</Card.Title>
+                                            <Card.Text className="text-primary fw-bold mb-0">{product.price}€</Card.Text>
+                                        </Card.Body>
+                                        <Card.Footer className="bg-transparent border-0 pb-3">
                                             <div className="d-grid gap-2">
                                                 <Link to={`/product_detail/${product.id}`}
                                                     className="btn btn-sm btn-primary d-flex align-items-center justify-content-center">
@@ -55,30 +56,30 @@ export default function MyProducts() {
                                                     className="btn btn-sm btn-edit-custom text-white d-flex align-items-center justify-content-center">
                                                     <i className="bi bi-pencil-square me-2"></i> Editar
                                                 </a>
-                                                <form action={`/delete_product/${product.id}`} method="POST" style={{ display: 'inline' }}>
+                                                <Form action={`/delete_product/${product.id}`} method="POST" style={{ display: 'inline' }}>
                                                     <input type="hidden" name="_csrf" value={token} />
-                                                    <button type="submit"
+                                                    <Button variant="danger" size="sm" type="submit"
                                                         onClick={(e) => {
                                                             if (!window.confirm('¿Estás seguro de que deseas borrar este producto?')) {
                                                                 e.preventDefault();
                                                             }
                                                         }}
-                                                        className="btn btn-sm btn-danger d-flex align-items-center justify-content-center w-100">
+                                                        className="d-flex align-items-center justify-content-center w-100">
                                                         <i className="bi bi-trash me-2"></i> Eliminar
-                                                    </button>
-                                                </form>
+                                                    </Button>
+                                                </Form>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                        </Card.Footer>
+                                    </Card>
+                                </Col>
                             ))
                         ) : (
-                            <div className="col-12 text-center py-5">
+                            <Col xs={12} className="text-center py-5">
                                 <p className="text-muted">Aún no has publicado ningún producto.</p>
-                            </div>
+                            </Col>
                         )}
-                    </div>
-                </div>
+                    </Row>
+                </Container>
             </section>
         </>
     );

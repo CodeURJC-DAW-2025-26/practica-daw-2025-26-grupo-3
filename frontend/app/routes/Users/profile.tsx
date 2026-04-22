@@ -9,6 +9,7 @@ import type { Route } from "../+types";
 import type { UserDTO } from "~/dtos/UserDTO";
 import { LeftCard } from "~/components/Profile/LeftCard";
 import { PersonalInfo } from "~/components/Profile/PersonalInfo";
+import { Container, Row, Col, Badge } from "react-bootstrap";
 
 export async function clientLoader() {
     return await requireUserLoader(true);
@@ -22,26 +23,26 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
     return (
         <>
             <ProfileNavbar />
-            <div className="container my-5">
-                <div className="row">
+            <Container className="my-5">
+                <Row>
                     {currentUser && (
-                        <div className="col-md-4 col-lg-3 mb-4">
+                        <Col md={4} lg={3} className="mb-4">
                             <LeftCard baseImageUrl={baseImageUrl} userName={currentUser.userName} imageId={currentUser.imageId} />
                             <div className="mt-4 text-center">
                                 <Link to="/" className="btn btn-danger py-2 fw-bold shadow-sm" title="Volver a la tienda">
                                     Volver a la tienda
                                 </Link>
                             </div>
-                        </div>
+                        </Col>
                     )}
 
-                    <div className={currentUser ? "col-md-8 col-lg-9" : "col-12"}>
+                    <Col className={currentUser ? "col-md-8 col-lg-9" : "col-12"}>
                         <div className="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
                             <h2 className="h3 fw-bold text-dark">Mi Perfil</h2>
                             {currentUser && (
-                                <span className={`badge rounded-pill ${isAdmin ? "bg-primary" : "bg-secondary"}`}>
+                                <Badge pill bg={isAdmin ? "primary" : "secondary"}>
                                     {isAdmin ? "Admin" : "Usuario"}
-                                </span>
+                                </Badge>
                             )}
                         </div>
 
@@ -56,9 +57,9 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
                             )}
 
 
-                    </div>
-                </div>
-            </div>
+                    </Col>
+                </Row>
+            </Container>
             <Foot />
         </>
     );

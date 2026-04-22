@@ -1,6 +1,7 @@
 import { useActionState } from "react";
 import { useNavigate } from "react-router";
 import { useUserState } from "~/stores/user-store";
+import { Card, Form, Row, Col, Button, Alert } from "react-bootstrap";
 
 export interface PasswordChangeFormProps {
     userId: number;
@@ -35,52 +36,52 @@ export function PasswordChangeForm({ userId }: PasswordChangeFormProps) {
     );
 
     return (
-        <div className="card border-0 shadow-sm p-4">
+        <Card className="border-0 shadow-sm p-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <h5 className="fw-bold mb-0 text-dark">Cambiar Contraseña</h5>
             </div>
 
-            <form action={formAction}>
+            <Form action={formAction as unknown as string}>
                 <input type="hidden" value={userId} name="userId" />
-                <div className="row g-3">
-                    <div className="col-12">
-                        <label className="form-label text-muted small fw-bold text-uppercase">Contraseña Actual</label>
-                        <input type="password" className="form-control bg-light border-0" name="oldPassword" minLength={8} maxLength={20} required />
-                    </div>
+                <Row className="g-3">
+                    <Col xs={12}>
+                        <Form.Label className="text-muted small fw-bold text-uppercase">Contraseña Actual</Form.Label>
+                        <Form.Control type="password" className="bg-light border-0" name="oldPassword" minLength={8} maxLength={20} required />
+                    </Col>
 
-                    <div className="col-12">
-                        <label className="form-label text-muted small fw-bold text-uppercase">Nueva Contraseña</label>
-                        <input type="password" className="form-control bg-light border-0" name="newPassword" minLength={8} maxLength={20} required />
-                    </div>
+                    <Col xs={12}>
+                        <Form.Label className="text-muted small fw-bold text-uppercase">Nueva Contraseña</Form.Label>
+                        <Form.Control type="password" className="bg-light border-0" name="newPassword" minLength={8} maxLength={20} required />
+                    </Col>
 
-                    <div className="col-12 text-end mt-4">
-                        <button type="submit" className="btn btn-primary w-100" disabled={loading}>
+                    <Col xs={12} className="text-end mt-4">
+                        <Button type="submit" variant="primary" className="w-100" disabled={loading}>
                             {loading ? (
                                 <span className="signup-loading-spinner" role="status" aria-label="Actualizando" />
                             ) : (
                                 <span>Cambiar contraseña</span>
                             )}
-                        </button>
-                    </div>
+                        </Button>
+                    </Col>
 
                     {errMessage && (
-                        <div className="col-12">
-                            <div className="alert alert-danger" role="alert">
+                        <Col xs={12}>
+                            <Alert variant="danger">
                                 {errMessage}
-                            </div>
-                        </div>
+                            </Alert>
+                        </Col>
                     )}
 
                     {succMessage && (
-                        <div className="col-12">
-                            <div className="alert alert-success" role="alert">
+                        <Col xs={12}>
+                            <Alert variant="success">
                                 {succMessage}
-                            </div>
-                        </div>
+                            </Alert>
+                        </Col>
                     )}
 
-                </div>
-            </form>
-        </div>
+                </Row>
+            </Form>
+        </Card>
     );
 }

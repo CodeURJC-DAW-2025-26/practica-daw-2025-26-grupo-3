@@ -1,6 +1,7 @@
 import { useActionState } from "react";
 import { useNavigate } from "react-router";
 import { useUserState } from "~/stores/user-store";
+import { Card, Form, Button, Alert, Col } from "react-bootstrap";
 
 export interface DeleteAccountFormProps {
     userId: number;
@@ -37,42 +38,45 @@ export function DeleteAccountForm({ userId }: DeleteAccountFormProps) {
     }
 
     return (
-        <div className="card border-0 shadow-sm p-4 mt-4">
+        <Card className="border-0 shadow-sm p-4 mt-4">
             <h4 className="fw-bold mb-4 text-danger">Borrar Cuenta</h4>
-            <div className="alert alert-warning">
+            <Alert variant="warning">
                 <i className="bi bi-exclamation-triangle-fill me-2" />
                 Advertencia: Esta accion es irreversible. Todos tus datos seran eliminados permanentemente.
-            </div>
-            <form action={formAction}>
+            </Alert>
+            <Form action={formAction as unknown as string}>
                 <input type="hidden" value={userId} name="userId" />
-                <div className="mb-3">
-                    <label htmlFor="deletePassword" className="form-label fw-bold">
+                <Form.Group className="mb-3">
+                    <Form.Label htmlFor="deletePassword" className="fw-bold">
                         Introduce tu contraseña
-                    </label>
-                    <input type="password" className="form-control" id="deletePassword" name="currentPassword" required />
-                </div>
+                    </Form.Label>
+                    <Form.Control type="password" id="deletePassword" name="currentPassword" required />
+                </Form.Group>
 
-                <div className="mb-3 form-check">
-                    <input type="checkbox" className="form-check-input" id="confirmDelete" name="confirmDelete" required />
-                    <label className="form-check-label" htmlFor="confirmDelete">
-                        Confirmo que quiero borrar mi cuenta permanentemente
-                    </label>
-                </div>
+                <Form.Group className="mb-3">
+                    <Form.Check
+                        type="checkbox"
+                        id="confirmDelete"
+                        name="confirmDelete"
+                        label="Confirmo que quiero borrar mi cuenta permanentemente"
+                        required
+                    />
+                </Form.Group>
 
                 <div className="d-grid">
-                    <button type="submit" className="btn btn-danger fw-bold">
+                    <Button type="submit" variant="danger" className="fw-bold">
                         Borrar Cuenta
-                    </button>
+                    </Button>
                 </div>
-            </form>
+            </Form>
             {errMessage && (
-                <div className="col-12">
+                <Col xs={12}>
                     <br />
-                    <div className="alert alert-danger" role="alert">
+                    <Alert variant="danger">
                         {errMessage}
-                    </div>
-                </div>
+                    </Alert>
+                </Col>
             )}
-        </div>
+        </Card>
     );
 }

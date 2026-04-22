@@ -2,6 +2,7 @@ import { useUserState } from "~/stores/user-store";
 import type { SubmitEvent } from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
+import { Container, Row, Col, Card, Alert, Form, Button } from "react-bootstrap";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -33,9 +34,9 @@ export default function Login() {
     }
 
     return (
-        <div className="container">
-            <div className="row min-vh-100 align-items-center justify-content-center">
-                <div className="col-md-5">
+        <Container>
+            <Row className="min-vh-100 align-items-center justify-content-center">
+                <Col md={5}>
                     <div className="text-center mb-4">
                         <Link to="/" className="d-inline-block">
                             <img
@@ -47,7 +48,7 @@ export default function Login() {
                         </Link>
                     </div>
 
-                    <div className="card border-0 shadow-sm p-4 p-md-5">
+                    <Card className="border-0 shadow-sm p-4 p-md-5">
                         <div className="d-flex justify-content-between align-items-start mb-4">
                             <div>
                                 <h1 className="h4 fw-bold mb-1">Bienvenido</h1>
@@ -56,30 +57,31 @@ export default function Login() {
                         </div>
 
                         {error && (
-                            <div className="alert alert-danger py-2" role="alert">
+                            <Alert variant="danger" className="py-2">
                                 {error}
-                            </div>
+                            </Alert>
                         )}
 
-                        <form onSubmit={loginFormHandler}>
-                            <div className="mb-3">
-                                <label className="form-label small fw-bold">Email</label>
-                                <input type="email" className="form-control" placeholder="Tu email" name="email" required />
-                            </div>
-                            <div className="mb-3">
+                        <Form onSubmit={loginFormHandler}>
+                            <Form.Group className="mb-3">
+                                <Form.Label className="small fw-bold">Email</Form.Label>
+                                <Form.Control type="email" placeholder="Tu email" name="email" required />
+                            </Form.Group>
+                            <Form.Group className="mb-3">
                                 <div className="d-flex justify-content-between">
-                                    <label className="form-label small fw-bold">Contraseña</label>
+                                    <Form.Label className="small fw-bold">Contraseña</Form.Label>
                                     <a href="#" className="small text-decoration-none" style={{ fontSize: "0.75rem" }}>
                                         ¿La olvidaste?
                                     </a>
                                 </div>
-                                <input type="password" className="form-control" placeholder="Tu contraseña" name="password" required />
-                            </div>
+                                <Form.Control type="password" placeholder="Tu contraseña" name="password" required />
+                            </Form.Group>
 
                             <div className="mt-4">
-                                <button
+                                <Button
+                                    variant="primary"
                                     type="submit"
-                                    className="btn btn-primary w-100 py-2 fw-bold shadow-sm d-inline-flex align-items-center justify-content-center"
+                                    className="w-100 py-2 fw-bold shadow-sm d-inline-flex align-items-center justify-content-center"
                                     disabled={submitting}
                                 >
                                     {submitting ? (
@@ -87,9 +89,9 @@ export default function Login() {
                                     ) : (
                                         "Entrar"
                                     )}
-                                </button>
+                                </Button>
                             </div>
-                        </form>
+                        </Form>
 
                         <div className="mt-4">
                             <Link to="/" className="btn btn-danger w-100 py-2 fw-bold shadow-sm" title="Volver a la tienda">
@@ -105,9 +107,9 @@ export default function Login() {
                                 </Link>
                             </p>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
     );
 }

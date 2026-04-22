@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router"
 import { useEffect, useState } from "react";
 import ProductForm, { type ProductData } from "~/components/Product/product_form";
 import { deleteProductImage, getBasicProduct, updateProduct, uploadProductImage } from "~/services/product-service";
+import { Container } from "react-bootstrap";
 
 
 export default function EditProduct() {
@@ -79,11 +80,11 @@ export default function EditProduct() {
     };
 
     if (loading) {
-        return <div className="text-center my-5">Cargando producto...</div>;
+        return <Container className="text-center my-5">Cargando producto...</Container>;
     }
 
     if (!productData) {
-        return <div className="text-center my-5">Error: Producto no encontrado.</div>;
+        return <Container className="text-center my-5">Error: Producto no encontrado.</Container>;
     }
 
     return (

@@ -12,6 +12,7 @@ import type { Route } from "./+types/root";
 import { Head } from "./components/head";
 import "./app.css";
 import { Spinner } from "./components/spinner";
+import { Container } from "react-bootstrap";
 
 export function HydrateFallback() {
   return <Spinner />;
@@ -69,7 +70,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto">
+    <Container as="main" className="pt-16 p-4 mx-auto">
       <h1>{message}</h1>
       <p>{details}</p>
       {stack && (
@@ -77,6 +78,6 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
           <code>{stack}</code>
         </pre>
       )}
-    </main>
+    </Container>
   );
 }

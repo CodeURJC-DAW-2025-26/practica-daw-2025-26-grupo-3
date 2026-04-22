@@ -9,6 +9,7 @@ import { requireUserLoader } from "../auth-loaders";
 import type { Route } from "../+types";
 import type { UserDTO } from "~/dtos/UserDTO";
 import { useUserState } from "~/stores/user-store";
+import { Container, Row, Col, Card, Alert, Form, Button } from "react-bootstrap";
 
 export async function clientLoader() {
     return await requireUserLoader();
@@ -75,17 +76,17 @@ export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
         <>
             <ProfileNavbar />
 
-            <div className="container my-3 mb-3">
-                <div className="row g-3 align-items-start">
-                    <div className="col-lg-8">
-                        <div className="card border-0 shadow-sm p-3 h-100">
+            <Container className="my-3 mb-3">
+                <Row className="g-3 align-items-start">
+                    <Col lg={8}>
+                        <Card className="border-0 shadow-sm p-3 h-100">
                             <div className="d-flex justify-content-between align-items-center mb-3">
                                 <h5 className="fw-bold mb-0 text-dark">Información Personal</h5>
                             </div>
 
-                            <form action={formAction}>
-                                <div className="row g-2">
-                                    <div className="col-12 text-center mb-2">
+                            <Form action={formAction as unknown as string}>
+                                <Row className="g-2">
+                                    <Col xs={12} className="text-center mb-2">
                                         <img
                                             src={currentUser.imageId ? `${baseImageUrl}/${currentUser.imageId}/media` : `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.userName)}&background=random`}
                                             onError={(event) => {
@@ -97,56 +98,57 @@ export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
                                         />
 
                                         <div className="mt-2">
-                                            <label className="form-label text-muted small fw-bold text-uppercase d-block">Cambiar Foto</label>
-                                            <input type="file" className="form-control form-control-sm w-50 mx-auto" name="imageFile" accept="image/*" />
+                                            <Form.Label className="text-muted small fw-bold text-uppercase d-block">Cambiar Foto</Form.Label>
+                                            <Form.Control type="file" size="sm" className="w-50 mx-auto" name="imageFile" accept="image/*" />
                                         </div>
-                                    </div>
+                                    </Col>
 
-                                    <div className="col-md-6">
-                                        <label className="form-label text-muted small fw-bold text-uppercase">Nombre</label>
-                                        <input
+                                    <Col md={6}>
+                                        <Form.Label className="text-muted small fw-bold text-uppercase">Nombre</Form.Label>
+                                        <Form.Control
                                             type="text"
-                                            className="form-control bg-light border-0"
+                                            className="bg-light border-0"
                                             name="userName"
                                             defaultValue={currentUser.userName}
                                             maxLength={8}
                                             required
                                         />
-                                    </div>
+                                    </Col>
 
-                                    <div className="col-md-6">
-                                        <label className="form-label text-muted small fw-bold text-uppercase">Apellidos</label>
-                                        <input
+                                    <Col md={6}>
+                                        <Form.Label className="text-muted small fw-bold text-uppercase">Apellidos</Form.Label>
+                                        <Form.Control
                                             type="text"
-                                            className="form-control bg-light border-0"
+                                            className="bg-light border-0"
                                             name="surname"
                                             defaultValue={currentUser.surname}
                                             maxLength={30}
                                             required
                                         />
-                                    </div>
+                                    </Col>
 
-                                    <div className="col-md-6">
-                                        <label className="form-label text-muted small fw-bold text-uppercase">Correo Electrónico</label>
-                                        <input type="email" className="form-control bg-light border-0" name="email" defaultValue={currentUser.email} required />
-                                    </div>
+                                    <Col md={6}>
+                                        <Form.Label className="text-muted small fw-bold text-uppercase">Correo Electrónico</Form.Label>
+                                        <Form.Control type="email" className="bg-light border-0" name="email" defaultValue={currentUser.email} required />
+                                    </Col>
 
-                                    <div className="col-md-6">
-                                        <label className="form-label text-muted small fw-bold text-uppercase">Dirección</label>
-                                        <input
+                                    <Col md={6}>
+                                        <Form.Label className="text-muted small fw-bold text-uppercase">Dirección</Form.Label>
+                                        <Form.Control
                                             type="text"
-                                            className="form-control bg-light border-0"
+                                            className="bg-light border-0"
                                             name="address"
                                             defaultValue={currentUser.address}
                                             maxLength={30}
                                             required
                                         />
-                                    </div>
+                                    </Col>
 
-                                    <div className="col-12 text-end mt-3">
-                                        <button
+                                    <Col xs={12} className="text-end mt-3">
+                                        <Button
+                                            variant="primary"
                                             type="submit"
-                                            className="btn btn-primary d-inline-flex align-items-center justify-content-center gap-2"
+                                            className="d-inline-flex align-items-center justify-content-center gap-2"
                                             disabled={editFormLoading}
                                         >
                                             {editFormLoading ? (
@@ -154,31 +156,31 @@ export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
                                             ) : (
                                                 <span>Guardar Cambios</span>
                                             )}
-                                        </button>
-                                    </div>
+                                        </Button>
+                                    </Col>
                                     {errMessage && (
-                                        <div className="col-12">
-                                            <div className="alert alert-danger" role="alert">
+                                        <Col xs={12}>
+                                            <Alert variant="danger">
                                                 {errMessage}
-                                            </div>
-                                        </div>
+                                            </Alert>
+                                        </Col>
                                     )}
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                                </Row>
+                            </Form>
+                        </Card>
+                    </Col>
 
-                    <div className="col-lg-4">
+                    <Col lg={4}>
                         <PasswordChangeForm userId={currentUser.id} />
                         <div className="d-grid mt-3">
                             <Link to="/profile" className="btn btn-secondary w-100">
                                 Cancelar y volver al perfil
                             </Link>
                         </div>
-                    </div>
+                    </Col>
 
-                </div>
-            </div>
+                </Row>
+            </Container>
             <Foot />
         </>
     );

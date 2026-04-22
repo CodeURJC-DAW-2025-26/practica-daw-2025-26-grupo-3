@@ -1,17 +1,18 @@
 import { Link } from "react-router";
+import { Container, Row, Col } from "react-bootstrap";
 
 export function Foot() {
     return (
         <footer className="footer-custom border-top bg-light py-5">
-            <div className="container">
-                <div className="row">
-                    <div className="col-md-4 mb-3">
+            <Container>
+                <Row>
+                    <Col md={4} className="mb-3">
                         <h5 className="fw-bold mb-3 text-dark">
                             <i className="bi bi-shop-window" /> ReMarket+
                         </h5>
                         <p className="text-muted">Dale una segunda vida a tus productos con garantía y confianza.</p>
-                    </div>
-                    <div className="col-md-4 mb-3">
+                    </Col>
+                    <Col md={4} className="mb-3">
                         <h6 className="fw-bold mb-3 text-dark">
                             <i className="bi bi-link-45deg" /> Enlaces rápidos
                         </h6>
@@ -37,8 +38,8 @@ export function Foot() {
                                 </a>
                             </li>
                         </ul>
-                    </div>
-                    <div className="col-md-4 mb-3">
+                    </Col>
+                    <Col md={4} className="mb-3">
                         <h6 className="fw-bold mb-3 text-dark">
                             <i className="bi bi-phone" /> Contacto
                         </h6>
@@ -65,11 +66,11 @@ export function Foot() {
                                 </a>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </Col>
+                </Row>
                 <hr className="border-secondary my-4" />
                 <div className="text-center text-muted small">&copy; 2026 ReMarket+. Todos los derechos reservados.</div>
-            </div>
+            </Container>
         </footer>
     );
 }

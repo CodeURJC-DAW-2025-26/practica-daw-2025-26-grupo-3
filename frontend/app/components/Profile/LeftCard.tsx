@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router";
 import type { UserDTO } from "~/dtos/UserDTO";
 import { useUserState } from "~/stores/user-store";
+import { Card, Button } from "react-bootstrap";
 
 export interface LeftCardProps {
     baseImageUrl: string;
@@ -18,7 +19,7 @@ export function LeftCard({ baseImageUrl, userName, imageId }: LeftCardProps) {
     }
 
     return (
-        <div className="card border-0 shadow-sm text-center p-4">
+        <Card className="border-0 shadow-sm text-center p-4">
             <img
                 src={`${baseImageUrl}/${imageId}/media`}
                 onError={(event) => {
@@ -45,14 +46,15 @@ export function LeftCard({ baseImageUrl, userName, imageId }: LeftCardProps) {
                 >
                     Publicar Producto
                 </Link>
-                <button
-                    type="button"
-                    className="btn btn-sm btn-danger rounded d-flex align-items-center justify-content-center py-2 w-100"
+                <Button
+                    variant="danger"
+                    size="sm"
+                    className="rounded d-flex align-items-center justify-content-center py-2 w-100"
                     onClick={handleLogout}
                 >
                     Cerrar Sesion
-                </button>
+                </Button>
             </div>
-        </div>
+        </Card>
     );
 }

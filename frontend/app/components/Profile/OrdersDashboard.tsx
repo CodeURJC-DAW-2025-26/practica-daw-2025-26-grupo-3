@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { useEffect, useState } from "react";
 import { useCartState } from "~/stores/shoppingCart-store";
 import { getAllPDF, getPdfById } from "~/services/cart-service";
+import { Card, Button, Table, Alert } from "react-bootstrap";
 
 export function OrdersDashboard() {
 
@@ -65,25 +66,26 @@ export function OrdersDashboard() {
     useEffect(() => { loadOrders() }, []);
 
     return (
-        <div className="card border-0 shadow-sm p-4">
+        <Card className="border-0 shadow-sm p-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <h4 className="fw-bold mb-0">Mis Pedidos</h4>
                 {hasOrders && (
-                    <button
-                        type="button"
-                        className="btn btn-primary btn-sm d-inline-flex align-items-center"
+                    <Button
+                        variant="primary"
+                        size="sm"
+                        className="d-inline-flex align-items-center"
                         id="export-all-orders-pdf"
                         onClick={() => { handleAllOrderPdfButton(null) }}
                     >
                         <i className="bi bi-file-earmark-pdf me-2" />
                         Exportar todos en PDF
-                    </button>
+                    </Button>
                 )}
             </div>
 
             {hasOrders ? (
                 orders!.map((order) => (
-                    <table className="table align-middle" key={order.orderID}>
+                    <Table className="align-middle" key={order.orderID}>
                         <thead className="table-light small">
                             <tr>
                                 <th className="text-center">ID del pedido</th>
@@ -103,7 +105,7 @@ export function OrdersDashboard() {
                                 <td colSpan={4}>
                                     <div>
                                         <h6 className="fw-bold">Productos del pedido:</h6>
-                                        <table className="table table-sm mb-0">
+                                        <Table size="sm" className="mb-0">
                                             <thead>
                                                 <tr>
                                                     <th>Producto</th>
@@ -120,31 +122,32 @@ export function OrdersDashboard() {
                                                     </tr>
                                                 ))}
                                             </tbody>
-                                        </table>
+                                        </Table>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td colSpan={4} className="text-end">
-                                    <button
-                                        type="button"
-                                        className="btn btn-primary btn-sm d-inline-flex align-items-center"
+                                    <Button
+                                        variant="primary"
+                                        size="sm"
+                                        className="d-inline-flex align-items-center"
                                         id="export-all-orders-pdf"
                                         onClick={() => { handleAllOrderPdfButton(order.orderID) }}
                                     >
                                         <i className="bi bi-file-earmark-pdf me-2" />
                                         Exportar factura en PDF
-                                    </button>
+                                    </Button>
                                 </td>
                             </tr>
                         </tbody>
-                    </table>
+                    </Table>
                 ))
             ) : (
-                <div className="alert alert-info mt-3" role="alert">
+                <Alert variant="info" className="mt-3">
                     No tienes pedidos realizados todavia.
-                </div>
+                </Alert>
             )}
-        </div>
+        </Card>
     );
 }
