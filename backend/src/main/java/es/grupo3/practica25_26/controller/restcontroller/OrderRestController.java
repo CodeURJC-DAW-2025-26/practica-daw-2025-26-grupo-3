@@ -132,6 +132,7 @@ public class OrderRestController {
         }
 
         OrderDTO orderDTO = orderMapper.toDTO(newOrder);
+        userService.calculateFavouriteState(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(orderDTO);
     }
 

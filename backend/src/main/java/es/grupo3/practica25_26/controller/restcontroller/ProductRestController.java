@@ -3,10 +3,13 @@ package es.grupo3.practica25_26.controller.restcontroller;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -70,7 +73,35 @@ public class ProductRestController {
                         @ApiResponse(responseCode = "200", description = "Products retrieved successfully")
         })
         @GetMapping("/")
-        public Page<ProductBasicDTO> getProducts(@PageableDefault(size = 8) Pageable pageable) {
+        public Page<ProductBasicDTO> getProducts(@PageableDefault(size = 8) Pageable pageable,
+                        HttpServletRequest request) {
+                if (request.getUserPrincipal() != null) {
+                        String currentEmail = request.getUserPrincipal().getName();
+                        User currentUser = userService.findUserByEmail(currentEmail);
+
+                        if (currentUser != null && currentUser.getFavouriteState() != -1) {
+                                int userFavourite = currentUser.getFavouriteState();
+
+                                List<Product> favouriteProducts = productService.findTop8ByType(userFavourite);
+                                List<Product> allProducts = productService.findAll();
+
+                                allProducts.removeAll(favouriteProducts);
+
+                                List<Product> mergeList = new ArrayList<>();
+                                mergeList.addAll(favouriteProducts);
+                                mergeList.addAll(allProducts);
+
+                                int totalElements = mergeList.size();
+                                int start = (int) Math.min(pageable.getOffset(), totalElements);
+                                int end = Math.min(start + pageable.getPageSize(), totalElements);
+
+                                List<Product> pageContent = mergeList.subList(start, end);
+                                Page<Product> featuredPage = new PageImpl<>(pageContent, pageable, totalElements);
+
+                                return featuredPage.map(basicProductMapper::toDTO);
+                        }
+                }
+
                 return productService.findAll(pageable).map(basicProductMapper::toDTO);
         }
 
