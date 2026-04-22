@@ -14,7 +14,7 @@ export interface ProductData {
 
 interface ProductFormProps {
     initialData?: ProductData;
-    isEditing?: boolean; // true for edition, false for creation
+    isEditing?: boolean; // true for edition, false for publishing
     actionFunction: (prevState: any, formData: FormData) => Promise<any>;
     onCancel: () => void;
 }
@@ -42,7 +42,7 @@ export default function ProductForm({ initialData, isEditing = false, actionFunc
                     <Card className="border-0 shadow-sm p-4">
                         <div className="d-flex justify-content-between align-items-start mb-4">
                             <div>
-                                <h3 className="fw-bold mb-4">{isEditing ? 'Editar producto' : 'Añadir producto'}</h3>
+                                <h3 className="fw-bold mb-4">{isEditing ? 'Editar producto' : 'Publicar producto'}</h3>
                             </div>
                         </div>
 
