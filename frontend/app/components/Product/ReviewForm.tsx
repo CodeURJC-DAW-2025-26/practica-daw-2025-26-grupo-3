@@ -20,6 +20,7 @@ export function ReviewForm(
     { productId, title, reviewTitleValue, reviewBodyValue, operation, reviewId, buttonText }: ReviewFormProps) {
     const [rating, setRating] = useState(0);
     const [hoverRating, setHoverRating] = useState(0);
+    const [submitError, setSubmitError] = useState<string | null>(null);
     const activeRating = hoverRating || rating;
 
     const { createReview, editReview } = useReviewState();
@@ -34,6 +35,7 @@ export function ReviewForm(
 
     async function handleReviewForm(prevState: { error: string | null }, formData: FormData) {
         let errorMessage: string | null = null;
+        setSubmitError(null);
         try {
             const operation = String(formData.get("operation"));
             const title = String(formData.get("title") ?? "");
@@ -60,6 +62,7 @@ export function ReviewForm(
             errorMessage = err instanceof Error
                 ? (err.message.split(":")[1]?.trim() || err.message)
                 : "Se ha producido un error al enviar el formulario. Inténtalo de nuevo más tarde.";
+            setSubmitError(errorMessage);
         }
 
         if (operation === "edit" && !errorMessage) {
@@ -127,8 +130,8 @@ export function ReviewForm(
                             `${buttonText}`
                         )}
                     </Button>
-                    {error && (
-                        <ErrorCard message={error} className="mt-3" />
+                    {(submitError || error) && (
+                        <ErrorCard message={submitError || error || ""} className="mt-3" />
                     )}
                 </Form>
             </Card>

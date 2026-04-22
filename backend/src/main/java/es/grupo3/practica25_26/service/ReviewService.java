@@ -124,14 +124,14 @@ public class ReviewService {
                         return product.getId();
                     } else {
                         throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                                "You can't update the review " + updatedReview.getId()
-                                        + " because you are not the owner.");
+                                "No puedes actualizar la reseña " + updatedReview.getId()
+                                        + " porque no eres el propietario.");
                     }
                 }
             }
         }
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                "There was an error server updating the review.");
+                "Ha ocurrido un error al actualizar la reseña.");
     }
 
     public Review deleteReview(long reviewId, long productId, String loggedInEmail, boolean isAdmin) {
