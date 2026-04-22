@@ -33,3 +33,18 @@ export async function createProductReview(id: number, reviewData: ReviewPostDTO)
 
     return await response.json();
 }
+
+export async function deleteReviewById(reviewId: number, productId: number) {
+    const url = `${base_url}/${productId}/reviews/${reviewId}`;
+    const response = await fetch(url, {
+        method: "DELETE",
+        credentials: "include"
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+    }
+
+    return await response.json();
+}

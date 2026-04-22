@@ -38,11 +38,6 @@ export default function ProductDetail({ loaderData }: Route.ComponentProps) {
     const { currentUser, loadLoggedUser } = useUserState();
     const { addItem } = useCartState();
 
-    const [reviewTitle, setReviewTitle] = useState("");
-    const [reviewBody, setReviewBody] = useState("");
-    const [rating, setRating] = useState(0);
-    const [hoverRating, setHoverRating] = useState(0);
-
     function loadProductId() {
         if (!id) {
             setProductIdNumber(null);
