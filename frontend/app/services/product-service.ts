@@ -1,5 +1,6 @@
 import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
 import type { ProductDetailDTO } from "~/dtos/ProductDetailDTO";
+import type { ProductEditDTO } from "~/dtos/ProductEditDTO";
 
 
 const API_URL = "/api/v1/products";
@@ -70,19 +71,17 @@ export async function removeProduct(id: number): Promise<void> {
 
 export async function updateProduct(
     id: number,
-    productName: string,
-    description: string,
-    price: number,
-    state: number
+    productData: ProductEditDTO
 ): Promise<ProductBasicDTO> {
     const response = await fetch(`${API_URL}/${id}`, {
         method: "PUT",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productName, description, price, state }),
+        body: JSON.stringify(productData),
     });
 
     if (!response.ok) {
-        throw new Error("Error updating product");
+        throw new Error("Error al actualizar el producto");
     }
 
     return await response.json();
@@ -97,42 +96,27 @@ export async function uploadProductImage(
     formData.append("imageFile", imageFile);
 
     const response = await fetch(`${API_URL}/${id}/images/`, {
+        credentials: "include",
         method: "POST",
         body: formData,
     });
 
     if (!response.ok) {
-        throw new Error("Error uploading image");
+        throw new Error("Error al subir la imagen");
     }
 }
 
 export async function deleteProductImage(
-    bookId: number,
+    productId: number,
     imageId: number,
 ): Promise<void> {
-    const response = await fetch(`${API_URL}/${bookId}/images/${imageId}`, {
+    const response = await fetch(`${API_URL}/${productId}/images/${imageId}`, {
+        credentials: "include",
         method: "DELETE",
     });
 
     if (!response.ok) {
-        throw new Error("Error deleting image");
-    }
-}
-
-export async function replaceImage(
-    imageId: number,
-    imageFile: File,
-): Promise<void> {
-    const formData = new FormData();
-    formData.append("imageFile", imageFile);
-
-    const response = await fetch(`${API_IMAGES_URL}/${imageId}/media`, {
-        method: "PUT",
-        body: formData,
-    });
-
-    if (!response.ok) {
-        throw new Error("Error replacing image");
+        throw new Error("Error al eliminar la imagen");
     }
 }
 
