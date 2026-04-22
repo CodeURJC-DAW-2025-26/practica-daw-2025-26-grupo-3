@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Card, Image, Spinner } from "react-bootstrap";
 import { Link } from "react-router";
 import type { ReviewDTO } from "~/dtos/ReviewDTO";
+import { requireUserLoader } from "~/routes/auth-loaders";
 import { useReviewState } from "~/stores/review-store";
 import { useUserState } from "~/stores/user-store";
 
@@ -9,16 +10,15 @@ export interface ReviewItemProps {
     review: ReviewDTO;
     productId: number
 }
+
 export function ReviewItem({ review, productId }: ReviewItemProps) {
 
-    const { currentUser, loadLoggedUser } = useUserState();
+    const { currentUser, loadLoggedUser } = useUserState()
     const { deleteReview } = useReviewState();
     const [deleteLoading, setDeleteLoading] = useState(false);
 
-    useEffect(() => { loadLoggedUser() }, []);
-
     const isAdmin = currentUser!.roles.includes("ADMIN");
-    const isOwner = currentUser!.id === review.user.id;
+    const isOwner = currentUser!.id === review.user?.id;
     const canModifyReview = isAdmin || isOwner;
 
     async function handleDeleteReview(reviewId: number, productId: number) {
@@ -60,7 +60,8 @@ export function ReviewItem({ review, productId }: ReviewItemProps) {
                         <div className="d-flex gap-2 flex-shrink-0">
                             <Button
                                 as={Link as any}
-                                to={`/products/${productId}/reviews/${review.id}`}
+                                to={`/edit_review`}
+                                state={{ review, productId }}
                                 className="d-flex align-items-center justify-content-center shadow-sm font-weight-bold"
                                 style={{ backgroundColor: "#fd7e14", borderColor: "#fd7e14", color: "white", padding: "0.5rem 1.5rem", fontSize: "1rem" }}
                             >

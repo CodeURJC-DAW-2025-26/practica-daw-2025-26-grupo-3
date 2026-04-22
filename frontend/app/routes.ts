@@ -8,7 +8,8 @@ export default [
         route("shopping-cart", "routes/Products/shopping-cart.tsx"),
         route("my_products", "routes/Products/my_products.tsx"),
         route("product_detail/:id", "routes/Products/product_detail.tsx"),
-        route("edit_product/:id", "routes/Products/edit_product.tsx")
+        route("edit_product/:id", "routes/Products/edit_product.tsx"),
+        route("edit_review", "routes/Products/review_edit.tsx")
     ]),
     route("login", "routes/Users/login.tsx"),
     route("signup", "routes/Users/signup.tsx"),

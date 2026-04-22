@@ -262,7 +262,6 @@ export default function ProductDetail({ loaderData }: Route.ComponentProps) {
                                 >
                                     <i className="bi bi-trash me-2" style={{ fontSize: "1.2rem" }}></i> Eliminar
                                 </Button>
-
                             </div>
                         )}
                     </div>
@@ -272,7 +271,15 @@ export default function ProductDetail({ loaderData }: Route.ComponentProps) {
             <hr className="my-5" />
 
             {currentUser && (
-                <ReviewForm productId={productIdNumber!} />
+                <ReviewForm
+                    productId={productIdNumber!}
+                    title={"Añadir Reseña"}
+                    reviewTitleValue=""
+                    reviewBodyValue=""
+                    operation="create"
+                    reviewId={0}    //reviewId is not needed for creating a review.
+                    buttonText="Publicar reseña"
+                />
             )}
 
             {productIdNumber !== null && <ReviewList productId={productIdNumber} />}

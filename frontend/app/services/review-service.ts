@@ -48,3 +48,21 @@ export async function deleteReviewById(reviewId: number, productId: number) {
 
     return await response.json();
 }
+
+export async function updateReview(reviewId: number, productId: number,
+    updatedReviewData: ReviewPostDTO) {
+    const url = `${base_url}/${productId}/reviews/${reviewId}`;
+    const response = await fetch(url, {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedReviewData)
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+    }
+
+    return await response.json();
+}
