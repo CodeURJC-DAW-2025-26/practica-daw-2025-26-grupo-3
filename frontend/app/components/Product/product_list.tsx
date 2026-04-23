@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
 import {
     Container,
@@ -10,7 +10,7 @@ import {
     Alert
 } from "react-bootstrap";
 import { useUserState } from "~/stores/user-store";
-import { getProducts } from "~/services/product-service";
+import { getProducts, removeProduct } from "~/services/product-service";
 
 
 //This function returns the corresponding string to the state number
@@ -39,10 +39,31 @@ export async function clientLoader() {
 
 interface ProductListProps {
     products: ProductBasicDTO[];
+    isOwnerMode?: boolean;
+    emptyTitle?: string;
+    emptySubtitle?: string;
 }
 
-export default function ProductList({ products }: ProductListProps) {
+export default function ProductList({ products, isOwnerMode = false,
+    emptyTitle = "No hay productos destacados disponibles",
+    emptySubtitle = "Prueba a buscarlos mas adelante" }: ProductListProps) {
     const { currentUser } = useUserState(); //we need the user state to know if he is logged or not;
+
+    async function handleDeleteProduct(productId: number): Promise<void> {
+        const isConfirmed = window.confirm("¿Estás seguro de que quieres eliminar este producto? Esta acción no se puede deshacer.");
+
+        if (isConfirmed) {
+            try {
+                // We try to remove the product
+                await removeProduct(productId);
+
+            } catch (error) {
+                console.error("Error eliminando el producto:", error);
+                alert("Hubo un problema al intentar eliminar el producto.");
+            }
+        }
+    }
+
 
     return (
         <section className="py-5 bg-white">
@@ -76,27 +97,61 @@ export default function ProductList({ products }: ProductListProps) {
                                     </Card.Body>
 
                                     <Card.Footer className="bg-transparent border-0 pb-3">
+                                        {isOwnerMode ? (
+                                            <div className="d-grid gap-2">
+                                                <Button
+                                                    as={Link as any}
+                                                    to={`/product_detail/${product.id}`}
+                                                    variant="primary"
+                                                    size="sm"
+                                                    className="d-flex align-items-center justify-content-center">
+                                                    <i className="bi bi-eye-fill me-2"></i> Ver Detalle
+                                                </Button>
+                                                <Button
+                                                    as={Link as any}
+                                                    to={`/edit_product/${product.id}`}
+                                                    size="sm"
+                                                    className="btn-edit-custom text-white d-flex align-items-center justify-content-center border-0">
+                                                    <i className="bi bi-pencil-square me-2"></i> Editar
+                                                </Button>
+                                                <Button
+                                                    variant="danger"
+                                                    size="sm"
+                                                    onClick={() => handleDeleteProduct(product.id)}
+                                                    className="d-flex align-items-center justify-content-center w-100">
+                                                    <i className="bi bi-trash-fill me-2"></i> Eliminar
+                                                </Button>
+                                            </div>
+                                        ) : (
+                                            <Button
+                                                as={Link as any}
+                                                to={`/product_detail/${product.id}`}
+                                                variant="primary"
+                                                size="sm"
+                                                className="w-100 rounded-pill">
+                                                { /*If the user is logged, he can see the details of the product, if not he should log in to have permission */}
+                                                {currentUser ? "Ver detalles" : "Iniciar sesión para ver más detalles"}
 
-                                        <Button
-                                            as={Link as any}
-                                            to={`/product_detail/${product.id}`}
-                                            variant="primary"
-                                            size="sm"
-                                            className="w-100 rounded-pill">
-                                            { /*If the user is logged, he can see the details of the product, if not he should log in to have permission */}
-                                            {currentUser ? "Ver detalles" : "Iniciar sesión para ver más detalles"}
-
-                                        </Button>
+                                            </Button>
+                                        )}
                                     </Card.Footer>
                                 </Card>
                             </Col>
                         ))
                     ) : (
-                        // If there aren´t any products
                         <Col xs={12}>
-                            <Alert variant="info" className="text-center">
-                                No hay productos destacados disponibles en este momento. ¡Vuelve pronto para descubrir nuevas ofertas!
-                            </Alert>
+                            <div className="text-center p-5 bg-light border rounded shadow-sm">
+                                <i className="bi bi-box-seam display-4 text-muted mb-3 d-block"></i>
+                                <h3 className="text-muted">{emptyTitle}</h3>
+                                <p className="mb-0">{emptySubtitle}</p>
+
+                                {/* Botón de vender solo si estamos en modo dueño */}
+                                {isOwnerMode && (
+                                    <Link to="/product-publish" className="btn btn-primary mt-3 px-4">
+                                        Empezar a vender
+                                    </Link>
+                                )}
+                            </div>
                         </Col>
                     )}
                 </Row>

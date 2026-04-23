@@ -4,6 +4,7 @@ package es.grupo3.practica25_26.controller.restcontroller;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -103,6 +104,23 @@ public class ProductRestController {
                 }
 
                 return productService.findAll(pageable).map(basicProductMapper::toDTO);
+        }
+
+        // get products of the logged user
+        @Operation(summary = "Get products published by the logged user")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Products retrieved successfully"),
+                        @ApiResponse(responseCode = "401", description = "User not authenticated")
+        })
+        @GetMapping("/my_products")
+        public Collection<ProductBasicDTO> getMyProducts(HttpServletRequest request) {
+                if (request.getUserPrincipal() == null) {
+                        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authenticated");
+                }
+                String email = request.getUserPrincipal().getName();
+                User user = userService.findUserByEmail(email);
+
+                return basicProductMapper.toDTOs(user.getProducts());
         }
 
         // get specific product by id

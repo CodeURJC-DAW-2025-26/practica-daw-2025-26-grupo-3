@@ -120,5 +120,16 @@ export async function deleteProductImage(
     }
 }
 
+export async function getMyProducts(): Promise<ProductBasicDTO[]> {
+
+    const res = await fetch(`${API_URL}/my_products`, {
+        credentials: "include"
+    });
+    if (!res.ok) {
+        throw new Error("No se pudieron obtener los productos del usuario");
+    }
+    return await res.json();
+}
+
 
 
