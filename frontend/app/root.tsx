@@ -14,8 +14,29 @@ import "./app.css";
 import { Spinner } from "./components/spinner";
 import { Container } from "react-bootstrap";
 
+function LoadingOverlay() {
+  return (
+    <div 
+      className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center" 
+      style={{ 
+
+        backgroundColor: "rgba(255, 255, 255, 0.8)", 
+        backdropFilter: "blur(4px)",
+        zIndex: 9999 
+      }}
+    >
+      <div className="d-flex flex-column align-items-center">
+        <Spinner />
+        <span className="mt-3 fw-bold text-primary fs-5">
+            {"Cargando..."}
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export function HydrateFallback() {
-  return <Spinner />;
+  return <LoadingOverlay/>;
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -39,14 +60,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   const navigation = useNavigation();
-  const loading = navigation.state === "loading";
+  const isGlobalLoading = navigation.state === "loading" || navigation.state === "submitting";
 
   return (
     <>
-      {loading && (
-        <div className="fixed bottom-6 right-6 z-50 bg-white p-3 rounded-full shadow-lg border border-gray-200">
-          <Spinner />
-        </div>
+      {isGlobalLoading && (
+        <LoadingOverlay/>
       )}
       <Outlet />
     </>
