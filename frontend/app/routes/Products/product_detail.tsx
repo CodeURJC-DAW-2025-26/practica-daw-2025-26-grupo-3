@@ -14,9 +14,9 @@ import Col from "react-bootstrap/Col";
 import Carousel from "react-bootstrap/Carousel";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import Spinner from "react-bootstrap/Spinner";
 import Card from "react-bootstrap/Card";
 import Image from "react-bootstrap/Image";
+import { Spinner } from "~/components/spinner";
 import { useCartState } from "~/stores/shoppingCart-store";
 import { ReviewList } from "~/components/Product/ReviewList";
 import { ReviewForm } from "~/components/Product/ReviewForm";
@@ -107,7 +107,7 @@ export default function ProductDetail({ loaderData }: Route.ComponentProps) {
     if (loading) {
         return (
             <Container className="my-5 d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
-                <Spinner animation="border" />
+                <Spinner />
             </Container>
         );
     }

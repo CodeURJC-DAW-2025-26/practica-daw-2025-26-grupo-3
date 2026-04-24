@@ -1,5 +1,6 @@
-import { Link, useLoaderData } from "react-router";
+import { Link, useLoaderData, useNavigation } from "react-router";
 import { Container, Row, Col, Card, Form, Button, Badge } from "react-bootstrap";
+import { Spinner } from "~/components/spinner";
 import ProductList from "~/components/Product/product_list";
 import { getMyProducts } from "~/services/product-service";
 
@@ -17,6 +18,11 @@ export async function clientLoader() {
 export default function MyProducts() {
     const data = useLoaderData<typeof clientLoader>();
     const products = data?.products || [];
+
+    const navigation = useNavigation();
+
+    // We check if the app is loading anything
+    const isLoading = navigation.state === "loading" || navigation.state === "submitting";
 
     return (
         <>
@@ -36,13 +42,18 @@ export default function MyProducts() {
             </section>
 
             {/* PRODUCTS SECTION */}
-
-            <ProductList
-                products={products}
-                isOwnerMode={true}
-                emptyTitle="Aún no has publicado ningún producto"
-                emptySubtitle="Anímate y pon a la venta lo que ya no usas."
-            />
+            {isLoading ? (
+                <Container className="my-5 d-flex flex-column justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
+                    <Spinner />
+                    <p className="text-muted mt-3 fs-5">Cargando tus productos...</p>
+                </Container>) : (
+                <ProductList
+                    products={products}
+                    isOwnerMode={true}
+                    emptyTitle="Aún no has publicado ningún producto"
+                    emptySubtitle="Anímate y pon a la venta lo que ya no usas."
+                />
+            )}
 
         </>
     );

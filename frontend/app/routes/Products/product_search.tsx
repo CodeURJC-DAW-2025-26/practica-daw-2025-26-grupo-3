@@ -4,6 +4,7 @@ import { getAllProducts } from "~/services/product-service";
 import ProductList from "~/components/Product/product_list";
 import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
 import { useUserState } from "~/stores/user-store";
+import { Spinner } from "~/components/spinner";
 
 
 
@@ -37,10 +38,8 @@ export default function ProductSearch() {
     //Load sreen while we wait to the backend
     if (loading) {
         return (
-            <div className="d-flex justify-content-center p-5" aria-live="polite" aria-busy="true">
-                <div className="spinner-border text-primary" role="status">
-                    <span className="visually-hidden">Cargando catálogo...</span>
-                </div>
+            <div className="my-5 d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
+                <Spinner />
             </div>
         );
     }
