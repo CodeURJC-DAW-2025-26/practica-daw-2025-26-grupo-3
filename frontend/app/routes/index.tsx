@@ -93,7 +93,7 @@ export default function Index() {
                                     </Button>
                                 }
                                 {currentUser ?
-                                    <Button as={Link as any} to="/signup" variant="outline-primary" size="lg" className="px-5">
+                                    <Button as={Link as any} to="/product-publish" variant="outline-primary" size="lg" className="px-5">
                                         Vender productos
                                     </Button>
                                     :
