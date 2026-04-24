@@ -555,7 +555,7 @@ Diagrama mostrando los componentes React, hooks personalizados, servicios y sus 
 
 #### **Alumno 1 - [Marcos Hernández Martín]**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Encargado de la implementación de autenticación, edición y visualización del perfil de usuario, gestión del carrito de la compra y gestión de reseñas.
 
 | Nº | Commits | Files |
 |:--:|:--------|:------|
