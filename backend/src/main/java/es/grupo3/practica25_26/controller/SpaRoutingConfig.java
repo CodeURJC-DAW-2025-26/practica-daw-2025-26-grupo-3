@@ -14,7 +14,7 @@ public class SpaRoutingConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // Intercept everything under /new/.
-        registry.addResourceHandler("/new/**")
+        registry.addResourceHandler("/new", "/new/", "/new/**")
                 .addResourceLocations("classpath:/static/new/")
                 .resourceChain(true)
                 .addResolver(new SpaRouter()); 
