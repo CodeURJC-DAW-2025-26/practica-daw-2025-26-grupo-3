@@ -553,17 +553,17 @@ Diagrama mostrando los componentes React, hooks personalizados, servicios y sus 
 
 ### **Participación de Miembros en la Práctica 3**
 
-#### **Alumno 1 - [Nombre Completo]**
+#### **Alumno 1 - [Marcos Hernández Martín]**
 
 [Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Implementación de login y store de usuario]([URL_commit_1](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/d9323cbf7e24c1e143f4e2efb7c614464f9d9e15))  | [Archivo1]([URL_archivo_1](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/blob/d9323cbf7e24c1e143f4e2efb7c614464f9d9e15/frontend/app/stores/user-store.tsx))   |
+|2| [Implementación de perfil de usuario](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/883acc5ff1d39c4ccf18e500559680138aeafa1e)  | [Archivo2]([URL_archivo_2](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/blob/883acc5ff1d39c4ccf18e500559680138aeafa1e/frontend/app/routes/Users/profile.tsx))   |
+|3| [Implementación de formulario de edición de usuario](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/c44b46a5dda279b1c2ab1485bac40f849d468bcd)  | [Archivo3]([URL_archivo_3](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/blob/c44b46a5dda279b1c2ab1485bac40f849d468bcd/frontend/app/routes/Users/profile_edit.tsx))   |
+|4| [Implementación del carrito de la compra](URL_commit_4)  | [Archivo4](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/ff3818c1f267d2a900fb211a6cb74cd9def6708a)   |
+|5| [Implementación de la lista de reseñas (en commit sucesivos se encuentra la implementación completa de las reseñas)]([URL_commit_5](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/7ea8dbf7ad29951cc4516f2eb98bcc09eb2a75ec))  | [Archivo5](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/blob/7ea8dbf7ad29951cc4516f2eb98bcc09eb2a75ec/frontend/app/components/Product/ReviewList.tsx)   |
 
 ---
 
