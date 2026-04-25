@@ -1,5 +1,5 @@
 import { useParams, useNavigate, useLoaderData, redirect } from "react-router"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProductForm, { type ProductData } from "~/components/Product/product_form";
 import { deleteProductImage, getBasicProduct, updateProduct, uploadProductImage } from "~/services/product-service";
 import { Container } from "react-bootstrap";
@@ -13,7 +13,14 @@ export async function clientLoader({ params }: any) {
     const currentUser = await requireUserLoader();
 
     if (!currentUser) {
-        return redirect("/login"); 
+        return redirect("/login");
+    }
+
+
+    const loggedUser = await requireUserLoader();
+
+    if (!loggedUser) {
+        return redirect("/login");
     }
 
     try {
@@ -38,9 +45,13 @@ export async function clientLoader({ params }: any) {
 
         return { productData, currentUser };
 
+
+        return { productData, loggedUser };
+
     } catch (error) {
         console.error("Error cargando el producto en el loader", error);
         return { productData: null, currentUser };
+        return { productData: null, loggedUser };
     }
 }
 
@@ -49,11 +60,15 @@ export default function EditProduct() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const { productData } = useLoaderData<typeof clientLoader>();
+    const { currentUser, loadLoggedUser } = useUserState();
+    const [userLoaded, setUserLoaded] = useState(false);
 
-    const { currentUser } = useUserState();
-
+    useEffect(() => {
+        loadLoggedUser().then(() => setUserLoaded(true));
+    }, [loadLoggedUser]);
 
     const handleEditAction = async (prevState: any, formData: FormData) => {
+        setLoading(true);
         setLoading(true);
         try {
 
@@ -92,6 +107,7 @@ export default function EditProduct() {
                 ? (error.message.split(":")[1]?.trim() || error.message)
                 : "Hubo un problema de conexión al guardar el producto.";
             return { error: errorMessage };
+            setLoading(false);
         }
     };
 
@@ -100,6 +116,15 @@ export default function EditProduct() {
             <Container className="my-5 d-flex flex-column justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
                 <Spinner />
                 <p className="text-muted mt-3 fs-5">Cargando producto...</p>
+            </Container>
+        );
+    }
+
+    if (!userLoaded) {
+        return (
+            <Container className="my-5 d-flex flex-column justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
+                <Spinner />
+                <p className="text-muted mt-3 fs-5">Verificando sesión...</p>
             </Container>
         );
     }
@@ -124,5 +149,4 @@ export default function EditProduct() {
             onCancel={() => navigate('/product_detail/' + id)}
         />
     );
-
 }
