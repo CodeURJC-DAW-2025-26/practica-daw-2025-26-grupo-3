@@ -15,17 +15,18 @@ public class SpaRoutingConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // Intercept everything under /new/.
         registry.addResourceHandler("/new", "/new/", "/new/**")
-                .addResourceLocations("classpath:/static/new/")
+                .addResourceLocations("classpath:/new/")
                 .resourceChain(true)
-                .addResolver(new SpaRouter()); 
+                .addResolver(new SpaRouter());
     }
 
     /**
      * Internal resolver that decides which file to return
-     * depending on whether the request targets a static asset or a React Router route.
+     * depending on whether the request targets a static asset or a React Router
+     * route.
      */
     private static class SpaRouter extends PathResourceResolver {
-        
+
         @Override
         protected Resource getResource(String requestPath, Resource baseLocation) throws IOException {
             Resource requestedResource = baseLocation.createRelative(requestPath);
@@ -35,13 +36,14 @@ public class SpaRoutingConfig implements WebMvcConfigurer {
                 return requestedResource;
             }
 
-            // If a file with an extension (.png, .map) is requested and does not exist, force a 404.
+            // If a file with an extension (.png, .map) is requested and does not exist,
+            // force a 404.
             if (requestPath.contains(".")) {
                 return null;
             }
 
-            //  If it is an invented route, hand control to React (index.html).
-            return new ClassPathResource("/static/new/index.html");
+            // If it is an invented route, hand control to React (index.html).
+            return new ClassPathResource("/new/index.html");
         }
     }
 }

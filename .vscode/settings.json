@@ -1,4 +1,13 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.import.maven.enabled": true,
+    "java.project.sourcePaths": [
+        "backend/src/main/java",
+        "backend/src/test/java"
+    ],
+    "java.project.outputPath": "backend/target/classes",
+    "java.project.referencedLibraries": [
+        "C:/Users/marco/.m2/repository/**/*.jar"
+    ]
 }
