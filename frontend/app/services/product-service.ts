@@ -30,13 +30,14 @@ export async function getProductsPage(page: number, size: number = 4): Promise<a
 export async function getBasicProduct(id: number): Promise<ProductDetailDTO> {
     const res = await fetch(`${API_URL}/${id}`);
     if (!res.ok) {
-        throw new Error("Product not found");
+        const errorData = await res.json();
+        throw new Error(errorData.message);
     }
     return await res.json();
 }
 
-export async function publishProduct(productData: ProductSaveDTO): Promise<ProductBasicDTO>{
-    const response = await fetch(`${API_URL}/`, { 
+export async function publishProduct(productData: ProductSaveDTO): Promise<ProductBasicDTO> {
+    const response = await fetch(`${API_URL}/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -45,7 +46,8 @@ export async function publishProduct(productData: ProductSaveDTO): Promise<Produ
     });
 
     if (!response.ok) {
-        throw new Error("Error al publicar el producto");
+        const errorData = await response.json();
+        throw new Error(errorData.message);
     }
     return await response.json();
 }
@@ -56,7 +58,8 @@ export async function removeProduct(id: number): Promise<void> {
     });
 
     if (!response.ok) {
-        throw new Error("Error removing product");
+        const errorData = await response.json();
+        throw new Error(errorData.message);
     }
 }
 
@@ -72,12 +75,12 @@ export async function updateProduct(
     });
 
     if (!response.ok) {
-        throw new Error("Error al actualizar el producto");
+        const errorData = await response.json();
+        throw new Error(errorData.message);
     }
 
     return await response.json();
 }
-
 
 export async function uploadProductImage(
     id: number,
