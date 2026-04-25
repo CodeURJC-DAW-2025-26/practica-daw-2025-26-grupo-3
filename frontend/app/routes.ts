@@ -1,4 +1,4 @@
-import { type RouteConfig, index, layout, route } from "@react-router/dev/routes";
+import { type RouteConfig, layout, route } from "@react-router/dev/routes";
 
 export default [
     // Public routes and User routes (Main layout)
@@ -20,14 +20,10 @@ export default [
     route("profile/edit", "routes/Users/profile_edit.tsx"),
 
     // Admin routes (Admin layout)
-    /* * DEFENSE NOTE: 
-     * We use 'layout' to apply our AdminRoute component to all admin pages.
-     * The AdminRoute file will act as a guard. If the user is an admin, it renders the <Outlet /> 
-     * (which will be the AdminPanel). If not, it redirects them away.
-     */
     layout("routes/Admin/AdminRoute.tsx", [
         // base route "/admin" load the AdminPanel component
         route("admin", "routes/Admin/admin_panel.tsx"),
-
+        route("admin/users", "routes/Admin/admin_users_list.tsx"),
+        route("admin/users/:id", "routes/Admin/admin_user_detail.tsx")
     ])
 ] satisfies RouteConfig;

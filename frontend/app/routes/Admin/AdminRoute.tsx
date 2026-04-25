@@ -1,4 +1,6 @@
+import { Col, Container, Row } from "react-bootstrap";
 import { Navigate, Outlet } from "react-router";
+import Admin_sidebar from "~/components/Admin/admin_sidebar";
 import { useUserState } from "~/stores/user-store";
 
 /*
@@ -28,5 +30,20 @@ export default function AdminRoute() {
     }
 
     // If the user is an admin, render the requested admin page
-    return <Outlet />;
+    return (
+        <Container fluid className="bg-light">
+            <Row className="min-vh-100">
+                {/* SIDEBAR SECTION */}
+                <Col md={3} lg={2} className="p-0 bg-light border-end">
+                    {/* import and use the AdminSidebar component we created */}
+                    <Admin_sidebar />
+                </Col>
+
+                {/* MAIN CONTENT SECTION */}
+                <Col md={9} lg={10} className="py-3 px-4">
+                    <Outlet />
+                </Col>
+            </Row>
+        </Container>
+    );
 }

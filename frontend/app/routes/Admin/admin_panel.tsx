@@ -18,21 +18,6 @@ import { Bar } from 'react-chartjs-2';
 // Register ChartJS components so they can be used within the React wrapper
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-/*
- * DEFENSE NOTE:
- * This is a temporary placeholder component for the sidebar.
- * It replaces the old {{>sidebar}} Handlebars partial from the MVC architecture.
- * In a fully refactored project, this should be moved to /components/AdminSidebar.tsx
- */
-const AdminSidebar = () => (
-    <div className="p-3 text-dark">
-        <h5>Admin Menu</h5>
-        <hr />
-        <p>Menu items will go here...</p>
-    </div>
-);
-
-// DEFENSE NOTE: Corrected function declaration.
 // We use 'export default function' to ensure compatibility with React Router's file-based routing.
 export default function AdminPanel() {
     // 1. STATE DEFINITION
@@ -146,75 +131,64 @@ export default function AdminPanel() {
     };
 
     // 4. RENDER JSX
-    // We use React-Bootstrap components (Container, Row, Col, Card) instead of standard HTML divs 
-    // to maintain a clean, semantic, and easily maintainable codebase.
+    // DEFENSE NOTE: We removed the Container, Row, and Sidebar from here
+    // because they are now globally handled by AdminRoute.tsx.
+    // This component now ONLY cares about rendering the dashboard content.
     return (
-        <Container fluid className="bg-light">
-            <Row className="min-vh-100">
-                {/* SIDEBAR SECTION */}
-                <Col md={3} lg={2} className="p-0 bg-light border-end">
-                    <AdminSidebar />
+        <>
+            {/* Dashboard Header */}
+            <div className="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+                <h2 className="h3 fw-bold text-dark">Panel de Control</h2>
+            </div>
+
+            {/* KPI CARDS (Stats) */}
+            <Row className="g-4 mb-4">
+                <Col md={3}>
+                    <Card className="shadow-sm border-0 text-center p-3">
+                        <h6 className="fw-bold text-muted small text-uppercase">Ventas Totales</h6>
+                        <p className="display-6 fw-bold text-primary mb-0">€{stats.totalAmountMoney}</p>
+                    </Card>
                 </Col>
-
-                {/* MAIN CONTENT SECTION */}
-                <Col md={9} lg={10} className="py-3 px-4">
-
-                    {/* Dashboard Header */}
-                    <div className="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
-                        <h2 className="h3 fw-bold text-dark">Panel de Control</h2>
-                    </div>
-
-                    {/* KPI CARDS (Stats) */}
-                    <Row className="g-4 mb-4">
-                        <Col md={3}>
-                            <Card className="shadow-sm border-0 text-center p-3">
-                                <h6 className="fw-bold text-muted small text-uppercase">Ventas Totales</h6>
-                                <p className="display-6 fw-bold text-primary mb-0">€{stats.totalAmountMoney}</p>
-                            </Card>
-                        </Col>
-                        <Col md={3}>
-                            <Card className="shadow-sm border-0 text-center p-3">
-                                <h6 className="fw-bold text-muted small text-uppercase">Usuarios Registrados</h6>
-                                <p className="display-6 fw-bold text-success mb-0">{stats.totalUsers}</p>
-                            </Card>
-                        </Col>
-                        <Col md={3}>
-                            <Card className="shadow-sm border-0 text-center p-3">
-                                <h6 className="fw-bold text-muted small text-uppercase">Pedidos Pendientes</h6>
-                                <p className="display-6 fw-bold text-warning mb-0">{stats.pendingOrders}</p>
-                            </Card>
-                        </Col>
-                        <Col md={3}>
-                            <Card className="shadow-sm border-0 text-center p-3">
-                                <h6 className="fw-bold text-muted small text-uppercase">Productos Publicados</h6>
-                                <p className="display-6 fw-bold text-info mb-0">{stats.totalProducts}</p>
-                            </Card>
-                        </Col>
-                    </Row>
-
-                    {/* CHARTS SECTION */}
-                    <Row className="g-4">
-                        <Col md={6} lg={6}>
-                            <Card className="shadow-sm border-0 p-4 h-100">
-                                <h6 className="fw-bold mb-3 text-dark">Top Productos</h6>
-                                <div>
-                                    {/* react-chartjs-2 automatically renders the underlying canvas */}
-                                    <Bar data={productsChartData} options={productsChartOptions} />
-                                </div>
-                            </Card>
-                        </Col>
-                        <Col md={6} lg={6}>
-                            <Card className="shadow-sm border-0 p-4 h-100">
-                                <h6 className="fw-bold mb-3 text-dark">Distribución de Productos por Tipo</h6>
-                                <div>
-                                    <Bar data={typesChartData} options={typesChartOptions} />
-                                </div>
-                            </Card>
-                        </Col>
-                    </Row>
-
+                <Col md={3}>
+                    <Card className="shadow-sm border-0 text-center p-3">
+                        <h6 className="fw-bold text-muted small text-uppercase">Usuarios Registrados</h6>
+                        <p className="display-6 fw-bold text-success mb-0">{stats.totalUsers}</p>
+                    </Card>
+                </Col>
+                <Col md={3}>
+                    <Card className="shadow-sm border-0 text-center p-3">
+                        <h6 className="fw-bold text-muted small text-uppercase">Pedidos Pendientes</h6>
+                        <p className="display-6 fw-bold text-warning mb-0">{stats.pendingOrders}</p>
+                    </Card>
+                </Col>
+                <Col md={3}>
+                    <Card className="shadow-sm border-0 text-center p-3">
+                        <h6 className="fw-bold text-muted small text-uppercase">Productos Publicados</h6>
+                        <p className="display-6 fw-bold text-info mb-0">{stats.totalProducts}</p>
+                    </Card>
                 </Col>
             </Row>
-        </Container>
+
+            {/* CHARTS SECTION */}
+            <Row className="g-4">
+                <Col md={6} lg={6}>
+                    <Card className="shadow-sm border-0 p-4 h-100">
+                        <h6 className="fw-bold mb-3 text-dark">Top Productos</h6>
+                        <div>
+                            {/* react-chartjs-2 automatically renders the underlying canvas */}
+                            <Bar data={productsChartData} options={productsChartOptions} />
+                        </div>
+                    </Card>
+                </Col>
+                <Col md={6} lg={6}>
+                    <Card className="shadow-sm border-0 p-4 h-100">
+                        <h6 className="fw-bold mb-3 text-dark">Distribución de Productos por Tipo</h6>
+                        <div>
+                            <Bar data={typesChartData} options={typesChartOptions} />
+                        </div>
+                    </Card>
+                </Col>
+            </Row>
+        </>
     );
 }
