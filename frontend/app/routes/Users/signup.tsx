@@ -56,7 +56,7 @@ export default function Signup() {
                         <Col md={4} className="logo-side d-none d-md-flex">
                             <div className="text-center p-4">
                                 <img
-                                    src="/assets/Logo_Remarket.png"
+                                    src={`${import.meta.env.BASE_URL}assets/Logo_Remarket.png`}
                                     alt="ReMarket+ Logo"
                                     className="img-fluid"
                                     style={{ maxWidth: 180 }}

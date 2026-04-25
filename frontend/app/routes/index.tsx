@@ -105,7 +105,11 @@ export default function Index() {
                             </div>
                         </Col>
                         <Col lg={6} className="d-none d-lg-block">
-                            <img src="/assets/Logo_Remarket.png" className="img-fluid hero-image" alt="ReMarket+" />
+                            <img
+                                src={`${import.meta.env.BASE_URL}assets/Logo_Remarket.png`}
+                                className="img-fluid hero-image"
+                                alt="ReMarket+"
+                            />
                         </Col>
                     </Row>
                 </Container>
