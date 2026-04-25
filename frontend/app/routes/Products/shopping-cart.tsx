@@ -58,7 +58,11 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
     useEffect(() => { loadCart() }, []);
 
     if (loading) {
-        return (<Spinner />)
+        return (
+            <Container className="my-5 flex-grow-1 d-flex flex-column justify-content-center align-items-center">
+                <Spinner />
+            </Container>
+        );
     }
 
     if (!currentUser) {

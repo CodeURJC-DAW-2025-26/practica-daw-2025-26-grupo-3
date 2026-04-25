@@ -41,7 +41,7 @@ export function HydrateFallback() {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es">
+    <html lang="es" className="h-100">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -49,8 +49,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
         <Head />
       </head>
-      <body className="bg-light">
-        {children}
+      <body className="bg-light d-flex flex-column h-100 min-vh-100">
+        <div id="root" className="d-flex flex-column flex-grow-1">
+          {children}
+        </div>
         <ScrollRestoration />
         <Scripts />
       </body>
