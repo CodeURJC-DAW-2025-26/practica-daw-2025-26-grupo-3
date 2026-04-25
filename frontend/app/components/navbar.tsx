@@ -60,17 +60,18 @@ export function Navbar() {
                         {currentUser && (
                             <NavDropdown
                                 title={
-                                    <div className="d-inline-flex align-items-center gap-2" title="Menú de usuario">
+                                    <span title="Menú de usuario">
                                         {/* TERNARY OPERATOR: Check if user has uploaded a profile picture */}
                                         {currentUser.imageId ? (
                                             // If true: Load the image from our API
                                             <img
                                                 src={`${base_image_url}/${currentUser.imageId}/media`}
                                                 alt="Mi perfil"
+                                                className="align-middle me-2"
                                                 style={{
                                                     height: 40, width: 40, borderRadius: "50%",
                                                     border: "2px solid #0d6efd", cursor: "pointer",
-                                                    objectFit: "cover", flexShrink: 0,
+                                                    objectFit: "cover"
                                                 }}
                                             />
                                         ) : (
@@ -78,15 +79,16 @@ export function Navbar() {
                                             <img
                                                 src={`https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.userName)}&background=random`}
                                                 alt="Mi perfil"
+                                                className="align-middle me-2"
                                                 style={{
                                                     height: 40, width: 40, borderRadius: "50%",
                                                     border: "2px solid #0d6efd", cursor: "pointer",
-                                                    objectFit: "cover", flexShrink: 0,
+                                                    objectFit: "cover"
                                                 }}
                                             />
                                         )}
-                                        <span className="d-none d-lg-inline">{currentUser.userName}</span>
-                                    </div>
+                                        <span className="d-none d-lg-inline align-middle">{currentUser.userName}</span>
+                                    </span>
                                 }
                                 id="userDropdown"
                                 align="end"
