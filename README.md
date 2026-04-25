@@ -583,7 +583,7 @@ Encargado de la implementación de autenticación, edición y visualización del
 
 #### **Alumno 3 - [Daniel Hernanz Corral]**
 
-Se ha encargado de la implementación de los componentes de lista de productos y product form para que sean reutilizados en diferentes rutas (index, publicar producto, editar producto, entre otros). Ha realizado toda la implementación relacionada con la edición, publicación y eliminación de productos, además de hacer visibles los productos con sus respectivas imagenes en las páginas de index, product_search, my_products, y de forma detallada en la página de product detail. También ha implementado la funcionalidad de cargar más productos del index. También ha contribuido a arreglar diversos errores ocurridos durante el transcurso de la práctica
+El alumno se ha encargado de la implementación de los componentes de lista de productos y product form para que sean reutilizados en diferentes rutas (index, publicar producto, editar producto, entre otros). Ha realizado toda la implementación relacionada con la edición, publicación y eliminación de productos, además de hacer visibles los productos con sus respectivas imágenes en las páginas de index, product_search, my_products, y de forma detallada en la página de product detail. También ha implementado la funcionalidad de cargar más productos del index. También ha contribuido a arreglar diversos errores ocurridos durante el desarrollo de la práctica
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
