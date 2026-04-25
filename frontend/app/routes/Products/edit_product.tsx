@@ -1,5 +1,5 @@
 import { useParams, useNavigate, useLoaderData, redirect } from "react-router"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProductForm, { type ProductData } from "~/components/Product/product_form";
 import { deleteProductImage, getBasicProduct, updateProduct, uploadProductImage } from "~/services/product-service";
 import { Container } from "react-bootstrap";
@@ -86,9 +86,11 @@ export default function EditProduct() {
 
             return null;
         } catch (error) {
-            console.error("Error al intentar actualizar el producto", error);
             setLoading(false);
-            return { error: "Hubo un problema de conexión al guardar el producto." };
+            const errorMessage = error instanceof Error
+                ? (error.message.split(":")[1]?.trim() || error.message)
+                : "Hubo un problema de conexión al guardar el producto.";
+            return { error: errorMessage };
         }
     };
 
@@ -97,6 +99,23 @@ export default function EditProduct() {
             <Container className="my-5 d-flex flex-column justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
                 <Spinner />
                 <p className="text-muted mt-3 fs-5">Cargando producto...</p>
+            </Container>
+        );
+    }
+
+    if (!userLoaded) {
+        return (
+            <Container className="my-5 d-flex flex-column justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
+                <Spinner />
+                <p className="text-muted mt-3 fs-5">Verificando sesión...</p>
+            </Container>
+        );
+    }
+
+    if (!currentUser) {
+        return (
+            <Container className="my-5 d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
+                <ErrorCard message="Debes iniciar sesión para editar un producto." />
             </Container>
         );
     }

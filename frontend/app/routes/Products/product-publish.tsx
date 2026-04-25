@@ -47,7 +47,10 @@ export default function ProductPublish() {
             return null;
         } catch (error) {
             console.error("Error al publicar el producto:", error);
-            return { error: "Hubo un problema de conexión al publicar el producto." };
+            const errorMessage = error instanceof Error
+                ? (error.message.split(":")[1]?.trim() || error.message)
+                : "Hubo un problema de conexión al publicar el producto.";
+            return { error: errorMessage };
         }
 
     }

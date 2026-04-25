@@ -1,6 +1,7 @@
 
 import React, { useActionState, useState } from 'react';
 import { Container, Row, Col, Card, Form, Button, ButtonGroup, Spinner } from 'react-bootstrap';
+import { ErrorCard } from '~/components/error-card';
 
 export interface ProductData {
     id: number;
@@ -51,9 +52,7 @@ export default function ProductForm({ initialData, isEditing = false,isAdmin = f
                             {isEditing ? 'Completa los datos para actualizar tu artículo.' : 'Completa los datos para poner tu artículo a la venta.'}
                         </p>
                         {state?.error && (
-                            <div className="alert alert-danger" role="alert">
-                                {state.error}
-                            </div>
+                            <ErrorCard message={state.error} className="mb-3" />
                         )}
                         <Form action={formAction}>
                             <Form.Group className="mb-3" controlId="productName">
