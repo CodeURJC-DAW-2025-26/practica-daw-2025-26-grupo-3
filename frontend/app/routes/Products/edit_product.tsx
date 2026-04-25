@@ -3,10 +3,11 @@ import { useState } from "react";
 import ProductForm, { type ProductData } from "~/components/Product/product_form";
 import { deleteProductImage, getBasicProduct, updateProduct, uploadProductImage } from "~/services/product-service";
 import { Container } from "react-bootstrap";
+import { Spinner } from "~/components/spinner";
 
 export async function clientLoader({ params }: any) {
     const { id } = params; // We obtain the ID from the URL
-    
+
     try {
         const data = await getBasicProduct(Number(id));
 
@@ -26,9 +27,9 @@ export async function clientLoader({ params }: any) {
             description: data.description,
             images: data.images?.map((img: any) => ({ id: img.id })) || []
         };
-        
+
         return { productData };
-        
+
     } catch (error) {
         console.error("Error cargando el producto en el loader", error);
         return { productData: null };
@@ -38,11 +39,11 @@ export async function clientLoader({ params }: any) {
 export default function EditProduct() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { productData } = useLoaderData<typeof clientLoader>();;
-    const [loading, setLoading] = useState(true);
-
+    const [loading, setLoading] = useState(false);
+    const { productData } = useLoaderData<typeof clientLoader>();
 
     const handleEditAction = async (prevState: any, formData: FormData) => {
+        setLoading(true);
         try {
 
             // we call to the api to update the product texts
@@ -76,13 +77,18 @@ export default function EditProduct() {
             return null;
         } catch (error) {
             console.error("Error al intentar actualizar el producto", error);
-
+            setLoading(false);
             return { error: "Hubo un problema de conexión al guardar el producto." };
         }
     };
 
     if (loading) {
-        return <Container className="text-center my-5">Cargando producto...</Container>;
+        return (
+            <Container className="my-5 d-flex flex-column justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
+                <Spinner />
+                <p className="text-muted mt-3 fs-5">Cargando producto...</p>
+            </Container>
+        );
     }
 
     if (!productData) {
