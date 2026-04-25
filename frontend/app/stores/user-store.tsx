@@ -26,6 +26,8 @@ import { changePassword, deleteUser, HttpError, login, logout, reqIsLogged, sign
 export interface UserState {
     currentUser: UserDTO | null, // Holds the logged-in user's data, or null if guest
     error: string | null, // Stores any authentication or profile update errors
+    authMessage: string | null,
+    authMessageVariant: "success" | "danger" | null,
 
     // Actions
     loadLoggedUser: () => Promise<void>,
@@ -41,6 +43,8 @@ export interface UserState {
 export const useUserState = create<UserState>((set, get) => ({
     currentUser: null,
     error: null,
+    authMessage: null,
+    authMessageVariant: null,
 
     // Automatically check if a session exists in the backend (e.g., via HttpOnly cookies)
     // This is crucial for SPAs to persist login state across page refreshes.
@@ -65,18 +69,19 @@ export const useUserState = create<UserState>((set, get) => ({
     // Authenticate a user
     login: async (email: string, pass: string) => {
         // Reset state before attempting to log in
-        set({ currentUser: null, error: null });
+        set({ currentUser: null, error: null, authMessage: null, authMessageVariant: null });
 
         try {
             // 1. Send credentials to the backend
             await login(email, pass);
             // 2. If successful, fetch and store the user data using our existing function
             await get().loadLoggedUser();
+            set({ authMessage: "¡Inicio de sesión exitoso!", authMessageVariant: "success" });
             return get().currentUser;
         }
         catch (error) {
             // Set error message to be displayed in the UI
-            set({ error: "Credenciales incorrectas" });
+            set({ error: "Credenciales incorrectas", authMessage: null, authMessageVariant: null });
             throw error;
         }
     },
@@ -98,11 +103,12 @@ export const useUserState = create<UserState>((set, get) => ({
     // Terminate the user session
     logout: async () => {
         // Immediately clear the user from frontend state for a snappy UI
-        set({ currentUser: null, error: null });
+        set({ currentUser: null, error: null, authMessage: null, authMessageVariant: null });
 
         try {
             // Inform the backend to invalidate the session/cookie
             await logout();
+            set({ authMessage: "Se ha cerrado la sesión correctamente.", authMessageVariant: "danger" });
         }
         catch (error) {
             set({ error: "Error has ocurred when tried to logout" })

@@ -68,9 +68,6 @@ export default function Index() {
         <>
             <header className="hero-section py-5 bg-light">
                 <Container className="alert-container mb-4">
-                    <Alert variant="primary" dismissible>
-                        PROTOTIPO FRONTEND REACT. Los datos reales llegarán desde la API más adelante.
-                    </Alert>
                 </Container>
                 <Container className="py-5">
                     <Row className="align-items-center g-5">
