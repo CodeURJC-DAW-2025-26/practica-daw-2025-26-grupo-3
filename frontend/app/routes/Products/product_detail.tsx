@@ -230,7 +230,7 @@ export default function ProductDetail({ loaderData }: Route.ComponentProps) {
                             disabled={cartLoading}
                         >
                             {cartLoading ? (
-                                <Spinner animation="border" size="sm" role="status" aria-hidden="true" />
+                                <Spinner />
                             ) : (
                                 <>
                                     <i className="bi bi-cart-fill me-2" style={{ fontSize: "1.3rem" }}></i>

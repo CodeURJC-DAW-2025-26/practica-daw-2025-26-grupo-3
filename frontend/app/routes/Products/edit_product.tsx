@@ -1,12 +1,19 @@
-import { useParams, useNavigate, useLoaderData } from "react-router"
+import { useParams, useNavigate, useLoaderData, redirect } from "react-router"
 import { useState } from "react";
 import ProductForm, { type ProductData } from "~/components/Product/product_form";
 import { deleteProductImage, getBasicProduct, updateProduct, uploadProductImage } from "~/services/product-service";
 import { Container } from "react-bootstrap";
 import { Spinner } from "~/components/spinner";
+import { requireUserLoader, useUserState } from "~/stores/user-store";
 
 export async function clientLoader({ params }: any) {
     const { id } = params; // We obtain the ID from the URL
+
+    const currentUser = await requireUserLoader();
+
+    if (!currentUser) {
+        return redirect("/login"); 
+    }
 
     try {
         const data = await getBasicProduct(Number(id));
@@ -28,11 +35,11 @@ export async function clientLoader({ params }: any) {
             images: data.images?.map((img: any) => ({ id: img.id })) || []
         };
 
-        return { productData };
+        return { productData, currentUser };
 
     } catch (error) {
         console.error("Error cargando el producto en el loader", error);
-        return { productData: null };
+        return { productData: null, currentUser };
     }
 }
 
@@ -41,6 +48,9 @@ export default function EditProduct() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const { productData } = useLoaderData<typeof clientLoader>();
+
+    const { currentUser } = useUserState();
+
 
     const handleEditAction = async (prevState: any, formData: FormData) => {
         setLoading(true);

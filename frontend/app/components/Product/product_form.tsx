@@ -55,7 +55,7 @@ export default function ProductForm({ initialData, isEditing = false,isAdmin = f
                                 {state.error}
                             </div>
                         )}
-                        <Form action={formAction} encType="multipart/form-data">
+                        <Form action={formAction}>
                             <Form.Group className="mb-3" controlId="productName">
                                 <Form.Label className="fw-bold">Nombre del Producto</Form.Label>
                                 <Form.Control
