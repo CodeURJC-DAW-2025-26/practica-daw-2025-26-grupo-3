@@ -1,5 +1,5 @@
 // React Router hook used for SPA navigation without reloading the page
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 // Import our Zustand global state to access user session data
 import { useUserState } from "~/stores/user-store";
@@ -10,6 +10,7 @@ import { Navbar as BootstrapNavbar, Container, Nav, NavDropdown, Button } from "
 export function Navbar() {
     // We destructure 'logout' function and 'currentUser' object from our global store.
     const { logout, currentUser } = useUserState();
+    const navigate = useNavigate();
 
     // Base URL for fetching images from the Spring Boot REST API
     const base_image_url = "/api/v1/images";
@@ -115,7 +116,10 @@ export function Navbar() {
                                 <NavDropdown.Divider />
 
                                 {/* Execute the logout function from Zustand when clicked */}
-                                <NavDropdown.Item as="button" className="dropdown-item-logout" onClick={logout}>
+                                <NavDropdown.Item as="button" className="dropdown-item-logout" onClick={async () => {
+                                    await logout();
+                                    navigate("/");
+                                }}>
                                     Cerrar sesión
                                 </NavDropdown.Item>
                             </NavDropdown>

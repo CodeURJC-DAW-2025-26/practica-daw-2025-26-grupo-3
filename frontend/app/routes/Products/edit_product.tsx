@@ -10,6 +10,13 @@ import { ErrorCard } from "~/components/error-card";
 export async function clientLoader({ params }: any) {
     const { id } = params; // We obtain the ID from the URL
 
+    const currentUser = await requireUserLoader();
+
+    if (!currentUser) {
+        return redirect("/login");
+    }
+
+
     const loggedUser = await requireUserLoader();
 
     if (!loggedUser) {
@@ -36,10 +43,14 @@ export async function clientLoader({ params }: any) {
             images: data.images?.map((img: any) => ({ id: img.id })) || []
         };
 
+        return { productData, currentUser };
+
+
         return { productData, loggedUser };
 
     } catch (error) {
         console.error("Error cargando el producto en el loader", error);
+        return { productData: null, currentUser };
         return { productData: null, loggedUser };
     }
 }
@@ -57,6 +68,7 @@ export default function EditProduct() {
     }, [loadLoggedUser]);
 
     const handleEditAction = async (prevState: any, formData: FormData) => {
+        setLoading(true);
         setLoading(true);
         try {
 
@@ -95,10 +107,34 @@ export default function EditProduct() {
                 ? (error.message.split(":")[1]?.trim() || error.message)
                 : "Hubo un problema de conexión al guardar el producto.";
             return { error: errorMessage };
+            setLoading(false);
         }
     };
 
     if (loading) {
+        return (
+            <Container className="my-5 d-flex flex-column justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
+                <Spinner />
+                <p className="text-muted mt-3 fs-5">Cargando producto...</p>
+            </Container>
+        );
+    }
+
+    if (!userLoaded) {
+        return (
+            <Container className="my-5 d-flex flex-column justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
+                <Spinner />
+                <p className="text-muted mt-3 fs-5">Verificando sesión...</p>
+            </Container>
+        );
+    }
+
+    if (!currentUser) {
+        return (
+            <Container className="my-5 d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
+                <ErrorCard message="Debes iniciar sesión para editar un producto." />
+            </Container>
+        );
         return (
             <Container className="my-5 d-flex flex-column justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
                 <Spinner />
