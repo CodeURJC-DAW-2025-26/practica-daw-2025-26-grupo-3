@@ -150,3 +150,16 @@ export const useUserState = create<UserState>((set, get) => ({
         set({ currentUser: null });
     }
 }));
+
+export async function requireUserLoader(forceRefresh = false) {7
+    //we get the state from zustand
+    const store = useUserState.getState(); 
+
+    //If zustand memory is null we get the user data again (This happens for example when we refresh the page)
+    if (forceRefresh || !store.currentUser) {
+        await store.loadLoggedUser(); 
+    }
+
+    //we return the information
+    return useUserState.getState().currentUser;
+}

@@ -1,25 +1,29 @@
 import { Link, useLoaderData, useNavigate } from "react-router";
 import { publishProduct, uploadProductImage } from "~/services/product-service";
 import ProductForm from "~/components/Product/product_form";
-import { useState } from "react";
+
+import { requireUserLoader } from "~/stores/user-store";
 
 export async function clientLoader() {
+    //we get the user information from zustand, if zustand doesn´t remember it, zustand should get the info from the backend
+    const currentUser = await requireUserLoader();
+
     let isAdmin = false;
     
-    const userString = localStorage.getItem('user'); 
-    if (userString) {
-        const user = JSON.parse(userString);
-
-        if (user.roles && user.roles.includes('ADMIN')) {
+    if (currentUser) {
+        const roles = currentUser.roles || []; 
+        
+        if (roles.includes('ADMIN')) {
             isAdmin = true;
         }
     }
+
     return { isAdmin };
 }
-
 export default function ProductPublish() {
     const navigate = useNavigate();
     const { isAdmin } = useLoaderData<typeof clientLoader>();
+    
 
     const handleCreateAction = async (prevState: any, formData: FormData) => {
 
