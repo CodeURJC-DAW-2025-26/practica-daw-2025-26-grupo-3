@@ -15,11 +15,12 @@ export interface ProductData {
 interface ProductFormProps {
     initialData?: ProductData;
     isEditing?: boolean; // true for edition, false for publishing
+    isAdmin?:boolean;
     actionFunction: (prevState: any, formData: FormData) => Promise<any>;
     onCancel: () => void;
 }
 
-export default function ProductForm({ initialData, isEditing = false, actionFunction, onCancel }: ProductFormProps) {
+export default function ProductForm({ initialData, isEditing = false,isAdmin = false, actionFunction, onCancel }: ProductFormProps) {
 
     const [imagesToRemove, setImagesToRemove] = useState<Set<number>>(new Set()); //Image can be removed or not
 
@@ -60,6 +61,7 @@ export default function ProductForm({ initialData, isEditing = false, actionFunc
                                 <Form.Control
                                     type="text"
                                     name="productName"
+                                    placeholder="Ej. MacBook Pro 2021"
                                     defaultValue={initialData?.productName || ''}
                                     required
                                     minLength={3}
@@ -72,6 +74,7 @@ export default function ProductForm({ initialData, isEditing = false, actionFunc
                                 <Form.Control
                                     type="number"
                                     name="price"
+                                    placeholder="0.00"
                                     defaultValue={initialData?.price || ''}
                                     required
                                     min="1"
@@ -81,10 +84,28 @@ export default function ProductForm({ initialData, isEditing = false, actionFunc
 
                             <Form.Group className="mb-3" controlId="stateInput">
                                 <Form.Label className="fw-bold">Estado del artículo</Form.Label>
-                                <ButtonGroup className="w-100" role="group">
-                                    <p>{initialData?.StateName || 'N/A'}</p>
-                                    <Form.Control type="hidden" name="state" defaultValue={initialData?.state || ''} />
-                                </ButtonGroup>
+                                {isAdmin && !isEditing ? (
+                                    // If the user is an admin and is publishing we show the select
+                                    <Form.Select name="state" required defaultValue="">
+                                        <option value="" disabled>Selecciona el estado...</option>
+                                        <option value="0">Nuevo</option>
+                                        <option value="1">Reacondicionado</option>
+                                        <option value="2">Segunda mano</option>
+                                    </Form.Select>
+                                ) : (
+                                    // If the user is not an admin or it´s editing, we show only the text
+                                    <div>
+                                        {/*If the user is editing we show the value, if he is publishing we force secondHand state */}
+                                        <p className="form-control bg-light mb-0">
+                                            {isEditing ? (initialData?.StateName || 'N/A') : 'Segunda mano'}
+                                        </p>
+                                        <Form.Control 
+                                            type="hidden" 
+                                            name="state" 
+                                            defaultValue={isEditing ? (initialData?.state || '') : '2'} 
+                                        />
+                                    </div>
+                                )}
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="description">

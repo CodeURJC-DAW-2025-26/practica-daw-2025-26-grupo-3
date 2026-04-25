@@ -1,4 +1,4 @@
-export interface ProductEditDTO {
+export interface ProductSaveDTO {
     productName: string;
     description: string;
     price: number;

@@ -1,44 +1,46 @@
-import { useParams, useNavigate } from "react-router"
-import { useEffect, useState } from "react";
+import { useParams, useNavigate, useLoaderData } from "react-router"
+import { useState } from "react";
 import ProductForm, { type ProductData } from "~/components/Product/product_form";
 import { deleteProductImage, getBasicProduct, updateProduct, uploadProductImage } from "~/services/product-service";
 import { Container } from "react-bootstrap";
 
+export async function clientLoader({ params }: any) {
+    const { id } = params; // We obtain the ID from the URL
+    
+    try {
+        const data = await getBasicProduct(Number(id));
+
+        let stateName = "Desconocido";
+        switch (data.state) {
+            case 0: stateName = "Nuevo"; break;
+            case 1: stateName = "Reacondicionado"; break;
+            case 2: stateName = "Segunda Mano"; break;
+        }
+
+        const productData: ProductData = {
+            id: data.id,
+            productName: data.productName,
+            price: data.price,
+            state: data.state.toString(),
+            StateName: stateName,
+            description: data.description,
+            images: data.images?.map((img: any) => ({ id: img.id })) || []
+        };
+        
+        return { productData };
+        
+    } catch (error) {
+        console.error("Error cargando el producto en el loader", error);
+        return { productData: null };
+    }
+}
 
 export default function EditProduct() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const [productData, setProductData] = useState<ProductData | null>(null);
+    const { productData } = useLoaderData<typeof clientLoader>();;
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        if (id) {
-            getBasicProduct(Number(id))
-                .then(data => {
-                    let stateName = "Desconocido";
-                    switch (data.state) {
-                        case 0: stateName = "Nuevo"; break;
-                        case 1: stateName = "Reacondicionado"; break;
-                        case 2: stateName = "Segunda Mano"; break;
-                    }
-
-                    setProductData({
-                        id: data.id,
-                        productName: data.productName,
-                        price: data.price,
-                        state: data.state.toString(),
-                        StateName: stateName,
-                        description: data.description,
-                        images: data.images?.map(img => ({ id: img.id })) || []
-                    });
-                    setLoading(false);
-                })
-                .catch(err => {
-                    console.error("Error cargando el producto", err);
-                    setLoading(false);
-                });
-        }
-    }, [id]);
 
     const handleEditAction = async (prevState: any, formData: FormData) => {
         try {

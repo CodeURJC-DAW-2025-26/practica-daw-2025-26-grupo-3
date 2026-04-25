@@ -1,10 +1,10 @@
 import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
 import type { ProductDetailDTO } from "~/dtos/ProductDetailDTO";
-import type { ProductEditDTO } from "~/dtos/ProductEditDTO";
+import type { ProductSaveDTO } from "~/dtos/ProductSaveDTO";
+
 
 
 const API_URL = "/api/v1/products";
-const API_IMAGES_URL = "/api/v1/images";
 
 export async function getProducts(): Promise<ProductBasicDTO[]> {
     const res = await fetch(`${API_URL}/`);
@@ -35,27 +35,18 @@ export async function getBasicProduct(id: number): Promise<ProductDetailDTO> {
     return await res.json();
 }
 
-export async function addBasicProduct(
-    productName: string,
-    description: string,
-    price: number,
-    state: number
-): Promise<ProductBasicDTO> {
-    const response = await fetch(`${API_URL}/`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            productName,
-            description,
-            price,
-            state
-        }),
+export async function publishProduct(productData: ProductSaveDTO): Promise<ProductBasicDTO>{
+    const response = await fetch(`${API_URL}/`, { 
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(productData)
     });
 
     if (!response.ok) {
-        throw new Error("Error adding product");
+        throw new Error("Error al publicar el producto");
     }
-
     return await response.json();
 }
 
@@ -71,7 +62,7 @@ export async function removeProduct(id: number): Promise<void> {
 
 export async function updateProduct(
     id: number,
-    productData: ProductEditDTO
+    productData: ProductSaveDTO
 ): Promise<ProductBasicDTO> {
     const response = await fetch(`${API_URL}/${id}`, {
         method: "PUT",
