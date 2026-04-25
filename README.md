@@ -581,29 +581,16 @@ Encargado de la implementación de autenticación, edición y visualización del
 
 ---
 
-#### **Alumno 3 - [Nombre Completo]**
+#### **Alumno 3 - [Daniel Hernanz Corral]**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Se ha encargado de la implementación de los componentes de lista de productos y product form para que sean reutilizados en diferentes rutas (index, publicar producto, editar producto, entre otros). Ha realizado toda la implementación relacionada con la edición, publicación y eliminación de productos, además de hacer visibles los productos con sus respectivas imagenes en las páginas de index, product_search, my_products, y de forma detallada en la página de product detail. También ha implementado la funcionalidad de cargar más productos del index. También ha contribuido a arreglar diversos errores ocurridos durante el transcurso de la práctica
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Now the list of product is visible in the main page (index), and also index.tsx now it´s implemented with react boostrap](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/ba1d4b51fa67442351cf6b113e180a8cc4e4b33b)  | [product_list.tsx](frontend/app/routes/Products/product_list.tsx)   |
+|2| [Now products are visible in product_search page. The component product_list is reused in both pages. Fixed some errors that prevented product_list component from working. Added a new function in product services to fetch all products for product_search page and more](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/86ec451577fd794af5ff3155b2a6f176e3b6ba74)  | [product_search.tsx](frontend/app/routes/Products/product_search.tsx)   |
+|3| [Added product detail page with edit and remove buttons only visible to admin or owners. Also now is visible the review form to add reviews to products. Delete product button is completely functional, and also index redirects to login page if the user isn´t logged](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/598a8567e0586783f1406220bf23c936f48af8f7)  | [product_detail.tsx](frontend/app/routes/Products/product_detail.tsx)   |
+|4| [Edit form now is available and completely functional. Products can be edited by owners or admins. I created the product_form component in order to reuse it for publishing products](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/f72bb4a2c3cc4e11e2f4979df42062470b7c38cd)  | [product_form.tsx](frontend/app/components/Product/product_form.tsx) / [edit_product.tsx](frontend/app/routes/Products/edit_product.tsx)   |
+|5| [Publish product form now is visible and functional](https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3/commit/a18d8b18b2f5ed977a6bbc471a166e4bba6357e3)  | [product-publish.tsx](frontend/app/routes/Products/product-publish.tsx) / [product_form.tsx](frontend/app/components/Product/product_form.tsx)  |
 
 ---
-
-#### **Alumno 4 - [Nombre Completo]**
-
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
-
-| Nº    | Commits      | Files      |
-|:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-
