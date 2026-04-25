@@ -1,14 +1,20 @@
-import { useParams, useNavigate, useLoaderData } from "react-router"
+import { useParams, useNavigate, useLoaderData, redirect } from "react-router"
 import { useState, useEffect } from "react";
 import ProductForm, { type ProductData } from "~/components/Product/product_form";
 import { deleteProductImage, getBasicProduct, updateProduct, uploadProductImage } from "~/services/product-service";
 import { Container } from "react-bootstrap";
 import { Spinner } from "~/components/spinner";
-import { useUserState } from "~/stores/user-store";
+import { requireUserLoader, useUserState } from "~/stores/user-store";
 import { ErrorCard } from "~/components/error-card";
 
 export async function clientLoader({ params }: any) {
     const { id } = params; // We obtain the ID from the URL
+
+    const loggedUser = await requireUserLoader();
+
+    if (!loggedUser) {
+        return redirect("/login");
+    }
 
     try {
         const data = await getBasicProduct(Number(id));
@@ -30,11 +36,11 @@ export async function clientLoader({ params }: any) {
             images: data.images?.map((img: any) => ({ id: img.id })) || []
         };
 
-        return { productData };
+        return { productData, loggedUser };
 
     } catch (error) {
         console.error("Error cargando el producto en el loader", error);
-        return { productData: null };
+        return { productData: null, loggedUser };
     }
 }
 
@@ -130,5 +136,4 @@ export default function EditProduct() {
             onCancel={() => navigate('/product_detail/' + id)}
         />
     );
-
 }
