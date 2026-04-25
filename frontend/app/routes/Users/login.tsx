@@ -40,7 +40,7 @@ export default function Login() {
                     <div className="text-center mb-4">
                         <Link to="/" className="d-inline-block">
                             <img
-                                src="/assets/Logo_Remarket.png"
+                                src={`${import.meta.env.BASE_URL}assets/Logo_Remarket.png`}
                                 alt="ReMarket+ Logo"
                                 className="img-fluid"
                                 style={{ maxWidth: 120 }}

@@ -16,7 +16,7 @@ export function Head() {
                 src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
                 defer
             />
-            <link rel="icon" href="/assets/Logo_Remarket.png" type="image/png" />
+            <link rel="icon" href={`${import.meta.env.BASE_URL}assets/Logo_Remarket.png`} type="image/png" />
         </>
     );
 }

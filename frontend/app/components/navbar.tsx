@@ -25,7 +25,7 @@ export function Navbar() {
                 <div className="navbar-brand-wrap">
                     <BootstrapNavbar.Brand as={Link} className="fw-bold text-primary d-flex align-items-center" to="/">
                         <img
-                            src="/assets/Logo_Remarket.png"
+                            src={`${import.meta.env.BASE_URL}assets/Logo_Remarket.png`}
                             alt="ReMarket+ Logo"
                             style={{ height: 50, width: "auto" }}
                         />
