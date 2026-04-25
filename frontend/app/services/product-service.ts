@@ -1,3 +1,4 @@
+import type { PageDTO } from "~/dtos/PageDTO";
 import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
 import type { ProductDetailDTO } from "~/dtos/ProductDetailDTO";
 import type { ProductSaveDTO } from "~/dtos/ProductSaveDTO";
@@ -12,10 +13,10 @@ export async function getProducts(): Promise<ProductBasicDTO[]> {
     return Array.isArray(json) ? json : (json.content || []);
 }
 
-export async function getAllProducts(): Promise<ProductBasicDTO[]> {
+export async function getAllProducts(): Promise<PageDTO<ProductBasicDTO>> {
     const res = await fetch(`${API_URL}/?size=50`);
     const json = await res.json();
-    return Array.isArray(json) ? json : (json.content || []);
+    return json;
 }
 
 export async function getProductsPage(page: number, size: number = 4): Promise<any> {

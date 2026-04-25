@@ -1,13 +1,16 @@
 
 import { Container, Row, Col, Alert, Badge, Button } from "react-bootstrap";
 import { Link, useFetcher, useLoaderData } from "react-router";
-import { useUserState } from "~/stores/user-store";
+import { requireUserLoader, useUserState } from "~/stores/user-store";
 import { useEffect, useState } from "react";
 import { getProductsPage } from "~/services/product-service";
 import ProductList from "~/components/Product/product_list";
 import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
 
 export async function clientLoader({ request }: { request: Request }) {
+    // we load the user
+    await requireUserLoader();
+
     try {
         // We read if the URL has a parameter ?page=X (if there isn't one, it's 0)
         const url = new URL(request.url);
@@ -32,21 +35,16 @@ export async function clientLoader({ request }: { request: Request }) {
 }
 
 export default function Index() {
-    const { loadLoggedUser, currentUser } = useUserState();
 
-
+    const { currentUser } = useUserState();
     const initialData = useLoaderData<typeof clientLoader>();
     const fetcher = useFetcher<typeof clientLoader>();
 
     const [products, setProducts] = useState<ProductBasicDTO[]>(initialData.newProducts);
     // We start at the page 0, and at the start we have more pages to show
-    const [page, setPage] = useState(2);
+    const [page, setPage] = useState(initialData.page === 0 ? 2 : initialData.page + 1);
     const [hasMore, setHasMore] = useState(initialData.hasMore);
 
-    //We load the user
-    useEffect(() => {
-        loadLoggedUser();
-    }, []);
 
     useEffect(() => {
         if (fetcher.data && fetcher.data.page === page) {

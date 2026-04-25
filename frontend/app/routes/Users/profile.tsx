@@ -10,9 +10,18 @@ import type { UserDTO } from "~/dtos/UserDTO";
 import { LeftCard } from "~/components/Profile/LeftCard";
 import { PersonalInfo } from "~/components/Profile/PersonalInfo";
 import { Container, Row, Col, Badge } from "react-bootstrap";
+import { useCartState } from "~/stores/shoppingCart-store";
 
 export async function clientLoader() {
-    return await requireUserLoader(true);
+    const currentUser = await requireUserLoader(true);
+
+    //we load the orders from the user
+    try {
+        await useCartState.getState().getOrders();
+    } catch (err) {
+        console.error("Error precargando pedidos en el perfil:", err);
+    }
+    return currentUser;
 }
 
 export default function Profile({ loaderData }: Route.ComponentProps) {

@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router";
-import { Item, type ItemProps } from "~/components/ShoppingCart/Item";
-import { Spinner } from "~/components/spinner";
+import { useState } from "react";
+import { Link, useLoaderData, useNavigate } from "react-router";
+import { Item } from "~/components/ShoppingCart/Item";
 import { useUserState } from "~/stores/user-store";
 import type { Route } from "../+types";
 import { requireUserLoader } from "../auth-loaders";
@@ -10,59 +9,56 @@ import { ErrorCard } from "~/components/error-card";
 import { Container, Row, Col, Card, Table, Button } from "react-bootstrap";
 
 export async function clientLoader() {
-    return await requireUserLoader();
+    // we verify if the user is logged
+    const user = await requireUserLoader();
+
+    let cartError = null;
+
+    // If the user is logged, we load his shopping cart before showing the page
+    if (user) {
+        try {
+            //we use getState() to access Zustand from outside a component
+            await useCartState.getState().getCart();
+        } catch (err) {
+            cartError = "Error cargando los productos del carrito. Inténtalo de nuevo más tarde.";
+        }
+    }
+
+    return { cartError };
 }
 
 export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
 
-    const [loading, setLoading] = useState(true); //Route component loading
+    // cartError if it fails to load the page for the first time
+    const { cartError } = useLoaderData<typeof clientLoader>();
+
     const [convertLoading, setConvertLoading] = useState(false);
-    let [error, setError] = useState<string | null>(null);
+
+    //ActionError if the user clicks "Complete purchase" and the server gives an error at that moment
+    const [actionError, setActionError] = useState<string | null>(null);
+    
+    //If there is an error loading or trying to purchase, we will show it.
+    const displayError = actionError || cartError;
+
     const { currentUser } = useUserState();
-    const { items, totalPrice, totalQuantity, getCart, convertToOrder } = useCartState();
+    const { items, totalPrice, totalQuantity, convertToOrder } = useCartState();
     const navigate = useNavigate();
     const hasItems = (items?.length ?? 0) > 0;
 
-    async function loadCart() {
-        setLoading(true);
-        try {
-            await getCart();
-        }
-        catch (err) {
-            error = "Error cargando los productos del carrito. Inténtalo de nuevo más tarde.";
-            setError(error);
-        }
-        finally {
-            setLoading(false);
-        }
-    }
 
     async function handleCartToOrder() {
         setConvertLoading(true);
+        setActionError(null);
         try {
             await convertToOrder();
+            navigate("/profile");
         }
         catch (err) {
-            error = "Error al realizar la compra. Inténtalo de nuevo más tarde."
-            setError(error);
+            setActionError("Error al realizar la compra. Inténtalo de nuevo más tarde.");
         }
         finally {
             setConvertLoading(false);
         }
-
-        if (!error) {
-            navigate("/profile");
-        }
-    }
-
-    useEffect(() => { loadCart() }, []);
-
-    if (loading) {
-        return (
-            <Container className="my-5 flex-grow-1 d-flex flex-column justify-content-center align-items-center">
-                <Spinner />
-            </Container>
-        );
     }
 
     if (!currentUser) {
@@ -70,7 +66,7 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
     }
 
     return (
-        <section className="py-5 bg-light min-vh-100">
+        <section className="py-5 bg-light">
             <Container>
                 <div className="d-flex flex-wrap justify-content-between align-items-center mb-4">
                     <div>
@@ -97,10 +93,10 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {error !== null ? (
+                                        {displayError !== null ? (
                                             <tr>
                                                 <td colSpan={5} className="p-4">
-                                                    <ErrorCard message={error} />
+                                                    <ErrorCard message={displayError} />
                                                 </td>
                                             </tr>
                                         ) : hasItems ? (

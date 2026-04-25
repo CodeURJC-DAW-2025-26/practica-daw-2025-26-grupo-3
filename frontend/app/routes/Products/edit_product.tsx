@@ -1,10 +1,11 @@
 import { useParams, useNavigate, useLoaderData, redirect } from "react-router"
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ProductForm, { type ProductData } from "~/components/Product/product_form";
 import { deleteProductImage, getBasicProduct, updateProduct, uploadProductImage } from "~/services/product-service";
 import { Container } from "react-bootstrap";
 import { Spinner } from "~/components/spinner";
 import { requireUserLoader, useUserState } from "~/stores/user-store";
+import {ErrorCard} from "~/components/error-card";
 
 export async function clientLoader({ params }: any) {
     const { id } = params; // We obtain the ID from the URL
@@ -99,15 +100,6 @@ export default function EditProduct() {
             <Container className="my-5 d-flex flex-column justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
                 <Spinner />
                 <p className="text-muted mt-3 fs-5">Cargando producto...</p>
-            </Container>
-        );
-    }
-
-    if (!userLoaded) {
-        return (
-            <Container className="my-5 d-flex flex-column justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
-                <Spinner />
-                <p className="text-muted mt-3 fs-5">Verificando sesión...</p>
             </Container>
         );
     }

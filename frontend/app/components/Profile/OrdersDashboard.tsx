@@ -1,34 +1,26 @@
-import { Link } from "react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCartState } from "~/stores/shoppingCart-store";
 import { getAllPDF, getPdfById } from "~/services/cart-service";
-import { Card, Button, Table, Alert } from "react-bootstrap";
+import { Card, Button, Table, Alert, Spinner } from "react-bootstrap";
+
+
 
 export function OrdersDashboard() {
 
-    const { orders, getOrders } = useCartState();
-    const [error, setError] = useState<string | null>(null);
-    const [loadingPdf, setLoadingPdf] = useState(false);
-    const hasOrders = orders!.length > 0;
+    const { orders } = useCartState();
+
+    const [pdfError, setPdfError] = useState<string | null>(null);
+    const [loadingId, setLoadingId] = useState<number | "all" | null>(null);
+
+    const hasOrders = (orders ?? []).length > 0;
+
     const base_url = "/api/v1/orders/";
 
-    async function loadOrders() {
-        let errMessage: string | null = null;
-        try {
-            await getOrders();
-        }
-        catch (err) {
-            errMessage = err instanceof Error
-                ? err.message
-                : "Se ha producido un error al cargar tus pedidos. Inténtalo de nuevo más tarde."
-            setError(errMessage);
-        }
-    }
 
     async function handleAllOrderPdfButton(id: number | null) {
         let errMessage: string | null = null;
         let pdfFile: Blob | null = null
-        setLoadingPdf(true);
+        setLoadingId(id === null ? "all" : id);
 
         try {
             pdfFile = !id
@@ -43,10 +35,10 @@ export function OrdersDashboard() {
             errMessage = err instanceof Error
                 ? err.message
                 : "Se ha producido un error al cargar tu factura PDF. Inténtalo de nuevo más tarde."
-            setError(errMessage);
+            setPdfError(errMessage);
         }
         finally {
-            setLoadingPdf(false);
+            setLoadingId(null);
         }
     }
 
@@ -63,8 +55,6 @@ export function OrdersDashboard() {
         }
     }
 
-    useEffect(() => { loadOrders() }, []);
-
     return (
         <Card className="border-0 shadow-sm p-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
@@ -76,9 +66,20 @@ export function OrdersDashboard() {
                         className="d-inline-flex align-items-center"
                         id="export-all-orders-pdf"
                         onClick={() => { handleAllOrderPdfButton(null) }}
+                        // we block the button if something is loading
+                        disabled={loadingId !== null}
                     >
-                        <i className="bi bi-file-earmark-pdf me-2" />
-                        Exportar todos en PDF
+                        {loadingId === "all" ? (
+                            <>
+                                <Spinner animation="border" size="sm" className="me-2" />
+                                Generando...
+                            </>
+                        ) : (
+                            <>
+                                <i className="bi bi-file-earmark-pdf me-2" />
+                                Exportar todos en PDF
+                            </>
+                        )}
                     </Button>
                 )}
             </div>
@@ -134,9 +135,20 @@ export function OrdersDashboard() {
                                         className="d-inline-flex align-items-center"
                                         id="export-all-orders-pdf"
                                         onClick={() => { handleAllOrderPdfButton(order.orderID) }}
+                                        disabled={loadingId !== null}
                                     >
-                                        <i className="bi bi-file-earmark-pdf me-2" />
-                                        Exportar factura en PDF
+                                        {loadingId === order.orderID ? (
+                                            <>
+                                                <Spinner animation="border" size="sm" className="me-2" />
+                                                Generando...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <i className="bi bi-file-earmark-pdf me-2" />
+                                                Exportar factura en PDF
+                                            </>
+                                        )}
+
                                     </Button>
                                 </td>
                             </tr>
