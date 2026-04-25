@@ -65,18 +65,22 @@ export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
     }
 
     if (!currentUser) {
-        return (<>
-            <ProfileNavbar />
-            <ErrorCard message="Debes iniciar sesion para acceder a esta página." className="container my-5" />
-            <Foot />
-        </>);
+        return (
+            <div className="d-flex flex-column min-vh-100">
+                <ProfileNavbar />
+                <div className="flex-grow-1 d-flex flex-column justify-content-center">
+                    <ErrorCard message="Debes iniciar sesion para acceder a esta página." className="container my-5" />
+                </div>
+                <Foot />
+            </div>
+        );
     }
 
     return (
-        <>
+        <div className="d-flex flex-column min-vh-100">
             <ProfileNavbar />
 
-            <Container className="my-3 mb-3">
+            <Container className="my-3 mb-3 flex-grow-1">
                 <Row className="g-3 align-items-start">
                     <Col lg={8}>
                         <Card className="border-0 shadow-sm p-3 h-100">
@@ -182,6 +186,6 @@ export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
                 </Row>
             </Container>
             <Foot />
-        </>
+        </div>
     );
 }
