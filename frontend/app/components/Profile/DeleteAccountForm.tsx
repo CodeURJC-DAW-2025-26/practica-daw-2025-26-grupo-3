@@ -17,17 +17,22 @@ export function DeleteAccountForm({ userId }: DeleteAccountFormProps) {
     const navigate = useNavigate();
 
     async function handleDeleteForm(prevState: { errMessage: string | null }, formData: FormData) {
+        console.log('ESTADO DE LA PUTA VERIFICACIÓN: ' + formData.get("confirmDelete") as string)
         let error: string | null = null;
-        try {
-            if (formData.get("confirmDelete") as string !== "on") {
-                error = "Debes marcar la casilla de verificación antes de eliminar tu cuenta."
+
+        if (formData.get("confirmDelete") as string === "on") {
+            try {
+                await deleteUser({ password: formData.get("currentPassword") as string }, Number(formData.get("userId")));
             }
-            await deleteUser({ password: formData.get("currentPassword") as string }, Number(formData.get("userId")));
+            catch (err) {
+                error = err instanceof Error
+                    ? err.message.split('"')[1]?.trim()
+                    : "Se ha producido un error al enviar el formulario";
+            }
         }
-        catch (err) {
-            error = err instanceof Error
-                ? err.message.split('"')[1].trim()
-                : "Se ha producido un error al enviar el formulario";
+        else {
+            console.log('HOLA SOY EL ELSE');
+            error = "Debes marcar la casilla de verifiación antes de eliminar tu cuenta";
         }
 
         if (!error) {
