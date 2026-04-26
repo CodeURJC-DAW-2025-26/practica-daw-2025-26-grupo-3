@@ -80,7 +80,7 @@ export default function AdminSidebar() {
                                 <NavLink to="/product-publish" className={({ isActive }) => isActive ? "nav-link fw-bold text-primary py-1" : "nav-link text-secondary py-1"}>
                                     Añadir productos
                                 </NavLink>
-                                <NavLink to="/admin/products" className={({ isActive }) => isActive ? "nav-link fw-bold text-primary py-1" : "nav-link text-secondary py-1"}>
+                                <NavLink to="/admin/products_list" className={({ isActive }) => isActive ? "nav-link fw-bold text-primary py-1" : "nav-link text-secondary py-1"}>
                                     Productos publicados
                                 </NavLink>
                             </Nav>
