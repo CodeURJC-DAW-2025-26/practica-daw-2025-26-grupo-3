@@ -1,8 +1,8 @@
 
 import { Container, Row, Col, Alert, Badge, Button } from "react-bootstrap";
-import { Link, useFetcher, useLoaderData } from "react-router";
+import { Link, useFetcher, useLoaderData, useNavigation } from "react-router";
 import { requireUserLoader, useUserState } from "~/stores/user-store";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getProductsPage } from "~/services/product-service";
 import ProductList from "~/components/Product/product_list";
 import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
@@ -36,16 +36,22 @@ export async function clientLoader({ request }: { request: Request }) {
 
 export default function Index() {
 
-    const { currentUser } = useUserState();
+    const { currentUser, authMessage, authMessageVariant } = useUserState();
     const initialData = useLoaderData<typeof clientLoader>();
     const fetcher = useFetcher<typeof clientLoader>();
+    const navigation = useNavigation();
 
     const [products, setProducts] = useState<ProductBasicDTO[]>(initialData.newProducts);
     // We start at the page 0, and at the start we have more pages to show
     const [page, setPage] = useState(initialData.page === 0 ? 2 : initialData.page + 1);
     const [hasMore, setHasMore] = useState(initialData.hasMore);
 
+    // These constants are for managing the card displayed when logging in and out.
+    const [isAuthMessageClosing, setIsAuthMessageClosing] = useState(false);
+    const fadeTimerRef = useRef<number | null>(null);
+    const clearTimerRef = useRef<number | null>(null);
 
+    //This useEffect is used to load more products
     useEffect(() => {
         if (fetcher.data && fetcher.data.page === page) {
             // we add the products to the list that we have
@@ -54,6 +60,110 @@ export default function Index() {
             setHasMore(fetcher.data.hasMore);
         }
     }, [fetcher.data]);
+
+    // **** This code is for managing the card displayed when logging in and out ****
+    const clearAuthMessage = () => {
+
+        useUserState.setState({ authMessage: null, authMessageVariant: null });
+
+    };
+    const startAuthMessageClose = () => {
+
+        if (isAuthMessageClosing) {
+
+            return;
+
+        }
+
+        setIsAuthMessageClosing(true);
+        if (clearTimerRef.current) {
+
+            window.clearTimeout(clearTimerRef.current);
+
+        }
+        clearTimerRef.current = window.setTimeout(() => {
+
+            clearAuthMessage();
+
+            setIsAuthMessageClosing(false);
+
+        }, 350);
+
+    };
+    useEffect(() => {
+
+        if (fadeTimerRef.current) {
+
+            window.clearTimeout(fadeTimerRef.current);
+
+            fadeTimerRef.current = null;
+
+        }
+        if (clearTimerRef.current) {
+
+            window.clearTimeout(clearTimerRef.current);
+
+            clearTimerRef.current = null;
+
+        }
+        if (!authMessage) {
+
+            setIsAuthMessageClosing(false);
+
+            return;
+
+        }
+        setIsAuthMessageClosing(false);
+
+        fadeTimerRef.current = window.setTimeout(() => {
+
+            setIsAuthMessageClosing(true);
+
+        }, 4600);
+
+        clearTimerRef.current = window.setTimeout(() => {
+
+            clearAuthMessage();
+
+            setIsAuthMessageClosing(false);
+
+        }, 5000);
+
+        return () => {
+
+            if (fadeTimerRef.current) {
+
+                window.clearTimeout(fadeTimerRef.current);
+
+                fadeTimerRef.current = null;
+
+            }
+
+            if (clearTimerRef.current) {
+
+                window.clearTimeout(clearTimerRef.current);
+
+                clearTimerRef.current = null;
+
+            }
+
+        };
+
+    }, [authMessage]);
+
+    useEffect(() => {
+        const targetPath = navigation.location?.pathname;
+
+        if (!authMessage || !targetPath) {
+            return;
+        }
+
+        if (targetPath !== "/") {
+            clearAuthMessage();
+            setIsAuthMessageClosing(false);
+        }
+    }, [navigation.location?.pathname, authMessage]);
+    //****************************************************************************** 
 
     const handleLoadMore = () => {
         // we get the next page with the fetcher
@@ -66,6 +176,16 @@ export default function Index() {
         <>
             <header className="hero-section py-5 bg-light">
                 <Container className="alert-container mb-4">
+                    {authMessage && (
+                        <Alert
+                            variant={authMessageVariant ?? "success"}
+                            dismissible
+                            onClose={startAuthMessageClose}
+                            className={`shadow-sm auth-message-alert ${isAuthMessageClosing ? "auth-message-alert-closing" : ""}`}
+                        >
+                            {authMessage}
+                        </Alert>
+                    )}
                 </Container>
                 <Container className="py-5">
                     <Row className="align-items-center g-5">

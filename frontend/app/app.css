@@ -112,6 +112,15 @@
 .auth-message-alert {
     width: min(100%, 340px);
     margin: 0;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.auth-message-alert.auth-message-alert-closing {
+    opacity: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
 }
 
 .auth-message-alert.alert-success {
