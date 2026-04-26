@@ -6,6 +6,7 @@ import { Card, Badge, ListGroup, Button, Spinner } from 'react-bootstrap';
 // Import the real services and DTO
 import { type UserDTO } from '~/dtos/UserDTO';
 import { getUserById, toggleUserBlockStatus } from '~/services/admin-service';
+import { requireUserLoader } from "../auth-loaders";
 
 /*
  * 1. DATA LOADER
@@ -13,6 +14,9 @@ import { getUserById, toggleUserBlockStatus } from '~/services/admin-service';
  * and fetches the required data from the Spring Boot API before rendering the screen.
  */
 export async function clientLoader({ params }: LoaderFunctionArgs) {
+    const currentUser = await requireUserLoader();
+    if (!currentUser || !currentUser.roles.includes("ADMIN")) return null;
+
     const userId = params.id;
 
     if (!userId) {

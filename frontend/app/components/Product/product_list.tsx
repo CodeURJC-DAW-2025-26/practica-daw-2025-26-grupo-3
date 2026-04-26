@@ -1,4 +1,5 @@
-import { Link, useNavigate } from "react-router";
+import { useState, useEffect } from "react";
+import { Link } from "react-router";
 import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
 import {
     Container,
@@ -49,6 +50,12 @@ export default function ProductList({ products, isOwnerMode = false,
     emptySubtitle = "Prueba a buscarlos mas adelante" }: ProductListProps) {
     const { currentUser } = useUserState(); //we need the user state to know if he is logged or not;
 
+    const [localProducts, setLocalProducts] = useState<ProductBasicDTO[]>(products);
+
+    useEffect(() => {
+        setLocalProducts(products);
+    }, [products]);
+
     async function handleDeleteProduct(productId: number): Promise<void> {
         const isConfirmed = window.confirm("¿Estás seguro de que quieres eliminar este producto? Esta acción no se puede deshacer.");
 
@@ -56,6 +63,9 @@ export default function ProductList({ products, isOwnerMode = false,
             try {
                 // We try to remove the product
                 await removeProduct(productId);
+
+                // Update the local state to remove the deleted product
+                setLocalProducts(prevProducts => prevProducts.filter(product => product.id !== productId));
 
             } catch (error) {
                 console.error("Error eliminando el producto:", error);
@@ -72,8 +82,8 @@ export default function ProductList({ products, isOwnerMode = false,
                 {/* --- PRODUCTS --- */}
                 <Row className="g-4 justify-content-center" id="featured-products">
                     { /* If there are products we show them */}
-                    {products && products.length > 0 ? (
-                        products.map((product: ProductBasicDTO) => (
+                    {localProducts && localProducts.length > 0 ? (
+                        localProducts.map((product: ProductBasicDTO) => (
                             <Col md={3} key={product.id}>
                                 <Card className="h-100 border-0 shadow-sm product-card position-relative">
                                     {/* Image */}
