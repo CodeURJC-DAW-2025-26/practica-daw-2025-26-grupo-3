@@ -65,66 +65,51 @@ export default function Index() {
     const clearAuthMessage = () => {
 
         useUserState.setState({ authMessage: null, authMessageVariant: null });
-
     };
     const startAuthMessageClose = () => {
 
         if (isAuthMessageClosing) {
-
             return;
-
         }
-
         setIsAuthMessageClosing(true);
         if (clearTimerRef.current) {
 
             window.clearTimeout(clearTimerRef.current);
-
         }
         clearTimerRef.current = window.setTimeout(() => {
 
             clearAuthMessage();
-
             setIsAuthMessageClosing(false);
 
         }, 350);
-
     };
     useEffect(() => {
-
         if (fadeTimerRef.current) {
 
             window.clearTimeout(fadeTimerRef.current);
-
             fadeTimerRef.current = null;
-
         }
         if (clearTimerRef.current) {
 
             window.clearTimeout(clearTimerRef.current);
-
             clearTimerRef.current = null;
 
         }
         if (!authMessage) {
 
             setIsAuthMessageClosing(false);
-
             return;
 
         }
         setIsAuthMessageClosing(false);
-
         fadeTimerRef.current = window.setTimeout(() => {
 
             setIsAuthMessageClosing(true);
-
         }, 4600);
 
         clearTimerRef.current = window.setTimeout(() => {
 
             clearAuthMessage();
-
             setIsAuthMessageClosing(false);
 
         }, 5000);
@@ -134,7 +119,6 @@ export default function Index() {
             if (fadeTimerRef.current) {
 
                 window.clearTimeout(fadeTimerRef.current);
-
                 fadeTimerRef.current = null;
 
             }
@@ -142,7 +126,6 @@ export default function Index() {
             if (clearTimerRef.current) {
 
                 window.clearTimeout(clearTimerRef.current);
-
                 clearTimerRef.current = null;
 
             }
@@ -157,7 +140,6 @@ export default function Index() {
         if (!authMessage || !targetPath) {
             return;
         }
-
         if (targetPath !== "/") {
             clearAuthMessage();
             setIsAuthMessageClosing(false);
