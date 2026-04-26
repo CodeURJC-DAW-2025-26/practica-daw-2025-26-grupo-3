@@ -80,7 +80,7 @@ export default function AdminSidebar() {
                                 <NavLink to="/product-publish" className={({ isActive }) => isActive ? "nav-link fw-bold text-primary py-1" : "nav-link text-secondary py-1"}>
                                     Añadir productos
                                 </NavLink>
-                                <NavLink to="/products_published" className={({ isActive }) => isActive ? "nav-link fw-bold text-primary py-1" : "nav-link text-secondary py-1"}>
+                                <NavLink to="/admin/products" className={({ isActive }) => isActive ? "nav-link fw-bold text-primary py-1" : "nav-link text-secondary py-1"}>
                                     Productos publicados
                                 </NavLink>
                             </Nav>
@@ -89,7 +89,7 @@ export default function AdminSidebar() {
                 </div>
 
                 {/* Orders Management */}
-                <NavLink to="/orders_list" className={getNavLinkClass}>
+                <NavLink to="/admin/orders_list" className={getNavLinkClass}>
                     <i className="bi bi-receipt me-2"></i> Gestionar Pedidos
                 </NavLink>
 
