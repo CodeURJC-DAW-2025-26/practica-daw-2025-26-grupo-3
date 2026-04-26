@@ -81,6 +81,7 @@ export default function MyProducts() {
                     isOwnerMode={true}
                     emptyTitle="Aún no has publicado ningún producto"
                     emptySubtitle="Anímate y pon a la venta lo que ya no usas."
+                    currentUser={currentUser}
                 />
             )}
 
