@@ -17,7 +17,7 @@ import { useCartState } from "~/stores/shoppingCart-store";
 import { ReviewList } from "~/components/Product/ReviewList";
 import { ReviewForm } from "~/components/Product/ReviewForm";
 
-export async function clientLoader({ params }: any) {
+export async function clientLoader({ params }: { params: { id: string } }) {
 
     const currentUser = await requireUserLoader();
     if (!currentUser) {

@@ -1,26 +1,21 @@
 import { useParams, useNavigate, useLoaderData, redirect } from "react-router"
-import { useEffect, useState } from "react";
 import ProductForm, { type ProductData } from "~/components/Product/product_form";
 import { deleteProductImage, getBasicProduct, updateProduct, uploadProductImage } from "~/services/product-service";
 import { Container } from "react-bootstrap";
-import { Spinner } from "~/components/spinner";
-import { requireUserLoader, useUserState } from "~/stores/user-store";
-import {ErrorCard} from "~/components/error-card";
+import { requireUserLoader } from "~/stores/user-store";
+import { ErrorCard } from "~/components/error-card";
 
-export async function clientLoader({ params }: any) {
+export async function clientLoader({ params }: { params: { id: string } }) {
     const { id } = params; // We obtain the ID from the URL
-
     const currentUser = await requireUserLoader();
 
     if (!currentUser) {
-        return redirect("/login");
+        return { productData: null, currentUser: null, error: "Debes iniciar sesión para editar un producto." };
     }
+    const numericId = Number(id);
 
-
-    const loggedUser = await requireUserLoader();
-
-    if (!loggedUser) {
-        return redirect("/login");
+    if (Number.isNaN(numericId)) {
+        return { productData: null, currentUser, error: "ID de producto inválido." };
     }
 
     try {
@@ -43,96 +38,71 @@ export async function clientLoader({ params }: any) {
             images: data.images?.map((img: any) => ({ id: img.id })) || []
         };
 
-        return { productData, currentUser };
-
-
-        return { productData, loggedUser };
+        return { productData, currentUser, error: null };
 
     } catch (error) {
         console.error("Error cargando el producto en el loader", error);
-        return { productData: null, currentUser };
-        return { productData: null, loggedUser };
+        return { productData: null, currentUser, error: "No se pudo cargar el producto para editar." };
     }
 }
 
 export default function EditProduct() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
-    const { productData } = useLoaderData<typeof clientLoader>();
-    const { currentUser, loadLoggedUser } = useUserState();
-    const [userLoaded, setUserLoaded] = useState(false);
+    const { productData, currentUser, error } = useLoaderData<typeof clientLoader>();
 
-    useEffect(() => {
-        loadLoggedUser().then(() => setUserLoaded(true));
-    }, [loadLoggedUser]);
 
     const handleEditAction = async (prevState: any, formData: FormData) => {
-        setLoading(true);
-        setLoading(true);
+
         try {
 
-            // we call to the api to update the product texts
-            const productData = {
+            const imagesToRemove = formData.getAll("removeImages");
+            const newImages = formData.getAll("productimages") as File[];
+
+            const validNewImagesCount = newImages.filter(file => file.size > 0).length;
+            const initialImageCount = productData?.images?.length || 0;
+            const finalImageCount = initialImageCount - imagesToRemove.length + validNewImagesCount;
+
+            // If there aren´any images we show an error
+            if (finalImageCount < 1) {
+                return { error: "El producto debe tener al menos una imagen. Sube una nueva o desmarca alguna de las actuales." };
+            }
+
+            const updateData = {
                 productName: formData.get("productName") as string,
                 description: formData.get("description") as string,
                 price: Number(formData.get("price")),
                 state: Number(formData.get("state"))
             };
 
-            await updateProduct(Number(id), productData);
+            //We update the data of the product
+            await updateProduct(Number(id), updateData);
 
-            // We remove the images that the user has marked for deletion.
-            const imagesToRemove = formData.getAll("removeImages");
+            // we delete the deleted images
             for (const imageId of imagesToRemove) {
                 await deleteProductImage(Number(id), Number(imageId));
             }
 
-            //We upload the new images
-            const newImages = formData.getAll("productimages") as File[];
+            // We upload the new images
             for (const file of newImages) {
-                // If the file input is empty, it may return a File with size 0, we ignore it.
                 if (file.size > 0) {
                     await uploadProductImage(Number(id), file);
                 }
             }
 
-            // When the product is updated, we navigate to the product detail page to see the changes.
             navigate('/product_detail/' + id);
-
             return null;
         } catch (error) {
-            setLoading(false);
             const errorMessage = error instanceof Error
                 ? (error.message.split(":")[1]?.trim() || error.message)
                 : "Hubo un problema de conexión al guardar el producto.";
             return { error: errorMessage };
-            setLoading(false);
         }
     };
-
-    if (loading) {
-        return (
-            <Container className="my-5 d-flex flex-column justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
-                <Spinner />
-                <p className="text-muted mt-3 fs-5">Cargando producto...</p>
-            </Container>
-        );
-    }
-
-    if (!userLoaded) {
-        return (
-            <Container className="my-5 d-flex flex-column justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
-                <Spinner />
-                <p className="text-muted mt-3 fs-5">Verificando sesión...</p>
-            </Container>
-        );
-    }
-
-    if (!currentUser) {
+    if (error && !currentUser) {
         return (
             <Container className="my-5 d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
-                <ErrorCard message="Debes iniciar sesión para editar un producto." />
+                <ErrorCard message={error} />
             </Container>
         );
     }

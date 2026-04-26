@@ -4,7 +4,6 @@ import ProductList from "~/components/Product/product_list";
 import { requireUserLoader } from "~/stores/user-store";
 import { useLoaderData } from "react-router";
 import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
-import type { PageDTO } from "~/dtos/PageDTO";
 
 export async function clientLoader() {
     // We load the user into Zustand's memory before rendering the page.

@@ -1,4 +1,4 @@
-import { Link, useLoaderData, useNavigate } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import { publishProduct, uploadProductImage } from "~/services/product-service";
 import ProductForm from "~/components/Product/product_form";
 import { Container } from "react-bootstrap";
@@ -34,6 +34,16 @@ export default function ProductPublish() {
     const handleCreateAction = async (prevState: any, formData: FormData) => {
 
         try {
+
+            const newImages = formData.getAll("productimages") as File[];
+
+            // We filter the real new images
+            const validNewImagesCount = newImages.filter(file => file.size > 0).length;
+
+            if (validNewImagesCount === 0) {
+                return { error: "Debes subir al menos una imagen para publicar el producto." };
+            }
+
             const ProductData = {
                 productName: formData.get("productName") as string,
                 description: formData.get("description") as string,
@@ -42,7 +52,6 @@ export default function ProductPublish() {
             };
             const newProduct = await publishProduct(ProductData);
 
-            const newImages = formData.getAll("productimages") as File[];
             for (const file of newImages) {
 
                 if (file.size > 0) {
