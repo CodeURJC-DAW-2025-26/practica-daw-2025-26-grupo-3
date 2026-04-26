@@ -82,7 +82,7 @@ export default function ProductDetail({ loaderData }: Route.ComponentProps) {
     if (!product || error) {
         return (
             <Container className="my-5 d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
-                <h2>{error || "Producto no encontrado"}</h2>
+                <ErrorCard message={error || "Producto no encontrado"} />
             </Container>
         );
     }

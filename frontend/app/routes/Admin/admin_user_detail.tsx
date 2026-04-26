@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 // Import useLoaderData to read fetched data, and useRevalidator to refresh the screen
 import { useLoaderData, Link, useRevalidator, type LoaderFunctionArgs } from 'react-router';
-import { Card, Badge, ListGroup, Button, Spinner } from 'react-bootstrap';
+import { Card, Badge, ListGroup, Button, Spinner, Container } from 'react-bootstrap';
 
 // Import the real services and DTO
 import { type UserDTO } from '~/dtos/UserDTO';
 import { getUserById, toggleUserBlockStatus } from '~/services/admin-service';
 import { requireUserLoader } from "../auth-loaders";
+import { ErrorCard } from '~/components/error-card';
 
 /*
  * 1. DATA LOADER
@@ -15,7 +16,9 @@ import { requireUserLoader } from "../auth-loaders";
  */
 export async function clientLoader({ params }: LoaderFunctionArgs) {
     const currentUser = await requireUserLoader();
-    if (!currentUser || !currentUser.roles.includes("ADMIN")) return null;
+    if (!currentUser || !currentUser.roles.includes("ADMIN")) {
+        return { user: null, currentUser: null, error: "Acceso denegado." };
+    }
 
     const userId = params.id;
 
@@ -23,8 +26,20 @@ export async function clientLoader({ params }: LoaderFunctionArgs) {
         throw new Error("User ID not provided in the URL");
     }
 
-    // Actual backend call to fetch user data
-    return await getUserById(userId);
+    try {
+        // Actual backend call to fetch user data
+        const user = await getUserById(userId);
+        // If the API returns success but the user is null
+        if (!user) throw new Error();
+
+        return { user, currentUser, error: null };
+    } catch (err) {
+        return {
+            user: null,
+            currentUser,
+            error: "No hemos podido cargar este perfil. Es posible que el usuario haya sido eliminado o no exista."
+        };
+    }
 }
 
 /*
@@ -34,13 +49,21 @@ export default function AdminUserDetail() {
     const base_image_url = "/api/v1/images";
 
     // Extract the data provided by the clientLoader
-    const user = useLoaderData() as UserDTO;
+    const { user, currentUser, error } = useLoaderData<typeof clientLoader>();
 
     // Instantiate the revalidator to "refresh" the page data after blocking/unblocking
     const revalidator = useRevalidator();
 
     // Local state to prevent rapid double-clicks on the action button
     const [isUpdating, setIsUpdating] = useState(false);
+
+    if (error || !user) {
+        return (
+            <Container className="my-5 d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
+                <ErrorCard message={error || "Usuario no encontrado."} />
+            </Container>
+        );
+    }
 
     // 3. ACTION HANDLER (Toggle user state)
     const handleToggleState = async () => {
@@ -125,14 +148,18 @@ export default function AdminUserDetail() {
                             </div>
 
                             {/* Action Button: Block / Unblock */}
-                            <div className="d-grid gap-2">
+                            <div className="text-center">
                                 <Button
-                                    variant={user.state ? "outline-danger" : "outline-success"}
+                                    variant={user.state ? "danger" : "success"}
                                     onClick={handleToggleState}
                                     disabled={isUpdating}
+                                    className="fw-bold rounded-2 py-1 px-3 shadow-sm"
                                 >
                                     {isUpdating ? (
-                                        <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+                                        <>
+                                            <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="me-2" />
+                                            Actualizando...
+                                        </>
                                     ) : user.state ? (
                                         <><i className="bi bi-ban me-2"></i>Bloquear Usuario</>
                                     ) : (
