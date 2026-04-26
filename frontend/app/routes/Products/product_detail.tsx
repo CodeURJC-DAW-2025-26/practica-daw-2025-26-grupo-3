@@ -234,7 +234,7 @@ export default function ProductDetail({ loaderData }: Route.ComponentProps) {
                             ) : (
                                 <>
                                     <i className="bi bi-cart-fill me-2" style={{ fontSize: "1.3rem" }}></i>
-                                    Añadir al Carrito
+                                    Añadir al carrito
                                 </>
                             )}
                         </Button>
@@ -273,7 +273,7 @@ export default function ProductDetail({ loaderData }: Route.ComponentProps) {
             {currentUser && (
                 <ReviewForm
                     productId={productIdNumber!}
-                    title={"Añadir Reseña"}
+                    title={"Añadir reseña"}
                     reviewTitleValue=""
                     reviewBodyValue=""
                     operation="create"

@@ -69,7 +69,7 @@ export default function AdminSidebar() {
                         aria-controls="productsMenu"
                         aria-expanded={openProducts}
                     >
-                        <span><i className="bi bi-box-seam me-2"></i> Gestionar Productos</span>
+                        <span><i className="bi bi-box-seam me-2"></i> Gestionar productos</span>
                         <i className={`bi bi-chevron-${openProducts ? 'up' : 'down'} small`}></i>
                     </div>
 
@@ -89,20 +89,20 @@ export default function AdminSidebar() {
                 </div>
 
                 {/* Orders Management */}
-                <NavLink to="/admin/orders_list" className={getNavLinkClass}>
+                <NavLink to="/orders_list" className={getNavLinkClass}>
                     <i className="bi bi-receipt me-2"></i> Gestionar Pedidos
                 </NavLink>
 
                 {/* Users Management */}
                 <NavLink to="/admin/users" className={getNavLinkClass}>
-                    <i className="bi bi-people me-2"></i> Gestionar Usuarios
+                    <i className="bi bi-people me-2"></i> Gestionar usuarios
                 </NavLink>
 
                 <hr className="text-secondary my-3 opacity-25" />
 
                 {/* Other Links */}
                 <NavLink to="/profile" className={getNavLinkClass}>
-                    <i className="bi bi-person-badge me-2"></i> Mi Perfil
+                    <i className="bi bi-person-badge me-2"></i> Mi perfil
                 </NavLink>
                 <Link to="/" className="nav-link text-dark px-3 py-2 mb-1">
                     <i className="bi bi-shop me-2"></i> Volver a la tienda

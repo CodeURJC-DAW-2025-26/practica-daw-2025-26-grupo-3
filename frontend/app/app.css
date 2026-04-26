@@ -112,6 +112,15 @@
 .auth-message-alert {
     width: min(100%, 340px);
     margin: 0;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.auth-message-alert.auth-message-alert-closing {
+    opacity: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
 }
 
 .auth-message-alert.alert-success {
@@ -124,4 +133,18 @@
     background-color: #fee2e2;
     color: #b91c1c;
     border-color: #fca5a5;
+}
+
+.btn-profile-edit {
+    background-color: #f97316;
+    border-color: #f97316;
+    color: #ffffff;
+}
+
+.btn-profile-edit:hover,
+.btn-profile-edit:focus,
+.btn-profile-edit:active {
+    background-color: #ea580c;
+    border-color: #ea580c;
+    color: #ffffff;
 }
