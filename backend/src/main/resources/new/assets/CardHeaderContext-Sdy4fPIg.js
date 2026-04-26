@@ -1,1 +1,0 @@
-import{B as e,H as t,t as n}from"./jsx-runtime-CHXwXnQA.js";import{a as r}from"./ThemeProvider-CM9pUYSj.js";var i=t(e()),a=t(r()),o=n(),s=(e=>i.forwardRef((t,n)=>(0,o.jsx)(`div`,{...t,ref:n,className:(0,a.default)(t.className,e)}))),c=i.createContext(null);c.displayName=`CardHeaderContext`;export{s as n,c as t};

@@ -1,1 +1,0 @@
-import{t as e}from"./jsx-runtime-CHXwXnQA.js";var t=e();function n({message:e,className:n}){return(0,t.jsx)(`div`,{className:n,style:{backgroundColor:`#fee2e2`,color:`#b91c1c`,padding:`12px 16px`,borderRadius:`8px`,border:`1px solid #fca5a5`,fontSize:`0.95rem`},children:(0,t.jsx)(`strong`,{children:e})})}export{n as t};

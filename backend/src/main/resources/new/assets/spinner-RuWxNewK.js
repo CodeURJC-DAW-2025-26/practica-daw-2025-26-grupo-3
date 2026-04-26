@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-QsxD-0dB.js";var t=e();function n(){return(0,t.jsx)(`span`,{className:`index-loading-spinner`,role:`status`,"aria-label":`Cargando`})}export{n as t};
