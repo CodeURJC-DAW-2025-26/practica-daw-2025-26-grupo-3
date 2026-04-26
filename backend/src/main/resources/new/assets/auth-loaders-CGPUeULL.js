@@ -1,0 +1,1 @@
+import{n as e}from"./user-store-CBJbme0i.js";async function t(t=!1){let n=e.getState();return(t||!n.currentUser)&&await n.loadLoggedUser(),e.getState().currentUser}export{t};

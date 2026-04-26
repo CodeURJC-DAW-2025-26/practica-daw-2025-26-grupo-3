@@ -1,1 +1,0 @@
-import{t as e}from"./jsx-runtime-DLUhCUAH.js";var t=e();function n(){return(0,t.jsx)(`span`,{className:`index-loading-spinner`,role:`status`,"aria-label":`Cargando`})}export{n as t};
