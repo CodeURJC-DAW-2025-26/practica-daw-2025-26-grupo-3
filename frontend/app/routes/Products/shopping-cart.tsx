@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link, useLoaderData, useNavigate } from "react-router";
 import { Item } from "~/components/ShoppingCart/Item";
-import { useUserState } from "~/stores/user-store";
 import type { Route } from "../+types";
 import { requireUserLoader } from "../auth-loaders";
 import { useCartState } from "~/stores/shoppingCart-store";
@@ -10,37 +9,33 @@ import { Container, Row, Col, Card, Table, Button } from "react-bootstrap";
 
 export async function clientLoader() {
     // we verify if the user is logged
-    const user = await requireUserLoader();
+    const currentUser = await requireUserLoader();
 
-    let cartError = null;
-
-    // If the user is logged, we load his shopping cart before showing the page
-    if (user) {
-        try {
-            //we use getState() to access Zustand from outside a component
-            await useCartState.getState().getCart();
-        } catch (err) {
-            cartError = "Error cargando los productos del carrito. Inténtalo de nuevo más tarde.";
-        }
+    if (!currentUser) {
+        return { currentUser: null, error: "Debes iniciar sesión para ver y gestionar tu carrito." };
     }
 
-    return { cartError };
+    // If the user is logged, we load his shopping cart before showing the page
+    try {
+        await useCartState.getState().getCart();
+        return { currentUser, error: null };
+    } catch (err) {
+        return { currentUser, error: "Error cargando los productos del carrito. Inténtalo de nuevo más tarde." };
+    }
 }
 
 export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
 
-    // cartError if it fails to load the page for the first time
-    const { cartError } = useLoaderData<typeof clientLoader>();
+    const { currentUser, error } = useLoaderData<typeof clientLoader>();
 
     const [convertLoading, setConvertLoading] = useState(false);
 
     //ActionError if the user clicks "Complete purchase" and the server gives an error at that moment
     const [actionError, setActionError] = useState<string | null>(null);
-    
-    //If there is an error loading or trying to purchase, we will show it.
-    const displayError = actionError || cartError;
 
-    const { currentUser } = useUserState();
+    //If there is an error loading or trying to purchase, we will show it.
+    const displayError = actionError || error;
+
     const { items, totalPrice, totalQuantity, convertToOrder } = useCartState();
     const navigate = useNavigate();
     const hasItems = (items?.length ?? 0) > 0;
@@ -61,8 +56,12 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
         }
     }
 
-    if (!currentUser) {
-        return (<ErrorCard message="Debes iniciar sesion para acceder a esta página." className="container my-5" />)
+    if (error && !currentUser) {
+        return (
+            <Container className="my-5 d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
+                <ErrorCard message={error} />
+            </Container>
+        );
     }
 
     return (
@@ -134,7 +133,7 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
                                     type="button"
                                     className={`w-100 mb-2 d-flex align-items-center justify-content-center signup-submit-btn ${convertLoading ? "signup-submit-btn-loading" : ""}`}
                                     onClick={handleCartToOrder}
-                                    disabled={convertLoading}
+                                    disabled={convertLoading || !hasItems || displayError !== null}
                                 >
                                     {convertLoading ? (
                                         <span className="signup-loading-spinner" role="status" aria-label="Finalizando compra" />

@@ -25,7 +25,7 @@ export default function ReviewEdit({ loaderData }: Route.ComponentProps) {
         return (
             <div className="container my-5 d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
                 <div className="w-100" style={{ maxWidth: "720px" }}>
-                    <ErrorCard message="Debes iniciar sesion para acceder a esta página." />
+                    <ErrorCard message="Debes iniciar sesión para editar tus reseñas." />
                 </div>
             </div>
         );

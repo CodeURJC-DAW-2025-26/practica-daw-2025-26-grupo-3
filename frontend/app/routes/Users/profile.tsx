@@ -34,7 +34,7 @@ export default function Profile({ loaderData }: Route.ComponentProps) {
             <div className="d-flex flex-column min-vh-100">
                 <ProfileNavbar />
                 <div className="flex-grow-1 d-flex flex-column justify-content-center">
-                    <ErrorCard message="Debes iniciar sesion para acceder a esta página." className="container my-5" />
+                    <ErrorCard message="Debes iniciar sesión para acceder a tu perfil." className="container my-5" />
                 </div>
                 <Foot />
             </div>

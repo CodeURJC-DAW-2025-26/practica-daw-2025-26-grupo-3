@@ -1,6 +1,8 @@
 import { Link, useLoaderData, useNavigate } from "react-router";
 import { publishProduct, uploadProductImage } from "~/services/product-service";
 import ProductForm from "~/components/Product/product_form";
+import { Container } from "react-bootstrap";
+import { ErrorCard } from "~/components/error-card";
 
 import { requireUserLoader } from "~/stores/user-store";
 
@@ -18,11 +20,15 @@ export async function clientLoader() {
         }
     }
 
-    return { isAdmin };
+    return {
+        isAdmin,
+        currentUser,
+        error: currentUser ? null : "Debes iniciar sesión para publicar un producto."
+    };
 }
 export default function ProductPublish() {
     const navigate = useNavigate();
-    const { isAdmin } = useLoaderData<typeof clientLoader>();
+    const { isAdmin, currentUser, error } = useLoaderData<typeof clientLoader>();
     
 
     const handleCreateAction = async (prevState: any, formData: FormData) => {
@@ -54,8 +60,16 @@ export default function ProductPublish() {
         }
 
     }
-    return (<ProductForm isEditing={false} 
-        isAdmin={isAdmin} 
-        actionFunction={handleCreateAction} 
+    if (!currentUser && error) {
+        return (
+            <Container className="my-5 d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
+                <ErrorCard message={error} />
+            </Container>
+        );
+    }
+
+    return (<ProductForm isEditing={false}
+        isAdmin={isAdmin}
+        actionFunction={handleCreateAction}
         onCancel={() => navigate('/')} />);
 }

@@ -8,11 +8,9 @@ import {
     Card,
     Button,
     Badge,
-    Alert
 } from "react-bootstrap";
 import { useUserState } from "~/stores/user-store";
-import { getProducts, removeProduct } from "~/services/product-service";
-
+import { removeProduct } from "~/services/product-service";
 
 //This function returns the corresponding string to the state number
 function getStateInfo(state: number) {
@@ -25,16 +23,6 @@ function getStateInfo(state: number) {
             return { label: "Segunda Mano", variant: "warning", bgClass: "bg-warning-subtle text-warning" };
         default:
             return { label: "Desconocido", variant: "secondary", bgClass: "bg-secondary-subtle text-secondary" };
-    }
-}
-
-export async function clientLoader() {
-    try {
-        const products = await getProducts();
-        return Array.isArray(products) ? products : [];
-    } catch (e) {
-        console.error("Error loading products:", e);
-        return [];
     }
 }
 
@@ -73,7 +61,6 @@ export default function ProductList({ products, isOwnerMode = false,
             }
         }
     }
-
 
     return (
         <section className="py-5 bg-white">

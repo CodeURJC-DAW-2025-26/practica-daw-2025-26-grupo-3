@@ -30,7 +30,7 @@ export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
 
     async function handleEditForm(prevState: { errMessage: string | null }, formData: FormData) {
         if (!currentUser) {
-            return { errMessage: "Debes iniciar sesion para editar tu perfil." };
+            return { errMessage: "Debes iniciar sesión para editar la información de tu perfil." };
         }
 
         let editError: string | null = null;
@@ -69,7 +69,7 @@ export default function ProfileEdit({ loaderData }: Route.ComponentProps) {
             <div className="d-flex flex-column min-vh-100">
                 <ProfileNavbar />
                 <div className="flex-grow-1 d-flex flex-column justify-content-center">
-                    <ErrorCard message="Debes iniciar sesion para acceder a esta página." className="container my-5" />
+                    <ErrorCard message="Debes iniciar sesión para entrar en la edición de tu perfil." className="container my-5" />
                 </div>
                 <Foot />
             </div>

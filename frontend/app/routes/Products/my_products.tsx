@@ -4,13 +4,23 @@ import { Spinner } from "~/components/spinner";
 import ProductList from "~/components/Product/product_list";
 import { getMyProducts } from "~/services/product-service";
 
+import { requireUserLoader } from "~/stores/user-store";
+import { ErrorCard } from "~/components/error-card";
+
 export async function clientLoader() {
+
+    const currentUser = await requireUserLoader();
+
+    if (!currentUser) {
+        return { products: null, currentUser: null, error: "Debes iniciar sesión para ver y gestionar tus productos." };
+    }
+
     try {
         const products = await getMyProducts();
-        return { products };
+        return { products, currentUser, error: null };
     } catch (error) {
         console.error("Error cargando los productos:", error);
-        return { products: [] };
+        return { products: [], currentUser, error: "Hubo un problema de conexión al cargar tus productos." };
 
     }
 }
@@ -18,11 +28,30 @@ export async function clientLoader() {
 export default function MyProducts() {
     const data = useLoaderData<typeof clientLoader>();
     const products = data?.products || [];
+    const currentUser = data?.currentUser;
+    const error = data?.error;
 
     const navigation = useNavigation();
 
     // We check if the app is loading anything
     const isLoading = navigation.state === "loading" || navigation.state === "submitting";
+
+    // If has occured an error and the user is not logged
+    if (error && !currentUser) {
+        return (
+            <Container className="my-5 d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
+                <ErrorCard message={error} />
+            </Container>
+        );
+    }
+    // If has occured an error and the user is logged
+    if (error && currentUser) {
+        return (
+            <Container className="my-5 d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
+                <ErrorCard message={error} />
+            </Container>
+        );
+    }
 
     return (
         <>
