@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-// Import NavLink for active-state routing, and Link for standard routing
-import { NavLink, Link } from 'react-router';
+// Import NavLink for active-state routing, Link for standard routing, and useNavigate for programmatic navigation
+import { NavLink, Link, useNavigate } from 'react-router';
 // Import React-Bootstrap components
 import { Nav, Collapse } from 'react-bootstrap';
 // Import our global store to access user data and logout action
@@ -11,12 +11,21 @@ export default function AdminSidebar() {
     const { currentUser, logout } = useUserState();
     const base_image_url = "/api/v1/images";
 
-    // State to manage the open/close behavior of the "Gestionar Productos" submenu
+    // Initialize the navigate hook to enable redirects
+    const navigate = useNavigate();
+
+    // State to manage the open/close behavior of the "Manage Products" submenu
     const [openProducts, setOpenProducts] = useState(false);
 
-    // Helper function to define classes for active links
+    // Helper function to define classes for active links dynamically
     const getNavLinkClass = ({ isActive }: { isActive: boolean }) =>
         isActive ? "nav-link fw-bold text-primary bg-white rounded shadow-sm px-3 py-2 mb-1" : "nav-link text-dark px-3 py-2 mb-1";
+
+    // Handle user logout and redirect to the home page
+    const handleLogout = async () => {
+        await logout(); // Clear backend session and Zustand state
+        navigate("/");  // Redirect user to the public landing page
+    };
 
     return (
         <div className="bg-light p-3 border-end h-100">
@@ -80,7 +89,7 @@ export default function AdminSidebar() {
                 </div>
 
                 {/* Orders Management */}
-                <NavLink to="/orders_list" className={getNavLinkClass}>
+                <NavLink to="/admin/orders_list" className={getNavLinkClass}>
                     <i className="bi bi-receipt me-2"></i> Gestionar Pedidos
                 </NavLink>
 
@@ -101,7 +110,7 @@ export default function AdminSidebar() {
 
                 {/* --- LOGOUT BUTTON --- */}
                 <button
-                    onClick={logout}
+                    onClick={handleLogout}
                     className="nav-link text-danger text-start bg-transparent border-0 px-3 py-2 mt-auto"
                 >
                     <i className="bi bi-box-arrow-right me-2"></i> Cerrar sesión

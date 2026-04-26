@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import es.grupo3.practica25_26.dto.AdminOrderDataDTO;
 import es.grupo3.practica25_26.dto.OrderDTO;
 import es.grupo3.practica25_26.mapper.OrderMapper;
+import es.grupo3.practica25_26.mapper.AdminOrderMapper;
 import es.grupo3.practica25_26.model.Order;
 import es.grupo3.practica25_26.model.User;
 import es.grupo3.practica25_26.service.BillService;
@@ -47,6 +50,9 @@ public class OrderRestController {
 
     @Autowired
     private OrderMapper orderMapper;
+
+    @Autowired
+    private AdminOrderMapper AdminOrderMapper;
 
     @Operation(summary = "Get PDF for a specific order")
     @ApiResponses(value = {
@@ -176,5 +182,25 @@ public class OrderRestController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     "The order " + orderId + " does not exist.");
         }
+    }
+
+    @Operation(summary = "Get all pending orders (Admin)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Pending orders retrieved successfully"),
+            @ApiResponse(responseCode = "403", description = "Forbidden (Admin only)")
+    })
+
+    @GetMapping("/pending")
+    public Collection<AdminOrderDataDTO> getAllOrdersAdmin(HttpServletRequest request) {
+        if (!request.isUserInRole("ADMIN")) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Only administrators can list pending orders.");
+        }
+
+        List<Order> pendingOrders = orderService.getAllOrders().stream()
+                .filter(order -> order.getState() == 1)
+                .toList();
+
+        return AdminOrderMapper.toDTOs(pendingOrders);
     }
 }

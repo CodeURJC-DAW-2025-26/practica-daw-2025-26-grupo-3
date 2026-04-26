@@ -1,11 +1,8 @@
 import type { UserDTO } from "~/dtos/UserDTO";
-import type { UserCreateDTO } from "~/dtos/UserCreateDTO";
-import type { UserPostDTO } from "~/dtos/UserPostDTO";
-import type { UserPassDTO } from "~/dtos/UserPassDTO";
-import type { UserPassBasicDTO } from "~/dtos/UserPassBasicDTO";
 import { HttpError } from "./HttpError";
 import type { KpiDTO } from "~/dtos/KpiDTO";
 import type { DataGraphicDTO } from "~/dtos/DataGraphicDTO";
+import type { OrderDTO } from "~/dtos/OrderDTO";
 
 export { HttpError };
 
@@ -100,4 +97,35 @@ export async function getProductTypes(): Promise<DataGraphicDTO> {
     }
 
     return await response.json();
+}
+
+//get pending orders
+export async function getPendingOrders(): Promise<OrderDTO[]> {
+    const url = `${base_admin_url}/orders/pending`;
+    const response = await fetch(url, {
+        method: "GET",
+        credentials: "include"
+    });
+
+    if (!response.ok) {
+        throw new HttpError(response.status, `Error fetching orders list`);
+    }
+
+    return await response.json();
+}
+
+
+//accept order (change state to accepted) 
+export async function acceptOrder(orderId: string | number) {
+    const url = `${base_admin_url}/orders/${orderId}`;
+    const response = await fetch(url, {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ accept: true })
+    });
+
+    if (!response.ok) {
+        throw new HttpError(response.status, `Error updating order state`);
+    }
 }
