@@ -134,3 +134,17 @@
     color: #b91c1c;
     border-color: #fca5a5;
 }
+
+.btn-profile-edit {
+    background-color: #f97316;
+    border-color: #f97316;
+    color: #ffffff;
+}
+
+.btn-profile-edit:hover,
+.btn-profile-edit:focus,
+.btn-profile-edit:active {
+    background-color: #ea580c;
+    border-color: #ea580c;
+    color: #ffffff;
+}

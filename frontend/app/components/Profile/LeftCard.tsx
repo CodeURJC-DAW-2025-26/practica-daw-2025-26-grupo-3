@@ -36,23 +36,23 @@ export function LeftCard({ baseImageUrl, userName, imageId }: LeftCardProps) {
             <div className="d-grid gap-2">
                 <Link
                     to="/my_products"
-                    className="btn btn-sm btn-primary rounded d-flex align-items-center justify-content-center py-2"
+                    className="btn btn-sm btn-primary rounded d-flex align-items-center justify-content-center py-2 fw-bold"
                 >
-                    Mis Productos
+                    Mis productos
                 </Link>
                 <Link
                     to="/product-publish"
-                    className="btn btn-sm btn-success rounded d-flex align-items-center justify-content-center py-2"
+                    className="btn btn-sm btn-success rounded d-flex align-items-center justify-content-center py-2 fw-bold"
                 >
-                    Publicar Producto
+                    Publicar producto
                 </Link>
                 <Button
                     variant="danger"
                     size="sm"
-                    className="rounded d-flex align-items-center justify-content-center py-2 w-100"
+                    className="rounded d-flex align-items-center justify-content-center py-2 w-100 fw-bold"
                     onClick={handleLogout}
                 >
-                    Cerrar Sesion
+                    Cerrar sesión
                 </Button>
             </div>
         </Card>

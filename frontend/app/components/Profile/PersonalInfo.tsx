@@ -13,8 +13,12 @@ export function PersonalInfo({ baseImageUrl, currentUser, isAdmin }: PersonalInf
         <Card className="border-0 shadow-sm p-4 mb-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <h5 className="fw-bold mb-0 text-dark">Informacion Personal</h5>
-                <Link to="/profile/edit" className="btn btn-sm btn-outline-dark rounded-pill px-3">
-                    Editar
+                <Link
+                    to="/profile/edit"
+                    className="btn btn-sm btn-profile-edit rounded-pill px-4 fw-bold shadow-sm d-inline-flex align-items-center gap-2"
+                >
+                    <i className="bi bi-pencil-square" aria-hidden="true" />
+                    Editar perfil
                 </Link>
             </div>
 

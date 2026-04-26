@@ -49,7 +49,7 @@ export function Navbar() {
                         {currentUser && (
                             <>
                                 <Nav.Link as={Link} className="fw-semibold" to="/product-publish">
-                                    Publicar Producto
+                                    Publicar producto
                                 </Nav.Link>
                                 <Nav.Link as={Link} className="fw-semibold" to="/shopping-cart" aria-label="Carrito">
                                     <i className="bi bi-cart4" />
@@ -100,7 +100,7 @@ export function Navbar() {
                                 {isAdmin && (
                                     <>
                                         <NavDropdown.Item as={Link} to="/admin" className="fw-bold text-danger">
-                                            Admin Panel
+                                            Panel de administración
                                         </NavDropdown.Item>
                                         <NavDropdown.Divider />
                                     </>

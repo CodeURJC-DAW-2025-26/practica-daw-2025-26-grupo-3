@@ -182,7 +182,7 @@ export default function Index() {
                             <div className="mt-4 d-flex gap-3 flex-wrap">
                                 {currentUser ?
                                     <Button as={Link as any} to="/product_search" variant="primary" size="lg" className="px-5 shadow">
-                                        Explorar Ahora
+                                        Explorar ahora
                                     </Button>
                                     :
                                     <Button as={Link as any} to="/login" variant="primary" size="lg" className="px-5 shadow">
