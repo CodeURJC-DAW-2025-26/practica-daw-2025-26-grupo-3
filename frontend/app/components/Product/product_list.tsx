@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router";
+import { Link , useRevalidator } from "react-router";
 import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
 import {
     Container,
@@ -7,10 +7,10 @@ import {
     Card,
     Button,
     Badge,
-    Alert
 } from "react-bootstrap";
 import { useUserState } from "~/stores/user-store";
-import { getProducts, removeProduct } from "~/services/product-service";
+import { removeProduct } from "~/services/product-service";
+import { useState } from "react";
 
 
 //This function returns the corresponding string to the state number
@@ -27,16 +27,6 @@ function getStateInfo(state: number) {
     }
 }
 
-export async function clientLoader() {
-    try {
-        const products = await getProducts();
-        return Array.isArray(products) ? products : [];
-    } catch (e) {
-        console.error("Error loading products:", e);
-        return [];
-    }
-}
-
 interface ProductListProps {
     products: ProductBasicDTO[];
     isOwnerMode?: boolean;
@@ -49,6 +39,9 @@ export default function ProductList({ products, isOwnerMode = false,
     emptySubtitle = "Prueba a buscarlos mas adelante" }: ProductListProps) {
     const { currentUser } = useUserState(); //we need the user state to know if he is logged or not;
 
+    const revalidator = useRevalidator();
+    const [deletedIds, setDeletedIds] = useState<Set<number>>(new Set());
+
     async function handleDeleteProduct(productId: number): Promise<void> {
         const isConfirmed = window.confirm("¿Estás seguro de que quieres eliminar este producto? Esta acción no se puede deshacer.");
 
@@ -57,12 +50,19 @@ export default function ProductList({ products, isOwnerMode = false,
                 // We try to remove the product
                 await removeProduct(productId);
 
+                // We add it to the local blacklist to hide it inmediately
+                setDeletedIds(prev => new Set(prev).add(productId));
+
+                revalidator.revalidate();
+
             } catch (error) {
                 console.error("Error eliminando el producto:", error);
                 alert("Hubo un problema al intentar eliminar el producto.");
             }
         }
     }
+    // We filter the original list to avoid drawing those on the blacklist
+    const visibleProducts = products?.filter(product => !deletedIds.has(product.id)) || [];
 
 
     return (

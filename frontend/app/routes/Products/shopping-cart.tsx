@@ -62,7 +62,7 @@ export default function ShoppingCart({ loaderData }: Route.ComponentProps) {
     }
 
     if (!currentUser) {
-        return (<ErrorCard message="Debes iniciar sesion para acceder a esta página." className="container my-5" />)
+        return (<ErrorCard message="Debes iniciar sesión para ver y gestionar tu carrito." className="container my-5" />)
     }
 
     return (

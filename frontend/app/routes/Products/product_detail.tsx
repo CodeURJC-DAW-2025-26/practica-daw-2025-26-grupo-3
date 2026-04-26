@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router";
+import { useState } from "react";
+import { Link, useNavigate, useLoaderData } from "react-router";
 import { getBasicProduct, removeProduct } from "~/services/product-service";
-import type { ProductDetailDTO } from "~/dtos/ProductDetailDTO";
-import { useUserState } from "~/stores/user-store";
 import { ErrorCard } from "~/components/error-card";
 import { requireUserLoader } from "../auth-loaders";
 import type { Route } from "../+types";
@@ -13,46 +11,44 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Carousel from "react-bootstrap/Carousel";
 import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Card from "react-bootstrap/Card";
 import Image from "react-bootstrap/Image";
 import { Spinner } from "~/components/spinner";
 import { useCartState } from "~/stores/shoppingCart-store";
 import { ReviewList } from "~/components/Product/ReviewList";
 import { ReviewForm } from "~/components/Product/ReviewForm";
 
-export async function clientLoader() {
-    return await requireUserLoader();
+export async function clientLoader({ params }: any) {
+
+    const currentUser = await requireUserLoader();
+    if (!currentUser) {
+
+        return { product: null, currentUser: null, error: "Debes iniciar sesión para ver el detalle de los productos." };
+    }
+
+    const numericId = Number(params.id);
+    if (Number.isNaN(numericId)) {
+        return { product: null, currentUser, error: "ID de producto inválido." };
+    }
+
+
+    try {
+        const product = await getBasicProduct(numericId);
+        return { product, currentUser, error: null };
+    } catch (err) {
+        console.error("Error cargando el producto:", err);
+        return { product: null, currentUser, error: "No hemos podido cargar este producto. Puede que ya no esté disponible o haya un problema de conexión." };
+    }
 }
 
 export default function ProductDetail({ loaderData }: Route.ComponentProps) {
-    const { id } = useParams();
+    const { product, currentUser, error } = useLoaderData<typeof clientLoader>();
     const navigate = useNavigate();
-    const [product, setProduct] = useState<ProductDetailDTO | null>(null);
-    const [productIdNumber, setProductIdNumber] = useState<number | null>(null);
 
-    const [loading, setLoading] = useState(true);
     const [cartLoading, setCartLoading] = useState(false);
     const [cartError, setCartError] = useState<string | null>(null);
 
-    const { currentUser, loadLoggedUser } = useUserState();
     const { addItem } = useCartState();
 
-    function loadProductId() {
-        if (!id) {
-            setProductIdNumber(null);
-            return;
-        }
-
-        const numericId = Number(id);
-        if (Number.isNaN(numericId)) {
-            setProductIdNumber(null);
-            setLoading(false);
-            return;
-        }
-
-        setProductIdNumber(numericId);
-    }
 
     async function handleAddCart(id: number) {
         let errorMessage: string | null = null;
@@ -74,48 +70,19 @@ export default function ProductDetail({ loaderData }: Route.ComponentProps) {
         }
     }
 
-    useEffect(() => {
-        loadLoggedUser();
-    }, [loadLoggedUser]);
 
-    useEffect(() => {
-        loadProductId();
-    }, [id]);
-
-    useEffect(() => {
-        if (productIdNumber !== null) {
-            getBasicProduct(productIdNumber)
-                .then(data => {
-                    setProduct(data);
-                    setLoading(false);
-                })
-                .catch(err => {
-                    console.error(err);
-                    setLoading(false);
-                });
-        }
-    }, [productIdNumber]);
-
-    if (!currentUser) {
+    if (error && !currentUser) {
         return (
             <Container className="my-5 d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
-                <ErrorCard message="Debes iniciar sesion para acceder a esta página." />
+                <ErrorCard message={error} />
             </Container>
         );
     }
 
-    if (loading) {
+    if (!product || error) {
         return (
             <Container className="my-5 d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
-                <Spinner />
-            </Container>
-        );
-    }
-
-    if (!product) {
-        return (
-            <Container className="my-5 d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
-                <h2>Producto no encontrado</h2>
+                <h2>{error || "Producto no encontrado"}</h2>
             </Container>
         );
     }
@@ -219,11 +186,7 @@ export default function ProductDetail({ loaderData }: Route.ComponentProps) {
 
                     <div className="my-4">
                         <Button
-                            onClick={() => {
-                                if (productIdNumber !== null) {
-                                    handleAddCart(productIdNumber);
-                                }
-                            }}
+                            onClick={() => handleAddCart(product.id)}
                             variant="primary"
                             className="w-100 d-flex align-items-center justify-content-center shadow-sm font-weight-bold"
                             style={{ padding: "0.6rem 1.5rem", fontSize: "1.1rem" }}
@@ -272,17 +235,17 @@ export default function ProductDetail({ loaderData }: Route.ComponentProps) {
 
             {currentUser && (
                 <ReviewForm
-                    productId={productIdNumber!}
+                    productId={product.id}
                     title={"Añadir reseña"}
                     reviewTitleValue=""
                     reviewBodyValue=""
                     operation="create"
-                    reviewId={0}    //reviewId is not needed for creating a review.
+                    reviewId={0}
                     buttonText="Publicar reseña"
                 />
             )}
 
-            {productIdNumber !== null && <ReviewList productId={productIdNumber} />}
+            <ReviewList productId={product.id} />
         </Container>
     );
 }
