@@ -60,6 +60,10 @@ export const useReviewState = create<ReviewState>((set, get) => ({
             // DEFENSE NOTE: We use the .filter() array method to create a new array 
             // that includes all reviews EXCEPT the one that matches the deleted ID.
             // This removes the item from the frontend state.
+
+            // DEFENSE NOTE: We use the .map() array method to iterate through the current reviews.
+            // If the ID matches the one we just edited, we replace it with the new 'editedReview' object.
+            // Otherwise, we return the existing review untouched.
             set({ reviews: get().reviews.filter(review => review.id !== deletedReview.id && review) });
         }
         catch (err) {
