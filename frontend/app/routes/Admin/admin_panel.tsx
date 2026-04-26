@@ -11,10 +11,16 @@ import TopProductChart from "~/components/Admin/top_product_chart";
 import { getKPIs, getProductTypes, getTopProduct } from '~/services/admin-service';
 import type { KpiDTO } from '~/dtos/KpiDTO';
 import type { DataGraphicDTO } from '~/dtos/DataGraphicDTO';
+import { requireUserLoader } from "../auth-loaders";
 
 //data loader
 export async function clientLoader() {
     try {
+        const currentUser = await requireUserLoader();
+        if (!currentUser || !currentUser.roles.includes("ADMIN")) {
+            return null; // Return null to prevent fetching and throwing errors. AdminRoute will handle the UI.
+        }
+
         const [kpis, topProducts, productTypes] = await Promise.all([
             getKPIs(),
             getTopProduct(),

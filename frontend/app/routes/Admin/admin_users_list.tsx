@@ -6,12 +6,16 @@ import { Link, useLoaderData, useRevalidator } from 'react-router';
 import type { UserDTO } from '~/dtos/UserDTO';
 // Import your real API services
 import { getAllUsers, toggleUserBlockStatus } from '~/services/admin-service';
+import { requireUserLoader } from "../auth-loaders";
 
 /*
  * 1. DATA LOADER
  * clientLoader fetches the list of all users from the backend
  */
 export async function clientLoader() {
+    const currentUser = await requireUserLoader();
+    if (!currentUser || !currentUser.roles.includes("ADMIN")) return null;
+
     const allUsers = await getAllUsers();
     const filteredUsers = allUsers.filter(user => !user.roles.includes("ADMIN"));
     return filteredUsers;

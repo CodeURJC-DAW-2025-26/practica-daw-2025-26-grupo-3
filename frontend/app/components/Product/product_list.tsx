@@ -1,4 +1,5 @@
-import { Link , useRevalidator } from "react-router";
+import { useState, useEffect } from "react";
+import { Link } from "react-router";
 import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
 import {
     Container,
@@ -10,8 +11,6 @@ import {
 } from "react-bootstrap";
 import { useUserState } from "~/stores/user-store";
 import { removeProduct } from "~/services/product-service";
-import { useState } from "react";
-
 
 //This function returns the corresponding string to the state number
 function getStateInfo(state: number) {
@@ -39,8 +38,11 @@ export default function ProductList({ products, isOwnerMode = false,
     emptySubtitle = "Prueba a buscarlos mas adelante" }: ProductListProps) {
     const { currentUser } = useUserState(); //we need the user state to know if he is logged or not;
 
-    const revalidator = useRevalidator();
-    const [deletedIds, setDeletedIds] = useState<Set<number>>(new Set());
+    const [localProducts, setLocalProducts] = useState<ProductBasicDTO[]>(products);
+
+    useEffect(() => {
+        setLocalProducts(products);
+    }, [products]);
 
     async function handleDeleteProduct(productId: number): Promise<void> {
         const isConfirmed = window.confirm("¿Estás seguro de que quieres eliminar este producto? Esta acción no se puede deshacer.");
@@ -50,10 +52,8 @@ export default function ProductList({ products, isOwnerMode = false,
                 // We try to remove the product
                 await removeProduct(productId);
 
-                // We add it to the local blacklist to hide it inmediately
-                setDeletedIds(prev => new Set(prev).add(productId));
-
-                revalidator.revalidate();
+                // Update the local state to remove the deleted product
+                setLocalProducts(prevProducts => prevProducts.filter(product => product.id !== productId));
 
             } catch (error) {
                 console.error("Error eliminando el producto:", error);
@@ -61,9 +61,6 @@ export default function ProductList({ products, isOwnerMode = false,
             }
         }
     }
-    // We filter the original list to avoid drawing those on the blacklist
-    const visibleProducts = products?.filter(product => !deletedIds.has(product.id)) || [];
-
 
     return (
         <section className="py-5 bg-white">
@@ -72,8 +69,8 @@ export default function ProductList({ products, isOwnerMode = false,
                 {/* --- PRODUCTS --- */}
                 <Row className="g-4 justify-content-center" id="featured-products">
                     { /* If there are products we show them */}
-                    {products && products.length > 0 ? (
-                        products.map((product: ProductBasicDTO) => (
+                    {localProducts && localProducts.length > 0 ? (
+                        localProducts.map((product: ProductBasicDTO) => (
                             <Col md={3} key={product.id}>
                                 <Card className="h-100 border-0 shadow-sm product-card position-relative">
                                     {/* Image */}

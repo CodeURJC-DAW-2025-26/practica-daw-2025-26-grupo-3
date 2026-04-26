@@ -1,26 +1,18 @@
 import { Col, Container, Row } from "react-bootstrap";
 import { Outlet, redirect, useLoaderData } from "react-router";
 import Admin_sidebar from "~/components/Admin/admin_sidebar";
-// Importamos la función de tu compañero
 import { requireUserLoader } from "../auth-loaders";
+import { ErrorCard } from "~/components/error-card";
+import { Navbar } from "~/components/navbar";
+import { Foot } from "~/components/foot";
 
 /*
  * 1. DATA LOADER
  * This is for F5 clicking
  */
 export async function clientLoader() {
-    try {
-        const user = await requireUserLoader();
-
-        // if the cookie expires return error
-        if (!user) {
-            throw new Error("No autenticado");
-        }
-
-        return user;
-    } catch (error) {
-        return redirect("/login");
-    }
+    const user = await requireUserLoader();
+    return user;
 }
 
 /*
@@ -29,13 +21,32 @@ export async function clientLoader() {
 export default function AdminRoute() {
     const verifiedUser = useLoaderData() as any;
 
+    if (!verifiedUser) {
+        return (
+            <div className="d-flex flex-column min-vh-100">
+                <Navbar />
+                <div className="flex-grow-1 d-flex flex-column justify-content-center">
+                    <Container className="my-5 d-flex justify-content-center align-items-center">
+                        <ErrorCard message="Debes iniciar sesión para acceder al panel de administración." />
+                    </Container>
+                </div>
+                <Foot />
+            </div>
+        );
+    }
+
     const isAdmin = verifiedUser.roles.includes("ADMIN") || verifiedUser.roles.includes("ROLE_ADMIN");
 
     if (!isAdmin) {
         return (
-            <div className="container mt-5 text-center min-vh-100">
-                <h1 className="text-danger display-4 fw-bold">Error 403: Forbidden</h1>
-                <p className="lead">You do not have administrator privileges to access this area.</p>
+            <div className="d-flex flex-column min-vh-100">
+                <Navbar />
+                <div className="flex-grow-1 d-flex flex-column justify-content-center">
+                    <Container className="my-5 d-flex justify-content-center align-items-center">
+                        <ErrorCard message="No tienes permisos de administrador para acceder a este área." />
+                    </Container>
+                </div>
+                <Foot />
             </div>
         );
     }

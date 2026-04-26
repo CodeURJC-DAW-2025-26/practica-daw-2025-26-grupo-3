@@ -3,10 +3,14 @@ import { useLoaderData, useRevalidator } from 'react-router';
 import { getPendingOrders } from '~/services/admin-service';
 import type { AdminOrderDataDTO } from '~/dtos/AdminOrderDataDTO';
 import { acceptOrder } from '~/services/admin-service';
+import { requireUserLoader } from "../auth-loaders";
 
 
 // Client loader: Fetch pending orders directly from the backend
 export async function clientLoader() {
+    const currentUser = await requireUserLoader();
+    if (!currentUser || !currentUser.roles.includes("ADMIN")) return [];
+
     // The backend now filters orders with state === 0
     const pendingOrders = await getPendingOrders();
     return pendingOrders;

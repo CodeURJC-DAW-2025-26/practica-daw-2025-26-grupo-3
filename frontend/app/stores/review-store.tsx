@@ -42,12 +42,10 @@ export const useReviewState = create<ReviewState>((set, get) => ({
     createReview: async (id: number, data: ReviewPostDTO) => {
         try {
             // Send the new review data to the backend
-            const newReview = await createProductReview(id, data);
+            await createProductReview(id, data);
 
-            // DEFENSE NOTE: We use the spread operator (...) to keep the existing reviews 
-            // and append the newly created review to the end of the array.
-            // This updates the UI immediately without needing to re-fetch all reviews.
-            set({ reviews: [...get().reviews, newReview] });
+            // Fetch the updated list of reviews to ensure all data (like nested user objects) is loaded correctly
+            await get().getProductReviews(id);
         } catch (err) {
             throw err;
         }
@@ -62,6 +60,10 @@ export const useReviewState = create<ReviewState>((set, get) => ({
             // DEFENSE NOTE: We use the .filter() array method to create a new array 
             // that includes all reviews EXCEPT the one that matches the deleted ID.
             // This removes the item from the frontend state.
+
+            // DEFENSE NOTE: We use the .map() array method to iterate through the current reviews.
+            // If the ID matches the one we just edited, we replace it with the new 'editedReview' object.
+            // Otherwise, we return the existing review untouched.
             set({ reviews: get().reviews.filter(review => review.id !== deletedReview.id && review) });
         }
         catch (err) {
@@ -73,12 +75,10 @@ export const useReviewState = create<ReviewState>((set, get) => ({
     editReview: async (reviewId: number, productId: number, newReviewData: ReviewPostDTO) => {
         try {
             // Send the updated data to the backend
-            const editedReview = await updateReview(reviewId, productId, newReviewData);
+            await updateReview(reviewId, productId, newReviewData);
 
-            // DEFENSE NOTE: We use the .map() array method to iterate through the current reviews.
-            // If the ID matches the one we just edited, we replace it with the new 'editedReview' object.
-            // Otherwise, we return the existing review untouched.
-            set({ reviews: get().reviews.map(review => review.id === editedReview.id ? editedReview : review) })
+            // Fetch the updated list of reviews to ensure all data (like nested user objects) is loaded correctly
+            await get().getProductReviews(productId);
         }
         catch (err) {
             throw err;
