@@ -569,7 +569,7 @@ Encargado de la implementación de autenticación, edición y visualización del
 
 #### **Alumno 2 - [Jorge Naranjo Ballesteros]**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Como responsable Full-Stack del Panel de Administración (Backoffice), he desarrollado desde cero la estructura de rutas protegidas, el layout y la centralización de servicios. Implementé las vistas para la gestión integral de usuarios, el catálogo de productos (reutilizando componentes para optimizar código) y un dashboard analítico con gráficos de negocio y sus DTOs. Además, desarrollé todo el sistema de revisión de pedidos, optimizando el Backend en Java (controladores REST, MapStruct y nuevos DTOs) y conectándolo con las nuevas interfaces en React, entregando un entorno de administración seguro, modular y totalmente funcional.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|

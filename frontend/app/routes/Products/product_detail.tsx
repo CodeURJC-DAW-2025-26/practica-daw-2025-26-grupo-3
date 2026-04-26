@@ -17,7 +17,7 @@ import { useCartState } from "~/stores/shoppingCart-store";
 import { ReviewList } from "~/components/Product/ReviewList";
 import { ReviewForm } from "~/components/Product/ReviewForm";
 
-export async function clientLoader({ params }: any) {
+export async function clientLoader({ params }: { params: { id: string } }) {
 
     const currentUser = await requireUserLoader();
     if (!currentUser) {
@@ -82,7 +82,7 @@ export default function ProductDetail({ loaderData }: Route.ComponentProps) {
     if (!product || error) {
         return (
             <Container className="my-5 d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
-                <h2>{error || "Producto no encontrado"}</h2>
+                <ErrorCard message={error || "Producto no encontrado"} />
             </Container>
         );
     }

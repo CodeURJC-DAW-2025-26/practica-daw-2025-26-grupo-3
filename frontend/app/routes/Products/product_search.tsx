@@ -4,11 +4,10 @@ import ProductList from "~/components/Product/product_list";
 import { requireUserLoader } from "~/stores/user-store";
 import { useLoaderData } from "react-router";
 import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
-import type { PageDTO } from "~/dtos/PageDTO";
 
 export async function clientLoader() {
     // We load the user into Zustand's memory before rendering the page.
-    await requireUserLoader();
+    const currentUser = await requireUserLoader();
 
     // We request the products from the server.
     try {
@@ -16,23 +15,23 @@ export async function clientLoader() {
 
         const productsArray = Array.isArray(response) ? response : (response?.content || []);
 
-        return { products: productsArray as ProductBasicDTO[] };
+        return { products: productsArray as ProductBasicDTO[], currentUser };
     } catch (error) {
         console.error("Error cargando el catálogo de productos:", error);
         // If there is an error, we return an empty array
-        return { products: [] as ProductBasicDTO[] };
+        return { products: [] as ProductBasicDTO[], currentUser };
     }
 }
 
 export default function ProductSearch() {
-    const { products } = useLoaderData<typeof clientLoader>();
+    const { products, currentUser } = useLoaderData<typeof clientLoader>();
 
     return (
         <Container className="my-5">
             <h2 className="mb-4 text-center fw-bold">Catálogo de Productos</h2>
 
             {/* we reuse the ProductList component */}
-            <ProductList products={products} />
+            <ProductList products={products} currentUser={currentUser}/>
 
         </Container>
     );

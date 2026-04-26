@@ -1,4 +1,3 @@
-import React from 'react';
 import { useLoaderData } from 'react-router';
 
 // Import the reusable ProductList component
@@ -8,8 +7,13 @@ import ProductList from '~/components/Product/product_list';
 import { getAllProducts } from '~/services/product-service';
 import type { ProductBasicDTO } from '~/dtos/ProductBasicDTO';
 
+import { requireUserLoader } from "~/stores/user-store";
+
 // Client loader: Fetches the required data before rendering the component
 export async function clientLoader() {
+
+    const currentUser = await requireUserLoader();
+
     try {
         // Request the products from the backend API
         const response = await getAllProducts();
@@ -19,19 +23,19 @@ export async function clientLoader() {
         const productsArray = Array.isArray(response) ? response : (response?.content || []);
 
         // Return the extracted array wrapped in an object for consistent destructuring
-        return { products: productsArray as ProductBasicDTO[] };
+        return { products: productsArray as ProductBasicDTO[], currentUser };
 
     } catch (error) {
         console.error("Error loading products in admin view:", error);
         // Fallback: Return an empty array to prevent the UI from crashing if the fetch fails
-        return { products: [] as ProductBasicDTO[] };
+        return { products: [] as ProductBasicDTO[], currentUser };
     }
 }
 
 // Main component for the Admin Published Products view
 export default function AdminProductsList() {
     // Destructure 'products' from the loader data, leveraging TypeScript inference
-    const { products } = useLoaderData<typeof clientLoader>();
+    const { products, currentUser } = useLoaderData<typeof clientLoader>();
 
     return (
         // Main wrapper: Flex column layout ensuring it takes full height/width
@@ -54,6 +58,7 @@ export default function AdminProductsList() {
             <div className="flex-grow-1 bg-white">
                 <ProductList
                     products={products}
+                    currentUser={currentUser}
                     isOwnerMode={true} // Crucial: Enables Admin actions (View, Edit, Delete)
                     emptyTitle="No se han encontrado productos publicados."
                     emptySubtitle=""

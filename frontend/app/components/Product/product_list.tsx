@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router";
 import type { ProductBasicDTO } from "~/dtos/ProductBasicDTO";
 import {
     Container,
@@ -9,8 +7,9 @@ import {
     Button,
     Badge,
 } from "react-bootstrap";
-import { useUserState } from "~/stores/user-store";
 import { removeProduct } from "~/services/product-service";
+import { useState } from "react";
+import { Link, useRevalidator } from "react-router";
 
 //This function returns the corresponding string to the state number
 function getStateInfo(state: number) {
@@ -31,18 +30,17 @@ interface ProductListProps {
     isOwnerMode?: boolean;
     emptyTitle?: string;
     emptySubtitle?: string;
+    currentUser?: any;
 }
 
 export default function ProductList({ products, isOwnerMode = false,
     emptyTitle = "No hay productos destacados disponibles",
-    emptySubtitle = "Prueba a buscarlos mas adelante" }: ProductListProps) {
-    const { currentUser } = useUserState(); //we need the user state to know if he is logged or not;
+    emptySubtitle = "Prueba a buscarlos mas adelante",
+    currentUser }: ProductListProps) {
 
-    const [localProducts, setLocalProducts] = useState<ProductBasicDTO[]>(products);
+    const revalidator = useRevalidator();
+    const [deletedIds, setDeletedIds] = useState<Set<number>>(new Set());
 
-    useEffect(() => {
-        setLocalProducts(products);
-    }, [products]);
 
     async function handleDeleteProduct(productId: number): Promise<void> {
         const isConfirmed = window.confirm("¿Estás seguro de que quieres eliminar este producto? Esta acción no se puede deshacer.");
@@ -52,8 +50,8 @@ export default function ProductList({ products, isOwnerMode = false,
                 // We try to remove the product
                 await removeProduct(productId);
 
-                // Update the local state to remove the deleted product
-                setLocalProducts(prevProducts => prevProducts.filter(product => product.id !== productId));
+                setDeletedIds(prev => new Set(prev).add(productId));
+                revalidator.revalidate();
 
             } catch (error) {
                 console.error("Error eliminando el producto:", error);
@@ -62,6 +60,8 @@ export default function ProductList({ products, isOwnerMode = false,
         }
     }
 
+    const visibleProducts = products?.filter(product => !deletedIds.has(product.id)) || [];
+    
     return (
         <section className="py-5 bg-white">
             <Container>
@@ -69,8 +69,8 @@ export default function ProductList({ products, isOwnerMode = false,
                 {/* --- PRODUCTS --- */}
                 <Row className="g-4 justify-content-center" id="featured-products">
                     { /* If there are products we show them */}
-                    {localProducts && localProducts.length > 0 ? (
-                        localProducts.map((product: ProductBasicDTO) => (
+                    {visibleProducts.length > 0 ?  (
+                        visibleProducts.map((product: ProductBasicDTO) => (
                             <Col md={3} key={product.id}>
                                 <Card className="h-100 border-0 shadow-sm product-card position-relative">
                                     {/* Image */}

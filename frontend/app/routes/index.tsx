@@ -220,7 +220,7 @@ export default function Index() {
                     <p className="text-muted">Creemos que estos productos te encantarán</p>
                 </div>
 
-                <ProductList products={products} />
+                <ProductList products={products} currentUser={currentUser} />
             </div>
 
             <section className="bg-white pb-5">
