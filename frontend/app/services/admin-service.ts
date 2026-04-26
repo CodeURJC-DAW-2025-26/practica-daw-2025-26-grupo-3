@@ -4,6 +4,8 @@ import type { UserPostDTO } from "~/dtos/UserPostDTO";
 import type { UserPassDTO } from "~/dtos/UserPassDTO";
 import type { UserPassBasicDTO } from "~/dtos/UserPassBasicDTO";
 import { HttpError } from "./HttpError";
+import type { KpiDTO } from "~/dtos/KpiDTO";
+import type { DataGraphicDTO } from "~/dtos/DataGraphicDTO";
 
 export { HttpError };
 
@@ -52,4 +54,50 @@ export async function toggleUserBlockStatus(userId: string | number, newState: b
     if (!response.ok) {
         throw new HttpError(response.status, `Error updating state for user ${userId}`);
     }
+}
+
+//get KPIs data
+export async function getKPIs(): Promise<KpiDTO> {
+    const url = `${base_admin_url}/admin/stats/kpis`;
+    const response = await fetch(url, {
+        method: "GET",
+        credentials: "include"
+    })
+
+    if (!response.ok) {
+        throw new HttpError(response.status, `Error fetching KPIs`);
+    }
+
+    return await response.json();
+}
+
+
+//get top products
+export async function getTopProduct(): Promise<DataGraphicDTO> {
+    const url = `${base_admin_url}/admin/stats/top-products`;
+    const response = await fetch(url, {
+        method: "GET",
+        credentials: "include"
+    })
+
+    if (!response.ok) {
+        throw new HttpError(response.status, `Error fetching Top Products`);
+    }
+
+    return await response.json();
+}
+
+//get product types data
+export async function getProductTypes(): Promise<DataGraphicDTO> {
+    const url = `${base_admin_url}/admin/stats/product-states`;
+    const response = await fetch(url, {
+        method: "GET",
+        credentials: "include"
+    })
+
+    if (!response.ok) {
+        throw new HttpError(response.status, `Error fetching product types data`);
+    }
+
+    return await response.json();
 }
