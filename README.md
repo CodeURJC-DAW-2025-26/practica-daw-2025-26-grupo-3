@@ -543,7 +543,19 @@ El alumno se ha encargado de montar toda la parte de los DTOs de productos, incl
    cd frontend
    ```
 
-4. **AQUÍ LOS SIGUIENTES PASOS**
+4. Ejecutar el proyecto react en modo desarrollo
+   ```bash
+    npm run dev
+    ```
+5. Ejecutar el backend Spring Boot para poder recibir los datos en el frontend
+   Para ello, vamos a la carpeta backend si no estamos ya (asuminendo que estamos en /frontend)
+   ```bash
+    cd ../backend 
+    ```
+   Y ejecutamos la aplicación con maven:
+   ```bash
+    mvn spring-boot:run
+    ```
 
 ### **Diagrama de Clases y Templates de la SPA**
 
