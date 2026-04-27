@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "c9b91fc7-dd1d-4d1b-9815-76e212e81428",
-    "name": "Practica2DAW",
+    "name": "Practica3DAW",
     "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "52921088",
@@ -86,19 +86,19 @@
                     {
                       "key": "imageFile",
                       "type": "file",
-                      "uuid": "be715a79-399b-4e59-a077-02c39291d88e",
-                      "src": "/d:/Users/DANIEL/Videos/Captures/FORTNITE EVENTO FINAL COMPLETO TEMPORADA 8 CAPITULO 2 _EL FIN_ - YouTube - Google Chrome 05_12_2021 23_38_45.png"
+                      "uuid": "0684e616-ea4b-4795-a5e1-d2257c9c20f7",
+                      "src": "/C:/Users/marco/Documents/Universidad/3º Ingeniería del Software/Desarrollo de Aplicaciones Web/SampleImages/descarga.jpg"
                     }
                   ]
                 },
                 "url": {
-                  "raw": "{{base_url}}/users/1/image",
+                  "raw": "{{base_url}}/users/202/image",
                   "host": [
                     "{{base_url}}"
                   ],
                   "path": [
                     "users",
-                    "1",
+                    "202",
                     "image"
                   ]
                 }
@@ -111,13 +111,21 @@
                 "method": "DELETE",
                 "header": [],
                 "url": {
-                  "raw": "{{base_url}}/users/1/image/",
+                  "raw": "https://appweb03.dawgis.etsii.urjc.es:8443/api/v1/users/2/image/",
+                  "protocol": "https",
                   "host": [
-                    "{{base_url}}"
+                    "appweb03",
+                    "dawgis",
+                    "etsii",
+                    "urjc",
+                    "es"
                   ],
+                  "port": "8443",
                   "path": [
+                    "api",
+                    "v1",
                     "users",
-                    "1",
+                    "2",
                     "image",
                     ""
                   ]
@@ -149,14 +157,23 @@
           "request": {
             "method": "DELETE",
             "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"password\": \"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
-              "raw": "{{base_url}}/users/52",
+              "raw": "{{base_url}}/users/153",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "users",
-                "52"
+                "153"
               ]
             }
           },
@@ -187,7 +204,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"userName\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\r\n    \"surname\": \"Hernandez\",\r\n    \"address\": \"Mostoles\",\r\n    \"email\": \"aaaaa@example.com\",\r\n    \"password\": \"demo1234\"\r\n}",
+              "raw": "{\r\n    \"userName\": \"Marcos\",\r\n    \"surname\": \"Hernandez\",\r\n    \"address\": \"Mostoles\",\r\n    \"email\": \"exmple@example.com\",\r\n    \"password\": \"demo1234\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -213,7 +230,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"userName\": \"Marta\",\r\n    \"surname\": \"Hola\",\r\n    \"address\": \"Valencia\",\r\n    \"email\": \"marta@example.com\",\r\n    \"state\": true,\r\n    \"password\": \"demo1234\"\r\n}",
+              "raw": "{\r\n    \"userName\": \"Juan\",\r\n    \"surname\": \"Hola\",\r\n    \"address\": \"Valencia\",\r\n    \"email\": \"juan@example.com\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -232,6 +249,55 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "UpdateUserPassword",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"currentPass\": \"demo1234\",\r\n    \"newPass\": \"demo6578\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/users/52/pass",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "52",
+                "pass"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetLoggedUser",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/logged",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "logged"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -245,7 +311,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"title\": \"aaaa\",\r\n    \"body\": \"pllllllllll\",\r\n    \"stars\": 3\r\n}",
+              "raw": "{\r\n    \"title\": \"Reseña de prueba\",\r\n    \"body\": \"blablablablablablabla\",\r\n    \"stars\": 2\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -253,15 +319,15 @@
               }
             },
             "url": {
-              "raw": "{{base_url}}/products/1/reviews/1",
+              "raw": "{{base_url}}/products/4/reviews/255",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "products",
-                "1",
+                "4",
                 "reviews",
-                "1"
+                "255"
               ]
             }
           },
@@ -293,15 +359,14 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{base_url}}/products/all/reviews/302",
+              "raw": "{{base_url}}/products/1/reviews",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "products",
-                "all",
-                "reviews",
-                "302"
+                "1",
+                "reviews"
               ]
             }
           },
@@ -313,15 +378,15 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{base_url}}/products/1/reviews/2",
+              "raw": "{{base_url}}/products/4/reviews/52",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "products",
-                "1",
+                "4",
                 "reviews",
-                "2"
+                "52"
               ]
             }
           },
@@ -334,7 +399,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"title\": \"hola buenas\",\r\n    \"body\": \"que tal estas\",\r\n    \"stars\": 4\r\n}",
+              "raw": "{\r\n    \"title\": \"\",\r\n    \"body\": \"que tal estas\",\r\n    \"stars\": 4\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -342,15 +407,36 @@
               }
             },
             "url": {
-              "raw": "{{base_url}}/products/1/reviews/",
+              "raw": "{{base_url}}/products/1/reviews",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "products",
                 "1",
-                "reviews",
-                ""
+                "reviews"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GetReviewsByProductId",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products/1/reviews",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                "reviews"
               ]
             }
           },
@@ -426,22 +512,30 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{base_url}}/products/?page=1&size=10",
+                  "raw": "https://appweb03.dawgis.etsii.urjc.es:8443/api/v1/products/?page=2&size=5",
+                  "protocol": "https",
                   "host": [
-                    "{{base_url}}"
+                    "appweb03",
+                    "dawgis",
+                    "etsii",
+                    "urjc",
+                    "es"
                   ],
+                  "port": "8443",
                   "path": [
+                    "api",
+                    "v1",
                     "products",
                     ""
                   ],
                   "query": [
                     {
                       "key": "page",
-                      "value": "1"
+                      "value": "2"
                     },
                     {
                       "key": "size",
-                      "value": "10"
+                      "value": "5"
                     }
                   ]
                 }
@@ -454,11 +548,19 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{base_url}}/products/?page=1&size=10&sort=price",
+                  "raw": "https://appweb03.dawgis.etsii.urjc.es:8443/api/v1/products/?page=1&size=10&sort=price",
+                  "protocol": "https",
                   "host": [
-                    "{{base_url}}"
+                    "appweb03",
+                    "dawgis",
+                    "etsii",
+                    "urjc",
+                    "es"
                   ],
+                  "port": "8443",
                   "path": [
+                    "api",
+                    "v1",
                     "products",
                     ""
                   ],
@@ -486,11 +588,19 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{base_url}}/products/?page=1",
+                  "raw": "https://appweb03.dawgis.etsii.urjc.es:8443/api/v1/products/?page=1",
+                  "protocol": "https",
                   "host": [
-                    "{{base_url}}"
+                    "appweb03",
+                    "dawgis",
+                    "etsii",
+                    "urjc",
+                    "es"
                   ],
+                  "port": "8443",
                   "path": [
+                    "api",
+                    "v1",
                     "products",
                     ""
                   ],
@@ -554,14 +664,31 @@
           "request": {
             "method": "DELETE",
             "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
             "url": {
-              "raw": "{{base_url}}/products/1",
+              "raw": "https://appweb03.dawgis.etsii.urjc.es:8443/api/v1/products/52",
+              "protocol": "https",
               "host": [
-                "{{base_url}}"
+                "appweb03",
+                "dawgis",
+                "etsii",
+                "urjc",
+                "es"
               ],
+              "port": "8443",
               "path": [
+                "api",
+                "v1",
                 "products",
-                "1"
+                "52"
               ]
             }
           },
@@ -574,7 +701,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"productName\": \"\",\r\n    \"price\": 85.50,\r\n    \"state\": 1,\r\n    \"description\": \"Teclado mecánico compacto al 60% con switches rojos y retroiluminación RGB. Ideal para programar.\",\r\n    \"averageRating\": 0.0,\r\n    \"reviewCount\": 0\r\n}",
+              "raw": "{\r\n    \"productName\": \"Nombre\",\r\n    \"price\": 85.50,\r\n    \"state\": 1,\r\n    \"description\": \"Teclado mecánico compacto al 60% con switches rojos y retroiluminación RGB. Ideal para programar.\",\r\n    \"averageRating\": 0.0,\r\n    \"reviewCount\": 0\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -601,7 +728,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n  \"productName\": \"Teclado mecanico actualizado desde la api\",\r\n  \"price\": 49.99,\r\n  \"state\": 2,\r\n  \"description\": \"Teclado compacto en buen estado\"\r\n}",
+              "raw": "{\r\n    \"productName\": \"Nombre\",\r\n    \"price\": 85.50,\r\n    \"state\": 1,\r\n    \"description\": \"Teclado mecánico compacto al 60% con switches rojos y retroiluminación RGB. Ideal para programar.\",\r\n    \"averageRating\": 0.0,\r\n    \"reviewCount\": 0\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -609,13 +736,13 @@
               }
             },
             "url": {
-              "raw": "{{base_url}}/products/1",
+              "raw": "{{base_url}}/products/53",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "products",
-                "1"
+                "53"
               ]
             }
           },
@@ -666,7 +793,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"username\": \"admin@admin.com\",\r\n    \"password\": \"admin1234\"\r\n}",
+              "raw": "{\r\n    \"username\": \"marta@example.com\",\r\n    \"password\": \"demo1234\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -750,6 +877,27 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "GetOrders",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/orders/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders",
+                "me"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -804,8 +952,9 @@
                 {
                   "key": "imageFile",
                   "type": "file",
-                  "uuid": "5f618254-8af9-45ce-a57d-251cfbc37f2f",
-                  "src": "/d:/Users/DANIEL/Videos/Base Profile/Base Profile Screenshot 2022.07.11 - 23.16.09.44.png"
+                  "id": 0,
+                  "fileUploadError": "",
+                  "src": "\\\\10.97.0.21\\Home_VDI$\\m.hernandezm.2023\\Downloads\\download.jpg"
                 }
               ]
             },
@@ -834,7 +983,7 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{base_url}}/carts/me/items/308",
+              "raw": "{{base_url}}/carts/me/items/56",
               "host": [
                 "{{base_url}}"
               ],
@@ -842,7 +991,7 @@
                 "carts",
                 "me",
                 "items",
-                "308"
+                "56"
               ]
             }
           },
@@ -855,7 +1004,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"productId\": 14\r\n}",
+              "raw": "{\r\n    \"productId\": 4\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -889,6 +1038,57 @@
               "path": [
                 "carts",
                 "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CreateOrderFromCart",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/orders",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "orders"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "AddQuantity",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"operation\": 0\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/carts/me/items/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "carts",
+                "me",
+                "items",
+                "1"
               ]
             }
           },
