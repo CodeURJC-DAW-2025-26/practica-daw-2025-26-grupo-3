@@ -534,8 +534,8 @@ El alumno se ha encargado de montar toda la parte de los DTOs de productos, incl
 
 2. **Clonar el repositorio** (si no lo has hecho ya)
    ```bash
-   git clone https://github.com/[usuario]/[nombre-repositorio].git
-   cd [nombre-repositorio]
+   git clone https://github.com/CodeURJC-DAW-2025-26/practica-daw-2025-26-grupo-3
+   cd practica-daw-2025-26-grupo-3
    ```
 
 3. **Navegar a la carpeta del proyecto React**
